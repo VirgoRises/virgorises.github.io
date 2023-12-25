@@ -421,7 +421,10 @@
                             // change text csvSeeds
                             document.getElementById("csvSeeds").value = lstPreset.seeds.csvRc;
                             // trigger change event on text box
-                            triggerChangeSeeds();    
+                            triggerChangeSeeds(); 
+                            // Should trigger plotMarker()
+                            // does not?
+                            plotMarker();  
                         }
                 };
                 if (this.id == 'chk_kc') {
