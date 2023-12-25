@@ -1,0 +1,126 @@
+!DOCTYPE html>
+<html lang="en" xml:lang="en">
+
+<head>
+    <title>Virgo Rises - The Algorithm</title>
+    <!-- meta http-equiv="content-type" content="text/html; charset=utf-8" /-->
+    <script src="https//:polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!--    MathJax delimeters \( math \) for sites.google
+            compatibilaty.  -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {extensions:["cancel.js"]},
+            extensions:["tex2jax.js"]},
+            jax: ["input/TeX","output/HTML/CSS"],
+            displayAlign: "center",displayIndent: "2em",
+            text2jax:{
+            inlineMath:  [ [ '$','$'], ['\\(','\\)'] ],
+            displayMath:[ [ '$$','$$'], ['\\\[','\\\]'] ],
+            processEscapes: true
+            }
+        });
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <style>
+        body {
+            font: inherit;
+        }
+
+        canvas {
+            border: 1px solid black;
+            cursor: crosshair;
+        }
+
+        /*  tables: 
+            makeTheSeedXTbl() id="theseedxtbl" */
+        table {
+            margin-left: 5px;
+            margin-right: 5px;
+            border: thin solid black;
+            border-collapse: collapse;
+            font-size: 0.75em;
+        }
+
+        caption {
+            padding-top: 4px;
+            caption-side: top;
+            /*font-style: italic;*/
+            font-size: 1.5em;
+        }
+
+
+        /*  .cellcolor applied to every uneven 
+            row when table is constructed */
+        .cellcolor {
+            background-color: #1111;
+        }
+
+        td,
+        th {
+            border: thin dotted grey;
+            padding: 5px;
+            text-align: right;
+        }
+
+        /*  Reduce the vertical height the table occupies, 
+            and make it scrollable (overflow-y:auto;)
+            Make the header stick to the top of the frame. */
+        .tableFixHead {
+            overflow-y: auto;
+            /* make the table scrollable */
+            height: 265px;
+            /* initial table height of 150px */
+            width: 345px;
+            float: left;
+            margin: 1px;
+            padding: 1px;
+            border-width: thick;
+            border-color: black;
+        }
+
+        .tableFixHead thead th {
+            position: sticky;
+            /* make the table heads sticky */
+            top: 0px;
+            /* ... placed from the top ... and sticks */
+            background-color: lightgray;
+            /*X underscrolling visible */
+        }
+
+        #tablepane {
+            float: left;
+        }
+
+        #kofi {
+            margin: 20px;
+            clear: both;
+        }
+
+
+        /* Format the frameing of the input forms */
+        fieldset {
+            font-size: 0.75em;
+            width: 230px;
+            padding-top: 4px;
+            /* Stack the forms vertically */
+            clear: right;
+        }
+
+        #userinterface {
+            padding-top: 5px;
+        }
+
+        .maxseeds {
+            background-color: red;
+            font-size: 1.5em;
+        }
+    </style>
+
+</head>
+
+<body>
+    <p> Test </p>
+</body>
+</html>
