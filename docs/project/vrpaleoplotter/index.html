@@ -423,8 +423,8 @@
                             // trigger change event on text box
                             triggerChangeSeeds(); 
                             // Should trigger plotMarker()
-                            // does not?
-                            plotMarker();  
+                            // does not (has to loose focus after change?
+                            this.focus;
                         }
                 };
                 if (this.id == 'chk_kc') {
@@ -448,12 +448,9 @@
                 }
             }
             function triggerChangeSeeds() {
-            /* Just toggling preset id='chk_s1' which forces
-            recalculating mappings based on 'n' seeds, or 
-            2^n combinations. Trigger twice to leave current 
-            user selection unchanged */
+            /* */
             for (let i = 0; i <= 1; i++) {
-                const event = new Event("ìnput", {
+                const event = new Event("input", {
                     view: window,
                     bubbles: true,
                     cancelable: false, //true,
