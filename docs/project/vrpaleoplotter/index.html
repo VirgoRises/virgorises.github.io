@@ -414,6 +414,13 @@
                 };
                 if (this.id == 'chk_seeds') {
                     lstPreset.seeds.show = this.checked;
+
+                    /*  If checked: Also resets the csvSeeds field 
+                        to the initial 5 seeds from the 1th Passage */
+                        if(this.checked){
+                            Document.getElementById("chk_seeds").value=this.id.csvRc;
+                            triggerRedrawAll()    
+                        }
                 };
                 if (this.id == 'chk_kc') {
                     lstPreset.kc.show = this.checked;
