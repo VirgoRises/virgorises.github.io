@@ -418,10 +418,10 @@
                     /*  If checked: Also resets the csvSeeds field 
                         to the initial 5 seeds from the 1th Passage */
                         if(this.checked){
+                            // change text csvSeeds
                             document.getElementById("csvSeeds").value = lstPreset.seeds.csvRc;
-                            //call arbitrary for set 1
-                            populateSetCsvRc(1);
-                            //riggerRedrawAll()    
+                            // trigger change event on text box
+                            triggerChangeSeeds();    
                         }
                 };
                 if (this.id == 'chk_kc') {
@@ -444,6 +444,29 @@
                     lstPreset.addPresets.csvRc += "," + lstPreset[x].csvRc;
                 }
             }
+            function triggerChangeSeeds() {
+            /* Just toggling preset id='chk_s1' which forces
+            recalculating mappings based on 'n' seeds, or 
+            2^n combinations. Trigger twice to leave current 
+            user selection unchanged */
+            for (let i = 0; i <= 1; i++) {
+                const event = new Event("ìnput", {
+                    view: window,
+                    bubbles: true,
+                    cancelable: false, //true,
+                });
+                const cb = document.getElementById("csvSeeds");
+                const cancelled = !cb.dispatchEvent(event);
+
+                if (cancelled) {
+                    // A handler called preventDefault.
+                    // alert("cancelled");
+                } else {
+                    // None of the handlers called preventDefault.
+                    // alert("not cancelled");
+                }
+            }
+        }
 
             //console.info('lstPreset.addPresets.csvRc = ' + lstPreset.addPresets.csvRc);
 
