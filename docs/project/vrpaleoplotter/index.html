@@ -418,9 +418,13 @@
                     /*  If checked: Also resets the csvSeeds field 
                         to the initial 5 seeds from the 1th Passage */
                         if(this.checked){
-                            // change text csvSeeds
+                            // trigger event change text csvSeeds
+                            /*  answered Dec 14, 2022 at 14:21 Hamid Heydari
+                                stackoverflow: 
+                                The question is Where and How? 
+                                "Where" we want the change event to be triggered exactly at the moment after a bunch of codes is executed, and "How" is in the form of the following syntax: */
                             var triggerThis = document.getElementById("csvSeeds");
-                            // modify the value
+                            // do stuff: modify the value
                             triggerThis.value = lstPreset.seeds.csvRc;
                             // trigger change event on text box
                             triggerThis.dispatchEvent(new Event("change"));
@@ -444,25 +448,6 @@
             for (x in lstPreset) {
                 if (lstPreset[x].show) {
                     lstPreset.addPresets.csvRc += "," + lstPreset[x].csvRc;
-                }
-            }
-            function XXtriggerChangeSeeds() {
-            /* */
-            for (let i = 0; i <= 1; i++) {
-                const event = new Event("change", {
-                    view: window,
-                    bubbles: true,
-                    cancelable: false, //true,
-                });
-                const cb = document.getElementById("csvSeeds");
-                const cancelled = !cb.dispatchEvent(event);
-
-                if (cancelled) {
-                    // A handler called preventDefault.
-                    // alert("cancelled");
-                } else {
-                    // None of the handlers called preventDefault.
-                    // alert("not cancelled");
                 }
             }
         }
