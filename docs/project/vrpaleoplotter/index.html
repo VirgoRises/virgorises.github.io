@@ -419,7 +419,8 @@
                         to the initial 5 seeds from the 1th Passage */
                         if(this.checked){
                             document.getElementById("csvSeeds").value = chkPres[i].csvRc;
-                            triggerRedrawAll()    
+                            populateSetCsvRc(x)
+                            //riggerRedrawAll()    
                         }
                 };
                 if (this.id == 'chk_kc') {
