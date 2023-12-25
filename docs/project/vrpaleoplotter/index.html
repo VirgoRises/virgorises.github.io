@@ -105,12 +105,15 @@
             width: 230px;
             padding-top: 4px;
             /* Stack the forms vertically */
-            /* clear: right */;
             float:left;
+            clear: right;
         }
 
         #userinterface {
             padding-top: 5px;
+        }
+        .formpane {
+            float:left;
         }
 
         .maxseeds {
@@ -128,11 +131,9 @@
     <div class="userinterface" id="userinterface">
 
         <div id="setresult">
-
- 
-            <div id="formpane">
+            <div  class="formpane" id="formpane">
                 <div>
-                    <fieldset class="formpane">
+                    <fieldset>
                         <legend id="legendseedsmaps" class="">Seeds (max. 9) &amp; mapping</legend>
                         <form>
                             <label for="csvSeeds">csv Seeds</label>
