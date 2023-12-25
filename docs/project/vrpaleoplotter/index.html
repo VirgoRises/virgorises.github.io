@@ -419,7 +419,6 @@
                         to the initial 5 seeds from the 1th Passage */
                         if(this.checked){
                             // change text csvSeeds
-                            document.getElementById("csvSeeds").focus;
                             document.getElementById("csvSeeds").value = lstPreset.seeds.csvRc;
                             // trigger change event on text box
                             triggerChangeSeeds(); 
@@ -451,7 +450,7 @@
             function triggerChangeSeeds() {
             /* */
             for (let i = 0; i <= 1; i++) {
-                const event = new Event("input", {
+                const event = new Event("change", {
                     view: window,
                     bubbles: true,
                     cancelable: false, //true,
