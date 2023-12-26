@@ -19,6 +19,7 @@
       .then(data => document.getElementById("json").innerHTML=myItems(data.substring(47).slice(0, -2))  
       );
     function myItems(jsonString){
+        console.info(jsonString);
       var json = JSON.parse(jsonString);
       var table = '<table><tr>'
       json.table.cols.forEach(colonne => table += '<th>' + colonne.label + '</th>')
