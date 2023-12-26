@@ -226,7 +226,7 @@
         */
         var rValue = {
             plotId: '',
-            grapId: '',
+            graphId: '',
             dataSet: '',
             dsetURI: '',
             GraphStored: '',
@@ -249,7 +249,7 @@
         'https://drive.google.com/uc?id=...<long number>...';
         Location: ..\sitesgoogle\vrmedia\graphs */
         rValue.plotId = "vr_plot_0001";
-        rValue.grapId = "vr_graph_0001";
+        rValue.graphId = "vr_graph_0001";
         rValue.dataSet = "Alley_Gisp_2004";
         rValue.dsetURI = 'https://drive.google.com/uc?...';
         rValue.GraphStored = "..\virgorises\google_site\vrmedia\graphs";
@@ -267,14 +267,14 @@
 
         //  Status array sets
         /*  Each set has an arithmetic template for expanding
-            the core seed values into mappings of events in time.
-            The string literal templates given single quotes, 
-            'a*b*c*...' --> `${a}*${b}*${c}*...` --> 
-            "2*2.02*2.52* .." --> calc = eval("2*2.02*2.52* ..")
-            Depending on AorM, zero value columns set to 0 or 1.
-            A(dditive)-> 0, or M(ultiplicative)-> 1.
-            e.g., (A)[a+0+c+d+0+...], or (M)[a*1*c*d*1*...] 
-        */
+            the core seed values into mappings of events in time.`1
+            The string literal templates given single quotes, */
+            // 'a*b*c*...' --> `${a}*${b}*${c}*...` --> 
+            // "2*2.02*2.52* .." --> calc = eval("2*2.02*2.52* ..")
+            // Depending on AorM, zero value columns set to 0 or 1.
+            // A(dditive)-> 0, or M(ultiplicative)-> 1.
+            // e.g., (A)[a+0+c+d+0+...], or (M)[a*1*c*d*1*...] 
+    
         var lstSet = {
             set1: {
                 chkId: 'chk_s1',
