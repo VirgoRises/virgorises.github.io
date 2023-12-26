@@ -4,69 +4,66 @@
         <title>Google Sheets json endpoint V4</title>
         <author>Mike Steelson</author>
         <style>
-        table {border-collapse: collapse;}
-        th,td{border: 1px solid black;}
+            table {border-collapse: collapse;}
+            th,td{border: 1px solid black;}
         </style>
-          </head> 
-  <body> 
+    </head> 
+<body> 
     <div id="json">json here</div>
+
     <script>
         /**
-         * data_vrpaleoplotter:
+         * For each table a distinct sheet. Query returns
+         * only the page with index '0'.
+         * -- table [data_vrpaleoplotter:] 
          * 1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg
-         * vrpaleoplotter_tbl_mplot:
+         * (sheet which lists all tables used in the 
+         * vrpaleoplotter app, and the share id). 
+         * public, view only.
+         * 
+         * -- table [vrpaleoplotter_tbl_mplot:]
          * 1QRR_9DZsyRXTc2hsp4U5YX8gC4vtbWCi2KFugu63Cug	
-         * vrpaleoplotter_tbl_rvalue:
+         * -- table [vrpaleoplotter_tbl_rvalue:]
          * 1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY
+         * 'https://docs.google.com/spreadsheets/d/<BIGNUM>
+         * /gviz/tq?tqx=out:json&tq&gid=0';
         */
-        //
-    var id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';
-    var gid = '0';
-    var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
-    fetch(url)
-      .then(response => response.text())
-      .then(data => document.getElementById("json").innerHTML=myItems(data.substring(47).slice(0, -2))  
-      );
-      /**
-       * data.substring(47).slice(0,-2)) pics data part from 
-       * the sheets response string. substring(4) (from pos 47, 
-       * just past the brace to the end), and from this slice 
-       * the part from the mostleft character (0th), uptil -2
-       * characters from the end of the response string
-       * .i.e.,(cutting of the last brace on the string.)
-       */
-    function myItems(jsonString){
-        console.info(jsonString);
-      var json = JSON.parse(jsonString);
-      var table = '<table><tr>'
-      json.table.cols.forEach(colonne => table += '<th>' + colonne.label + '</th>')
-      table += '</tr>'
-      json.table.rows.forEach(ligne => {
-        table += '<tr>'
-        ligne.c.forEach(cellule => {
-            try{var valeur = cellule.f ? cellule.f : cellule.v}
-            catch(e){var valeur = ''}
-            table += '<td>' + valeur + '</td>'
-          }
-        )
-        table += '</tr>'
-        }
-      )
-      table += '</table>'
-      return table
-    }           
-    </script>
-        <script>
-        /*
-        var id = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-        var gid = '1111111111111';
+
+        var id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';
+        var gid = '0';
         var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
-
-        // Then take a slice
-        data.substring(47).slice(0, -2)
-
-        // and parse the JSON
-        */
+        fetch(url)
+        .then(response => response.text())
+        .then(data => document.getElementById("json").innerHTML=myItems(data.substring(47).slice(0, -2))  
+        );
+        /**
+         * data.substring(47).slice(0,-2)) pics data part from 
+         * the sheets response string. substring(4) (from pos 47, 
+         * just past the brace to the end), and from this slice 
+         * the part from the mostleft character (0th), uptil -2
+         * characters from the end of the response string
+         * .i.e.,(cutting of the last brace on the string.)
+         */
+        function myItems(jsonString){
+            console.info(jsonString);
+        var json = JSON.parse(jsonString);
+        var table = '<table><tr>'
+        json.table.cols.forEach(colonne => table += '<th>' + colonne.label + '</th>')
+        table += '</tr>'
+        json.table.rows.forEach(ligne => {
+            table += '<tr>'
+            ligne.c.forEach(cellule => {
+                try{var valeur = cellule.f ? cellule.f : cellule.v}
+                catch(e){var valeur = ''}
+                table += '<td>' + valeur + '</td>'
+            }
+            )
+            table += '</tr>'
+            }
+        )
+        table += '</table>'
+        return table
+        };     
     </script>
   </body>
 </html>
