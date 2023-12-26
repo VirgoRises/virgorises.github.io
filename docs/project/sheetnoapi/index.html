@@ -27,6 +27,14 @@
       .then(response => response.text())
       .then(data => document.getElementById("json").innerHTML=myItems(data.substring(47).slice(0, -2))  
       );
+      /**
+       * data.substring(47).slice(0,-2)) pics data part from 
+       * the sheets response string. substring(4) (from pos 47, 
+       * just past the brace to the end), and from this slice 
+       * the part from the mostleft character (0th), uptil -2
+       * characters from the end of the response string
+       * .i.e.,(cutting of the last brace on the string.)
+       */
     function myItems(jsonString){
         console.info(jsonString);
       var json = JSON.parse(jsonString);
