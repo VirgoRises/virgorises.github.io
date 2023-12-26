@@ -20,7 +20,7 @@
       );
     function myItems(jsonString){
       var json = JSON.parse(jsonString);
-      var table = '<table><tr>'
+      var table = '<table><tr>';
       json.table.cols.forEach(colonne => table += '<th>' + colonne.label + '</th>')
       table += '</tr>'
       json.table.rows.forEach(ligne => {
