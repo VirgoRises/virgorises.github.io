@@ -1,46 +1,57 @@
 <!DOCTYPE html> 
 <html> 
 	<head> 
-    <title>Google Spreadsheet Javascript</title> 
-    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
-    <script type="text/javascript" src="google-spreadsheet.js"></script>
-
-  </head> 
+        <title>Google Sheets json endpoint V4</title>
+        <author>Mike Steelson</author>
+        <style>
+        table {border-collapse: collapse;}
+        th,td{border: 1px solid black;}
+        </style>
+          </head> 
   <body> 
-    <h1>Google Spreadsheet Javascript</h1>
-    Here is the most basic usage:
-    <pre id='code'></pre>
-    And here are the results:
-    <pre id='results'></pre>
-    <div id='links'>
-      Github URL: <a href='https://github.com/mikeymckay/google-spreadsheet-javascript'>https://github.com/mikeymckay/google-spreadsheet-javascript</a><br/>
-      Source URL for above spreadsheet data: <span id='spreadsheet_url'></span><br/>
-      Try your own spreadsheet (needs to be <a href='https://docs.google.com/spreadsheets/d/1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg/edit?usp=sharing'>published</a>):<br/>
-      <input style='width:700px' name='url' type='text'></input>
-      <input onclick='document.location = document.location.pathname + "?url="+$("input[name]").val()' type='submit'></input>
-    </div>
-    <iframe width='500' height='300' frameborder='0' ></iframe>
+    <div id="json">json here</div>
     <script>
+    var id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';
+    var gid = '0';
+    var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+    fetch(url)
+      .then(response => response.text())
+      .then(data => document.getElementById("json").innerHTML=myItems(data.substring(47).slice(0, -2))  
+      );
+    function myItems(jsonString){
+      var json = JSON.parse(jsonString);
+      var table = '<table><tr>'
+      json.table.cols.forEach(colonne => table += '<th>' + colonne.label + '</th>')
+      table += '</tr>'
+      json.table.rows.forEach(ligne => {
+        table += '<tr>'
+        ligne.c.forEach(cellule => {
+            try{var valeur = cellule.f ? cellule.f : cellule.v}
+            catch(e){var valeur = ''}
+            table += '<td>' + valeur + '</td>'
+          }
+        )
+        table += '</tr>'
+        }
+      )
+      table += '</table>'
+      return table
+    }           
     </script>
-    <script id='script'>
-      localStorage.clear();
-      var sample_url = "https://docs.google.com/spreadsheets/d/1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg/edit?usp=sharing";
-      var url_parameter = document.location.search.split(/\?url=/)[1]
-      var url = url_parameter || sample_url;
-      var googleSpreadsheet = new GoogleSpreadsheet();
-      googleSpreadsheet.url(url);
-      googleSpreadsheet.load(function(result) {
-        $('#results').html(JSON.stringify(result).replace(/,/g,",\n"));
-      });
-    </script>
-    <script>
-      $('#code').html($('#script').html())
-      $('#spreadsheet_url').html("<a href='"+url+"'>"+url+"</a>");
-      $('#iframe').attr("src",url);
-      $('input[name]').val(url);
-      if (url != sample_url){
-        $("div#links").append("<br/><a href='"+document.location.pathname+"'>Original Sample Spreadsheet</a>")
-      }
+        <script>
+        /*
+        var id = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+        var gid = '1111111111111';
+        var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+
+        // Then take a slice
+        data.substring(47).slice(0, -2)
+
+        // and parse the JSON
+        */
     </script>
   </body>
 </html>
+
+
+</body></html>
