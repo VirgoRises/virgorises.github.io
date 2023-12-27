@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en">
+
+<head>
+    <title>Virgo Rises - The Algorithm</title>
+    <!-- meta http-equiv="content-type" content="text/html; charset=utf-8" /-->
+    <script src="https//:polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!--    MathJax delimeters \( math \) for sites.google
+            compatibilaty.  -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {extensions:["cancel.js"]},
+            extensions:["tex2jax.js"]},
+            jax: ["input/TeX","output/HTML/CSS"],
+            displayAlign: "center",displayIndent: "2em",
+            text2jax:{
+            inlineMath:  [ [ '$','$'], ['\\(','\\)'] ],
+            displayMath:[ [ '$$','$$'], ['\\\[','\\\]'] ],
+            processEscapes: true
+            });
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/vrpaleoplotter.css">
+</head>
+
+<body>
+    <div id="data_vrpaleoplotter">data_vrpaleoplotter here</div>
+    <div id="tbl_mplot">tbl_mplot here</div>
+    <div id="tbl_rvalue">tbl_rvalue here</div>
+
+    <script>
+        //document.onload = function() {
+            // Initial run 
+            // Call expandSeedSet()
+
+        /** Clear example by: Mike Steelson
+         * For each table a distinct sheet. Query returns
+         * only the page with index '0'.
+         */
+
+        var data_vrpaleoplotter_id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';
+        //var data_vrpaleoplotter = arrayFromSheet(data_vrpaleoplotter_id);
+        // Display of the html table seperate tab;
+        //document.getElementById("data_vrpaleoplotter").innerHTML = sheetTbl(data_vrpaleoplotter);
+
+        var tbl_mplot_id = '1QRR_9DZsyRXTc2hsp4U5YX8gC4vtbWCi2KFugu63Cug';
+        var tbl_mplot = arrayFromSheet(tbl_mplot_id);
+        // Display of the html table seperate tab;
+        document.getElementById("tbl_mplot").innerHTML = sheetTbl(tbl_mplot);
+
+        var tbl_rvalue_id = '1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY';
+        var tbl_rvalue = arrayFromSheet(tbl_rvalue_id);
+        // Display of the html table seperate tab;
+        document.getElementById("tbl_rvalue").innerHTML = sheetTbl(tbl_rvalue);
+
+        //};
+       //from example by: Mike Steelson
+        function arrayFromSheet(id) {
+            var gid = '0';
+            var url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
+            console.info(url);           console.info('https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid);
+            /**
+             * data.substring(47).slice(0,-2)) pics data part from 
+             * the sheets response string. substring(4) (from pos 47, 
+             * just past the brace to the end), and from this slice 
+             * the part from the mostleft character (0th), uptil -2
+             * characters from the end of the response string
+             * .i.e.,(cutting of the last brace off the string.)
+             */
+            // try catch for fetch?
+            var jsonString = fetch(url)
+                .then(response => response.text())
+                .then(data => jsonString = sheetTbl(data.substring(47).slice(0, -2)));
+                    return jsonString
+                }
+            var json=JSON.parse(jsonString);
+            console.info(json);
+            //from example by: Mike Steelson
+            function sheetTbl(json) {
+                var table = '<table><tr>'
+                json.table.cols.forEach(column => table += '<th>' + column.label + '</th>')
+                table += '</tr>'
+                json.table.rows.forEach(tuple => {
+                    table += '<tr>'
+                    tuple.c.forEach(attribute => {
+                        // if formula (attribute.f) take formula as text,
+                        // else, take the value
+                        // try fails if cell value is null, then assign 
+                        // contents= '' (empty string)
+                        try {
+                            var contents = attribute.f ? attribute.f : attribute.v
+                        } catch (e) {
+                            var contents = ''
+                        }
+                        table += '<td>' + contents + '</td>'
+                    })
+                    table += '</tr>'
+                })
+                table += '</table>'
+                return table
+            };
+    </script>
+</body>
+
+</html>
