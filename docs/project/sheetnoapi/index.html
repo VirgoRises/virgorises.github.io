@@ -2,7 +2,7 @@
 <html  lang="en" xml:lang="en"> 
 <head> 
     <title>Google Sheets json endpoint V4</title>
-    <!--author>Mike Steelson</author> -->
+    
     <style>
         table {border-collapse: collapse;}
         th,td{border: 1px solid black;}
@@ -12,7 +12,7 @@
     <div id="json">json here</div>
 
     <script>
-        /**
+        /** <author>Mike Steelson</author>
          * For each table a distinct sheet. Query returns
          * only the page with index '0'.
          * -- table [data_vrpaleoplotter:] 
@@ -32,11 +32,17 @@
         var id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';
         var gid = '0';
         var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+        /** after fetch(url)
+         *  returned is the object response with the attribute response.text()
+         *  Which then is dumped in <div id="json">json here</div> 
+         *  The functioncall is ...erHTML=myItems(data.substring(47).slice(0, -2)) 
+         * */
         fetch(url)
         .then(response => response.text())
         .then(data => document.getElementById("json").innerHTML=myItems(data.substring(47).slice(0, -2))  
         );
         /**
+         * 
          * data.substring(47).slice(0,-2)) pics data part from 
          * the sheets response string. substring(4) (from pos 47, 
          * just past the brace to the end), and from this slice 
