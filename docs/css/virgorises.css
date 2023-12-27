@@ -1,9 +1,11 @@
+/* Style mirroring sites.google.com theme "Simple" */
 body {
     font-family: Lato, Verdana, Geneva, Arial, sans-serif;
     font-size: small;
 }
 h1 ,h2 {
     font-weight: normal;
+    color: #226e93;
 }
 h1 {
     font-size: 170%;
