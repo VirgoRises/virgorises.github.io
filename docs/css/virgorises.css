@@ -1,0 +1,14 @@
+body {
+    font-family: Lato, Verdana, Geneva, Arial, sans-serif;
+    font-size: small;
+}
+h1 ,h2 {
+    font-weight: normal;
+}
+h1 {
+    font-size: 170%;
+}
+
+h2 {
+    font-size: 130%;
+}
