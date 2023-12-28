@@ -35,7 +35,7 @@
         <canvas class="uiCanvas" id="vrCanvasPlotRc" style="margin:0;padding:0;" width=600 height=400></canvas>
     </div>
 
-    <div id="setresult">
+    <div>
         <div id="kofi">
             <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
             <script type='text/javascript'>
@@ -56,16 +56,16 @@
             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    <div class="position-relative">
-                        <fieldset class="position-absolute top-5 start-0">
+                    <div class="float-start">
+                        <fieldset>
                             <legend id="legendseedsmaps" class="">Seeds (max. 9) &amp; mapping</legend>
                             <form>
                                 <label for="csvSeeds">csv Seeds</label>
                                 <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
-                                    onchange="expandSeedSet()">
+                                    onchange="expandSeedSet()"><br />
                                 <label for="csvRc">csv Map&nbsp;&nbsp;</label>
                                 <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()">
-                            </form>
+                            </form><br />
                             <div>
                                 <!-- Button trigger modal -->
                                 <br />
@@ -76,7 +76,7 @@
                             </div>
                         </fieldset>
                     </div>
-                    <div>
+                    <div class="float-start">
                         <fieldset>
                             <legend>Select presets:</legend>
                             <form class="frm_changepreset" id="frm_changepreset">
@@ -98,7 +98,7 @@
                             </form>
                         </fieldset>
                     </div>
-                    <div>
+                    <div class="float-start">
                         <fieldset>
                             <legend>Select mapping set:</legend>
                             <form id="frm_setselect">
