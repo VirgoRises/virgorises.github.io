@@ -415,7 +415,7 @@
 
                     populateSetCsvRc(x)
                     lstSet.addSets.csvRc += "," + lstSet[x].csvRc;
-                    console.info(lstSet[x]);
+                    //console.info(lstSet[x]);
                 }
             }
             /*   plotMarker() will add the current set 
@@ -702,7 +702,7 @@
 
             // Adding the entire table to element 'theset'
             document.getElementById('theset').appendChild(table);
-            console.info(document.getElementById('theseedxtbl'));
+            //console.info(document.getElementById('theseedxtbl'));
             // New table, trigger redraw current selection
             // Just toggling preset id='chk_s1' which forces
             // recalculating mappings based on new 2^n combinations
@@ -943,7 +943,7 @@
             // called from within fetch(url)
             function sheetToTbl(jsonString,atr_id,atr_class) {
                 var json = JSON.parse(jsonString);
-                console.info(json);
+                //console.info(json);
                 var table = '<table class="'+atr_class+ '" id="'+atr_id+'"><thead class="table-dark"><tr>'
                 // Retrieve the header labels got from the first row
                 json.table.cols.forEach(column => table += '<th>' + column.label + '</th>')
