@@ -661,7 +661,7 @@
             table.setAttribute('id','theseedxtbl');
             tbody.setAttribute('id','theseedxtbl_body');
             
-            table.setAttribute('class','table table-striped caption-top');
+            table.setAttribute('class','table table-striped caption-top table-sm');
             tbody.setAttribute('class','table-group-divider');
             thead.setAttribute('class','table-dark');
             
@@ -916,7 +916,7 @@
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_vrpaleoplotter").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"data_vrpaleoplotter","table table-striped caption-top"))
+                .then(data => document.getElementById("place_vrpaleoplotter").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"data_vrpaleoplotter","table table-striped caption-top table-sm","list of tables"))
     
                 // Fetch 'tbl_mplot'
                 id = '1QRR_9DZsyRXTc2hsp4U5YX8gC4vtbWCi2KFugu63Cug';
@@ -924,7 +924,7 @@
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_mplot").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_mplot","table table-striped caption-top"))
+                .then(data => document.getElementById("place_mplot").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_mplot","table table-striped caption-top table-sm","tbl mplot"))
     
                 // Fetch 'tbl_rvalue'
                 id = '1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY';
@@ -932,7 +932,7 @@
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_rvalue").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_rvalue","table table-striped caption-top"))
+                .then(data => document.getElementById("place_rvalue").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_rvalue","table table-striped caption-top table-sm","tbl rvalue"))
              }
                 /*
                 table.setAttribute('class','table table-striped caption-top');
@@ -941,10 +941,10 @@
                 */
      
             // called from within fetch(url)
-            function sheetToTbl(jsonString,atr_id,atr_class) {
+            function sheetToTbl(jsonString,atr_id,atr_class,theCaption) {
                 var json = JSON.parse(jsonString);
                 //console.info(json);
-                var table = '<table class="'+atr_class+ '" id="'+atr_id+'"><thead class="table-dark"><tr>'
+                var table = '<table class="'+atr_class+ '" id="'+atr_id+'"><caption>'+ theCaption +'</caption><thead class="table-dark"><tr>'
                 // Retrieve the header labels got from the first row
                 json.table.cols.forEach(column => table += '<th>' + column.label + '</th>')
                 // Itterate over all rows and retrieve the cell data
