@@ -19,118 +19,135 @@
             processEscapes: true
             });
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML">
-    </script>
+    <script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
     <!-- CSS -->
     <link rel="stylesheet" href="css/vrpaleoplotter.css">
-   <!-- Twitter bootstrap 5 -->
+    <!-- Twitter bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
- </head>
+</head>
 
 <body>
     <div>
         <canvas class="uiCanvas" id="vrCanvasPlotRc" style="margin:0;padding:0;" width=600 height=400></canvas>
     </div>
-    <div class="userinterface" id="userinterface">
 
-        <div id="setresult">
-            <div  class="formpane" id="formpane">
-                <div>
-                    <fieldset>
-                        <legend id="legendseedsmaps" class="">Seeds (max. 9) &amp; mapping</legend>
-                        <form>
-                            <label for="csvSeeds">csv Seeds</label>
-                            <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset" onchange="expandSeedSet()"><br />
+    <div id="setresult">
+        <div class="formpane" id="formpane">
+            <div>
+                <fieldset>
+                    <legend id="legendseedsmaps" class="">Seeds (max. 9) &amp; mapping</legend>
+                    <form>
+                        <label for="csvSeeds">csv Seeds</label>
+                        <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
+                            onchange="expandSeedSet()"><br />
 
-                            <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                            <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()">
-                        </form>
-                    </fieldset>
-                </div>
-                <div>
-                    <fieldset class="formpane">
-                        <legend>Select presets:</legend>
-                        <form class="frm_changepreset" id="frm_changepreset">
-                            <input id="chk_extr" type="checkbox" name="presets" value="19.0999,999999" /><label for="chk_extr">Map extremes convex set</label><br />
-
-                            <input id="chk_f1" type="checkbox" name="presets" value="1" /><label for="chk_f1">Map f(1) Unit value</label><br />
-
-                            <input id="chk_kc" type="checkbox" name="presets" value="11.17" /><label for="chk_kc">Map f(11.17) Hight Kings Chamber</label><br />
-
-                            <input id="chk_seeds" type="checkbox" name="presets" value="2,2.02,2.52,2.98,5.5" /><label for="chk_seeds">The 1<sub>th</sub> Passage (reset the 5 seeds)</label>
-
-                        </form>
-                    </fieldset>
-                </div>
-                <div>
-                    <fieldset class="formpane">
-                        <legend>Select mapping set:</legend>
-                        <form id="frm_setselect">
-
-                            <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1"><span>Set 1</span> : <span>\({\small \{a\},\{a\times b\},\{a\times b\times c\}}\)</span></label><br />
-
-                            <input id="chk_s2" type="checkbox" name="sets" value="s2" /><label for="chk_s2"><span>Set 2</span> : <span>\({\small \{a\},\{a+b\},\{a+b+c\}}\)</span></label><br />
-
-                            <input id="chk_s3" type="checkbox" name="sets" value="s3" /><label for="chk_s3"><span>Set 3</span> : <span>\({\small \{\sqrt{a}\},\{\sqrt{a+b}\},\{\sqrt{a+b+c}\}}\)</span></label><br />
-
-                            <input id="chk_s4" type="checkbox" name="sets" value="s4" /><label for="chk_s4"><span>Set 4</span> : <span>\({\small \{\sqrt{a}\},\{\sqrt{a\times b}\},\{\sqrt{a\times b\times c}\}}\)</span></label><br />
-
-                            <input id="chk_s5" type="checkbox" name="sets" value="s5" /><label for="chk_s5"><span>Set 5</span> : <span>\({\small \{a^2\},\{a^2\times b^2\},\{a^2\times b^2\times c^2\}}\)</span></label><br />
-
-                            <input id="chk_s6" type="checkbox" name="sets" value="s6" /><label for="chk_s6"><span>Set 6</span> : <span>\({\small \{\sqrt{a}\},\{\sqrt{a}+\sqrt{b}\},\{\sqrt{a}+\sqrt{b}+\sqrt{c}\}}\)</span></label>
-                        </form>
-                    </fieldset>
-                </div>
+                        <label for="csvRc">csv Map&nbsp;&nbsp;</label>
+                        <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()">
+                    </form>
+                </fieldset>
             </div>
             <div>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Show The Seeds expanded
-  </button>
+                <fieldset class="formpane">
+                    <legend>Select presets:</legend>
+                    <form class="frm_changepreset" id="frm_changepreset">
+                        <input id="chk_extr" type="checkbox" name="presets" value="19.0999,999999" /><label
+                            for="chk_extr">Map extremes convex set</label><br />
+
+                        <input id="chk_f1" type="checkbox" name="presets" value="1" /><label for="chk_f1">Map f(1)
+                            Unit value</label><br />
+
+                        <input id="chk_kc" type="checkbox" name="presets" value="11.17" /><label for="chk_kc">Map
+                            f(11.17) Hight Kings Chamber</label><br />
+
+                        <input id="chk_seeds" type="checkbox" name="presets" value="2,2.02,2.52,2.98,5.5" /><label
+                            for="chk_seeds">The 1<sub>th</sub> Passage (reset the 5 seeds)</label>
+
+                    </form>
+                </fieldset>
             </div>
-            <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Expanded Seed set</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div>
+                <fieldset class="formpane">
+                    <legend>Select mapping set:</legend>
+                    <form id="frm_setselect">
+
+                        <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1"><span>Set
+                                1</span> : <span>\({\small \{a\},\{a\times b\},\{a\times b\times
+                                c\}}\)</span></label><br />
+
+                        <input id="chk_s2" type="checkbox" name="sets" value="s2" /><label for="chk_s2"><span>Set
+                                2</span> : <span>\({\small \{a\},\{a+b\},\{a+b+c\}}\)</span></label><br />
+
+                        <input id="chk_s3" type="checkbox" name="sets" value="s3" /><label for="chk_s3"><span>Set
+                                3</span> : <span>\({\small
+                                \{\sqrt{a}\},\{\sqrt{a+b}\},\{\sqrt{a+b+c}\}}\)</span></label><br />
+
+                        <input id="chk_s4" type="checkbox" name="sets" value="s4" /><label for="chk_s4"><span>Set
+                                4</span> : <span>\({\small \{\sqrt{a}\},\{\sqrt{a\times b}\},\{\sqrt{a\times b\times
+                                c}\}}\)</span></label><br />
+
+                        <input id="chk_s5" type="checkbox" name="sets" value="s5" /><label for="chk_s5"><span>Set
+                                5</span> : <span>\({\small \{a^2\},\{a^2\times b^2\},\{a^2\times b^2\times
+                                c^2\}}\)</span></label><br />
+
+                        <input id="chk_s6" type="checkbox" name="sets" value="s6" /><label for="chk_s6"><span>Set
+                                6</span> : <span>\({\small
+                                \{\sqrt{a}\},\{\sqrt{a}+\sqrt{b}\},\{\sqrt{a}+\sqrt{b}+\sqrt{c}\}}\)</span></label>
+                    </form>
+                </fieldset>
+            </div>
         </div>
-        <div class="modal-body">
-         <!-- ... -->
-         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="theset">
-            <!-- makeTheSeedXTbl()
+        <div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Show
+                The Seeds expanded
+            </button>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Expanded Seed set</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- ... -->
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="theset">
+                            <!-- makeTheSeedXTbl()
                  table id="theseedxtbl" -->
-        </div>
-        <!-- ... -->
-    </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Understood</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-                <div id="kofi">
-                    <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
-                    <script type='text/javascript'>
-                        kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
-                        kofiwidget2.draw();
-                    </script>
-                </div>
-            </div> 
-            <!-- test dump google sheet data -->
-            <div class="table-responsive">
-                <div id="place_vrpaleoplotter">data_vrpaleoplotter here</div><br/>
-                <div id="place_mplot">tbl_mplot here</div><br/>
-                <div id="place_rvalue">tbl_rvalue here</div>
-                <div id="tablepane">
+                        </div>
+                        <!-- ... -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Understood</button>
+                    </div>
                 </div>
             </div>
+        </div>
+
+
+        <div id="kofi">
+            <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
+            <script type='text/javascript'>
+                kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
+                kofiwidget2.draw();
+            </script>
+        </div>
     </div>
+    <!-- test dump google sheet data -->
+    <div class="table-responsive">
+        <div id="place_vrpaleoplotter">data_vrpaleoplotter here</div><br />
+        <div id="place_mplot">tbl_mplot here</div><br />
+        <div id="place_rvalue">tbl_rvalue here</div>
+        <div id="tablepane">
+        </div>
+    </div>
+
     <script>
         // The m(arker) Plot array: mPlot array
         /* The array contains the active mPlot session. 
@@ -206,12 +223,12 @@
         /*  Each set has an arithmetic template for expanding
             the core seed values into mappings of events in time.`1
             The string literal templates given single quotes, */
-            // 'a*b*c*...' --> `${a}*${b}*${c}*...` --> 
-            // "2*2.02*2.52* .." --> calc = eval("2*2.02*2.52* ..")
-            // Depending on AorM, zero value columns set to 0 or 1.
-            // A(dditive)-> 0, or M(ultiplicative)-> 1.
-            // e.g., (A)[a+0+c+d+0+...], or (M)[a*1*c*d*1*...] 
-    
+        // 'a*b*c*...' --> `${a}*${b}*${c}*...` --> 
+        // "2*2.02*2.52* .." --> calc = eval("2*2.02*2.52* ..")
+        // Depending on AorM, zero value columns set to 0 or 1.
+        // A(dditive)-> 0, or M(ultiplicative)-> 1.
+        // e.g., (A)[a+0+c+d+0+...], or (M)[a*1*c*d*1*...] 
+
         var lstSet = {
             set1: {
                 chkId: 'chk_s1',
@@ -313,7 +330,7 @@
         var canvas = document.getElementById("vrCanvasPlotRc");
         var ctx = canvas.getContext("2d");
         var img = new Image();
-        img.onload = function() {
+        img.onload = function () {
             ctx.drawImage(img, 0, 0);
             //
             // Initial run 
@@ -345,7 +362,7 @@
         chkPres[3] = document.querySelector("input[id=chk_extr]");
 
         for (let i = 0; i <= 3; i++) {
-            chkPres[i].addEventListener('change', function() {
+            chkPres[i].addEventListener('change', function () {
                 //console.info(this.id + " checked=" + this.checked);
 
                 if (this.id == 'chk_f1') {
@@ -356,18 +373,18 @@
 
                     /*  If checked: Also resets the csvSeeds field 
                         to the initial 5 seeds from the 1th Passage */
-                        if(this.checked){
-                            // trigger event change text csvSeeds
-                            /*  answered Dec 14, 2022 at 14:21 Hamid Heydari
-                                stackoverflow: 
-                                The question is Where and How? 
-                                "Where" we want the change event to be triggered exactly at the moment after a bunch of codes is executed, and "How" is in the form of the following syntax: */
-                            var triggerThis = document.getElementById("csvSeeds");
-                            // do stuff: modify the value
-                            triggerThis.value = lstPreset.seeds.csvRc;
-                            // trigger change event on text box
-                            triggerThis.dispatchEvent(new Event("change"));
-                        }
+                    if (this.checked) {
+                        // trigger event change text csvSeeds
+                        /*  answered Dec 14, 2022 at 14:21 Hamid Heydari
+                            stackoverflow: 
+                            The question is Where and How? 
+                            "Where" we want the change event to be triggered exactly at the moment after a bunch of codes is executed, and "How" is in the form of the following syntax: */
+                        var triggerThis = document.getElementById("csvSeeds");
+                        // do stuff: modify the value
+                        triggerThis.value = lstPreset.seeds.csvRc;
+                        // trigger change event on text box
+                        triggerThis.dispatchEvent(new Event("change"));
+                    }
                 };
                 if (this.id == 'chk_kc') {
                     lstPreset.kc.show = this.checked;
@@ -392,7 +409,7 @@
             /*   plotMarker() will add the current preSet 
                  selection (lstpreSet.addSets) to the 
                  Rc list got from the csvMap manual entry. */
-                 plotMarker();
+            plotMarker();
         }
 
         //changeSet event handler    
@@ -406,7 +423,7 @@
         chkSet[5] = document.querySelector("input[id=chk_s6]");
 
         for (i in chkSet) {
-            chkSet[i].addEventListener('change', function() {
+            chkSet[i].addEventListener('change', function () {
                 //console.info(this.id + " checked=" + this.checked);
                 if (this.id == 'chk_s1') {
                     lstSet.set1.show = this.checked;
@@ -551,7 +568,7 @@
             // sort the array in ascending order, and
             // maintain numerical order
             // https://www.w3schools.com/jsref/jsref_sort.asp
-            varArray.sort(function(a, b) {
+            varArray.sort(function (a, b) {
                 return a - b
             });
             // convert the given varList to a set of unique values
@@ -575,7 +592,7 @@
             // Only sets of unique seeds are alowed, so rewrite
             // the csvseeds textinput with the cleaned and sorted list
             // Sort the seeds in numerical order
-            varArray.sort(function(a, b) {
+            varArray.sort(function (a, b) {
                 return a - b
             });
             var cleanVal = "";
@@ -684,13 +701,13 @@
             let thead = document.createElement('thead');
             let tbody = document.createElement('tbody');
             //theseedxtbl theseedxtbl_body
-            table.setAttribute('id','theseedxtbl');
-            tbody.setAttribute('id','theseedxtbl_body');
-            
-            table.setAttribute('class','table table-striped caption-top table-sm table-hover');
-            tbody.setAttribute('class','table-group-divider');
-            thead.setAttribute('class','table-light');
-            
+            table.setAttribute('id', 'theseedxtbl');
+            tbody.setAttribute('id', 'theseedxtbl_body');
+
+            table.setAttribute('class', 'table table-striped caption-top table-sm table-hover');
+            tbody.setAttribute('class', 'table-group-divider');
+            thead.setAttribute('class', 'table-light');
+
             // Set caption
             tcaption.innerHTML = "<b>The&nbsp;Seeds</b><br/><small>2<sup>" + numVars + "</sup>-1=" + numberXhaustive + "&nbsp;combinations</small>";
 
@@ -912,88 +929,88 @@
             return f_calc
         }
     </script>
-        <script>
-            // getSheetData() fetches all tables
-            getSheetData()
-           
-            // Asynchronus fetch(url)
-            // For delay add .then(sleeper(20)) in fetch().then list
-            function sleeper(ms) {
-                return function(x) {
+    <script>
+        // getSheetData() fetches all tables
+        getSheetData()
+
+        // Asynchronus fetch(url)
+        // For delay add .then(sleeper(20)) in fetch().then list
+        function sleeper(ms) {
+            return function (x) {
                 return new Promise(resolve => setTimeout(() => resolve(x), ms));
-              };
-            }
-    
-           function getSheetData() {
-                /**
-                 * data.substring(47).slice(0,-2)) pics data part from 
-                 * the sheets response string. substring(4) (from pos 47, 
-                 * just past the brace to the end), and from this slice 
-                 * the part from the mostleft character (0th), uptil -2
-                 * characters from the end of the response string
-                 * .i.e.,(cutting of the last brace from the string.)
-                 */
-                let gid = '0'
-                let url = ''
-                let id = '';
-                // Fetch 'data_vrpaleoplotter';
-                // For delay add .then(sleeper(20)) in fetch().then list
-               id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';
-                url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
-                fetch(url)
-                .then(response => response.text())
-                .then(data => document.getElementById("place_vrpaleoplotter").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"data_vrpaleoplotter","table table-striped caption-top table-sm table-hover","list of tables"))
-    
-                // Fetch 'tbl_mplot'
-                id = '1QRR_9DZsyRXTc2hsp4U5YX8gC4vtbWCi2KFugu63Cug';
-                //arrayFromSheet(tbl_mplot_id);
-                url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
-                fetch(url)
-                .then(response => response.text())
-                .then(data => document.getElementById("place_mplot").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_mplot","table table-striped caption-top table-sm table-hover","tbl mplot"))
-    
-                // Fetch 'tbl_rvalue'
-                id = '1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY';
-                //arrayFromSheet(tbl_rvalue_id);
-                url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
-                fetch(url)
-                .then(response => response.text())
-                .then(data => document.getElementById("place_rvalue").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_rvalue","table table-striped caption-top table-sm table-hover","tbl rvalue"))
-             }
-                /*
-                table.setAttribute('class','table table-striped caption-top');
-                tbody.setAttribute('class','table-group-divider')
-                thead.setAttribute('class','table-dark')
-                */
-     
-            // called from within fetch(url)
-            function sheetToTbl(jsonString,atr_id,atr_class,theCaption) {
-                var json = JSON.parse(jsonString);
-                //console.info(json);
-                var table = '<table class="'+atr_class+ '" id="'+atr_id+'"><caption>'+ theCaption +'</caption><thead class="table-light"><tr>'
-                // Retrieve the header labels got from the first row
-                json.table.cols.forEach(column => table += '<th>' + column.label + '</th>')
-                // Itterate over all rows and retrieve the cell data
-                table += '</tr></thead><tbody class="table-group-divider"> '
-                json.table.rows.forEach(tuple => {
-                    table += '<tr>'
-                    tuple.c.forEach(attribute => {
-                        // try fails if cell value is null, then assign 
-                        // contents= '' (empty string)
-                        try {
-                            var contents = attribute.f ? attribute.f : attribute.v
-                        } catch (e) {
-                            var contents = ''
-                        }
-                        table += '<td><span class="d-inline-block text-truncate" style="max-width: 150px;">' + contents + '</span></td>'
-                    })
-                    table += '</tr></tbody>'
-                })
-                table += '</table>'
-                return table
             };
-        </script>
-    
+        }
+
+        function getSheetData() {
+            /**
+             * data.substring(47).slice(0,-2)) pics data part from 
+             * the sheets response string. substring(4) (from pos 47, 
+             * just past the brace to the end), and from this slice 
+             * the part from the mostleft character (0th), uptil -2
+             * characters from the end of the response string
+             * .i.e.,(cutting of the last brace from the string.)
+             */
+            let gid = '0'
+            let url = ''
+            let id = '';
+            // Fetch 'data_vrpaleoplotter';
+            // For delay add .then(sleeper(20)) in fetch().then list
+            id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';
+            url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
+            fetch(url)
+                .then(response => response.text())
+                .then(data => document.getElementById("place_vrpaleoplotter").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "data_vrpaleoplotter", "table table-striped caption-top table-sm table-hover", "list of tables"))
+
+            // Fetch 'tbl_mplot'
+            id = '1QRR_9DZsyRXTc2hsp4U5YX8gC4vtbWCi2KFugu63Cug';
+            //arrayFromSheet(tbl_mplot_id);
+            url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
+            fetch(url)
+                .then(response => response.text())
+                .then(data => document.getElementById("place_mplot").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_mplot", "table table-striped caption-top table-sm table-hover", "tbl mplot"))
+
+            // Fetch 'tbl_rvalue'
+            id = '1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY';
+            //arrayFromSheet(tbl_rvalue_id);
+            url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
+            fetch(url)
+                .then(response => response.text())
+                .then(data => document.getElementById("place_rvalue").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_rvalue", "table table-striped caption-top table-sm table-hover", "tbl rvalue"))
+        }
+        /*
+        table.setAttribute('class','table table-striped caption-top');
+        tbody.setAttribute('class','table-group-divider')
+        thead.setAttribute('class','table-dark')
+        */
+
+        // called from within fetch(url)
+        function sheetToTbl(jsonString, atr_id, atr_class, theCaption) {
+            var json = JSON.parse(jsonString);
+            //console.info(json);
+            var table = '<table class="' + atr_class + '" id="' + atr_id + '"><caption>' + theCaption + '</caption><thead class="table-light"><tr>'
+            // Retrieve the header labels got from the first row
+            json.table.cols.forEach(column => table += '<th>' + column.label + '</th>')
+            // Itterate over all rows and retrieve the cell data
+            table += '</tr></thead><tbody class="table-group-divider"> '
+            json.table.rows.forEach(tuple => {
+                table += '<tr>'
+                tuple.c.forEach(attribute => {
+                    // try fails if cell value is null, then assign 
+                    // contents= '' (empty string)
+                    try {
+                        var contents = attribute.f ? attribute.f : attribute.v
+                    } catch (e) {
+                        var contents = ''
+                    }
+                    table += '<td><span class="d-inline-block text-truncate" style="max-width: 150px;">' + contents + '</span></td>'
+                })
+                table += '</tr></tbody>'
+            })
+            table += '</table>'
+            return table
+        };
+    </script>
+
 </body>
 
 </html>
