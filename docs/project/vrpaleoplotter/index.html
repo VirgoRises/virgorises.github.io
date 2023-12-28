@@ -84,7 +84,7 @@
                     </fieldset>
                 </div>
             </div>
-                <div class="table-responsive" id="theset">
+                <div class="class="container-md"" id="theset">
                     <!-- makeTheSeedXTbl()
                          table id="theseedxtbl" -->
                 </div>
@@ -661,7 +661,7 @@
             table.setAttribute('id','theseedxtbl');
             tbody.setAttribute('id','theseedxtbl_body');
             
-            table.setAttribute('class','table table-striped caption-top table-sm');
+            table.setAttribute('class','table table-striped caption-top table-sm table-hover');
             tbody.setAttribute('class','table-group-divider');
             thead.setAttribute('class','table-light');
             
@@ -916,7 +916,7 @@
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_vrpaleoplotter").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"data_vrpaleoplotter","table table-striped caption-top table-sm","list of tables"))
+                .then(data => document.getElementById("place_vrpaleoplotter").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"data_vrpaleoplotter","table table-striped caption-top table-sm table-hover","list of tables"))
     
                 // Fetch 'tbl_mplot'
                 id = '1QRR_9DZsyRXTc2hsp4U5YX8gC4vtbWCi2KFugu63Cug';
@@ -924,7 +924,7 @@
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_mplot").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_mplot","table table-striped caption-top table-sm","tbl mplot"))
+                .then(data => document.getElementById("place_mplot").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_mplot","table table-striped caption-top table-sm table-hover","tbl mplot"))
     
                 // Fetch 'tbl_rvalue'
                 id = '1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY';
@@ -932,7 +932,7 @@
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_rvalue").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_rvalue","table table-striped caption-top table-sm","tbl rvalue"))
+                .then(data => document.getElementById("place_rvalue").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_rvalue","table table-striped caption-top table-sm table-hover","tbl rvalue"))
              }
                 /*
                 table.setAttribute('class','table table-striped caption-top');
