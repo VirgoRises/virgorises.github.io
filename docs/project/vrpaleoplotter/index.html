@@ -84,7 +84,7 @@
                     </fieldset>
                 </div>
             </div>
-                <div class="tableFixHead" id="theset">
+                <div class="table-responsive" id="theset">
                     <!-- makeTheSeedXTbl()
                          table id="theseedxtbl" -->
                 </div>
@@ -97,13 +97,13 @@
                 </div>
             </div> 
             <!-- test dump google sheet data -->
-            <div class="container-fluid">
-            <div id="place_vrpaleoplotter">data_vrpaleoplotter here</div><br/>
-            <div id="place_mplot">tbl_mplot here</div><br/>
-            <div id="place_rvalue">tbl_rvalue here</div>
-            <div id="tablepane">
+            <div class="table-responsive">
+                <div id="place_vrpaleoplotter">data_vrpaleoplotter here</div><br/>
+                <div id="place_mplot">tbl_mplot here</div><br/>
+                <div id="place_rvalue">tbl_rvalue here</div>
+                <div id="tablepane">
+                </div>
             </div>
-        </div>
     </div>
     <script>
         // The m(arker) Plot array: mPlot array
@@ -656,8 +656,9 @@
             let tcaption = document.createElement('caption');
             let thead = document.createElement('thead');
             let tbody = document.createElement('tbody');
-            table.setAttribute('class','table table-striped table-group-divider');
-            //tbody.setAttribute('class','table-group-divider')
+            table.setAttribute('class','table table-striped caption-top');
+            tbody.setAttribute('class','table-group-divider')
+            thead.setAttribute('class','table-dark')
             
             // Set caption
             tcaption.innerHTML = "<b>The&nbsp;Seeds</b><br/><small>2<sup>" + numVars + "</sup>-1=" + numberXhaustive + "&nbsp;combinations</small>";
@@ -907,11 +908,11 @@
                 let id = '';
                 // Fetch 'data_vrpaleoplotter';
                 // For delay add .then(sleeper(20)) in fetch().then list
-                id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';
+               id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_vrpaleoplotter").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"data_vrpaleoplotter","table table-striped"))
+                .then(data => document.getElementById("place_vrpaleoplotter").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"data_vrpaleoplotter","table table-striped caption-top"))
     
                 // Fetch 'tbl_mplot'
                 id = '1QRR_9DZsyRXTc2hsp4U5YX8gC4vtbWCi2KFugu63Cug';
@@ -919,7 +920,7 @@
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_mplot").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_mplot","table table-striped"))
+                .then(data => document.getElementById("place_mplot").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_mplot","table table-striped caption-top"))
     
                 // Fetch 'tbl_rvalue'
                 id = '1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY';
@@ -927,18 +928,23 @@
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_rvalue").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_rvalue","table table-striped"))
+                .then(data => document.getElementById("place_rvalue").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_rvalue","table table-striped caption-top"))
              }
-    
+                /*
+                table.setAttribute('class','table table-striped caption-top');
+                tbody.setAttribute('class','table-group-divider')
+                thead.setAttribute('class','table-dark')
+                */
+     
             // called from within fetch(url)
             function sheetToTbl(jsonString,atr_id,atr_class) {
                 var json = JSON.parse(jsonString);
                 console.info(json);
-                var table = '<table class="'+atr_class+ '" id="'+atr_id+'"><tr>'
+                var table = '<table class="'+atr_class+ '" id="'+atr_id+'"><thead class="table-dark"><tr>'
                 // Retrieve the header labels got from the first row
                 json.table.cols.forEach(column => table += '<th>' + column.label + '</th>')
                 // Itterate over all rows and retrieve the cell data
-                table += '</tr>'
+                table += '</tr></thead><tbody class="table-group-divider"> '
                 json.table.rows.forEach(tuple => {
                     table += '<tr>'
                     tuple.c.forEach(attribute => {
@@ -951,7 +957,7 @@
                         }
                         table += '<td>' + contents + '</td>'
                     })
-                    table += '</tr>'
+                    table += '</tr></tbody>'
                 })
                 table += '</table>'
                 return table
