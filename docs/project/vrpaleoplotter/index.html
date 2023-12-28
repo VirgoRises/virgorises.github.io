@@ -36,31 +36,6 @@
     </div>
 
     <div id="setresult">
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Expanded Seed set</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- ... -->
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="theset">
-                            <!-- makeTheSeedXTbl()
-                 table id="theseedxtbl" -->
-                        </div>
-                        <!-- ... -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Understood</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <div id="kofi">
             <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
             <script type='text/javascript'>
@@ -83,7 +58,7 @@
                 <div class="accordion-body">
                     <p>User interface</p>
 
-                    <fieldset class="container">
+                    <fieldset class="container-sm">
                         <legend id="legendseedsmaps" class="">Seeds (max. 9) &amp; mapping</legend>
                         <form>
                             <label for="csvSeeds">csv Seeds</label>
@@ -103,7 +78,7 @@
                     </fieldset>
 
 
-                    <fieldset class="container">
+                    <fieldset class="container-sm">
                         <legend>Select presets:</legend>
                         <form class="frm_changepreset" id="frm_changepreset">
                             <input id="chk_extr" type="checkbox" name="presets" value="19.0999,999999" /><label
@@ -122,7 +97,7 @@
                         </form>
                     </fieldset>
 
-                    <fieldset class="container">
+                    <fieldset class="container-sm">
                         <legend>Select mapping set:</legend>
                         <form id="frm_setselect">
 
@@ -201,11 +176,29 @@
             </div>
         </div>
     </div>
-    <!--
-        <div id="place_mplot">tbl_mplot here</div><br />
-        <div id="place_rvalue">tbl_rvalue here</div>
-        <div id="tablepane">
-        </div>-->
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Expanded Seed set</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- ... -->
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="theset">
+                        <!-- makeTheSeedXTbl()
+                 table id="theseedxtbl" -->
+                    </div>
+                    <!-- ... -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <script>
