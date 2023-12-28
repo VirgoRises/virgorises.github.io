@@ -656,8 +656,9 @@
             let tcaption = document.createElement('caption');
             let thead = document.createElement('thead');
             let tbody = document.createElement('tbody');
-            table.setAttribute('id', 'theseedxtbl');
-            tbody.setAttribute('id', 'theseedxtbl_body');
+            table.setAttribute('class','table, table-striped')
+            //table.setAttribute('id', 'theseedxtbl');
+            //tbody.setAttribute('id', 'theseedxtbl_body');
             // Set caption
             tcaption.innerHTML = "<b>The&nbsp;Seeds</b><br/><small>2<sup>" + numVars + "</sup>-1=" + numberXhaustive + "&nbsp;combinations</small>";
 
@@ -683,9 +684,7 @@
             let data = [];
             for (r = 0; r <= numberXhaustive; r++) {
                 row[r] = document.createElement('tr');
-                if (r % 2) {
-                    row[r].className = 'cellcolor'
-                };
+                //if (r % 2) {row[r].className = 'cellcolor'};
                 for (d = 0; d <= theSet[r].length - 1; d++) {
                     data[d] = document.createElement('td');
                     data[d].innerHTML = theSet[r][d];
@@ -913,7 +912,7 @@
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_vrpaleoplotter").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"data_vrpaleoplotter","table"))
+                .then(data => document.getElementById("place_vrpaleoplotter").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"data_vrpaleoplotter","table,table-striped"))
     
                 // Fetch 'tbl_mplot'
                 id = '1QRR_9DZsyRXTc2hsp4U5YX8gC4vtbWCi2KFugu63Cug';
@@ -921,7 +920,7 @@
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_mplot").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_mplot","table"))
+                .then(data => document.getElementById("place_mplot").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_mplot","table,table-striped"))
     
                 // Fetch 'tbl_rvalue'
                 id = '1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY';
@@ -929,7 +928,7 @@
                 url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
                 fetch(url)
                 .then(response => response.text())
-                .then(data => document.getElementById("place_rvalue").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_rvalue","table"))
+                .then(data => document.getElementById("place_rvalue").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_rvalue","table,table-striped"))
              }
     
             // called from within fetch(url)
