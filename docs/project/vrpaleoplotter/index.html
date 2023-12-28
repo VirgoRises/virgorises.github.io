@@ -415,7 +415,7 @@
 
                     populateSetCsvRc(x)
                     lstSet.addSets.csvRc += "," + lstSet[x].csvRc;
-                    //console.info(lstSet[x]);
+                    console.info(lstSet[x]);
                 }
             }
             /*   plotMarker() will add the current set 
@@ -440,10 +440,11 @@
             // query selector by id: #theseedxtbl_body
             var tbody = document.querySelectorAll("#theseedxtbl_body")[0];
             var TRs = tbody.querySelectorAll("tr");
+            console.info(TRs);
             for (let a = 0; a < TRs.length; a++) {
                 var TDs = TRs[a].querySelectorAll("td");
 
-                /*  tupleSeeds is dimentioned for the max
+                /*  tupleSeeds is dimensioned for the max
                     number of seeds alowed. Added are two
                     fields for the column 'dec', and 'binary'.*/
                 var tupleSeeds = {
@@ -656,9 +657,13 @@
             let tcaption = document.createElement('caption');
             let thead = document.createElement('thead');
             let tbody = document.createElement('tbody');
+            //theseedxtbl theseedxtbl_body
+            table.setAttribute('id','theseedxtbl');
+            tbody.setAttribute('id','theseedxtbl_body');
+            
             table.setAttribute('class','table table-striped caption-top');
-            tbody.setAttribute('class','table-group-divider')
-            thead.setAttribute('class','table-dark')
+            tbody.setAttribute('class','table-group-divider');
+            thead.setAttribute('class','table-dark');
             
             // Set caption
             tcaption.innerHTML = "<b>The&nbsp;Seeds</b><br/><small>2<sup>" + numVars + "</sup>-1=" + numberXhaustive + "&nbsp;combinations</small>";
@@ -698,7 +703,6 @@
             // Adding the entire table to element 'theset'
             document.getElementById('theset').appendChild(table);
             console.info(document.getElementById('theseedxtbl'));
-
             // New table, trigger redraw current selection
             // Just toggling preset id='chk_s1' which forces
             // recalculating mappings based on new 2^n combinations
