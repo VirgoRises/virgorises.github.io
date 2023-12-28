@@ -80,6 +80,10 @@
                     </fieldset>
                 </div>
             </div>
+            <!-- test dump google sheet data -->
+            <div id="place_vrpaleoplotter">data_vrpaleoplotter here</div><br/>
+            <div id="place_mplot">tbl_mplot here</div><br/>
+            <div id="place_rvalue">tbl_rvalue here</div>
             <div id="tablepane">
                 <div class="tableFixHead" id="theset">
                     <!-- makeTheSeedXTbl()
@@ -281,6 +285,8 @@
             ctx.drawImage(img, 0, 0);
             //
             // Initial run 
+            // Fetch google sheet data
+            getSheetData();
             // Call expandSeedSet()
             expandSeedSet();
             // Call plotMarker()
@@ -871,6 +877,83 @@
             return f_calc
         }
     </script>
+        <script>
+            // getSheetData() fetches all tables
+            getSheetData()
+           
+            // Asynchronus fetch(url)
+            // For delay add .then(sleeper(20)) in fetch().then list
+            function sleeper(ms) {
+                return function(x) {
+                return new Promise(resolve => setTimeout(() => resolve(x), ms));
+              };
+            }
+    
+           function getSheetData() {
+                /**
+                 * data.substring(47).slice(0,-2)) pics data part from 
+                 * the sheets response string. substring(4) (from pos 47, 
+                 * just past the brace to the end), and from this slice 
+                 * the part from the mostleft character (0th), uptil -2
+                 * characters from the end of the response string
+                 * .i.e.,(cutting of the last brace from the string.)
+                 */
+                let gid = '0'
+                let url = ''
+                let id = '';
+                // Fetch 'data_vrpaleoplotter';
+                // For delay add .then(sleeper(20)) in fetch().then list
+                id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';
+                url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
+                fetch(url)
+                .then(response => response.text())
+                .then(data => document.getElementById("place_vrpaleoplotter").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"data_vrpaleoplotter","data_vrpaleoplotter"))
+    
+                // Fetch 'tbl_mplot'
+                id = '1QRR_9DZsyRXTc2hsp4U5YX8gC4vtbWCi2KFugu63Cug';
+                //arrayFromSheet(tbl_mplot_id);
+                url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
+                fetch(url)
+                .then(response => response.text())
+                .then(data => document.getElementById("place_mplot").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_mplot","tbl_mplot"))
+    
+                // Fetch 'tbl_rvalue'
+                id = '1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY';
+                //arrayFromSheet(tbl_rvalue_id);
+                url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
+                fetch(url)
+                .then(response => response.text())
+                .then(data => document.getElementById("place_rvalue").innerHTML=sheetToTbl(data.substring(47).slice(0, -2),"tbl_rvalue","tbl_rvalue"))
+             }
+    
+            // called from within fetch(url)
+            function sheetToTbl(jsonString,atr_id,atr_class) {
+                var json = JSON.parse(jsonString);
+                console.info(json);
+                var table = '<table class="'+atr_class+ '" id="'+atr_id+'"><tr>'
+                // Retrieve the header labels got from the first row
+                json.table.cols.forEach(column => table += '<th>' + column.label + '</th>')
+                // Itterate over all rows and retrieve the cell data
+                table += '</tr>'
+                json.table.rows.forEach(tuple => {
+                    table += '<tr>'
+                    tuple.c.forEach(attribute => {
+                        // try fails if cell value is null, then assign 
+                        // contents= '' (empty string)
+                        try {
+                            var contents = attribute.f ? attribute.f : attribute.v
+                        } catch (e) {
+                            var contents = ''
+                        }
+                        table += '<td>' + contents + '</td>'
+                    })
+                    table += '</tr>'
+                })
+                table += '</table>'
+                return table
+            };
+        </script>
+    
 </body>
 
 </html>
