@@ -663,7 +663,7 @@
             
             table.setAttribute('class','table table-striped caption-top table-sm');
             tbody.setAttribute('class','table-group-divider');
-            thead.setAttribute('class','table-dark');
+            thead.setAttribute('class','table-light');
             
             // Set caption
             tcaption.innerHTML = "<b>The&nbsp;Seeds</b><br/><small>2<sup>" + numVars + "</sup>-1=" + numberXhaustive + "&nbsp;combinations</small>";
@@ -944,7 +944,7 @@
             function sheetToTbl(jsonString,atr_id,atr_class,theCaption) {
                 var json = JSON.parse(jsonString);
                 //console.info(json);
-                var table = '<table class="'+atr_class+ '" id="'+atr_id+'"><caption>'+ theCaption +'</caption><thead class="table-dark"><tr>'
+                var table = '<table class="'+atr_class+ '" id="'+atr_id+'"><caption>'+ theCaption +'</caption><thead class="table-light"><tr>'
                 // Retrieve the header labels got from the first row
                 json.table.cols.forEach(column => table += '<th>' + column.label + '</th>')
                 // Itterate over all rows and retrieve the cell data
