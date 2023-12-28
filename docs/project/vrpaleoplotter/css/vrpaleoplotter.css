@@ -9,7 +9,7 @@ canvas {
 
 /*  tables: 
     makeTheSeedXTbl() id="theseedxtbl" */
-table {
+xtable {
     margin-left: 5px;
     margin-right: 5px;
     border: thin solid black;
@@ -17,7 +17,7 @@ table {
     font-size: 0.75em;
 }
 
-caption {
+xcaption {
     padding-top: 4px;
     caption-side: top;
     /*font-style: italic;*/
@@ -27,12 +27,12 @@ caption {
 
 /*  .cellcolor applied to every uneven 
     row when table is constructed */
-.cellcolor {
+.xcellcolor {
     background-color: #1111;
 }
 
-td,
-th {
+xtd,
+xth {
     border: thin dotted grey;
     padding: 5px;
     text-align: right;
@@ -41,7 +41,7 @@ th {
 /*  Reduce the vertical height the table occupies, 
     and make it scrollable (overflow-y:auto;)
     Make the header stick to the top of the frame. */
-.tableFixHead {
+.xtableFixHead {
     overflow-y: auto;
     /* make the table scrollable */
     height: 265px;
@@ -54,7 +54,7 @@ th {
     border-color: black;
 }
 
-.tableFixHead thead th {
+.xtableFixHead thead th {
     position: sticky;
     /* make the table heads sticky */
     top: 0px;
@@ -63,18 +63,18 @@ th {
     /*X underscrolling visible */
 }
 
-#tablepane {
+#xtablepane {
     float: left;
 }
 
-#kofi {
+#xkofi {
     margin: 20px;
     clear: both;
 }
 
 
 /* Format the frameing of the input forms */
-fieldset {
+xfieldset {
     font-size: 0.5em;
     width: 230px;
     padding-top: 4px;
