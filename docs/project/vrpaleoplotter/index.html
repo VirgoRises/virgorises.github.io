@@ -22,6 +22,12 @@
     <script id="MathJax-script" async
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML">
         </script>
+        <!-- Prevent ENTER from submitting 
+        Add the following attribute into each input type="text" tag(s) in your form:
+        onkeypress="return noenter()"
+        This works simply so that if the user hits ENTER and if that would trigger form submission on the browser, then (if JavaScript is enabled) the onkeypress attribute causes form submission to be aborted, since it executes a return statement with value false.
+        -->
+         <script> function noenter() { return !(window.event && window.event.keyCode == 13); } </script>
     <!-- CSS -->
     <link rel="stylesheet" href="css/vrpaleoplotter.css">
     <!--
@@ -45,8 +51,7 @@
                     <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
                     <form>
                         <label for="csvSeeds">csv Seeds</label>
-                        <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
-                            onchange="expandSeedSet()"/>
+                        <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset" onchange="expandSeedSet() onkeypress="return noenter()""/>
                     </form>
                 </fieldset>
             </div>
@@ -55,7 +60,7 @@
                     <legend>Mapping</legend>
                     <form>
                         <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                        <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()"/>
+                        <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." onkeypress="return noenter()"/>
                     </form>
                 </fieldset>
             </div>
