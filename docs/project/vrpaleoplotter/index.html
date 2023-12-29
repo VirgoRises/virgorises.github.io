@@ -67,10 +67,11 @@
                                 <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()">
                             </form><br />
                             <div>
-                                <!-- Button trigger modal -->
+                                <!-- Button trigger modal 
+                                     expandSeedModal -->
                                 <br />
                                 <button  id="expandedseedbuttonLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">Show
+                                    data-bs-target="#expandSeedModal">Show
                                     The Seeds expanded
                                 </button>
                             </div>
@@ -219,12 +220,14 @@
     </div>
 </div>
 
-    <!-- Wrapping the Expanded seed table in a pop-up box -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Wrapping the Expanded seed table in a pop-up box 
+        See Twitter bootstrap Components - Modal 
+        id="exampleModal" to id="expandSeedModal" -->
+    <div class="modal fade" id="expandSeedModal" tabindex="-1" aria-labelledby="expandSeedModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5"  id="exampleModalLabel">Expanded Seed set</h1>
+                    <h1 class="modal-title fs-5"  id="expandSeedModalLabel">Expanded Seed set</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
