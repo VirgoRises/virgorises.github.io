@@ -22,7 +22,7 @@
     <script id="MathJax-script" async
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML">
         </script>
-        <!-- Prevent ENTER from submitting 
+        <!-- Prevent ENTER from submitting forms (After implementing Bootstrap?)
         https://jkorpela.fi/forms/enter.html  -->
          <script> function noenter() { return !(window.event && window.event.keyCode == 13); } </script>
          <!-- Add the following attribute into each input type="text" tag(s) in your form:
@@ -50,10 +50,10 @@
             <div class="col">
                 <fieldset>
                     <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
-                    <form>
+                    <xform>
                         <label for="csvSeeds">csv Seeds</label>
-                        <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset" onchange="expandSeedSet()" onkeypress="return noenter()" />
-                    </form>
+                        <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset" onchange="expandSeedSet()" />
+                    </xform>
                 </fieldset>
             </div>
             <div class="col">
