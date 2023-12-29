@@ -23,11 +23,12 @@
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML">
         </script>
         <!-- Prevent ENTER from submitting 
-        Add the following attribute into each input type="text" tag(s) in your form:
+        https://jkorpela.fi/forms/enter.html  -->
+         <script> function noenter() { return !(window.event && window.event.keyCode == 13); } </script>
+         <!-- Add the following attribute into each input type="text" tag(s) in your form:
         onkeypress="return noenter()"
         This works simply so that if the user hits ENTER and if that would trigger form submission on the browser, then (if JavaScript is enabled) the onkeypress attribute causes form submission to be aborted, since it executes a return statement with value false.
-        -->
-         <script> function noenter() { return !(window.event && window.event.keyCode == 13); } </script>
+        -->       
     <!-- CSS -->
     <link rel="stylesheet" href="css/vrpaleoplotter.css">
     <!--
