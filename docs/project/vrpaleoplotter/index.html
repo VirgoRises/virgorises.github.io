@@ -448,7 +448,6 @@
                     var img = new Image();
                     img.onload = function () {
                         ctx.drawImage(img, 0, 0);
-                        console.info("height:" + ctx.Image.heigth+" :"+ ctx.Image.widt);
                         //
                         // Initial run 
                         // Fetch google sheet data
@@ -461,6 +460,9 @@
                     img.src = rValue.GraphURI; //strDataURI;
                     //    
                     var rect = canvas.getBoundingClientRect();
+                    console.info("img.height: " + img.height + " - img.width: " + img.widt);
+                    console.info("rect.height:" + rect.height + " - rect.width: " + rect.widt);
+                        
 
                     // Change preset event handler
                     /* var checkbox =     
