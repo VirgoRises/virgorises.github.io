@@ -6,7 +6,9 @@ canvas {
     border: 1px solid black;
     cursor: crosshair;
 }
-
+.seedselected {
+    font-weight: bold;
+}
 /*  tables: 
     makeTheSeedXTbl() id="theseedxtbl" */
 xtable {
