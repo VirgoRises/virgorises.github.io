@@ -46,93 +46,87 @@
     </div>
     <!-- test dump google sheet data -->
 
-                        <fieldset>
-                            <legend id="legendseedsmaps" class="">Seeds (max. 9) &amp; mapping</legend>
-                            <form>
-                                <label for="csvSeeds">csv Seeds</label>
-                                <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
-                                    onchange="expandSeedSet()"><br />
-                                <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                                <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()">
-                            </form><br />
-                            <div>
-                                <!-- Button trigger modal 
-                                     expandSeedModal -->
-                                <br />
-                                <button id="expandedseedbuttonLabel" type="button" class="btn btn-primary"
-                                    data-bs-toggle="modal" data-bs-target="#expandSeedModal">Show
-                                    The Seeds expanded
-                                </button>
-                                <!-- id="tblwrapperModal"-->
-                                <button id="tblwrapperModalLabel" type="button" class="btn btn-primary"
-                                    data-bs-toggle="modal" data-bs-target="#tblwrapperModal">Show
-                                    The vrpaleoplotter tabels
-                                </button>
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div class="float-start">
-                        <fieldset>
-                            <legend>Select presets:</legend>
-                            <form class="frm_changepreset" id="frm_changepreset">
-                                <input id="chk_extr" type="checkbox" name="presets" value="19.0999,999999" /><label
-                                    for="chk_extr">Map extremes convex set</label><br />
+    <fieldset>
+        <legend id="legendseedsmaps" class="">Seeds (max. 9) &amp; mapping</legend>
+        <form>
+            <label for="csvSeeds">csv Seeds</label>
+            <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
+                onchange="expandSeedSet()"><br />
+            <label for="csvRc">csv Map&nbsp;&nbsp;</label>
+            <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()">
+        </form>
+    </fieldset>
+    </div>
+    <div class="float-start">
+        <fieldset>
+            <legend>Select presets:</legend>
+            <form class="frm_changepreset" id="frm_changepreset">
+                <input id="chk_extr" type="checkbox" name="presets" value="19.0999,999999" /><label for="chk_extr">Map
+                    extremes convex set</label><br />
 
-                                <input id="chk_f1" type="checkbox" name="presets" value="1" /><label for="chk_f1">Map
-                                    f(1)
-                                    Unit value</label><br />
+                <input id="chk_f1" type="checkbox" name="presets" value="1" /><label for="chk_f1">Map
+                    f(1)
+                    Unit value</label><br />
 
-                                <input id="chk_kc" type="checkbox" name="presets" value="11.17" /><label
-                                    for="chk_kc">Map
-                                    f(11.17) Hight Kings Chamber</label><br />
+                <input id="chk_kc" type="checkbox" name="presets" value="11.17" /><label for="chk_kc">Map
+                    f(11.17) Hight Kings Chamber</label><br />
 
-                                <input id="chk_seeds" type="checkbox" name="presets"
-                                    value="2,2.02,2.52,2.98,5.5" /><label for="chk_seeds">The 1<sub>th</sub> Passage
-                                    (reset the 5 seeds)</label>
+                <input id="chk_seeds" type="checkbox" name="presets" value="2,2.02,2.52,2.98,5.5" /><label
+                    for="chk_seeds">The 1<sub>th</sub> Passage
+                    (reset the 5 seeds)</label>
 
-                            </form>
-                        </fieldset>
-                    </div>
-                    <div class="float-start">
-                        <fieldset>
-                            <legend>Select mapping set:</legend>
-                            <form id="frm_setselect">
+            </form>
+        </fieldset>
+    </div>
+    <div class="float-start">
+        <fieldset>
+            <legend>Select mapping set:</legend>
+            <form id="frm_setselect">
 
-                                <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label
-                                    for="chk_s1"><span>Set
-                                        1</span> : <span>\({\small \{a\},\{a\times b\},\{a\times b\times
-                                        c\}}\)</span></label><br />
+                <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1"><span>Set
+                        1</span> : <span>\({\small \{a\},\{a\times b\},\{a\times b\times
+                        c\}}\)</span></label><br />
 
-                                <input id="chk_s2" type="checkbox" name="sets" value="s2" /><label
-                                    for="chk_s2"><span>Set
-                                        2</span> : <span>\({\small \{a\},\{a+b\},\{a+b+c\}}\)</span></label><br />
+                <input id="chk_s2" type="checkbox" name="sets" value="s2" /><label for="chk_s2"><span>Set
+                        2</span> : <span>\({\small \{a\},\{a+b\},\{a+b+c\}}\)</span></label><br />
 
-                                <input id="chk_s3" type="checkbox" name="sets" value="s3" /><label
-                                    for="chk_s3"><span>Set
-                                        3</span> : <span>\({\small
-                                        \{\sqrt{a}\},\{\sqrt{a+b}\},\{\sqrt{a+b+c}\}}\)</span></label><br />
+                <input id="chk_s3" type="checkbox" name="sets" value="s3" /><label for="chk_s3"><span>Set
+                        3</span> : <span>\({\small
+                        \{\sqrt{a}\},\{\sqrt{a+b}\},\{\sqrt{a+b+c}\}}\)</span></label><br />
 
-                                <input id="chk_s4" type="checkbox" name="sets" value="s4" /><label
-                                    for="chk_s4"><span>Set
-                                        4</span> : <span>\({\small \{\sqrt{a}\},\{\sqrt{a\times b}\},\{\sqrt{a\times
-                                        b\times
-                                        c}\}}\)</span></label><br />
+                <input id="chk_s4" type="checkbox" name="sets" value="s4" /><label for="chk_s4"><span>Set
+                        4</span> : <span>\({\small \{\sqrt{a}\},\{\sqrt{a\times b}\},\{\sqrt{a\times
+                        b\times
+                        c}\}}\)</span></label><br />
 
-                                <input id="chk_s5" type="checkbox" name="sets" value="s5" /><label
-                                    for="chk_s5"><span>Set
-                                        5</span> : <span>\({\small \{a^2\},\{a^2\times b^2\},\{a^2\times b^2\times
-                                        c^2\}}\)</span></label><br />
+                <input id="chk_s5" type="checkbox" name="sets" value="s5" /><label for="chk_s5"><span>Set
+                        5</span> : <span>\({\small \{a^2\},\{a^2\times b^2\},\{a^2\times b^2\times
+                        c^2\}}\)</span></label><br />
 
-                                <input id="chk_s6" type="checkbox" name="sets" value="s6" /><label
-                                    for="chk_s6"><span>Set
-                                        6</span> : <span>\({\small
-                                        \{\sqrt{a}\},\{\sqrt{a}+\sqrt{b}\},\{\sqrt{a}+\sqrt{b}+\sqrt{c}\}}\)</span></label>
-                            </form>
-                        </fieldset>
-                    </div>
+                <input id="chk_s6" type="checkbox" name="sets" value="s6" /><label for="chk_s6"><span>Set
+                        6</span> : <span>\({\small
+                        \{\sqrt{a}\},\{\sqrt{a}+\sqrt{b}\},\{\sqrt{a}+\sqrt{b}+\sqrt{c}\}}\)</span></label>
+                <div>
+                    <!-- Button trigger modal 
+                         expandSeedModal -->
+                    <br />
+                    <button id="expandedseedbuttonLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#expandSeedModal">
+                        <b>VR Paleoplotter</b><br />
+                        The tables
+                    </button>
+                    <!-- id="tblwrapperModal"-->
+                    <button id="tblwrapperModalLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#tblwrapperModal">Show
+                        The vrpaleoplotter tabels
+                    </button>
                 </div>
-            </div>
-        </div>
+            </form>
+        </fieldset>
+    </div>
+    </div>
+    </div>
+    </div>
 
     <!-- Wrapping the Expanded seed table in a pop-up box 
         See Twitter bootstrap Components - Modal 
