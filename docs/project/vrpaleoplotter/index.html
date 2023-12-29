@@ -35,27 +35,20 @@
         <canvas class="uiCanvas" id="vrCanvasPlotRc" style="margin:0;padding:0;" width=600 height=400></canvas>
     </div>
 
-    <div>
-        <div id="kofi">
-            <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
-            <script type='text/javascript'>
-                kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
-                kofiwidget2.draw();
-            </script>
-        </div>
-    </div>
+
     <!-- test dump google sheet data -->
 
-    <fieldset>
-        <legend id="legendseedsmaps" class="">Seeds (max. 9) &amp; mapping</legend>
-        <form>
-            <label for="csvSeeds">csv Seeds</label>
-            <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
-                onchange="expandSeedSet()"><br />
-            <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-            <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()">
-        </form>
-    </fieldset>
+    <div class="float-start">
+        <fieldset>
+            <legend id="legendseedsmaps" class="">Seeds (max. 9) &amp; mapping</legend>
+            <form>
+                <label for="csvSeeds">csv Seeds</label>
+                <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
+                    onchange="expandSeedSet()"><br />
+                <label for="csvRc">csv Map&nbsp;&nbsp;</label>
+                <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()">
+            </form>
+        </fieldset>
     </div>
     <div class="float-start">
         <fieldset>
@@ -74,7 +67,6 @@
                 <input id="chk_seeds" type="checkbox" name="presets" value="2,2.02,2.52,2.98,5.5" /><label
                     for="chk_seeds">The 1<sub>th</sub> Passage
                     (reset the 5 seeds)</label>
-
             </form>
         </fieldset>
     </div>
@@ -106,22 +98,22 @@
                 <input id="chk_s6" type="checkbox" name="sets" value="s6" /><label for="chk_s6"><span>Set
                         6</span> : <span>\({\small
                         \{\sqrt{a}\},\{\sqrt{a}+\sqrt{b}\},\{\sqrt{a}+\sqrt{b}+\sqrt{c}\}}\)</span></label>
-                <div>
-                    <!-- Button trigger modal 
-                         expandSeedModal -->
-                    <br />
-                    <button id="expandedseedbuttonLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#expandSeedModal">
-                        <b>VR Paleoplotter</b><br />
-                        The tables
-                    </button>
-                    <!-- id="tblwrapperModal"-->
-                    <button id="tblwrapperModalLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#tblwrapperModal">Show
-                        The vrpaleoplotter tabels
-                    </button>
-                </div>
+
             </form>
+            <div>
+                <!-- Button trigger modal 
+                     expandSeedModal -->
+                <br />
+                <button id="expandedseedbuttonLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#expandSeedModal">
+                </button>
+                <!-- id="tblwrapperModal"-->
+                <button id="tblwrapperModalLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#tblwrapperModal">Show
+                    <b>VR Paleoplotter</b><br />
+                    The tables
+                </button>
+            </div>
         </fieldset>
     </div>
     </div>
@@ -1149,6 +1141,15 @@ Many of our components require the use of JavaScript to function. Specifically, 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+
+    <div id="kofi">
+        <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
+        <script type='text/javascript'>
+            kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
+            kofiwidget2.draw();
+        </script>
+    </div>
+
 </body>
 
 </html>
