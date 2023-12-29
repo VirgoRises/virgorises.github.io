@@ -55,7 +55,8 @@
                     <legend>Mapping</legend>
                     <form>
                         <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                        <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()">
+                        <input type="text" id="csvRc" value=" " name="seed_map_preset" >
+                        <!-- Twitter bootstrap fires event? onchange="plotMarker()" -->
                     </form>
                 </fieldset>
             </div>
@@ -741,9 +742,9 @@
                 seedAlert.classList.add("maxseeds");
                 document.getElementById("csvSeeds").focus;
                 return;
+            }else{
+                seedAlert.classList.remove("maxseeds");
             };
-            seedAlert.classList.remove("maxseeds");
-
             // Proceed with a set of maximum 9 unique values 
 
             /* convert the set of unique values to a exhaustive
@@ -985,7 +986,8 @@
             x°(360 degrees). 'Gon' is a correct assumption because
             the range consists of a 200 gon semi circle. It is 
             obvious that the gon is treated as if a value in x°
-            because, without further conversion, those gon are multiplied by 72 presessional years. The presessional
+            because, without further conversion, those gon are 
+            multiplied by 72 presessional years. The presessional
             model, of course, is based on the 12 sign 360 dgr(°),
             minute('), second ('') system. */
 
