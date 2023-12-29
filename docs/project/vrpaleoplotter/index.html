@@ -29,14 +29,31 @@
         the </body> tag, end of file.
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <div>
-        <canvas class="uiCanvas" id="vrCanvasPlotRc" style="margin:0;padding:0;" width=600 height=400></canvas>
-    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <canvas class="uiCanvas" id="vrCanvasPlotRc" style="margin:0;padding:0;" width=600 height=400></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>Seeds & mappings</p>
+            </div>
+            <div class="col">
+                <p>Select presets</p>
 
+            </div>
+            <div class="col">
+
+                <p>Select mapping set</p>
+            </div>
+        </div>
+
+    </div>
 
     <!-- test dump google sheet data -->
 
@@ -1142,7 +1159,7 @@
         kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
         kofiwidget2.draw();
     </script>
- 
+
     <!-- JS bootstrap
     Many of our components require the use of JavaScript to function. Specifically, they require our own JavaScript plugins and Popper. Place one of the following <script>s near the end of your pages, right before the closing </body> tag, to enable them.
     -->
