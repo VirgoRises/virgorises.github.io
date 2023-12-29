@@ -866,6 +866,10 @@
                 for (d = 0; d <= theSet[r].length - 1; d++) {
                     data[d] = document.createElement('td');
                     data[d].innerHTML = theSet[r][d];
+                    if (data[d].innerHTML>0){
+                        data[d].setAttribute('class', 'seedselected');
+                        console.info("seedselected: cel "+d+"="+data[d].innerHTML);
+                    }
                     row[r].appendChild(data[d]);
                 }
                 tbody.appendChild(row[r]);
