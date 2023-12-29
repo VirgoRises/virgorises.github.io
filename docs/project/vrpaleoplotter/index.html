@@ -118,7 +118,6 @@
         </div>
         <div class="row">
             <div class="col">
-                <p>The seeds button</p>
                 <!-- Button trigger modal 
                              expandSeedModal -->
                 <button id="expandedseedbuttonLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -126,22 +125,16 @@
                 </button>
             </div>
             <div class="col">
-                <p>The tables button</p>
                 <!-- id="tblwrapperModal"-->
                 <button id="tblwrapperModalLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#tblwrapperModal">Show
                     <b>VR Paleoplotter</b><br />
                     The tables
                 </button>
-
-
             </div><!-- here ends the body -->
         </div>
+
         <div class="col">
-            <p>Empty for now</p>
-        </div>
-        <div class="col">
-            <p>The Ko-fi button</p>
             <!-- Presenting the jar -->
             <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
             <script type='text/javascript'>
@@ -149,12 +142,16 @@
                 kofiwidget2.draw();
             </script>
         </div>
+        <div class="col">
+            <p>Empty for now</p>
+        </div>
     </div>
-    </div>
-
-    </div>
-    </div>
-    </div>
+    <!-- 
+        </div>
+        </div>
+        </div>
+        </div> 
+    -->
     <!--    Wrapping the Expanded seed table in a pop-up box 
             See Twitter bootstrap Components - Modal 
             id="exampleModal" to id="expandSeedModal" -->
@@ -831,11 +828,11 @@
                         thead.setAttribute('class', 'table-light');
 
                         // Set caption
-                        let newCaptiontext = "<b>The&nbsp;Seeds</b><br/><small>2<sup>" + numVars + "</sup>-1=" + numberXhaustive + "&nbsp;combinations</small>";
+                        let newCaptiontext = "<b>The&nbsp;Seeds</b><br/>2<sup>" + numVars + "</sup>-1=" + numberXhaustive + "&nbsp;combinations";
                         tcaption.innerHTML = newCaptiontext;
                         // set pop-up button text id="expandedseedbuttonLabel"
                         document.getElementById("expandedseedbuttonLabel").innerHTML = newCaptiontext;
-                        console.info(document.getElementById("expandedseedbuttonLabel").innerHTML);
+                        //console.info(document.getElementById("expandedseedbuttonLabel").innerHTML);
 
 
                         table.appendChild(tcaption);
