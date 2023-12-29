@@ -156,7 +156,6 @@
             </div>
         </div>
 
-        <!-- id="headingTwo" ok -->
 
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingThree">
@@ -225,7 +224,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Expanded Seed set</h1>
+                    <h1 class="modal-title fs-5" id="expandedseedbuttonLabel">Expanded Seed set</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -805,6 +804,9 @@
 
             // Set caption
             tcaption.innerHTML = "<b>The&nbsp;Seeds</b><br/><small>2<sup>" + numVars + "</sup>-1=" + numberXhaustive + "&nbsp;combinations</small>";
+            // set pop-up button text id="expandedseedbuttonLabel"
+            document.getElementById("expandedseedbuttonLabel").innerHTML=tcaption.innerHTML;
+
 
             table.appendChild(tcaption);
             table.appendChild(thead);
