@@ -105,55 +105,157 @@
                                 6</span> : <span>\({\small
                                 \{\sqrt{a}\},\{\sqrt{a}+\sqrt{b}\},\{\sqrt{a}+\sqrt{b}+\sqrt{c}\}}\)</span></label>
                     </form>
-                    <div>
-                        <!-- Button trigger modal 
-                             expandSeedModal -->
-                        <br />
-                        <button id="expandedseedbuttonLabel" type="button" class="btn btn-primary"
-                            data-bs-toggle="modal" data-bs-target="#expandSeedModal">
-                        </button>
-                        <br />
-                        <!-- id="tblwrapperModal"-->
-                        <button id="tblwrapperModalLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#tblwrapperModal">Show
-                            <b>VR Paleoplotter</b><br />
-                            The tables
-                        </button>
-                    </div>
                 </fieldset>
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <p>The seeds button</p>
+                <!-- Button trigger modal 
+                             expandSeedModal -->
+                <button id="expandedseedbuttonLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#expandSeedModal">
+                </button>
+                <!-- Wrapping the Expanded seed table in a pop-up box 
+                    See Twitter bootstrap Components - Modal 
+                    id="exampleModal" to id="expandSeedModal" -->
+                <div class="modal fade" id="expandSeedModal" tabindex="-1" aria-labelledby="expandSeedModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="expandSeedModalLabel">Expanded Seed set</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- ... -->
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="theset">
+                                    <!-- makeTheSeedXTbl() table id="theseedxtbl" -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Understood</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col">
                 <p>The tables button</p>
-            </div>
-            <div class="col">
-                <p></p>
-            </div>
-            <div class="col">
-                <p>The Ko-fi button</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Wrapping the Expanded seed table in a pop-up box 
-        See Twitter bootstrap Components - Modal 
-        id="exampleModal" to id="expandSeedModal" -->
-    <div class="modal fade" id="expandSeedModal" tabindex="-1" aria-labelledby="expandSeedModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="expandSeedModalLabel">Expanded Seed set</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- ... -->
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="theset">
-                        <!-- makeTheSeedXTbl() table id="theseedxtbl" -->
+                <!-- id="tblwrapperModal"-->
+                <button id="tblwrapperModalLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#tblwrapperModal">Show
+                    <b>VR Paleoplotter</b><br />
+                    The tables
+                </button>
+                <!-- Wrapping the accordion-items with tables in a Modal 
+                    id="exampleModal" to id="tblwrapperModal" -->
+                <div class="modal fade" id="tblwrapperModal" tabindex="-1" aria-labelledby="tblwrapperModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="tblwrapperModalLabel">Tabels</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div id="tblwrapperModalbody" class="modal-body">
+                                <!-- here the accordion  -->
+                                <div class="table-responsive accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                aria-expanded="true" aria-controls="collapseTwo">
+                                                List of tables Item #2
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse"
+                                            aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="place_vrpaleoplotter">data_vrpaleoplotter here</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseThree" aria-expanded="false"
+                                                aria-controls="collapseThree">
+                                                Table tbl_mplot Item #3
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse"
+                                            aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="place_mplot">tbl_mplot here</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFour">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseFour" aria-expanded="false"
+                                                aria-controls="collapseFour">
+                                                tbl_rvalue Item #4
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFour" class="accordion-collapse collapse"
+                                            aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="place_rvalue">tbl_rvalue here</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- id="headingFive" place_sets -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFive">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseFive" aria-expanded="false"
+                                                aria-controls="collapseFive">
+                                                tbl_sets Item #5
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFive" class="accordion-collapse collapse"
+                                            aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="place_sets">tbl_sets here</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingSix">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseSix" aria-expanded="false"
+                                                aria-controls="collapseSix">
+                                                tbl_presets Item #6
+                                            </button>
+                                        </h2>
+                                        <div id="collapseSix" class="accordion-collapse collapse"
+                                            aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="place_presets">tbl_presets here</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- here ends accordion  -->
+                            </div>
+                        </div>
+                        <div class="col">
+                            <p>Empty for now</p>
+                        </div>
+                        <div class="col">
+                            <p>The Ko-fi button</p>
+                            <!-- Presenting the jar -->
+                            <script type='text/javascript'
+                                src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
+                            <script type='text/javascript'>
+                                kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
+                                kofiwidget2.draw();
+                            </script>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -163,109 +265,7 @@
             </div>
         </div>
     </div>
-    <!-- Wrapping the accordion-items with tables in a Modal 
-        id="exampleModal" to id="tblwrapperModal" -->
-    <div class="modal fade" id="tblwrapperModal" tabindex="-1" aria-labelledby="tblwrapperModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="tblwrapperModalLabel">Tabels</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div id="tblwrapperModalbody" class="modal-body">
-                    <!-- here the accordion  -->
-                    <div class="table-responsive accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                    List of tables Item #2
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div id="place_vrpaleoplotter">data_vrpaleoplotter here</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    Table tbl_mplot Item #3
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div id="place_mplot">tbl_mplot here</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingFour">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                    tbl_rvalue Item #4
-                                </button>
-                            </h2>
-                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div id="place_rvalue">tbl_rvalue here</div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- id="headingFive" place_sets -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingFive">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                                    tbl_sets Item #5
-                                </button>
-                            </h2>
-                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div id="place_sets">tbl_sets here</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- id="headingSix" place_presets -->
-
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingSix">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                                    tbl_presets Item #6
-                                </button>
-                            </h2>
-                            <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div id="place_presets">tbl_presets here</div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div><!-- here ends accordion  -->
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    </div>
+    <!-- UNUSED </div> ? -->
 
     <script>
         // The m(arker) Plot array: mPlot array
@@ -1149,12 +1149,6 @@
             table += '</table>'
             return table
         };
-    </script>
-    <!-- Presenting the jar -->
-    <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
-    <script type='text/javascript'>
-        kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
-        kofiwidget2.draw();
     </script>
 
     <!-- JS bootstrap
