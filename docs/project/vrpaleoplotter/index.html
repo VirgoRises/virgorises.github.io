@@ -803,9 +803,10 @@
             thead.setAttribute('class', 'table-light');
 
             // Set caption
-            tcaption.innerHTML = "<b>The&nbsp;Seeds</b><br/><small>2<sup>" + numVars + "</sup>-1=" + numberXhaustive + "&nbsp;combinations</small>";
+            let newCaptiontext="<b>The&nbsp;Seeds</b><br/><small>2<sup>" + numVars + "</sup>-1=" + numberXhaustive + "&nbsp;combinations</small>";
+            tcaption.innerHTML = newCaptiontext;
             // set pop-up button text id="expandedseedbuttonLabel"
-            document.getElementById("expandedseedbuttonLabel").innerHTML=tcaption.innerHTML;
+            document.getElementById("expandedseedbuttonLabel").innerHTML=newCaptiontext;
             console.info(document.getElementById("expandedseedbuttonLabel").innerHTML);
 
 
