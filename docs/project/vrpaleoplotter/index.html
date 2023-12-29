@@ -124,31 +124,6 @@
                 <button id="expandedseedbuttonLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#expandSeedModal">
                 </button>
-                <!-- Wrapping the Expanded seed table in a pop-up box 
-                    See Twitter bootstrap Components - Modal 
-                    id="exampleModal" to id="expandSeedModal" -->
-                <div class="modal fade" id="expandSeedModal" tabindex="-1" aria-labelledby="expandSeedModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="expandSeedModalLabel">Expanded Seed set</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- ... -->
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="theset">
-                                    <!-- makeTheSeedXTbl() table id="theseedxtbl" -->
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Understood</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="col">
                 <p>The tables button</p>
@@ -276,7 +251,30 @@
             </div>
         </div>
     </div>
-    <!-- UNUSED </div> ? -->
+    <!--    Wrapping the Expanded seed table in a pop-up box 
+            See Twitter bootstrap Components - Modal 
+            id="exampleModal" to id="expandSeedModal" -->
+    <div class="modal fade" id="expandSeedModal" tabindex="-1" aria-labelledby="expandSeedModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="expandSeedModalLabel">Expanded Seed set</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- ... -->
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="theset">
+                        <!-- makeTheSeedXTbl() table id="theseedxtbl" -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // The m(arker) Plot array: mPlot array
