@@ -40,20 +40,25 @@
             </div>
         </div>
         <div class="row">
-            <fieldset>
-                <legend id="legendseedsmaps" class="">Seeds (max. 9) &amp; mapping</legend>
-                <form>
-                    <div class="col">
+            <div class="col">
+                <fieldset>
+                    <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
+                    <form>
                         <label for="csvSeeds">csv Seeds</label>
                         <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
                             onchange="expandSeedSet()">
-                    </div>
-                    <div class="col">
+                    </form>
+                </fieldset>
+            </div>
+            <div class="col">
+                <fieldset>
+                    <legend>Mapping</legend>
+                    <form>
                         <label for="csvRc">csv Map&nbsp;&nbsp;</label>
                         <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()">
-                    </div>
-                </form>
-            </fieldset>
+                    </form>
+                </fieldset>
+            </div>
         </div>
         <div class="row">
             <div class="col">
