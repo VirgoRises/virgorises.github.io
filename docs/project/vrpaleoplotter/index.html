@@ -186,10 +186,41 @@
                 </div>
             </div>
         </div>
+        <!-- id="headingFive" place_sets -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive"
+                    aria-expanded="false" aria-controls="collapseFive">
+                    tbl_sets Item #5
+                </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div id="place_sets">tbl_sets here</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- id="headingSix" place_presets -->
+
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingSix">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix"
+                aria-expanded="false" aria-controls="collapseSix">
+                tbl_presets Item #6
+            </button>
+        </h2>
+        <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div id="place_presets">tbl_presets here</div>
+            </div>
+        </div>
     </div>
 
-    <!-- Modal -->
-
+    <!-- Wrapping the Expanded seed table in a pop-up box -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -200,10 +231,8 @@
                 <div class="modal-body">
                     <!-- ... -->
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="theset">
-                        <!-- makeTheSeedXTbl()
-                 table id="theseedxtbl" -->
+                    <!-- makeTheSeedXTbl() table id="theseedxtbl" -->
                     </div>
-                    <!-- ... -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -1042,7 +1071,23 @@
             fetch(url)
                 .then(response => response.text())
                 .then(data => document.getElementById("place_rvalue").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_rvalue", "table table-striped caption-top table-sm table-hover", "tbl rvalue"))
-        }
+
+            // Fetch 'tbl_sets'
+            id = '1jKLwi9l8ck5KgbgmhwG4clmd70b6zKvsPEUPA036Tlk';
+            //arrayFromSheet(tbl_sets_id);
+            url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
+            fetch(url)
+                .then(response => response.text())
+                .then(data => document.getElementById("place_sets").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_sets", "table table-striped caption-top table-sm table-hover", "tbl sets"))
+
+            // Fetch 'tbl_presets'
+            id = '1GdTl9vU4KPBG9nA9g6XWcVX2__PuAh1Y5HkrogYLhyw';
+            //arrayFromSheet(tbl_presets_id);
+            url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
+            fetch(url)
+                .then(response => response.text())
+                .then(data => document.getElementById("place_presets").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_presets", "table table-striped caption-top table-sm table-hover", "tbl presets"))
+            }
         /*
         table.setAttribute('class','table table-striped caption-top');
         tbody.setAttribute('class','table-group-divider')
