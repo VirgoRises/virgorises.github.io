@@ -866,7 +866,7 @@
                 for (d = 0; d <= theSet[r].length - 1; d++) {
                     data[d] = document.createElement('td');
                     data[d].innerHTML = theSet[r][d];
-                    if (data[d].innerHTML>0){
+                    if (d>=2 & data[d].innerHTML>0){
                         data[d].setAttribute('class', 'seedselected');
                         console.info("seedselected: cel "+d+"="+data[d].innerHTML);
                     }
