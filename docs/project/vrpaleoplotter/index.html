@@ -1023,14 +1023,14 @@
              * f(1000000000.... close enough to infinity right
              * fraction = 0.78
              * fraction * rValue.Rpix = 0.78 * 427px = 333px
-             * if rValue.reverseR == true then come in from left
+             * if rValue.reverseR == false then come in from left
              * (fraction * rValue.Rpix) + rValue.Lx = 333px + 78px = 411px
              * else then come in from right
              * rValue.Rx -= (fraction * rValue.Rpix) = 505px - 333px = 172px
             */
             let fraction=f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX;
             let rightX = (fraction * rValue.Rpix) ;
-            rValue.reverseR == true? rightX += rValue.Lx:rValue.Rx-=rightX;
+            rValue.reverseR == false? rightX += rValue.Lx:rValue.Rx-=rightX;
 
             /** rValue.reverseR = true
              * f(19.099999.... close enough to infinity left
