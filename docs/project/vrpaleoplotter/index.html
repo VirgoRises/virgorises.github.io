@@ -314,6 +314,7 @@
             Rpix: 0,
             Ryears: 0,
             YperPix: 0,
+            reverseR:true,
             dataSet: '',
             GraphFileName: '',
             GraphStored: '',
@@ -336,6 +337,7 @@
         rValue.Rpix = rValue.Rx - rValue.Lx;
         rValue.Ryears = 20000;
         rValue.YperPix = (rValue.rangeYears / rValue.Rpix);
+        rValue.reverseR = true;
         rValue.dataSet = "Alley_Gisp_2004";
         rValue.GraphFileName = "Alley, R.B.. 2004. GISP2 Ice Core Temperature .png";
         rValue.GraphStored = "..\virgorises\google_site\vrmedia\graphs";
@@ -1016,18 +1018,32 @@
         function shadeConvexSet() {
             //
             ctx.drawImage(img, 0, 0);
-            /*
-                only for reverse x-axis, stretching back in time from
-                right to left
+
+            /**
+             * f(1000000000.... close enough to infinity right
+             * fraction = 0.78
+             * fraction * rValue.Rpix = 0.78 * 427px = 333px
+             * if rValue.reverseR == true then come in from left
+             * (fraction * rValue.Rpix) + rValue.Lx = 333px + 78px = 411px
+             * else then come in from right
+             * rValue.Rx -= (fraction * rValue.Rpix) = 505px - 333px = 172px
             */
-            //f(1000000000.... close enough to infinity right
             let fraction=f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX;
-            let rightX = ((1-fraction) * rValue.Rpix);
-            
-            
-            //f(19.099999.... close enough to infinity left
+            let rightX = (fraction * rValue.Rpix) ;
+            rValue.reverseR == true? rightX += rValue.Lx:rValue.Rx-=rightX;
+
+            /** rValue.reverseR = true
+             * f(19.099999.... close enough to infinity left
+             * fraction = 0.06
+             * fraction * rValue.Rpix = 0.06 * 427px = 26px
+             * if rValue.reverseR == true then come in from left
+             * (fraction * rValue.Rpix) + rValue.Lx = 26px + 78px = 104px
+             * else then come in from right
+             * (fraction * rValue.Rpix) + rValue.Lx = 505px - 26px = 479px 
+            */
             fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
-            let leftX =  (fraction * rValue.Rpix) // The part of 20000 years in pixels 
+            let leftX =  (fraction * rValue.Rpix) + rValue.Lx; 
+            rValue.reverseR == true? leftX += rValue.Lx:rValue.Rx-=leftX;
             
 
             // Define a new Path:
@@ -1036,7 +1052,7 @@
             ctx.fillStyle = "lightblue"; //"#F5F5F5";
             //Draw convex set window
             ctx.globalAlpha = 0.21;
-            ctx.fillRect(rValue.Lx+leftX, rValue.Ty, rValue.Rx-rightX, rValue.By);
+            ctx.fillRect(leftX, rValue.Ty, rightX, rValue.By);
             ctx.globalAlpha = 1.0;
             // Stroke it (Do the Drawing)
             ctx.stroke();
