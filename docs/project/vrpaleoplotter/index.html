@@ -44,7 +44,7 @@
     <div class="container  px-4">
         <div class="row">
             <div class="col">
-                <canvas class="uiCanvas" id="vrCanvasPlotRc" style="margin:0;padding:0;" width=600 height=400></canvas>
+                <canvas class="uiCanvas" id="vrCanvasPlotRc" style="margin:0;padding:0;" width=600 height=500></canvas>
             </div>
         </div>
         <div class="row">
@@ -335,9 +335,9 @@
         rValue.GraphURI = 'https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh';
         rValue.GraphDocURI = "void";
         rValue.GraphCalib = 1950;
-        rValue.hAxisY = 317;
-        rValue.hAxisLx = 87; //too far left
-        rValue.hAxisRx = 589; //delta 502
+        rValue.hAxisY = 225;
+        rValue.hAxisLx = 78; 
+        rValue.hAxisRx = 505; 
         rValue.rYears = 20000;
         rValue.hAxisPix = rValue.hAxisRx - rValue.hAxisLx;
         rValue.hAxisYpPix = (rValue.rangeYears / rValue.hAxisPix);
@@ -467,6 +467,15 @@
         img.src = rValue.GraphURI; //strDataURI;
         //    
         var rect = canvas.getBoundingClientRect();
+        // Compensate for variable canvas positioning
+        function setPosition(e) {
+            let canvas = document.getElementById("canvas")
+            let bounds = canvas.getBoundingClientRect()
+            pos.x = e.clientX - bounds.x
+            pos.y = e.clientY - bounds.y
+        }
+
+
 
         // Change preset event handler
         /* var checkbox =     
@@ -909,6 +918,7 @@
                 }
             }
         }
+
 
         //function plotMarker() 
         function plotMarker() {
