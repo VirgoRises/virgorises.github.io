@@ -280,6 +280,7 @@
         var mPlot = {
             plotId: "",
             Description: "",
+            graphlist:[],
             plotWikiURI: "",
             DiscordSrvr: "",
             plotDocURI: "",
@@ -289,7 +290,8 @@
         // Db of plots and callibration info
         //
         mPlot.plotId = "vr_plt_0000001";
-        mPlot.Description = "vr_graph_0001";
+        mPlot.Description = "Comparitive mappins";
+        mplot.graphlist= ['grph00000000','grph00000001']
         mPlot.plotWikiURI = "void";
         mPlot.DiscordSrvr = "void";
         mPlot.plotDocURI = "void";
@@ -302,46 +304,44 @@
             To-Do: switch backdrop graphs dynamically, e.g., Alley 2004 Gisp2 ice core, and, for instance, the Lea 2003 Caraco Basin sediment core data.  
         */
         var rValue = {
-            plotId: '',
             graphId: '',
-            dataSet: '',
-            dsetURI: '',
-            GraphStored: '',
-            GraphFileName: '',
-            GraphGenerator: '',
-            GraphURI: '',
-            GraphDocURI: 0,
             GraphCalib: 0,
-            hAxisY: 0,
-            hAxisLx: 0,
-            hAxisRx: 0,
-            rYears: 0,
-            hAxisPix: 0,
-            hAxisYpPix: 0
-        };
+            Lx: 0,
+            Ty: 0,
+            Rx: 0,
+            By: 0,
+            Rpix: 0,
+            Ryears: 0,
+            YperPix: 0,
+            dataSet: '',
+            GraphFileName: '',
+            GraphStored: '',
+            dsetURI: '',
+            GraphURI: '',
+            GraphDocURI: 0
+            };
 
         // Populate rValue array (todo: UI, db)
         /*  Db of graphs and callibration info 
             Google share link: Format URI as follows:
         'https://drive.google.com/uc?id=...<long number>...';
         Location: ..\sitesgoogle\vrmedia\graphs */
-        rValue.plotId = "vr_plot_0001";
         rValue.graphId = "vr_graph_0001";
+        rValue.GraphCalib = 1950;
+        rValue.Lx = 78; 
+        rValue.Ty = 85; 
+        rValue.Rx = 505; 
+        rValue.By = 225;
+        rValue.Rpix = rValue.Rx - rValue.Lx;
+        rValue.Ryears = 20000;
+        rValue.YperPix = (rValue.rangeYears / rValue.Rpix);
         rValue.dataSet = "Alley_Gisp_2004";
-        rValue.dsetURI = 'https://drive.google.com/uc?...';
-        rValue.GraphStored = "..\virgorises\google_site\vrmedia\graphs";
         rValue.GraphFileName = "Alley, R.B.. 2004. GISP2 Ice Core Temperature .png";
-        rValue.GraphGenerator = "..\virgorises\google_site\Embed\sheets\...";
+        rValue.GraphStored = "..\virgorises\google_site\vrmedia\graphs";
+        rValue.dsetURI = 'https://drive.google.com/uc?...';
         rValue.GraphURI = 'https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh';
         rValue.GraphDocURI = "void";
-        rValue.GraphCalib = 1950;
-        rValue.hAxisY = 225;
-        rValue.hAxisLx = 78; 
-        rValue.hAxisRx = 505; 
-        rValue.rYears = 20000;
-        rValue.hAxisPix = rValue.hAxisRx - rValue.hAxisLx;
-        rValue.hAxisYpPix = (rValue.rangeYears / rValue.hAxisPix);
-
+        
         //  Status array sets
         /*  Each set has an arithmetic template for expanding
             the core seed values into mappings of events in time.`1
@@ -968,7 +968,7 @@
                     on years before present (ybp) is likely 
                     to start at 1950 CE. */
 
-                curRc.f_calc = f(lstRc[x], rValue.GraphCalib, rValue.rYears);
+                curRc.f_calc = f(lstRc[x], rValue.GraphCalib, rValue.Ryears);
 
                 /*  The algorithm calculates offsets from 
                     2450 BCE, 4400 years have to be added to 
@@ -977,7 +977,7 @@
 
                 /*  Draw the mapping in the shape of a vertical
                     line. */
-                curRc.RcX = (rValue.hAxisRx) - (((curRc.f_calc.Ybo + curRc.Calib) / (rValue.rYears)) * rValue.hAxisPix);
+                curRc.RcX = (rValue.Rx) - (((curRc.f_calc.Ybo + curRc.Calib) / (rValue.Ryears)) * rValue.Rpix);
 
                 curRc.mLbl = curRc.Rc.toString;
 
@@ -985,10 +985,10 @@
                 ctx.beginPath();
 
                 // Define a start Point
-                ctx.moveTo((curRc.f_calc.RelX * rValue.hAxisPix) + rValue.hAxisLx , rValue.hAxisY );
+                ctx.moveTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx , rValue.By );
 
                 // Define an end Point
-                ctx.lineTo((curRc.f_calc.RelX * rValue.hAxisPix) + rValue.hAxisLx , rValue.hAxisY - curRc.mLength);
+                ctx.lineTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx , rValue.By - curRc.mLength);
 
                 // Stroke it (Do the Drawing)
                 ctx.stroke();
@@ -1016,11 +1016,11 @@
             //
             ctx.drawImage(img, 0, 0);
             //f(1000000000.... close enough to infinity right
-            var rightX = (f(1000000000, rValue.GraphCalib, rValue.rYears).RelX * rValue.hAxisPix) + (rValue.hAxisLx);
+            var rightX = (f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX * rValue.Rpix) + (rValue.Lx);
             //f(19.099999.... close enough to infinity left
-            var leftX = f(19.099999, rValue.GraphCalib, rValue.rYears).RelX * rValue.hAxisPix + (rValue.hAxisLx);
-            var topY = rValue.hAxisY ;
-            var heigth = 215;
+            var leftX = f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX * rValue.Rpix + (rValue.Lx);
+            var topY = rValue.By ;
+            var heigth = ;
             var width = rightX - leftX;
             // Define a new Path:
             ctx.beginPath();
