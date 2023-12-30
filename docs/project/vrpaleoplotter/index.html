@@ -1022,7 +1022,7 @@
             */
             //f(1000000000.... close enough to infinity right
             let fraction=f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX;
-            let rightX = (fraction**(-1) * rValue.Rpix);
+            let rightX = (fraction * rValue.Rpix);
             
             
             //f(19.099999.... close enough to infinity left
@@ -1036,7 +1036,7 @@
             ctx.fillStyle = "lightblue"; //"#F5F5F5";
             //Draw convex set window
             ctx.globalAlpha = 0.21;
-            ctx.fillRect(rValue.Lx, rValue.Ty, rValue.Rx-rightX, rValue.By);
+            ctx.fillRect(rValue.Lx+leftX, rValue.Ty, rValue.Rx-rightX, rValue.By);
             ctx.globalAlpha = 1.0;
             // Stroke it (Do the Drawing)
             ctx.stroke();
