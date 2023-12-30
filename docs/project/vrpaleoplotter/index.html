@@ -1032,18 +1032,18 @@
             let rightX = (fraction * rValue.Rpix) ;
             rValue.reverseR == false? rightX += rValue.Lx:rValue.Rx-=rightX;
 
-            /** rValue.reverseR = true
+            /** 
              * f(19.099999.... close enough to infinity left
              * fraction = 0.06
              * fraction * rValue.Rpix = 0.06 * 427px = 26px
-             * if rValue.reverseR == true then come in from left
+             * if rValue.reverseR == false then come in from left
              * (fraction * rValue.Rpix) + rValue.Lx = 26px + 78px = 104px
              * else then come in from right
              * (fraction * rValue.Rpix) + rValue.Lx = 505px - 26px = 479px 
             */
             fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
             let leftX =  (fraction * rValue.Rpix) + rValue.Lx; 
-            rValue.reverseR == true? leftX += rValue.Lx:rValue.Rx-=leftX;
+            rValue.reverseR == false? leftX += rValue.Lx:rValue.Rx-=leftX;
             
 
             // Define a new Path:
