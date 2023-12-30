@@ -1018,8 +1018,11 @@
             ctx.drawImage(img, 0, 0);
             //f(1000000000.... close enough to infinity right
             var rightX = (f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX * rValue.Rpix) + (rValue.Lx);
+            console.info("rightX = (f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX * rValue.Rpix) + (rValue.Lx) = "+rightX);
             //f(19.099999.... close enough to infinity left
             var leftX = f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX * rValue.Rpix + (rValue.Lx);
+            console.info("leftX = f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX * rValue.Rpix + (rValue.Lx) = "+leftX);
+
             var topY = rValue.Ty ;
             var heigth = rValue.By-rValue.Ty;
             var width = rightX - leftX;
@@ -1072,6 +1075,7 @@
                 Ybp: cYbp,
                 RelX: cRelX
             }
+            console.info(f_calc);
             return f_calc
         }
     </script>
