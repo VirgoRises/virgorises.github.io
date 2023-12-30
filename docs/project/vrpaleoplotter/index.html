@@ -1027,21 +1027,19 @@
             console.info("rValue.Rx - (fraction * rValue.Rpix) = " + rightX);
             
             //f(19.099999.... close enough to infinity left
-            fraction=1%f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
+            fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
             let leftX =  (fraction * rValue.Rpix) // The part of 20000 years in pixels 
             leftX = rValue.Rx - leftX ; //Because stretching back from year zero
             console.info("rValue.Rx - (fraction * rValue.Rpix) = " + leftX);
 
-            var topY = rValue.Ty ;
-            var heigth = rValue.By;
-            var width = (rightX - leftX);
+
             // Define a new Path:
             ctx.beginPath();
             // Convex set
             ctx.fillStyle = "lightblue"; //"#F5F5F5";
             //Draw convex set window
             ctx.globalAlpha = 0.21;
-            ctx.fillRect(leftX, topY, width, heigth);
+            ctx.fillRect(rValue.Lx, rValue.Ty, rValue.Rx, rValue.By);
             ctx.globalAlpha = 1.0;
             // Stroke it (Do the Drawing)
             ctx.stroke();
