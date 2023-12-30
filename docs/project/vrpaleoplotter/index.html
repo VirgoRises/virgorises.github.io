@@ -1022,16 +1022,13 @@
             */
             //f(1000000000.... close enough to infinity right
             let fraction=f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX;
-            let rightX = ( fraction * rValue.Rpix)
-            rightX = rValue.Rx - rightX; //Because stretching back from year zero
-            console.info("rValue.Rx - (fraction * rValue.Rpix) = " + rightX);
+            let rightX = (fraction**(-1) * rValue.Rpix);
+            
             
             //f(19.099999.... close enough to infinity left
             fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
             let leftX =  (fraction * rValue.Rpix) // The part of 20000 years in pixels 
-            leftX = rValue.Rx - leftX ; //Because stretching back from year zero
-            console.info("rValue.Rx - (fraction * rValue.Rpix) = " + leftX);
-
+            
 
             // Define a new Path:
             ctx.beginPath();
@@ -1039,7 +1036,7 @@
             ctx.fillStyle = "lightblue"; //"#F5F5F5";
             //Draw convex set window
             ctx.globalAlpha = 0.21;
-            ctx.fillRect(rValue.Lx, rValue.Ty, rValue.Rx, rValue.By);
+            ctx.fillRect(rValue.Lx, rValue.Ty, rValue.Rx-rightX, rValue.By);
             ctx.globalAlpha = 1.0;
             // Stroke it (Do the Drawing)
             ctx.stroke();
