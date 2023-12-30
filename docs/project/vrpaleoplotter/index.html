@@ -1022,7 +1022,7 @@
             */
             //f(1000000000.... close enough to infinity right
             let fraction=f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX;
-            let rightX = (fraction * rValue.Rpix);
+            let rightX = ((1-fraction) * rValue.Rpix);
             
             
             //f(19.099999.... close enough to infinity left
