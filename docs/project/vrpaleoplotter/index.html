@@ -949,7 +949,7 @@
                 Rc: "",
                 Calib: 0,
                 RcX: 0,
-                mLength: 225, //rValue.By-rValue.Ty,
+                mLength: rValue.By, //
                 mLbl: "",
                 f_calc: null,
             }
@@ -1033,7 +1033,7 @@
             console.info("rValue.Rx - (fraction * rValue.Rpix) = " + leftX);
 
             var topY = rValue.Ty ;
-            var heigth = 225; //rValue.By-rValue.Ty;
+            var heigth = rValue.By;
             var width = (rightX - leftX);
             // Define a new Path:
             ctx.beginPath();
