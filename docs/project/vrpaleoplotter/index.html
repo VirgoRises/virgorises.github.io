@@ -977,7 +977,7 @@
 
                 /*  Draw the mapping in the shape of a vertical
                     line. */
-                curRc.RcX = (rValue.hAxisRx - rect.left) - (((curRc.f_calc.Ybo + curRc.Calib) / (rValue.rYears)) * rValue.hAxisPix);
+                curRc.RcX = (rValue.hAxisRx) - (((curRc.f_calc.Ybo + curRc.Calib) / (rValue.rYears)) * rValue.hAxisPix);
 
                 curRc.mLbl = curRc.Rc.toString;
 
@@ -985,10 +985,10 @@
                 ctx.beginPath();
 
                 // Define a start Point
-                ctx.moveTo((curRc.f_calc.RelX * rValue.hAxisPix) + rValue.hAxisLx - rect.left, rValue.hAxisY - 20);
+                ctx.moveTo((curRc.f_calc.RelX * rValue.hAxisPix) + rValue.hAxisLx , rValue.hAxisY );
 
                 // Define an end Point
-                ctx.lineTo((curRc.f_calc.RelX * rValue.hAxisPix) + rValue.hAxisLx - rect.left, rValue.hAxisY - curRc.mLength);
+                ctx.lineTo((curRc.f_calc.RelX * rValue.hAxisPix) + rValue.hAxisLx , rValue.hAxisY - curRc.mLength);
 
                 // Stroke it (Do the Drawing)
                 ctx.stroke();
