@@ -1019,32 +1019,38 @@
             //
             ctx.drawImage(img, 0, 0);
 
-            /**
-             * f(1000000000.... close enough to infinity right
-             * fraction = 0.78
-             * fraction * rValue.Rpix = 0.78 * 427px = 333px
-             * if rValue.reverseR == false then come in from left
-             * (fraction * rValue.Rpix) + rValue.Lx = 333px + 78px = 411px
-             * else then come in from right
-             * rValue.Rx -= (fraction * rValue.Rpix) = 505px - 333px = 172px
-            */
-            let fraction=f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX;
-            let rightX = (fraction * rValue.Rpix) ;
-            rValue.reverseR == false? rightX += rValue.Lx:rValue.Rx-=rightX;
+            let leftX = 0;
+            let rightX = 0; 
+            let fraction = 0;
 
             /** 
              * f(19.099999.... close enough to infinity left
              * fraction = 0.06
              * fraction * rValue.Rpix = 0.06 * 427px = 26px
-             * if rValue.reverseR == false then come in from left
-             * (fraction * rValue.Rpix) + rValue.Lx = 26px + 78px = 104px
-             * else then come in from right
-             * (fraction * rValue.Rpix) + rValue.Lx = 505px - 26px = 479px 
-            */
+             */
+
             fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
-            let leftX =  (fraction * rValue.Rpix) + rValue.Lx; 
-            rValue.reverseR == false? leftX += rValue.Lx:rValue.Rx-=leftX;
-            
+            leftX = (fraction * rValue.Rpix) + rValue.Lx; 
+            if (rValue.reverseR){
+                leftX += rValue.Lx
+            } else {
+                leftX=rValue.Rx-leftX
+            }
+
+            /**
+             * f(1000000000.... close enough to infinity right
+             * fraction = 0.78
+             * fraction * rValue.Rpix = 0.78 * 427px = 333px
+             */
+            fraction=f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX;
+            rightX = (fraction * rValue.Rpix) ;
+            rValue.reverseR == false? leftX += rValue.Lx:rValue.Rx-=leftX;            
+            if (rValue.reverseR){
+                // Start most right, subtract 
+                rightX = rValue.Rx - rightX
+            } else {
+                rightX = rValue.Lx + rightX
+            }
 
             // Define a new Path:
             ctx.beginPath();
