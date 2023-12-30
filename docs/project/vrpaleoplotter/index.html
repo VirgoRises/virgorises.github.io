@@ -949,7 +949,7 @@
                 Rc: "",
                 Calib: 0,
                 RcX: 0,
-                mLength: rValue.By-rValue.Ty,
+                mLength: 140, //rValue.By-rValue.Ty,
                 mLbl: "",
                 f_calc: null,
             }
@@ -1025,6 +1025,7 @@
             let rightX = ( fraction * rValue.Rpix)
             rightX = rValue.Rx - rightX; //Because stretching back from year zero
             console.info("rValue.Rx - (fraction * rValue.Rpix) = " + rightX);
+            
             //f(19.099999.... close enough to infinity left
             fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
             let leftX =  (fraction * rValue.Rpix) // The part of 20000 years in pixels 
@@ -1032,7 +1033,7 @@
             console.info("rValue.Rx - (fraction * rValue.Rpix) = " + leftX);
 
             var topY = rValue.Ty ;
-            var heigth = rValue.By-rValue.Ty;
+            var heigth = 140; //rValue.By-rValue.Ty;
             var width = (rightX - leftX);
             // Define a new Path:
             ctx.beginPath();
