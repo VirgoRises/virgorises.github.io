@@ -277,10 +277,11 @@
             Each mPlot session: a plotId; Description; 
             links to: plotWikiURI and a plotDocURI. 
             A focus list of Royal cubits for this plot. */
+        
         var mPlot = {
             plotId: "",
             Description: "",
-            graphlist: "",
+            graphlist: ['string 1','string 1','string 1'],
             plotWikiURI: "",
             DiscordSrvr: "",
             plotDocURI: "",
@@ -291,7 +292,7 @@
         //
         mPlot.plotId = "vr_plt_0000001";
         mPlot.Description = "Comparitive mappins";
-        mplot.graphlist = eval(('['+'grph00000000,grph00000001'+']'));
+        mplot.graphlist = eval('['+'grph00000000,grph00000001'+']');
         mPlot.plotWikiURI = "void";
         mPlot.DiscordSrvr = "void";
         mPlot.plotDocURI = "void";
