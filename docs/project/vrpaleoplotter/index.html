@@ -1028,9 +1028,8 @@
              * fraction = 0.06
              * fraction * rValue.Rpix = 0.06 * 427px = 26px
              */
-
             fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
-            leftX = (fraction * rValue.Rpix) + rValue.Lx; 
+            leftX = (fraction * rValue.Rpix); 
             if (rValue.reverseR==false){
                 // [>fraction>|X|...............]
                 leftX = rValue.Lx + leftX
