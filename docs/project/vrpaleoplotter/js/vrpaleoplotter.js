@@ -817,11 +817,11 @@ function shadeConvexSet() {
     fraction = curf.RelX * rValue.Rpix;
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
-        leftX = rValue.Lx + fraction;
+        leftX = (curf.RelX * rValue.Rpix);
         // rightX = rValue.Rx - fraction;
     } else {
         // [...............|X|<fraction<]
-        leftX = rValue.Rx - fraction;
+        leftX = (rValue.Rpix - (curf.RelX * rValue.Rpix));
         //rightX = rValue.Lx + fraction;
     }
 
@@ -838,11 +838,11 @@ function shadeConvexSet() {
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
         //leftX = rValue.Lx + fraction;
-        rightX = rValue.Lx + fraction;
+        rightX = (curf.RelX * rValue.Rpix);
     } else {
         // [...............|X|<fraction<]
         //leftX = rValue.Rx - fraction;
-        rightX = rValue.Rx - (rValue.Lx + fraction);
+        rightX = (rValue.Rpix - (curf.RelX * rValue.Rpix));
     }
     width=rValue.Rpix - leftX - (rValue.Rpix-rightX);
     width = rValue.reverseR?width:(-width);
