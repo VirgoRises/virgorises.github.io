@@ -841,8 +841,8 @@ function shadeConvexSet() {
         //leftX = rValue.Rx - fraction;
         rightX = rValue.Lx + fraction;
     }
-    width=rightX-leftX;
-    height = rValue.By-rValue.Ty;
+    width=(fraction-rightX)-(fraction-leftX);
+    height = rValue.By;
     console.info("ctx.fillRect(" + leftX.floor + "," + rValue.Ty + "," + width.floor + "," + height + ")");        
     
     // Define a new Path:
