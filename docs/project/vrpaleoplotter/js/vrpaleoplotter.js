@@ -811,15 +811,15 @@ function shadeConvexSet() {
      */
     console.info(" Here working.... ");
     fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
-    leftX = (fraction * rValue.Rpix); 
+    // leftX = (fraction * rValue.Rpix); 
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
-        leftX = rValue.Lx + leftX
-        console.info("leftX = "+ rValue.Lx+" + "+ leftX + " = "+leftX);
+        leftX = rValue.Lx + (fraction*leftX);
+        console.info("leftX = "+ rValue.Lx+" + (fraction * leftX) " + (fraction * rValue.Lx) + " = "+leftX);
     } else {
         // [...............|X|<fraction<]
-        rightX = rValue.Rx - rightX
-        console.info("rightX = "+ rValue.Rx+" - "+ rightX + " = "+rightX);
+        rightX = rValue.Rx - (fraction * rightX);
+        console.info("rightX = "+ rValue.Rx+" - (fraction * rightX)"+ (fraction * rValue.Rx) + " = "+rightX);
     }
 
     /**
