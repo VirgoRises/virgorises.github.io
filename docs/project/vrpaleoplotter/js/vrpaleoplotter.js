@@ -800,9 +800,9 @@ function shadeConvexSet() {
     //
     ctx.drawImage(img, 0, 0);
 
-    let leftX = 0;
-    let rightX = 0; 
-    let fraction = 0;
+    var leftX = 0;
+    var rightX = 0; 
+    var fraction = 0;
 
     /** 
      * f(19.099999.... close enough to infinity left
@@ -814,12 +814,12 @@ function shadeConvexSet() {
     // leftX = (fraction * rValue.Rpix); 
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
-        leftX = rValue.Lx + (fraction*leftX);
-        console.info("leftX = "+ rValue.Lx+" + (fraction * leftX) " + (fraction * rValue.Lx) + " = "+leftX);
+        leftX = rValue.Lx + (fraction * rValue.Lx);
+        console.info("leftX = "+ rValue.Lx+" + (fraction * rValue.Lx) =" + (fraction * rValue.Lx) + " = "+leftX);
     } else {
         // [...............|X|<fraction<]
-        rightX = rValue.Rx - (fraction * rightX);
-        console.info("rightX = "+ rValue.Rx+" - (fraction * rightX)"+ (fraction * rValue.Rx) + " = "+rightX);
+        rightX = rValue.Rx - (fraction * rValue.Rx);
+        console.info("rightX = "+ rValue.Rx+" - " + (fraction * rValue.Rx)+ "="+ (fraction * rValue.Rx) + " = "+rightX);
     }
 
     /**
