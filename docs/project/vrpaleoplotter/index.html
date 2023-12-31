@@ -1032,9 +1032,11 @@
             fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
             leftX = (fraction * rValue.Rpix) + rValue.Lx; 
             if (rValue.reverseR){
-                leftX += rValue.Lx
+                // [>fraction>|X|...............]
+                leftX = rValue.Lx + leftX
             } else {
-                leftX=rValue.Rx-leftX
+                // [...............|X|<fraction<]
+                leftX = rValue.Rx - leftX
             }
 
             /**
@@ -1044,12 +1046,12 @@
              */
             fraction=f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX;
             rightX = (fraction * rValue.Rpix) ;
-            rValue.reverseR == false? leftX += rValue.Lx:rValue.Rx-=leftX;            
             if (rValue.reverseR){
-                // Start most right, subtract 
-                rightX = rValue.Rx - rightX
-            } else {
+                // [>fraction>|X|...............]
                 rightX = rValue.Lx + rightX
+            } else {
+                // [...............|X|<fraction<]
+                rightX = rValue.Rx - rightX
             }
 
             // Define a new Path:
