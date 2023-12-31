@@ -1,10 +1,82 @@
-// The m(arker) Plot array: mPlot array
-/* The array contains the active mPlot session. 
-    Each mPlot session: a plotId; Description; 
-    links to: plotWikiURI and a plotDocURI. 
-    A focus list of Royal cubits for this plot. */
 
-var mPlot = {
+  
+/*  The Algorithm
+    The algorithm has as input domain the rational numbers,
+    given in Royal cubits. The output range, f(Rc)∈ℝ, is 
+    given in Gon (decimal degrees), but is treated as if 
+    x°(360 degrees). 'Gon' is a correct assumption because
+    the output is converted to a 200 gon semi circle.
+    The gon is treated as if x° because without conversion,
+    the gon are multiplied by 72 presessional years, which
+    is modelled using the 12 sign 360 dgr°, minute', second''
+    system.
+*/
+/**
+ * 
+ * @param {*} RoyalCubit 
+ * @param {*} GraphCalib 
+ * @param {*} Ryears 
+ * @returns 
+ */
+function f(RoyalCubit, GraphCalib, Ryears) {
+    const cGon = 100 * (2 / (RoyalCubit * (Math.PI / 6)));
+    const cIsFloor = Math.floor(cGon / 10);
+    const cF_hbar = cIsFloor === 0 ? 1 : cIsFloor;
+    const cDegPreses = 10 * (cGon / cF_hbar);
+    const cYbo = cDegPreses * 72;
+    const cCalibPlus = (2450 + GraphCalib);
+    const cYbp = (cDegPreses * 72) + (2450 + rValue.GraphCalib);
+    const cRelX = 1 - (cYbp / Ryears);
+
+    // return array of values
+    const f_calc = {
+        Rc: RoyalCubit,
+        gon: cGon,
+        isFloor: cIsFloor,
+        f_hbar: cF_hbar,
+        degPreses: cDegPreses,
+        Ybo: cYbo,
+        CalibPlus: cCalibPlus,
+        Ybp: cYbp,
+        RelX: cRelX
+    }
+    console.info(f_calc);
+    return f_calc
+}
+
+/**
+ * 
+ * @param {*} e 
+ */
+function setPosition(e) {
+    let canvas = document.getElementById("canvas")
+    let bounds = canvas.getBoundingClientRect()
+    pos.x = e.clientX - bounds.x
+    pos.y = e.clientY - bounds.y
+}
+
+/**
+ * Asynchronus fetch(url)
+ * For delay add .then(sleeper(20)) in fetch().then list
+ * @param {*} ms 
+ * @returns 
+ */
+function sleeper(ms) {
+    return function (x) {
+        return new Promise(resolve => setTimeout(() => resolve(x), ms));
+    };
+}
+
+
+/**
+ * The m(arker) Plot array: mPlot array. 
+ * The array contains the active mPlot session. 
+ * Each mPlot session: 
+ * plotId; Description. 
+ * A focus list of Royal cubits for this plot.
+ * Links to: plotWikiURI and a plotDocURI. 
+ */
+    var mPlot = {
     plotId: "",
     Description: "",
     graphlist: ['string 1','string 2','string 3'],
@@ -13,9 +85,11 @@ var mPlot = {
     plotDocURI: "",
     mRoyalCubits: ""
 }
-// Populate mPlot array (todo: UI, db)
-// Db of plots and callibration info
-//
+
+/**
+ * Populate mPlot array (todo: UI, db). 
+ * Db of plots and callibration info
+ */ 
 mPlot.plotId = "vr_plt_0000001";
 mPlot.Description = "Comparitive mappins";
 //mplot.graphlist = eval('['+'grph00000000,grph00000001'+']');
@@ -24,12 +98,15 @@ mPlot.DiscordSrvr = "void";
 mPlot.plotDocURI = "void";
 mPlot.mRoyalCubits = "";
 
-// The r(ange) Value array: rValue
-/*  rValue contains formatting information needed for
-    using graphs as backdrop to overlay the algorithms data.
-    The mPlot>>rValue has a one-to-many relation.
-    To-Do: switch backdrop graphs dynamically, e.g., Alley 2004 Gisp2 ice core, and, for instance, the Lea 2003 Caraco Basin sediment core data.  
-*/
+/**
+ * The r(ange) Value array: rValue. 
+ * rValue contains formatting information needed for the use of 
+ * graphs as backdrop to overlay the algorithms data. 
+ * The mPlot>>rValue has a one-to-many relation. 
+ * To-Do: switch backdrop graphs dynamically, 
+ * e.g., Alley 2004 Gisp2 ice core, and, for instance, 
+ * the Lea 2003 Caraco Basin sediment core data.  
+ */
 var rValue = {
     graphId: '',
     GraphCalib: 0,
@@ -49,11 +126,13 @@ var rValue = {
     GraphDocURI: 0
     };
 
-// Populate rValue array (todo: UI, db)
-/*  Db of graphs and callibration info 
-    Google share link: Format URI as follows:
-'https://drive.google.com/uc?id=...<long number>...';
-Location: ..\sitesgoogle\vrmedia\graphs */
+/**
+ * Populate rValue array (todo: UI, db). 
+ * Db of graphs and callibration info. 
+ * Google share links, format URI as follows: 
+ * 'https://drive.google.com/uc?id=...<long number>...'; 
+ * Location: ..\sitesgoogle\vrmedia\graphs
+ */
 rValue.graphId = "vr_graph_0001";
 rValue.GraphCalib = 1950;
 rValue.Lx = 78; 
@@ -71,16 +150,15 @@ rValue.dsetURI = 'https://drive.google.com/uc?...';
 rValue.GraphURI = 'https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh';
 rValue.GraphDocURI = "void";
 
-//  Status array sets
-/*  Each set has an arithmetic template for expanding
-    the core seed values into mappings of events in time.`1
-    The string literal templates given single quotes, */
-// 'a*b*c*...' --> `${a}*${b}*${c}*...` --> 
-// "2*2.02*2.52* .." --> calc = eval("2*2.02*2.52* ..")
-// Depending on AorM, zero value columns set to 0 or 1.
-// A(dditive)-> 0, or M(ultiplicative)-> 1.
-// e.g., (A)[a+0+c+d+0+...], or (M)[a*1*c*d*1*...] 
-
+/**
+ * Status array sets. 
+ * Each set has an arithmetic template for expanding the core seed values 
+ * into mappings of events in time.
+ * Template string literals in back-tic:'a*b*c*...', `${a}*${b}*${c}*...` 
+ * Stored in quotes "2*2.02*2.52* ..", triggered --> calc = eval("2*2.02*2.52* .."). 
+ * Depending on AorM, zero value columns get set to 0 or 1. 
+ * A(dditive)-> 0, or M(ultiplicative), e.g., (A)[a+0+c+d+0+...], or (M)[a*1*c*d*1*...]
+ */
 var lstSet = {
     set1: {
         chkId: 'chk_s1',
@@ -140,7 +218,9 @@ var lstSet = {
     },
 }
 
-// Status array presets
+/**
+ * Status array presets
+ */
 var lstPreset = {
     f1: {
         chkId: 'chk_f1',
@@ -174,11 +254,10 @@ var lstPreset = {
     }
 }
 
-// Canvas id="vrCanvasPlotRc"
-/*
-    ToDo: ...
-    
-*/
+
+/**
+ * Canvas id="vrCanvasPlotRc" 
+ */
 var canvas = document.getElementById("vrCanvasPlotRc");
 var ctx = canvas.getContext("2d");
 var img = new Image();
@@ -195,30 +274,23 @@ img.onload = function () {
     plotMarker();
 };
 
-img.src = rValue.GraphURI; //strDataURI;
-//    
+img.src = rValue.GraphURI;     
 var rect = canvas.getBoundingClientRect();
-// Compensate for variable canvas positioning
-function setPosition(e) {
-    let canvas = document.getElementById("canvas")
-    let bounds = canvas.getBoundingClientRect()
-    pos.x = e.clientX - bounds.x
-    pos.y = e.clientY - bounds.y
-}
 
-
-
-// Change preset event handler
-/* var checkbox =     
-    document.querySelector("input[name=checkbox]");
-    checkbox.addEventListener('change', function() {
-     if (this.checked) {
-        console.log("Checkbox is checked..");
-     } else {
-        console.log("Checkbox is not checked..");
-     } });  */
+/**
+ * Change preset event handler.
+ * var checkbox =     
+ *  document.querySelector("input[name=checkbox]");
+ *  checkbox.addEventListener('change', function() {
+ *   if (this.checked) {
+ *      console.log("Checkbox is checked..");
+ *   } else {
+ *      console.log("Checkbox is not checked..");
+ *   } });
+ * 
+ * chkPres[0] = document.querySelector("input[id=chk_pall]")
+ */ 
 var chkPres = [];
-//chkPres[0] = document.querySelector("input[id=chk_pall]");
 chkPres[0] = document.querySelector("input[id=chk_f1]");
 chkPres[1] = document.querySelector("input[id=chk_seeds]");
 chkPres[2] = document.querySelector("input[id=chk_kc]");
@@ -260,10 +332,11 @@ for (let i = 0; i <= 3; i++) {
     })
 };
 
-
-
+/**
+ * 
+ * @param {*} lstPreset 
+ */
 function procesPreset(lstPreset) {
-
     //  Set addPresets.csvRc = ""
     lstPreset.addPresets.csvRc = "";
     for (x in lstPreset) {
@@ -313,7 +386,10 @@ for (i in chkSet) {
     });
 }
 
-// Form change: Select mapping set
+/**
+ * Form change: Select mapping set
+ * @param {*} lstSet 
+ */
 function procesSet(lstSet) {
     let ad_Rc = document.querySelector("input[id=csvRc]");
     // Prevent addSets from accumulating
@@ -332,7 +408,10 @@ function procesSet(lstSet) {
     plotMarker();
 }
 
-/*  populateSetCsvRc(lstSet[x]) */
+/**
+ * populateSetCsvRc(lstSet[x])
+ * @param {*} x 
+ */
 function populateSetCsvRc(x) {
     // Declare string litteral variables (max 9)
     // initialize for Additive, or Multiplicative 
@@ -415,12 +494,14 @@ function populateSetCsvRc(x) {
     }
 }
 
-/**/
 var theSet = '',
     binaryLabels = '',
     numVars = '',
     numberXhaustive = '';
-
+/**
+ * 
+ * @returns 
+ */
 function expandSeedSet() {
     var varList = document.getElementById("csvSeeds").value;
 
@@ -559,6 +640,9 @@ function expandSeedSet() {
     plotMarker();
 }
 
+/**
+ * 
+ */
 function makeTheSeedXTbl() {
     // Build html table
     let table = document.createElement('table');
@@ -579,7 +663,6 @@ function makeTheSeedXTbl() {
     // set pop-up button text id="expandedseedbuttonLabel"
     document.getElementById("expandedseedbuttonLabel").innerHTML = newCaptiontext;
     //console.info(document.getElementById("expandedseedbuttonLabel").innerHTML);
-
 
     table.appendChild(tcaption);
     table.appendChild(thead);
@@ -626,6 +709,9 @@ function makeTheSeedXTbl() {
     triggerRedrawAll();
 }
 
+/**
+ * 
+ */
 function triggerRedrawAll() {
     /* Just toggling preset id='chk_s1' which forces
     recalculating mappings based on 'n' seeds, or 
@@ -650,8 +736,9 @@ function triggerRedrawAll() {
     }
 }
 
-
-//function plotMarker() 
+/**
+ * 
+ */ 
 function plotMarker() {
     let plotSelection = "";
 
@@ -728,21 +815,19 @@ function plotMarker() {
 
 }
 
-//   
-/*  The convex set. All function values map Royal cubits
-    line segments to presessional degree circle segments.  
-    The algorithm's domain are (all) the rational numbers,
-    given in Royal cubits. The output range, f(Rc)∈ℝ, is 
-    given in Gon (decimal degrees), but are treated as if 
-    x°(360 degrees). 'Gon' is a correct assumption because
-    the range consists of a 200 gon semi circle. It is 
-    obvious that the gon is treated as if a value in x°
-    because, without further conversion, those gon are 
-    multiplied by 72 presessional years. The presessional
-    model, of course, is based on the 12 sign 360 dgr(°),
-    minute('), second ('') system. */
-
-// Indicate convex set by shading
+/**
+ * Indicate convex set by shading.
+ * The convex set. All function values map Royal cubits line 
+ * segments to presessional degree circle segments. The algorithm's 
+ * domain is (all) the rational numbers, given in Royal cubits. 
+ * The output range, f(Rc)∈ℝ, is given in Gon (decimal degrees), but 
+ * are treated as if x°(360 degrees). 'Gon' is a correct assumption 
+ * because the range consists of a 200 gon semi circle. 
+ * It is obvious that the gon is treated as if a value in x° because, 
+ * without further conversion, those gon are multiplied by 72 presessional years. 
+ * The presessional model, of course, is based on the 12 sign 360 dgr(°), 
+ * minute('), second ('') system.
+ */
 function shadeConvexSet() {
     //
     ctx.drawImage(img, 0, 0);
@@ -796,61 +881,15 @@ function shadeConvexSet() {
     //End draw convex set window
 }
 
-// The Algorithm    
-/*
-    The algorithm has as input domain the rational numbers,
-    given in Royal cubits. The output range, f(Rc)∈ℝ, is 
-    given in Gon (decimal degrees), but is treated as if 
-    x°(360 degrees). 'Gon' is a correct assumption because
-    the output is converted to a 200 gon semi circle.
-    The gon is treated as if x° because without conversion,
-    the gon are multiplied by 72 presessional years, which
-    is modelled using the 12 sign 360 dgr°, minute', second''
-    system.
-*/
-function f(RoyalCubit, GraphCalib, Ryears) {
-    const cGon = 100 * (2 / (RoyalCubit * (Math.PI / 6)));
-    const cIsFloor = Math.floor(cGon / 10);
-    const cF_hbar = cIsFloor === 0 ? 1 : cIsFloor;
-    const cDegPreses = 10 * (cGon / cF_hbar);
-    const cYbo = cDegPreses * 72;
-    const cCalibPlus = (2450 + GraphCalib);
-    const cYbp = (cDegPreses * 72) + (2450 + rValue.GraphCalib);
-    const cRelX = 1 - (cYbp / Ryears);
-
-    // return array of values
-    const f_calc = {
-        Rc: RoyalCubit,
-        gon: cGon,
-        isFloor: cIsFloor,
-        f_hbar: cF_hbar,
-        degPreses: cDegPreses,
-        Ybo: cYbo,
-        CalibPlus: cCalibPlus,
-        Ybp: cYbp,
-        RelX: cRelX
-    }
-    console.info(f_calc);
-    return f_calc
-}
-
-// Asynchronus fetch(url)
-// For delay add .then(sleeper(20)) in fetch().then list
-function sleeper(ms) {
-    return function (x) {
-        return new Promise(resolve => setTimeout(() => resolve(x), ms));
-    };
-}
-
+/**
+ * data.substring(47).slice(0,-2)) pics data part from 
+ * the sheets response string. substring(4) (from pos 47, 
+ * just past the brace to the end), and from this slice 
+ * the part from the mostleft character (0th), uptil -2
+ * characters from the end of the response string
+ * .i.e.,(cutting of the last brace from the string.)
+ */
 function getSheetData() {
-    /**
-     * data.substring(47).slice(0,-2)) pics data part from 
-     * the sheets response string. substring(4) (from pos 47, 
-     * just past the brace to the end), and from this slice 
-     * the part from the mostleft character (0th), uptil -2
-     * characters from the end of the response string
-     * .i.e.,(cutting of the last brace from the string.)
-     */
     let gid = '0'
     let url = ''
     let id = '';
@@ -894,13 +933,15 @@ function getSheetData() {
         .then(response => response.text())
         .then(data => document.getElementById("place_presets").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_presets", "table table-striped caption-top table-sm table-hover", "tbl presets"))
 }
-/*
-table.setAttribute('class','table table-striped caption-top');
-tbody.setAttribute('class','table-group-divider')
-thead.setAttribute('class','table-dark')
-*/
 
-// called from within fetch(url)
+/**
+ * called from fetch(url)
+ * @param {*} jsonString 
+ * @param {*} atr_id 
+ * @param {*} atr_class 
+ * @param {*} theCaption 
+ * @returns 
+ */
 function sheetToTbl(jsonString, atr_id, atr_class, theCaption) {
     var json = JSON.parse(jsonString);
     //console.info(json);
