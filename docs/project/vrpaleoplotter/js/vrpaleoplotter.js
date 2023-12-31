@@ -800,12 +800,12 @@ function shadeConvexSet() {
     //
     ctx.drawImage(img, 0, 0);
 
-    var leftX = 0;
-    var rightX = 0; 
+    var X1 = 0;
+    var X2 = 0; 
     var width = 0;
     var height= 0;
-    var fraction = 0;
     var curf="";
+    
     /** 
      * f(19.099999.... close enough to infinity left
      * fraction = 0.06
@@ -814,19 +814,8 @@ function shadeConvexSet() {
 
     console.info(" Here working.... ");
     curf = f(19.099999999999, rValue.GraphCalib, rValue.Ryears);
-    fraction = curf.RelX * rValue.Rpix;
-    if (rValue.reverseR==false){
-        // [>fraction>|X|...............]
-        leftX = rValue.Lx + (curf.RelX * rValue.Rpix);
-        // rightX = rValue.Rx - fraction;
-    } else {
-        // [...............|X|<fraction<]
-        leftX = (rValue.Rx - (rValue.Lx + (curf.RelX * rValue.Rpix)));
-        //rightX = rValue.Lx + fraction;
-    }
-
-    console.info("ybp:" + curf.Ybp + " >> from left at:" + (curf.RelX * rValue.Rpix) + "px >> from right at: " + (rValue.Rpix - (curf.RelX * rValue.Rpix)));
-
+    X1 = rValue.Rx - (curf.RelX * rValue.Rpix);
+    console.info("ybp:" + curf.Ybp + ">> from right at: " + X1);
     
     /**
      * f(1000000000.... close enough to infinity right
@@ -834,23 +823,13 @@ function shadeConvexSet() {
      * fraction * rValue.Rpix = 0.78 * 427px = 333px
      */
     curf = f(999999999999, rValue.GraphCalib, rValue.Ryears);
-    fraction= curf.RelX * rValue.Rpix;    
-    if (rValue.reverseR==false){
-        // [>fraction>|X|...............]
-        //leftX = rValue.Lx + fraction;
-        rightX = rValue.Lx + (curf.RelX * rValue.Rpix);
-    } else {
-        // [...............|X|<fraction<]
-        //leftX = rValue.Rx - fraction;
-        rightX = (rValue.Rx - (rValue.Lx + (curf.RelX * rValue.Rpix)));
-    }
-    width=rValue.Rpix - leftX - (rValue.Rpix-rightX);
-    width = rValue.reverseR?width:(-width);
-    height = rValue.By;
-
-    console.info("ybp:" + curf.Ybp + " >> from left at:" + (rValue.Lx + (curf.RelX * rValue.Rpix)) + "px >> from right at: " + (rValue.Rx - (rValue.Lx + (curf.RelX * rValue.Rpix))));
+    X2 = rValue.Rx - (curf.RelX * rValue.Rpix);
     
-    console.info("ctx.fillRect(" + (leftX) + "," + rValue.Ty + "," + (width) + "," + height + ")");
+    width= (rValue.Rpix-X1)-(rValue.Rpix-X2);
+    height = rValue.By;
+    console.info("ybp:" + curf.Ybp + ">> from right at: " + X2);
+    
+    console.info(`ctx.fillRect(${X1},${rValue.Ty},${width},${height})`);
 
     // Define a new Path:
     ctx.beginPath();
