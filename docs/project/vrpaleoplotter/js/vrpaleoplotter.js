@@ -343,7 +343,7 @@ chkSet[5] = document.querySelector("input[id=chk_s6]");
 
 for (i in chkSet) {
     chkSet[i].addEventListener('change', function () {
-        //console.info(this.id + " checked=" + this.checked);
+        //console.info(`${this.id} checked=${this.checked}`);
         if (this.id == 'chk_s1') {
             lstSet.set1.show = this.checked;
         };
@@ -481,11 +481,7 @@ var theSet = '',
     numVars = '',
     numberXhaustive = '';
 
-        /*
-        
-    */
-
-/**
+ /**
  * @abstractFor purpose of this program; The expanded table for the five seed values expand to (2^5)-1 = 31 combinations; Those are mapped by 6 sets of aritmethic operations, yielding    a connected graph of 6x31=186 (hypothesized) intentionally mapped events. While open to  the presence of more extensive sets, inhere I limit #seedvalues up to 9 seeds to play with for obvious reasons. 9 seedvalues yield 511x6=3072 'mapped events', and will be hard to validate by mere visual inspection for any intended pattern mapping, as the user will find the case.
  * @returns 
  */
@@ -637,7 +633,7 @@ function makeTheSeedXTbl() {
     thead.setAttribute('class', 'table-light');
 
     // Set caption
-    let newCaptiontext = "<b>The&nbsp;Seeds</b><br/>2<sup>" + numVars + "</sup>-1=" + numberXhaustive + "&nbsp;combinations";
+    let newCaptiontext = `<b>The&nbsp;Seeds</b><br/>2<sup>${numVars}</sup>-1=${numberXhaustive}&nbsp;combinations`;
     tcaption.innerHTML = newCaptiontext;
     // set pop-up button text id="expandedseedbuttonLabel"
     document.getElementById("expandedseedbuttonLabel").innerHTML = newCaptiontext;
@@ -911,9 +907,9 @@ function getSheetData() {
 function sheetToTbl(jsonString, atr_id, atr_class, theCaption) {
     var json = JSON.parse(jsonString);
     //console.info(json);
-    var table = '<table class="' + atr_class + '" id="' + atr_id + '"><caption>' + theCaption + '</caption><thead class="table-light"><tr>'
+    var table = `<table class="${atr_class}" id="${atr_id}"><caption>${theCaption}</caption><thead class="table-light"><tr>`
     // Retrieve the header labels got from the first row
-    json.table.cols.forEach(column => table += '<th>' + column.label + '</th>')
+    json.table.cols.forEach(column => table += `<th>${column.label}</th>`)
     // Itterate over all rows and retrieve the cell data
     table += '</tr></thead><tbody class="table-group-divider"> '
     json.table.rows.forEach(tuple => {
@@ -926,7 +922,7 @@ function sheetToTbl(jsonString, atr_id, atr_class, theCaption) {
             } catch (e) {
                 var contents = ''
             }
-            table += '<td><span class="d-inline-block text-truncate" style="max-width: 150px;">' + contents + '</span></td>'
+            table += `<td><span class="d-inline-block text-truncate" style="max-width: 150px;">${contents}</span></td>`
         })
         table += '</tr></tbody>'
     })
