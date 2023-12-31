@@ -824,7 +824,7 @@ function shadeConvexSet() {
         leftX = rValue.Rx - fraction;
         //rightX = rValue.Lx + fraction;
     }
-    console.info("ybp:"+curf.Ybp+ " >> from left at:"+curf.RelX*rValue.Rpix+ "px >> from right at:"+*rValue.Rpix-(curf.RelX*rValue.Rpix));
+    console.info("ybp:"+curf.Ybp+ " >> from left at:"+curf.RelX*rValue.Rpix+ "px >> from right at:"+rValue.Rpix-(curf.RelX*rValue.Rpix));
     console.info("ctx.fillRect(" + (leftX) + "," + rValue.Ty + "," + (width) + "," + height + ")");
 
     /**
@@ -846,7 +846,7 @@ function shadeConvexSet() {
     width=rValue.Rpix - leftX - (rValue.Rpix-rightX);
     width = rValue.reverseR?width:(-width);
     height = rValue.By;
-    console.info("ybp:"+curf.Ybp+ " >> from left at:"+curf.RelX*rValue.Rpix+ "px >> from right at:"+*rValue.Rpix-(curf.RelX*rValue.Rpix));
+    console.info("ybp:"+curf.Ybp+ " >> from left at:"+curf.RelX*rValue.Rpix+ "px >> from right at:"+rValue.Rpix-(curf.RelX*rValue.Rpix));
     console.info("ctx.fillRect(" + (leftX) + "," + rValue.Ty + "," + (width) + "," + height + ")");        
     
     // Define a new Path:
