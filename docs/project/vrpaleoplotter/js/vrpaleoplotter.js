@@ -844,7 +844,7 @@ function shadeConvexSet() {
     width=rValue.Rpix - leftX - (rValue.Rpix-rightX);
     width = rValue.reverseR?width:(-width);
     height = rValue.By;
-    console.info("ctx.fillRect(" + leftX.floor + "," + rValue.Ty + "," + width.floor + "," + height + ")");        
+    console.info("ctx.fillRect(" + Math.floor(leftX) + "," + rValue.Ty + "," + Math.floor(width) + "," + height + ")");        
     
     // Define a new Path:
     ctx.beginPath();
