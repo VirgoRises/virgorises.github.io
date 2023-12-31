@@ -620,7 +620,7 @@ function expandSeedSet() {
 }
 
 /**
- * 
+ * @abstract 
  */
 function makeTheSeedXTbl() {
     // Build html table
@@ -679,23 +679,20 @@ function makeTheSeedXTbl() {
     // remove (previous) table in div 'theset'
     document.getElementById('theset').innerHTML = "";
 
-    // Adding the entire table to element 'theset'
+    // Adding the table to div theset
     document.getElementById('theset').appendChild(table);
-    //console.info(document.getElementById('theseedxtbl'));
-    // New table, trigger redraw current selection
-    // Just toggling preset id='chk_s1' which forces
-    // recalculating mappings based on new 2^n combinations
+
+    /*
+        
+    */
     triggerRedrawAll();
 }
 
 /**
- * 
+ *  @abstract Refresh html table, trigger redraw current selection. Just toggle preset id='chk_s1' which forces recalculating mappings based on new 2^n combinations. 
  */
 function triggerRedrawAll() {
-    /* Just toggling preset id='chk_s1' which forces
-    recalculating mappings based on 'n' seeds, or 
-    2^n combinations. Trigger twice to leave current 
-    user selection unchanged */
+    // Trigger twice to leave current user selection unchanged
     for (let i = 0; i <= 1; i++) {
         const event = new MouseEvent("click", {
             view: window,
@@ -717,6 +714,7 @@ function triggerRedrawAll() {
 
 /**
  * 
+ * TODO: Plotting rebuild ... working at shading the convex set first
  */ 
 function plotMarker() {
     let plotSelection = "";
@@ -753,7 +751,7 @@ function plotMarker() {
     // shade convex set area
     shadeConvexSet();
 
-    // Start loop over Rc list
+    // Start loop over Rc list to draw mappings
     for (let x in lstRc) {
         curRc.listItem = x;
         //
@@ -795,17 +793,8 @@ function plotMarker() {
 }
 
 /**
- * Indicate convex set by shading.
- * The convex set. All function values map Royal cubits line 
- * segments to presessional degree circle segments. The algorithm's 
- * domain is (all) the rational numbers, given in Royal cubits. 
- * The output range, f(Rc)∈ℝ, is given in Gon (decimal degrees), but 
- * are treated as if x°(360 degrees). 'Gon' is a correct assumption 
- * because the range consists of a 200 gon semi circle. 
- * It is obvious that the gon is treated as if a value in x° because, 
- * without further conversion, those gon are multiplied by 72 presessional years. 
- * The presessional model, of course, is based on the 12 sign 360 dgr(°), 
- * minute('), second ('') system.
+ * @abstract Indicate convex set by shading. The convex set. All function values map Royal cubits line segments to presessional degree circle segments. The algorithm's domain is (all) the rational numbers, given in Royal cubits. The output range, f(Rc) ∈ ℝ, is given in Gon (decimal degrees), but are treated as if x°(360 degrees). 'Gon' is a correct assumption because the range consists of a 200 gon semi circle. It is obvious that the gon is treated as if a value in x° because, without further conversion, those gon are multiplied by 72 presessional years. The presessional model, of course, is based on the 12 sign 360 dgr(°), minute('), second ('') system.
+ * TODO: Plotting rebuild
  */
 function shadeConvexSet() {
     //
@@ -820,6 +809,7 @@ function shadeConvexSet() {
      * fraction = 0.06
      * fraction * rValue.Rpix = 0.06 * 427px = 26px
      */
+    console.info(" Here working.... ");
     fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
     leftX = (fraction * rValue.Rpix); 
     if (rValue.reverseR==false){
