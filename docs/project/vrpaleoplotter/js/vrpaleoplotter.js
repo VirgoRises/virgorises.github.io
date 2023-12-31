@@ -838,7 +838,7 @@ function shadeConvexSet() {
     } else {
         // [...............|X|<fraction<]
         //leftX = rValue.Rx - fraction;
-        rightX = rValue.Rx - fraction;
+        rightX = rValue.Rx - (rValue.Lx + fraction);
     }
     width=rValue.Rpix - leftX - (rValue.Rpix-rightX);
     width = rValue.reverseR?width:(-width);
