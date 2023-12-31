@@ -820,7 +820,7 @@ function shadeConvexSet() {
         // rightX = rValue.Rx - fraction;
     } else {
         // [...............|X|<fraction<]
-        leftX = rValue.Rx - fraction;
+        leftX = rValue.Rx - (rValue.Rpix-fraction);
         //rightX = rValue.Lx + fraction;
     }
     console.info("leftX = "+ leftX +" : rightX = "+ rightX);        
@@ -835,7 +835,7 @@ function shadeConvexSet() {
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
         //leftX = rValue.Lx + fraction;
-        rightX = rValue.Rx - fraction;
+        rightX = rValue.Rx - (rValue.Rpix-fraction);
     } else {
         // [...............|X|<fraction<]
         //leftX = rValue.Rx - fraction;
