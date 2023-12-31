@@ -815,9 +815,11 @@ function shadeConvexSet() {
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
         leftX = rValue.Lx + leftX
+        console.info("Left to right from pos: "+leftX);
     } else {
         // [...............|X|<fraction<]
         leftX = rValue.Rx - leftX
+        console.info("Right to left from pos: "+leftX);
     }
 
     /**
