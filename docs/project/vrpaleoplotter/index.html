@@ -1031,7 +1031,7 @@
 
             fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
             leftX = (fraction * rValue.Rpix) + rValue.Lx; 
-            if (rValue.reverseR){
+            if (rValue.reverseR==false){
                 // [>fraction>|X|...............]
                 leftX = rValue.Lx + leftX
             } else {
@@ -1046,7 +1046,7 @@
              */
             fraction=f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX;
             rightX = (fraction * rValue.Rpix) ;
-            if (rValue.reverseR){
+            if (rValue.reverseR==false){
                 // [>fraction>|X|...............]
                 rightX = rValue.Lx + rightX
             } else {
