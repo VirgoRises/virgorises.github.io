@@ -805,15 +805,16 @@ function shadeConvexSet() {
     var width = 0;
     var height= 0;
     var fraction = 0;
-
+    var curf="";
     /** 
      * f(19.099999.... close enough to infinity left
      * fraction = 0.06
      * fraction * rValue.Rpix = 0.06 * 427px = 26px
      */
+
     console.info(" Here working.... ");
-    fraction=f(19.099999999999, rValue.GraphCalib, rValue.Ryears).RelX;
-    fraction= fraction * rValue.Rpix;    
+    curf = f(19.099999999999, rValue.GraphCalib, rValue.Ryears);
+    fraction = curf.RelX * rValue.Rpix;
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
         leftX = rValue.Lx + fraction;
@@ -823,14 +824,16 @@ function shadeConvexSet() {
         leftX = rValue.Rx - fraction;
         //rightX = rValue.Lx + fraction;
     }
-    
+    console.info("ybp:"+curf.Ybp+ " >> from left at:"+curf.RelX*rValue.Rpix+ "px >> from right at:"+*rValue.Rpix-(curf.RelX*rValue.Rpix));
+    console.info("ctx.fillRect(" + (leftX) + "," + rValue.Ty + "," + (width) + "," + height + ")");
+
     /**
      * f(1000000000.... close enough to infinity right
      * fraction = 0.78
      * fraction * rValue.Rpix = 0.78 * 427px = 333px
      */
-    fraction=f(999999999999, rValue.GraphCalib, rValue.Ryears).RelX;
-    fraction= fraction * rValue.Rpix;    
+    curf = f(999999999999, rValue.GraphCalib, rValue.Ryears);
+    fraction= curf.RelX * rValue.Rpix;    
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
         //leftX = rValue.Lx + fraction;
@@ -843,6 +846,7 @@ function shadeConvexSet() {
     width=rValue.Rpix - leftX - (rValue.Rpix-rightX);
     width = rValue.reverseR?width:(-width);
     height = rValue.By;
+    console.info("ybp:"+curf.Ybp+ " >> from left at:"+curf.RelX*rValue.Rpix+ "px >> from right at:"+*rValue.Rpix-(curf.RelX*rValue.Rpix));
     console.info("ctx.fillRect(" + (leftX) + "," + rValue.Ty + "," + (width) + "," + height + ")");        
     
     // Define a new Path:
