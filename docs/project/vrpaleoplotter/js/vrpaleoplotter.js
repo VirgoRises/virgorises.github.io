@@ -17,33 +17,12 @@
     
 */
 /**
- * // The algorithm function value f(Rc) ∈ ℝ, is given in Gon (decimal degrees), but is treated as if x°(360 degrees). 
- * // 'Gon' is a correct assumption because the output is converted to a 200 gon semi circle. 
- * // The gon is treated as if x° because without conversion, is multiplied by 72 presessional years, which is modelled using the 12 sign 360 dgr°, minute', second'' system.
- * @param {*} RoyalCubit 
- * // input domain the rational numbers, given in Royal cubits f(Rc ∈ ℚ) ∈ ℝ.
- * @param {*} GraphCalib 
- * // The algorithm calculates years prior to 2450 BCE.
- * // GraphCalib is the year zero for the graph in use.
- * // e.g., graphs can be YBP (Years Befor Present), which
- * // means that year zero is calibrated to 1950 CE, and thus
- * @example
- * // 2450 BCE + 1950 CE = 4400 years have to be added to plot the mappings. 
- * @param {*} Ryears
- * The x-axis range in years for the grap in use. 
- * @returns 
- * @example
- * // Array f(1) = {
- * // Rc:1
- * // gon:381.97186342054886
- * // isFloor:38 ()
- * // f_hbar: f_hbar(f(1)) ∈ ℕ = 38 (floor(gon,10) -- changed to 1 if floor is 0)
- * // degPreses:100.51891142646022 ( gon / f_hbar = mapping in convex set)
- * // Ybo:7237.361622705136 (years before orion, 2450 BCE year zero)
- * // CalibPlus:4400 (add delta years to 2450 BCE)
- * // Ybp:11637.361622705135 (years before present to map)
- * // RelX:0.4181319188647432 (x-axis position to map on a scale of Ryears)
- * // }
+ * @abstract The algorithm function value f(Rc) ∈ ℝ, is given in Gon (decimal degrees), but is treated as if x°(360 degrees). 'Gon' is a correct assumption because the output is converted to a 200 gon semi circle. The gon is treated as if x° because without conversion, is multiplied by 72 presessional years, which is modelled using the 12 sign 360 dgr°, minute', second'' system.
+ * @param {*} RoyalCubit given in Royal cubits f(Rc ∈ ℚ) ∈ ℝ.
+ * @param {*} GraphCalib GraphCalib is the year zero for the graph's x-axis range
+ * @example 2450 BCE + 1950 CE = 4400
+ * @param {*} Ryears The x-axis range in years for the grap in use. 
+ * @returns Array f(1).[item]
  */
 function f(RoyalCubit, GraphCalib, Ryears) {
     const cGon = 100 * (2 / (RoyalCubit * (Math.PI / 6)));
@@ -83,8 +62,7 @@ function setPosition(e) {
 }
 
 /**
- * Asynchronus fetch(url)
- * For delay add .then(sleeper(20)) in fetch().then list
+ * @abstract Asynchronus fetch(url). Insert delay. For delay add .then(sleeper(20)) in fetch().
  * @param {*} ms 
  * @returns 
  */
@@ -96,12 +74,8 @@ function sleeper(ms) {
 
 
 /**
- * The m(arker) Plot array: mPlot array. 
- * The array contains the active mPlot session. 
- * Each mPlot session: 
- * plotId; Description. 
- * A focus list of Royal cubits for this plot.
- * Links to: plotWikiURI and a plotDocURI. 
+ * @abstract The m(arker) Plot array: mPlot array. The array contains the active mPlot session. Each mPlot session: plotId; Description. A focus list of Royal cubits for this plot. Links to: plotWikiURI and a plotDocURI. 
+ * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
  */
     var mPlot = {
     plotId: "",
@@ -114,8 +88,8 @@ function sleeper(ms) {
 }
 
 /**
- * Populate mPlot array (todo: UI, db). 
- * Db of plots and callibration info
+ * @abstract Populate mPlot array (todo: UI, db). Db of plots and callibration info.
+ * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
  */ 
 mPlot.plotId = "vr_plt_0000001";
 mPlot.Description = "Comparitive mappins";
@@ -126,13 +100,9 @@ mPlot.plotDocURI = "void";
 mPlot.mRoyalCubits = "";
 
 /**
- * The r(ange) Value array: rValue. 
- * rValue contains formatting information needed for the use of 
- * graphs as backdrop to overlay the algorithms data. 
- * The mPlot>>rValue has a one-to-many relation. 
- * To-Do: switch backdrop graphs dynamically, 
- * e.g., Alley 2004 Gisp2 ice core, and, for instance, 
- * the Lea 2003 Caraco Basin sediment core data.  
+ * @abstract The r(ange) Value array: rValue contains formatting information needed for the use of graphs as backdrop to overlay the algorithms mappings. The mPlot>>rValue has a one-to-many relation.
+ * TODO: switch backdrop graphs dynamically, e.g., Alley 2004 Gisp2 ice core, and, for instance, the Lea 2003 Caraco Basin sediment core data. 
+ * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
  */
 var rValue = {
     graphId: '',
@@ -154,11 +124,8 @@ var rValue = {
     };
 
 /**
- * Populate rValue array (todo: UI, db). 
- * Db of graphs and callibration info. 
- * Google share links, format URI as follows: 
- * 'https://drive.google.com/uc?id=...<long number>...'; 
- * Location: ..\sitesgoogle\vrmedia\graphs
+ * @abstract Populate rValue array (todo: UI, db). Db of graphs and callibration info. Google share links, format URI as follows: 'https://drive.google.com/uc?id=...<long number>...';  Location: ..\sitesgoogle\vrmedia\graphs.
+ * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
  */
 rValue.graphId = "vr_graph_0001";
 rValue.GraphCalib = 1950;
@@ -178,13 +145,8 @@ rValue.GraphURI = 'https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkh
 rValue.GraphDocURI = "void";
 
 /**
- * Status array sets. 
- * Each set has an arithmetic template for expanding the core seed values 
- * into mappings of events in time.
- * Template string literals in back-tic:'a*b*c*...', `${a}*${b}*${c}*...` 
- * Stored in quotes "2*2.02*2.52* ..", triggered --> calc = eval("2*2.02*2.52* .."). 
- * Depending on AorM, zero value columns get set to 0 or 1. 
- * A(dditive)-> 0, or M(ultiplicative), e.g., (A)[a+0+c+d+0+...], or (M)[a*1*c*d*1*...]
+ * @abstract Status array sets. Each set has an arithmetic template for expanding the core seed values into mappings of events in time. Template string literals in back-tic:'a*b*c*...', `${a}*${b}*${c}*...`, execute automatically. Therefore are stored in quotes "2*2.02*2.52* ..", triggered --> calc = eval("2*2.02*2.52* .."). Depending on AorM={A,M}, zero value columns get set to 0 or 1, to preserve overall results. A(dditive)-> 0, or M(ultiplicative), e.g., (A)[a+0+c+d+0+...], or (M)[a*1*c*d*1*...]
+ * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
  */
 var lstSet = {
     set1: {
@@ -246,7 +208,8 @@ var lstSet = {
 }
 
 /**
- * Status array presets
+ * @abstract Status array presets
+ * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
  */
 var lstPreset = {
     f1: {
@@ -283,14 +246,13 @@ var lstPreset = {
 
 
 /**
- * Canvas id="vrCanvasPlotRc" 
+ *  @abstract Delay execution until canvas is ready for bussiness
  */
 var canvas = document.getElementById("vrCanvasPlotRc");
 var ctx = canvas.getContext("2d");
 var img = new Image();
 img.onload = function () {
     ctx.drawImage(img, 0, 0);
-    //
     // Initial run 
     // Fetch google sheet data
     // fetches all tables
@@ -305,17 +267,7 @@ img.src = rValue.GraphURI;
 var rect = canvas.getBoundingClientRect();
 
 /**
- * Change preset event handler.
- * var checkbox =     
- *  document.querySelector("input[name=checkbox]");
- *  checkbox.addEventListener('change', function() {
- *   if (this.checked) {
- *      console.log("Checkbox is checked..");
- *   } else {
- *      console.log("Checkbox is not checked..");
- *   } });
- * 
- * chkPres[0] = document.querySelector("input[id=chk_pall]")
+ * @abstract Event Listener for preset input elements. chkPres[0] = document.querySelector("input[id=chk_pall]")
  */ 
 var chkPres = [];
 chkPres[0] = document.querySelector("input[id=chk_f1]");
@@ -360,8 +312,8 @@ for (let i = 0; i <= 3; i++) {
 };
 
 /**
- * 
  * @param {*} lstPreset 
+ * 
  */
 function procesPreset(lstPreset) {
     //  Set addPresets.csvRc = ""
@@ -377,7 +329,9 @@ function procesPreset(lstPreset) {
     plotMarker();
 }
 
-//changeSet event handler    
+/**
+ * @abstract Event Listener for set input elements. chkSet[0] = document.querySelector("input[id=chk_sall]")
+ */ 
 var chkSet = [];
 //chkSet[0] = document.querySelector("input[id=chk_sall]");
 chkSet[0] = document.querySelector("input[id=chk_s1]");
@@ -414,8 +368,8 @@ for (i in chkSet) {
 }
 
 /**
- * Form change: Select mapping set
  * @param {*} lstSet 
+ * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
  */
 function procesSet(lstSet) {
     let ad_Rc = document.querySelector("input[id=csvRc]");
@@ -436,8 +390,9 @@ function procesSet(lstSet) {
 }
 
 /**
- * populateSetCsvRc(lstSet[x])
- * @param {*} x 
+ * @abstract The datastorage, the first passage, is defined in 5 unique measures of Royal cubit. Hypothesized is that this set of unique seed values are mathematically derived with the intent of generating a connected graph of mappings, targetting paleoclimatological. This program is, in fact, a lab utility to explore and falsify this hypothesis. The user can experiment with up to 9 seeds, and plot the mappings according to the sets. Each variation in 'n' seeds, leads to an array of 2^n possible combinations. Those are then expanded with 6 arithmetic mapping procedures. The aim is to determine wether the mappins resulting fron 5 orriginally stored seeds are randomly distributed, or indeed can be deemed to be a statistical significant mapping of unique climate events. 
+ *  
+ * @param {*} populateSetCsvRc(lstSet[x] 
  */
 function populateSetCsvRc(x) {
     // Declare string litteral variables (max 9)
@@ -525,8 +480,13 @@ var theSet = '',
     binaryLabels = '',
     numVars = '',
     numberXhaustive = '';
+
+        /*
+        
+    */
+
 /**
- * 
+ * @abstractFor purpose of this program; The expanded table for the five seed values expand to (2^5)-1 = 31 combinations; Those are mapped by 6 sets of aritmethic operations, yielding    a connected graph of 6x31=186 (hypothesized) intentionally mapped events. While open to  the presence of more extensive sets, inhere I limit #seedvalues up to 9 seeds to play with for obvious reasons. 9 seedvalues yield 511x6=3072 'mapped events', and will be hard to validate by mere visual inspection for any intended pattern mapping, as the user will find the case.
  * @returns 
  */
 function expandSeedSet() {
@@ -562,9 +522,9 @@ function expandSeedSet() {
     for (let i = 1; i <= purged; i++) {
         oldValue = varArray.pop()
     }
-    // Only sets of unique seeds are alowed, so rewrite
-    // the csvseeds textinput with the cleaned and sorted list
-    // Sort the seeds in numerical order
+    /*  
+        Only sets of unique seeds are alowed, so rewrite the csvseeds textinput with the cleaned and sorted list. Sort the seeds in numerical order 
+    */
     varArray.sort(function (a, b) {
         return a - b
     });
@@ -575,22 +535,10 @@ function expandSeedSet() {
     }
     document.getElementById("csvSeeds").value = cleanVal;
     // End simple set construction
-    /*
-        For purpose of this program;
-        The expanded table for the five seed values 
-        expand to (2^5)-1 = 31 combinations; Those are  
-        mapped by 6 sets of aritmethic operations, yielding
-        a connected graph of 6x31=186 (hypothesized)
-        intentionally mapped events.
-        While open to  the presence of more extensive sets, inhere I limit #seedvalues up to 9 seeds to play with.
-        9 seedvalues yield 511x6=3072 'mapped events', and will be hard to validate by mere visual inspection
-        for any intended pattern mapping.
+    
+    /* 
+        Validate number of seed values: <legend class="maxseeds">
     */
-    // Validate number of seed values
-    //console.info(`You entered more than 9, (${varArray.length}), unique seed values. \n ${varArray}.`);
-    /*
-    <legend id="legendseedsmaps" class="maxseeds">Seeds (max. 9) &amp; mapping</legend>
-                */
     let seedAlert = document.getElementById("legendseedsmaps");
     if (varArray.length > 9) {
         seedAlert.classList.add("maxseeds");
@@ -601,7 +549,8 @@ function expandSeedSet() {
     };
     // Proceed with a set of maximum 9 unique values 
 
-    /* convert the set of unique values to a exhaustive
+    /* 
+        convert the set of unique values to a exhaustive
         list of combinations. This list of seeds will form 
         the basis for consecutive additive, and multiplicative
         operations, which discloses an inter related graph of 
@@ -609,17 +558,20 @@ function expandSeedSet() {
         window in time.
     */
     numVars = varArray.length;
-    // 
-    // Generate the list of combinations
-    // 2^{numVars} => {1,2,4,8,16,32,64,128,...}
-    // The five seeds give (2x(2^5))-1 = 31 combinations!
+    /* 
+        Generate the list of combinations 
+        2^{numVars} => {1,2,4,8,16,32,64,128,...}. 
+        The five seeds give (2x(2^5))-1 = 31 combinations!
+    */
     numberXhaustive = Math.pow(2, numVars) - 1;
+    
     //
     let buildSet = "[";
     let combiLine = "";
     let chkbit = 1;
     let padBin = "";
     let binaryColumns = "";
+    
     // makeTheSeedXTbl(theSet, binaryLabels)
     binaryLabels = "['dec','binary',"
     //
@@ -635,9 +587,9 @@ function expandSeedSet() {
                 binaryLabels += "'" + String.fromCharCode(97 + i) + "'" + (i > 0 ? "," : "]");
                 // console.info(binaryLabels)
             };
-            //
-            // Compare bit position: 'n' AND j, 
-            // e.g., b100(4) AND dec6(b110) = true 
+            /* 
+                Compare bit position: 'n' AND j, e.g., b100(4) AND dec6(b110) = true 
+            */ 
             if ((chkbit << i) & j) {
                 //console.info('(chkbit << i) & j -> keep value;
                 binaryColumns = varArray[i] + ',' + binaryColumns;
