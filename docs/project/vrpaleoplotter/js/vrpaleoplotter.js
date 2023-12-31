@@ -821,7 +821,7 @@ function shadeConvexSet() {
         // rightX = rValue.Rx - fraction;
     } else {
         // [...............|X|<fraction<]
-        leftX = (rValue.Rx - (curf.RelX * rValue.Rpix));
+        leftX = (rValue.Rx - (rValue.Lx + (curf.RelX * rValue.Rpix)));
         //rightX = rValue.Lx + fraction;
     }
 
@@ -842,13 +842,13 @@ function shadeConvexSet() {
     } else {
         // [...............|X|<fraction<]
         //leftX = rValue.Rx - fraction;
-        rightX = (rValue.Rx - (curf.RelX * rValue.Rpix));
+        rightX = (rValue.Rx - (rValue.Lx + (curf.RelX * rValue.Rpix)));
     }
     width=rValue.Rpix - leftX - (rValue.Rpix-rightX);
     width = rValue.reverseR?width:(-width);
     height = rValue.By;
 
-    console.info("ybp:" + curf.Ybp + " >> from left at:" + (rValue.Lx + (curf.RelX * rValue.Rpix)) + "px >> from right at: " + (rValue.Rx - (curf.RelX * rValue.Rpix)));
+    console.info("ybp:" + curf.Ybp + " >> from left at:" + (rValue.Lx + (curf.RelX * rValue.Rpix)) + "px >> from right at: " + (rValue.Rx - (rValue.Lx + (curf.RelX * rValue.Rpix))));
     
     console.info("ctx.fillRect(" + (leftX) + "," + rValue.Ty + "," + (width) + "," + height + ")");
 
