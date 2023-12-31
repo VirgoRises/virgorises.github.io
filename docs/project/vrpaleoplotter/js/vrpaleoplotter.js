@@ -46,7 +46,7 @@ function f(RoyalCubit, GraphCalib, Ryears) {
         Ybp: cYbp,
         RelX: cRelX
     }
-    console.info(f_calc);
+    //console.info(f_calc);
     return f_calc
 }
 
@@ -811,16 +811,18 @@ function shadeConvexSet() {
      */
     console.info(" Here working.... ");
     fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
-    // leftX = (fraction * rValue.Rpix); 
+    fraction= fraction * rValue.Rpix;
+    
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
-        leftX = rValue.Lx + (fraction * rValue.Lx);
-        console.info("leftX = "+ rValue.Lx+" + (fraction * rValue.Lx) =" + (fraction * rValue.Lx) + " = "+leftX);
+        leftX = rValue.Lx + fraction;
+        rightX = rValue.Rx - fraction;
     } else {
         // [...............|X|<fraction<]
-        rightX = rValue.Rx - (fraction * rValue.Rx);
-        console.info("rightX = "+ rValue.Rx+" - " + (fraction * rValue.Rx)+ "="+ (fraction * rValue.Rx) + " = "+rightX);
+        leftX = rValue.Rx - fraction;
+        rightX = rValue.Lx + fraction;
     }
+    console.info("leftX = "+ leftX +" : rightX = "+ rightX);        
 
     /**
      * f(1000000000.... close enough to infinity right
@@ -832,6 +834,7 @@ function shadeConvexSet() {
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
         rightX = rValue.Lx + rightX
+       
     } else {
         // [...............|X|<fraction<]
         rightX = rValue.Rx - rightX
