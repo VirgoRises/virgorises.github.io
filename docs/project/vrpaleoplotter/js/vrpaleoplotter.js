@@ -187,12 +187,14 @@ img.onload = function () {
     //
     // Initial run 
     // Fetch google sheet data
+    // fetches all tables
     getSheetData();
     // Call expandSeedSet()
     expandSeedSet();
     // Call plotMarker()
     plotMarker();
 };
+
 img.src = rValue.GraphURI; //strDataURI;
 //    
 var rect = canvas.getBoundingClientRect();
@@ -831,10 +833,6 @@ function f(RoyalCubit, GraphCalib, Ryears) {
     console.info(f_calc);
     return f_calc
 }
-</script>
-<script>
-// getSheetData() fetches all tables
-getSheetData()
 
 // Asynchronus fetch(url)
 // For delay add .then(sleeper(20)) in fetch().then list
