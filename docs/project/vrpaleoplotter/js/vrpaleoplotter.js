@@ -823,8 +823,7 @@ function shadeConvexSet() {
         leftX = rValue.Rx - (rValue.Rpix-fraction);
         //rightX = rValue.Lx + fraction;
     }
-    console.info("leftX = "+ leftX +" : rightX = "+ rightX);        
-
+    
     /**
      * f(1000000000.... close enough to infinity right
      * fraction = 0.78
@@ -844,7 +843,7 @@ function shadeConvexSet() {
     width=rValue.Rpix - leftX - (rValue.Rpix-rightX);
     width = rValue.reverseR?width:(-width);
     height = rValue.By;
-    console.info("ctx.fillRect(" + Math.floor(leftX) + "," + rValue.Ty + "," + Math.floor(width) + "," + height + ")");        
+    console.info("ctx.fillRect(" + (leftX) + "," + rValue.Ty + "," + (width) + "," + height + ")");        
     
     // Define a new Path:
     ctx.beginPath();
