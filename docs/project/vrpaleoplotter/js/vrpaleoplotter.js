@@ -843,7 +843,7 @@ function shadeConvexSet() {
     }
     width=rightX-leftX;
     height = rValue.By-rValue.Ty;
-    console.info("ctx.fillRect(" + leftX + "," + rValue.Ty + "," + width + "," + height + ")");        
+    console.info("ctx.fillRect(" + leftX.floor + "," + rValue.Ty + "," + width.floor + "," + height + ")");        
     
     // Define a new Path:
     ctx.beginPath();
