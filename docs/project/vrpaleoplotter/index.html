@@ -1080,7 +1080,7 @@
             is modelled using the 12 sign 360 dgr°, minute', second''
             system.
         */
-        function f(RoyalCubit, GraphCalib, RangeX) {
+        function f(RoyalCubit, GraphCalib, Ryears) {
             const cGon = 100 * (2 / (RoyalCubit * (Math.PI / 6)));
             const cIsFloor = Math.floor(cGon / 10);
             const cF_hbar = cIsFloor === 0 ? 1 : cIsFloor;
@@ -1088,7 +1088,7 @@
             const cYbo = cDegPreses * 72;
             const cCalibPlus = (2450 + GraphCalib);
             const cYbp = (cDegPreses * 72) + (2450 + rValue.GraphCalib);
-            const cRelX = 1 - (cYbp / RangeX);
+            const cRelX = 1 - (cYbp / Ryears);
 
             // return array of values
             const f_calc = {
