@@ -827,8 +827,7 @@ function shadeConvexSet() {
 
     console.info("ybp:" + curf.Ybp + " >> from left at:" + (curf.RelX * rValue.Rpix) + "px >> from right at: " + (rValue.Rpix - (curf.RelX * rValue.Rpix)));
 
-    console.info("ctx.fillRect(" + (leftX) + "," + rValue.Ty + "," + (width) + "," + height + ")");
-
+    
     /**
      * f(1000000000.... close enough to infinity right
      * fraction = 0.78
