@@ -812,7 +812,7 @@ function shadeConvexSet() {
      * fraction * rValue.Rpix = 0.06 * 427px = 26px
      */
     console.info(" Here working.... ");
-    fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
+    fraction=f(19.099999999999, rValue.GraphCalib, rValue.Ryears).RelX;
     fraction= fraction * rValue.Rpix;    
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
@@ -829,7 +829,7 @@ function shadeConvexSet() {
      * fraction = 0.78
      * fraction * rValue.Rpix = 0.78 * 427px = 333px
      */
-    fraction=f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX;
+    fraction=f(999999999999, rValue.GraphCalib, rValue.Ryears).RelX;
     fraction= fraction * rValue.Rpix;    
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
