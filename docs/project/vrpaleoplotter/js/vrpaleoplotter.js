@@ -802,6 +802,8 @@ function shadeConvexSet() {
 
     var leftX = 0;
     var rightX = 0; 
+    var width = 0;
+    var height= 0;
     var fraction = 0;
 
     /** 
@@ -839,15 +841,18 @@ function shadeConvexSet() {
         //leftX = rValue.Rx - fraction;
         rightX = rValue.Lx + fraction;
     }
-    console.info("leftX = "+ leftX +" : rightX = "+ rightX);        
-
+    width=rightX-leftX;
+    height = rValue.By-rValue.Ty;
+    console.info("ctx.fillRect(" + leftX + "," + rValue.Ty + "," + width + "," + height + ")");        
+    
     // Define a new Path:
     ctx.beginPath();
     // Convex set
     ctx.fillStyle = "lightblue"; //"#F5F5F5";
     //Draw convex set window
     ctx.globalAlpha = 0.21;
-    ctx.fillRect(leftX, rValue.Ty, rightX, rValue.By);
+    //fillRect(x, y, width, height)
+    ctx.fillRect(leftX, rValue.Ty, width, height);
     ctx.globalAlpha = 1.0;
     // Stroke it (Do the Drawing)
     ctx.stroke();
