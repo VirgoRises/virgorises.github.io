@@ -1,22 +1,49 @@
 
-  
+/**
+ * @example
+ * // returns 6
+ * multiplication(2, 3);
+ * @example
+ * // returns -6
+ * @param {number} a - a number to multiply
+ * @param {number} b - a number to multiply
+ * multiplication(-2, 3);
+ * function multiplication(a, b) {
+ *    return a * b;
+ * };
+ */
+
 /*  The Algorithm
-    The algorithm has as input domain the rational numbers,
-    given in Royal cubits. The output range, f(Rc)∈ℝ, is 
-    given in Gon (decimal degrees), but is treated as if 
-    x°(360 degrees). 'Gon' is a correct assumption because
-    the output is converted to a 200 gon semi circle.
-    The gon is treated as if x° because without conversion,
-    the gon are multiplied by 72 presessional years, which
-    is modelled using the 12 sign 360 dgr°, minute', second''
-    system.
+    
 */
 /**
- * 
+ * // The algorithm function value f(Rc) ∈ ℝ, is given in Gon (decimal degrees), but is treated as if x°(360 degrees). 
+ * // 'Gon' is a correct assumption because the output is converted to a 200 gon semi circle. 
+ * // The gon is treated as if x° because without conversion, is multiplied by 72 presessional years, which is modelled using the 12 sign 360 dgr°, minute', second'' system.
  * @param {*} RoyalCubit 
+ * // input domain the rational numbers, given in Royal cubits f(Rc ∈ ℚ) ∈ ℝ.
  * @param {*} GraphCalib 
- * @param {*} Ryears 
+ * // The algorithm calculates years prior to 2450 BCE.
+ * // GraphCalib is the year zero for the graph in use.
+ * // e.g., graphs can be YBP (Years Befor Present), which
+ * // means that year zero is calibrated to 1950 CE, and thus
+ * @example
+ * // 2450 BCE + 1950 CE = 4400 years have to be added to plot the mappings. 
+ * @param {*} Ryears
+ * The x-axis range in years for the grap in use. 
  * @returns 
+ * @example
+ * // Array f(1) = {
+ * // Rc:1
+ * // gon:381.97186342054886
+ * // isFloor:38 ()
+ * // f_hbar: f_hbar(f(1)) ∈ ℕ = 38 (floor(gon,10) -- changed to 1 if floor is 0)
+ * // degPreses:100.51891142646022 ( gon / f_hbar = mapping in convex set)
+ * // Ybo:7237.361622705136 (years before orion, 2450 BCE year zero)
+ * // CalibPlus:4400 (add delta years to 2450 BCE)
+ * // Ybp:11637.361622705135 (years before present to map)
+ * // RelX:0.4181319188647432 (x-axis position to map on a scale of Ryears)
+ * // }
  */
 function f(RoyalCubit, GraphCalib, Ryears) {
     const cGon = 100 * (2 / (RoyalCubit * (Math.PI / 6)));
