@@ -811,8 +811,7 @@ function shadeConvexSet() {
      */
     console.info(" Here working.... ");
     fraction=f(19.099999, rValue.GraphCalib, rValue.Ryears).RelX;
-    fraction= fraction * rValue.Rpix;
-    
+    fraction= fraction * rValue.Rpix;    
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
         leftX = rValue.Lx + fraction;
@@ -830,15 +829,17 @@ function shadeConvexSet() {
      * fraction * rValue.Rpix = 0.78 * 427px = 333px
      */
     fraction=f(1000000000, rValue.GraphCalib, rValue.Ryears).RelX;
-    rightX = (fraction * rValue.Rpix) ;
+    fraction= fraction * rValue.Rpix;    
     if (rValue.reverseR==false){
         // [>fraction>|X|...............]
-        rightX = rValue.Lx + rightX
-       
+        leftX = rValue.Lx + fraction;
+        rightX = rValue.Rx - fraction;
     } else {
         // [...............|X|<fraction<]
-        rightX = rValue.Rx - rightX
+        leftX = rValue.Rx - fraction;
+        rightX = rValue.Lx + fraction;
     }
+    console.info("leftX = "+ leftX +" : rightX = "+ rightX);        
 
     // Define a new Path:
     ctx.beginPath();
