@@ -815,7 +815,7 @@ function shadeConvexSet() {
     console.info(" Here working.... ");
     curf = f(19.099999999999, rValue.GraphCalib, rValue.Ryears);
     X1 = rValue.Rx - (curf.RelX * rValue.Rpix);
-    console.info("ybp:" + curf.Ybp + ">> from right at: " + X1);
+    console.info(`ybp:${curf.Ybp}>> from right at: ${X1}`);
     
     /**
      * f(1000000000.... close enough to infinity right
@@ -827,7 +827,7 @@ function shadeConvexSet() {
     
     width= (rValue.Rpix-X1)-(rValue.Rpix-X2);
     height = rValue.By;
-    console.info("ybp:" + curf.Ybp + ">> from right at: " + X2);
+    console.info(`ybp:${curf.Ybp}>> from right at: ${X2}`);
     
     console.info(`ctx.fillRect(${X1},${rValue.Ty},${width},${height})`);
 
@@ -838,7 +838,7 @@ function shadeConvexSet() {
     //Draw convex set window
     ctx.globalAlpha = 0.21;
     //fillRect(x, y, width, height)
-    ctx.fillRect(leftX, rValue.Ty, width, height);
+    ctx.fillRect(X1, rValue.Ty, width, height);
     ctx.globalAlpha = 1.0;
     // Stroke it (Do the Drawing)
     ctx.stroke();
