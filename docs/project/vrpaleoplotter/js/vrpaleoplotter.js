@@ -62,40 +62,6 @@ var gBox = {
     gDocURI: ""
 }
 
-// Temporary test goof
-var graph = Array.from(['https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh', 'https://drive.google.com/uc?id=171Me953e5MFlMZvAltIkyKI0HiPk1NA_']);
-
-var coord = [
-    [
-        [78, 85],
-        [583, 310]
-    ],
-    [
-        [103, 15],
-        [393, 420]
-    ]
-];
-
-//===============
-var set = 1;
-//===============
-
-gBox.gURI = graph[set];
-console.info(gBox.gURI );
-
-gBox.top.x = coord[set][0][0];
-gBox.top.y = coord[set][0][1];
-gBox.bottom.x = coord[set][1][0];
-gBox.bottom.y = coord[set][1][1];
-console.info(gBox);
-
-// initialize convex set
-cSet = initConvexSet(gBox);
-
-console.info(cSet);
-
-img.src = gBox.gURI; //strDataURI;
-var rect = canvas.getBoundingClientRect();
 
 
 //==============================================
@@ -440,7 +406,39 @@ img.onload = function () {
     // drawConvexSet();
 };
 
-img.src = rValue.GraphURI;
+// Temporary test goof
+var graph = Array.from(['https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh', 'https://drive.google.com/uc?id=171Me953e5MFlMZvAltIkyKI0HiPk1NA_']);
+
+var coord = [
+    [
+        [78, 85],
+        [583, 310]
+    ],
+    [
+        [103, 15],
+        [393, 420]
+    ]
+];
+
+//===============
+var set = 1;
+//===============
+
+gBox.gURI = graph[set];
+console.info(gBox.gURI );
+
+gBox.top.x = coord[set][0][0];
+gBox.top.y = coord[set][0][1];
+gBox.bottom.x = coord[set][1][0];
+gBox.bottom.y = coord[set][1][1];
+console.info(gBox);
+
+// initialize convex set
+cSet = initConvexSet(gBox);
+
+console.info(cSet);
+
+img.src = gBox.gURI; //strDataURI;
 var rect = canvas.getBoundingClientRect();
 
 
