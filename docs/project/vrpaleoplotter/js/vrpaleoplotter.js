@@ -93,52 +93,36 @@ function plotMarker() {
     /*  shade the convex set area   
         Array declaration: Use eval() for on the fly array construction. */
     lstRc = eval("[" + plotSelection + "]");
-    // Preperation to itterate over list of Rc
-    // Array for holding the current Royal Cubit
-    var curRc = {
-        listItem: 0,
-        Rc: "",
-        Calib: 0,
-        RcX: 0,
-        mLength: gBox.bottom.y, //
-        mLbl: "",
-        f_calc: null,
-    }
-
+    
     // shade convex set area
     shadeConvexSet();
     var markX = 0; //
     // Start loop over Rc list to draw mappings
     for (let x in lstRc) {
-        curRc.listItem = x;
-        // Fetch Royal Cubit from the list
-        curRc.Rc = lstRc[x];
-
+        
         /*  Call The Algorithm with current 
             Royal cubit value -AND- the calibration
             for the current graph, e.g., A graph based
             on years before present (ybp) is likely 
             to start at 1950 CE. */
+        curf = f(lstRc[x], gBox.graphCalib, gBox.rYears);
 
-        curRc.f_calc = f(lstRc[x], gBox.graphCalib, gBox.rYears);
-        console.info(`${curRc.f_calc}= f(${lstRc[x]},${gBox.graphCalib},${gBox.rYears}))`);
         /*  The algorithm calculates offsets from 
             2450 BCE, 4400 years have to be added to 
             map ybp correctly on our present day graph. */
         //=== curRc.Calib = 2450 + rValue.GraphCalib;
-        curRc.Calib = 2450 + gBox.graphCalib;
-        curRc.RcX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
-        curRc.mLbl = curRc.Rc.toString;
+        Calib = 2450 + gBox.graphCalib;
+        RcX = gBox.top.x + (curf.RelX * (gBox.bottom.x - gBox.top.x));
+        mLbl = curRc.Rc.toString; // label not yet in use
 
         // Define a new Path:
-        curRc.f_calc.RelX
         ctx.beginPath();
         //======================
         // works in test gBox.top.x + ((gBox.bottom.x - gBox.top.x) * (fLeft))
         // rev markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
         //markX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
-        markX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
-        console.info(`${gBox.bottom.x} - (${curRc.f_calc.RelX} * (${gBox.bottom.x} - ${gBox.top.x}))`);
+        markX = gBox.bottom.x - (curf.RelX * (gBox.bottom.x - gBox.top.x));
+        console.info(`${gBox.bottom.x} - (${curf.RelX} * (${gBox.bottom.x} - ${gBox.top.x}))`);
         console.info("markX = " + markX);
         
         ctx.setLineDash([4, 2]);
