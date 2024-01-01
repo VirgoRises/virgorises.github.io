@@ -127,7 +127,8 @@ function plotMarker() {
             map ybp correctly on our present day graph. */
         //=== curRc.Calib = 2450 + rValue.GraphCalib;
         curRc.Calib = 2450 + gBox.graphCalib;
-        curRc.RcX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        // reverse curRc.RcX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        curRc.RcX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
         curRc.mLbl = curRc.Rc.toString;
 
         // Define a new Path:
