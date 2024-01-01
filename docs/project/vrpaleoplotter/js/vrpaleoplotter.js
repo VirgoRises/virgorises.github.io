@@ -100,7 +100,7 @@ function plotMarker() {
         Rc: "",
         Calib: 0,
         RcX: 0,
-        mLength: rValue.By, //
+        mLength: gBox.bottom.y, //
         mLbl: "",
         f_calc: null,
     }
@@ -120,7 +120,7 @@ function plotMarker() {
             on years before present (ybp) is likely 
             to start at 1950 CE. */
 
-        curRc.f_calc = f(lstRc[x], rValue.GraphCalib, rValue.Ryears);
+        curRc.f_calc = f(lstRc[x], gBox.GraphCalib, gBox.rYears);
 
         /*  The algorithm calculates offsets from 
             2450 BCE, 4400 years have to be added to 
