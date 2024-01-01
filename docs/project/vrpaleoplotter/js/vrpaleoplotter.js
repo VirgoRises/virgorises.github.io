@@ -421,7 +421,7 @@ var coord = [
 ];
 
 //===============
-var set = 1;
+var set = 0;
 //===============
 
 gBox.gURI = graph[set];
