@@ -127,15 +127,15 @@ function plotMarker() {
             map ybp correctly on our present day graph. */
         //=== curRc.Calib = 2450 + rValue.GraphCalib;
         curRc.Calib = 2450 + gBox.graphCalib;
-        // reverse curRc.RcX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
-        curRc.RcX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        curRc.RcX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
         curRc.mLbl = curRc.Rc.toString;
 
         // Define a new Path:
         curRc.f_calc.RelX
         ctx.beginPath();
         //======================
-        markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        // rev markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        markX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
         console.info(`${gBox.top.x}+ (${curRc.f_calc.RelX} * (${gBox.bottom.x} - ${gBox.top.x}))`);
         console.info("markX = " + markX);
         
