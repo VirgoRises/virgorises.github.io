@@ -102,27 +102,19 @@ function plotMarker() {
         
         /*  Call The Algorithm with current 
             Royal cubit value -AND- the calibration
-            for the current graph, e.g., A graph based
-            on years before present (ybp) is likely 
-            to start at 1950 CE. */
+            for the current graph */
         curf = f(lstRc[x], gBox.graphCalib, gBox.rYears);
-
-        /*  The algorithm calculates offsets from 
-            2450 BCE, 4400 years have to be added to 
-            map ybp correctly on our present day graph. */
-        //=== curRc.Calib = 2450 + rValue.GraphCalib;
-        Calib = 2450 + gBox.graphCalib;
         RcX = gBox.top.x + (curf.RelX * (gBox.bottom.x - gBox.top.x));
-        mLbl = curf.Rc.toString; // label not yet in use
-
+        
         // Define a new Path:
         ctx.beginPath();
         //======================
+        // reversed x-axis
         // works in test gBox.top.x + ((gBox.bottom.x - gBox.top.x) * (fLeft))
-        // rev markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
-        //markX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
-        markX = gBox.bottom.x - (curf.RelX * (gBox.bottom.x - gBox.top.x));
-        console.info(`${gBox.bottom.x} - (${curf.RelX} * (${gBox.bottom.x} - ${gBox.top.x}))`);
+        // How big a chunck from the x-axis?
+        chunck = (curf.RelX * (gBox.bottom.x - gBox.top.x));
+        console.info(`chunck <- ${chunck} = ${curf.RelX} * (${gBox.bottom.x} - ${gBox.top.x})`);
+        markX = gBox.bottom.x - chunck;
         console.info("markX = " + markX);
         
         ctx.setLineDash([4, 2]);
