@@ -13,6 +13,205 @@
  * };
  */
 
+function initConvexSet(gBox) {
+    const fLeft = f(19.099999999, 1950, 20000).RelX;
+    const fRight = f(999999999999, 1950, 20000).RelX;
+    const tmpPix = gBox.bottom.x - gBox.top.x;
+    let cSet = {
+        xPix: tmpPix,
+        cX: gBox.top.x + ((gBox.bottom.x - gBox.top.x) * (fLeft)),
+        cY: gBox.top.y,
+        cW: (fRight * tmpPix) - (fLeft * tmpPix),
+        cH: gBox.bottom.y - gBox.top.y,
+        fill: {
+            color: "lightblue",
+            gAlpha: 0.21
+        },
+        mPad: {
+            top: 5,
+            bottom: -5
+        } // draw mapping lines inoutside bounds 
+    };
+    return cSet
+}
+
+
+function shadeConvexSet() {  // was drawConvexSet() {
+    // init 
+    ctx.drawImage(img, 0, 0);
+
+    ctx.beginPath();
+    // Convex set
+    // draw gBox window
+    ctx.fillStyle = "lightgrey"; //"#F5F5F5";
+    ctx.globalAlpha = 0.3;
+    //ctx.fillRect(gBox.top.x, gBox.top.y, (gBox.bottom.x - gBox.top.x), (gBox.bottom.y - gBox.top.y));
+
+
+    ctx.fillStyle = cSet.fill.color; //"#F5F5F5";
+    //Draw convex set window
+    ctx.globalAlpha = cSet.fill.gAlpha;
+
+    //shading
+    ctx.fillRect(cSet.cX, cSet.cY, cSet.cW, cSet.cH);
+  /*
+    // box
+    //ctx.rect(boxX, boxY, boxWidth, boxHeigth);
+    ctx.setLineDash([4, 3]);
+    ctx.moveTo(FoneX, gBox.bottom.y + cSet.mPad.bottom);
+    ctx.lineTo(FoneX, gBox.top.y + cSet.mPad.top);
+
+    ctx.moveTo(FkcX, gBox.bottom.y + cSet.mPad.bottom);
+    ctx.lineTo(FkcX, gBox.top.y + cSet.mPad.top);
+*/
+    ctx.globalAlpha = 1.0;
+    // Stroke it (Do the Drawing)
+    ctx.stroke();
+
+    ctx.strokeStyle = "black"; //"#F5F5F5";
+    //End draw convex set window
+
+}
+
+/**
+ * @abstract Indicate convex set by shading. The convex set. All function values map Royal cubits line segments to presessional degree circle segments. The algorithm's domain is (all) the rational numbers, given in Royal cubits. The output range, f(Rc) ∈ ℝ, is given in Gon (decimal degrees), but are treated as if x°(360 degrees). 'Gon' is a correct assumption because the range consists of a 200 gon semi circle. It is obvious that the gon is treated as if a value in x° because, without further conversion, those gon are multiplied by 72 presessional years. The presessional model, of course, is based on the 12 sign 360 dgr(°), minute('), second ('') system.
+ * TODO: Plotting rebuild
+ */
+function xx_shadeConvexSet() {
+    //
+    ctx.drawImage(img, 0, 0);
+
+    var X1 = 0;
+    var X2 = 0;
+    var width = 0;
+    var height = 0;
+    var curf = "";
+
+    /** 
+     * f(19.099999.... close enough to infinity left
+     * fraction = 0.06
+     * fraction * rValue.Rpix = 0.06 * 427px = 26px
+     */
+
+    console.info(" Here working.... ");
+    curf = f(19.099999999999, rValue.GraphCalib, rValue.Ryears);
+    X1 = rValue.Rx - (curf.RelX * rValue.Rpix);
+    console.info(`ybp:${curf.Ybp}>> from right at: ${X1}`);
+
+    /**
+     * f(1000000000.... close enough to infinity right
+     * fraction = 0.78
+     * fraction * rValue.Rpix = 0.78 * 427px = 333px
+     */
+    curf = f(999999999999, rValue.GraphCalib, rValue.Ryears);
+    X2 = rValue.Rx - (curf.RelX * rValue.Rpix);
+
+    width = (rValue.Rpix - X1) - (rValue.Rpix - X2);
+    height = rValue.By;
+    console.info(`ybp:${curf.Ybp}>> from right at: ${X2}`);
+
+    console.info(`ctx.fillRect(${X1},${rValue.Ty},${width},${height})`);
+
+    // Define a new Path:
+    ctx.beginPath();
+    // Convex set
+    ctx.fillStyle = "lightblue"; //"#F5F5F5";
+    //Draw convex set window
+    ctx.globalAlpha = 0.21;
+    //fillRect(x, y, width, height)
+    ctx.fillRect(X1, rValue.Ty, width, height);
+    ctx.globalAlpha = 1.0;
+    // Stroke it (Do the Drawing)
+    ctx.stroke();
+
+    ctx.strokeStyle = "black"; //"#F5F5F5";
+    //End draw convex set window
+}
+
+/**
+ * 
+ * TODO: Plotting rebuild ... working at shading the convex set first
+ */
+function plotMarker() {
+    let plotSelection = "";
+
+    /*  Preserve users manually added  Royal cubit values */
+    let manualInput = document.getElementById("csvRc").value;
+    plotSelection += manualInput;
+
+    /*  plotMarker() will add the current preset 
+        selection (lstPreset.addPresets.csvRc) to the 
+        Rc list got from the csvMap manual entry. */
+    plotSelection += lstPreset.addPresets.csvRc;
+
+    /*  plotMarker() will add the current set 
+        selection (lstSet.addSets.csvRc) to the 
+        Rc list got from the csvMap manual entry. */
+    plotSelection += lstSet.addSets.csvRc;
+
+    /*  shade the convex set area   
+        Array declaration: Use eval() for on the fly array construction. */
+    lstRc = eval("[" + plotSelection + "]");
+    // Preperation to itterate over list of Rc
+    // Array for holding the current Royal Cubit
+    var curRc = {
+        listItem: 0,
+        Rc: "",
+        Calib: 0,
+        RcX: 0,
+        mLength: rValue.By, //
+        mLbl: "",
+        f_calc: null,
+    }
+
+    // shade convex set area
+    shadeConvexSet();
+
+    // Start loop over Rc list to draw mappings
+    for (let x in lstRc) {
+        curRc.listItem = x;
+        //
+        curRc.Rc = lstRc[x];
+
+        /*  Call The Algorithm with current 
+            Royal cubit value -AND- the callibration
+            for the current graph, e.g., A graph based
+            on years before present (ybp) is likely 
+            to start at 1950 CE. */
+
+        curRc.f_calc = f(lstRc[x], rValue.GraphCalib, rValue.Ryears);
+
+        /*  The algorithm calculates offsets from 
+            2450 BCE, 4400 years have to be added to 
+            map ybp correctly on our present day graph. */
+        curRc.Calib = 2450 + rValue.GraphCalib;
+
+        /*  Draw the mapping in the shape of a vertical
+            line. */
+        curRc.RcX = (rValue.Rx) - (((curRc.f_calc.Ybo + curRc.Calib) / (rValue.Ryears)) * rValue.Rpix);
+
+        curRc.mLbl = curRc.Rc.toString;
+
+        // Define a new Path:
+        ctx.beginPath();
+
+        // Define a start Point
+        ctx.moveTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx, rValue.By);
+
+        // Define an end Point
+        ctx.lineTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx, rValue.Ty);
+
+        // Stroke it (Do the Drawing)
+        ctx.stroke();
+
+    }
+
+}
+
+
+
+
+
 /*  The Algorithm
     
 */
@@ -77,10 +276,10 @@ function sleeper(ms) {
  * @abstract The m(arker) Plot array: mPlot array. The array contains the active mPlot session. Each mPlot session: plotId; Description. A focus list of Royal cubits for this plot. Links to: plotWikiURI and a plotDocURI. 
  * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
  */
-    var mPlot = {
+var mPlot = {
     plotId: "",
     Description: "",
-    graphlist: ['string 1','string 2','string 3'],
+    graphlist: ['string 1', 'string 2', 'string 3'],
     plotWikiURI: "",
     DiscordSrvr: "",
     plotDocURI: "",
@@ -90,7 +289,7 @@ function sleeper(ms) {
 /**
  * @abstract Populate mPlot array (todo: UI, db). Db of plots and callibration info.
  * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
- */ 
+ */
 mPlot.plotId = "vr_plt_0000001";
 mPlot.Description = "Comparitive mappins";
 //mplot.graphlist = eval('['+'grph00000000,grph00000001'+']');
@@ -114,14 +313,14 @@ var rValue = {
     Rpix: 0,
     Ryears: 0,
     YperPix: 0,
-    reverseR:true,
+    reverseR: true,
     dataSet: '',
     GraphFileName: '',
     GraphStored: '',
     dsetURI: '',
     GraphURI: '',
     GraphDocURI: 0
-    };
+};
 
 /**
  * @abstract Populate rValue array (todo: UI, db). Db of graphs and callibration info. Google share links, format URI as follows: 'https://drive.google.com/uc?id=...<long number>...';  Location: ..\sitesgoogle\vrmedia\graphs.
@@ -129,9 +328,9 @@ var rValue = {
  */
 rValue.graphId = "vr_graph_0001";
 rValue.GraphCalib = 1950;
-rValue.Lx = 78; 
-rValue.Ty = 85; 
-rValue.Rx = 505; 
+rValue.Lx = 78;
+rValue.Ty = 85;
+rValue.Rx = 505;
 rValue.By = 225;
 rValue.Rpix = rValue.Rx - rValue.Lx;
 rValue.Ryears = 20000;
@@ -253,6 +452,7 @@ var ctx = canvas.getContext("2d");
 var img = new Image();
 img.onload = function () {
     ctx.drawImage(img, 0, 0);
+
     // Initial run 
     // Fetch google sheet data
     // fetches all tables
@@ -261,14 +461,100 @@ img.onload = function () {
     expandSeedSet();
     // Call plotMarker()
     plotMarker();
+
+    // drawConvexSet();
 };
 
-img.src = rValue.GraphURI;     
+img.src = rValue.GraphURI;
 var rect = canvas.getBoundingClientRect();
+
+//==============================================
+//==============================================
+//==============================================
+
+// var graphBox
+var gBox = {
+    graphId: "",
+    graphCalib: "", //  Iest data
+    top: {
+        x: 103,     //  78      103,
+        y: 15       //  85      15
+    },
+    bottom: {
+        x: 393,     //  583     393
+        y: 420      //  310     420
+    },
+    rPix: "<calc>",
+    rYears: 20000,
+    yPerPix: "<calc>",
+    reverseX: true,
+    gFileName: "",
+    gStored: "",
+    dsetURI: "",
+    gURI: "",
+    gDocURI: ""
+}
+
+// Temporary test goof
+var graph = ['https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh', 'https://drive.google.com/uc?id=171Me953e5MFlMZvAltIkyKI0HiPk1NA_'];
+
+var coord = [
+    [
+        [78, 85],
+        [583, 310]
+    ],
+    [
+        [103, 15],
+        [393, 420]
+    ]
+];
+
+//===============
+var set = 1;
+//===============
+
+gBox.gURI = graph[set];
+
+gBox.top.x = coord[set][0][0];
+gBox.top.y = coord[set][0][1];
+gBox.bottom.x = coord[set][1][0];
+gBox.bottom.y = coord[set][1][1];
+console.info(gBox);
+
+// initialize convex set
+cSet = initConvexSet(gBox);
+
+console.info(cSet);
+
+img.src = gBox.gURI; //strDataURI;
+var rect = canvas.getBoundingClientRect();
+/*
+// f(RoyalCubit, GraphCalib, Ryears)
+var Fleft = f(19.09999999, 1950, 20000);
+console.info(Fleft);
+var Fright = f(999999, 1950, 20000);
+console.info(Fright);
+
+var Fone = f(1, 1950, 20000);
+console.info(Fone);
+var FoneX = gBox.top.x + (Fone.RelX * (gBox.bottom.x - gBox.top.x));
+console.info("FoneX = " + FoneX);
+
+var Fkc = f(11.17, 1950, 20000);
+console.info(Fkc);
+var FkcX = gBox.top.x + (Fkc.RelX * (gBox.bottom.x - gBox.top.x));
+console.info("FkcX = " + FkcX);
+*/
+
+//==============================================
+//==============================================
+//==============================================
+
+
 
 /**
  * @abstract Event Listener for preset input elements. chkPres[0] = document.querySelector("input[id=chk_pall]")
- */ 
+ */
 var chkPres = [];
 chkPres[0] = document.querySelector("input[id=chk_f1]");
 chkPres[1] = document.querySelector("input[id=chk_seeds]");
@@ -331,7 +617,7 @@ function procesPreset(lstPreset) {
 
 /**
  * @abstract Event Listener for set input elements. chkSet[0] = document.querySelector("input[id=chk_sall]")
- */ 
+ */
 var chkSet = [];
 //chkSet[0] = document.querySelector("input[id=chk_sall]");
 chkSet[0] = document.querySelector("input[id=chk_s1]");
@@ -481,10 +767,10 @@ var theSet = '',
     numVars = '',
     numberXhaustive = '';
 
- /**
- * @abstractFor purpose of this program; The expanded table for the five seed values expand to (2^5)-1 = 31 combinations; Those are mapped by 6 sets of aritmethic operations, yielding    a connected graph of 6x31=186 (hypothesized) intentionally mapped events. While open to  the presence of more extensive sets, inhere I limit #seedvalues up to 9 seeds to play with for obvious reasons. 9 seedvalues yield 511x6=3072 'mapped events', and will be hard to validate by mere visual inspection for any intended pattern mapping, as the user will find the case.
- * @returns 
- */
+/**
+* @abstractFor purpose of this program; The expanded table for the five seed values expand to (2^5)-1 = 31 combinations; Those are mapped by 6 sets of aritmethic operations, yielding    a connected graph of 6x31=186 (hypothesized) intentionally mapped events. While open to  the presence of more extensive sets, inhere I limit #seedvalues up to 9 seeds to play with for obvious reasons. 9 seedvalues yield 511x6=3072 'mapped events', and will be hard to validate by mere visual inspection for any intended pattern mapping, as the user will find the case.
+* @returns 
+*/
 function expandSeedSet() {
     var varList = document.getElementById("csvSeeds").value;
 
@@ -531,7 +817,7 @@ function expandSeedSet() {
     }
     document.getElementById("csvSeeds").value = cleanVal;
     // End simple set construction
-    
+
     /* 
         Validate number of seed values: <legend class="maxseeds">
     */
@@ -540,7 +826,7 @@ function expandSeedSet() {
         seedAlert.classList.add("maxseeds");
         document.getElementById("csvSeeds").focus;
         return;
-    }else{
+    } else {
         seedAlert.classList.remove("maxseeds");
     };
     // Proceed with a set of maximum 9 unique values 
@@ -560,14 +846,14 @@ function expandSeedSet() {
         The five seeds give (2x(2^5))-1 = 31 combinations!
     */
     numberXhaustive = Math.pow(2, numVars) - 1;
-    
+
     //
     let buildSet = "[";
     let combiLine = "";
     let chkbit = 1;
     let padBin = "";
     let binaryColumns = "";
-    
+
     // makeTheSeedXTbl(theSet, binaryLabels)
     binaryLabels = "['dec','binary',"
     //
@@ -585,7 +871,7 @@ function expandSeedSet() {
             };
             /* 
                 Compare bit position: 'n' AND j, e.g., b100(4) AND dec6(b110) = true 
-            */ 
+            */
             if ((chkbit << i) & j) {
                 //console.info('(chkbit << i) & j -> keep value;
                 binaryColumns = varArray[i] + ',' + binaryColumns;
@@ -664,7 +950,7 @@ function makeTheSeedXTbl() {
         for (d = 0; d <= theSet[r].length - 1; d++) {
             data[d] = document.createElement('td');
             data[d].innerHTML = theSet[r][d];
-            if (d>=2 & data[d].innerHTML>0){
+            if (d >= 2 & data[d].innerHTML > 0) {
                 data[d].setAttribute('class', 'seedselected');
                 //console.info("seedselected: cel "+d+"="+data[d].innerHTML);
             }
@@ -708,140 +994,6 @@ function triggerRedrawAll() {
     }
 }
 
-/**
- * 
- * TODO: Plotting rebuild ... working at shading the convex set first
- */ 
-function plotMarker() {
-    let plotSelection = "";
-
-    /*  Preserve users manually added  Royal cubit values */
-    let manualInput = document.getElementById("csvRc").value;
-    plotSelection += manualInput;
-
-    /*  plotMarker() will add the current preset 
-        selection (lstPreset.addPresets.csvRc) to the 
-        Rc list got from the csvMap manual entry. */
-    plotSelection += lstPreset.addPresets.csvRc;
-
-    /*  plotMarker() will add the current set 
-        selection (lstSet.addSets.csvRc) to the 
-        Rc list got from the csvMap manual entry. */
-    plotSelection += lstSet.addSets.csvRc;
-
-    /*  shade the convex set area   
-        Array declaration: Use eval() for on the fly array construction. */
-    lstRc = eval("[" + plotSelection + "]");
-    // Preperation to itterate over list of Rc
-    // Array for holding the current Royal Cubit
-    var curRc = {
-        listItem: 0,
-        Rc: "",
-        Calib: 0,
-        RcX: 0,
-        mLength: rValue.By, //
-        mLbl: "",
-        f_calc: null,
-    }
-
-    // shade convex set area
-    shadeConvexSet();
-
-    // Start loop over Rc list to draw mappings
-    for (let x in lstRc) {
-        curRc.listItem = x;
-        //
-        curRc.Rc = lstRc[x];
-
-        /*  Call The Algorithm with current 
-            Royal cubit value -AND- the callibration
-            for the current graph, e.g., A graph based
-            on years before present (ybp) is likely 
-            to start at 1950 CE. */
-
-        curRc.f_calc = f(lstRc[x], rValue.GraphCalib, rValue.Ryears);
-
-        /*  The algorithm calculates offsets from 
-            2450 BCE, 4400 years have to be added to 
-            map ybp correctly on our present day graph. */
-        curRc.Calib = 2450 + rValue.GraphCalib;
-
-        /*  Draw the mapping in the shape of a vertical
-            line. */
-        curRc.RcX = (rValue.Rx) - (((curRc.f_calc.Ybo + curRc.Calib) / (rValue.Ryears)) * rValue.Rpix);
-
-        curRc.mLbl = curRc.Rc.toString;
-
-        // Define a new Path:
-        ctx.beginPath();
-
-        // Define a start Point
-        ctx.moveTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx , rValue.By );
-
-        // Define an end Point
-        ctx.lineTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx , rValue.Ty);
-
-        // Stroke it (Do the Drawing)
-        ctx.stroke();
-
-    }
-
-}
-
-/**
- * @abstract Indicate convex set by shading. The convex set. All function values map Royal cubits line segments to presessional degree circle segments. The algorithm's domain is (all) the rational numbers, given in Royal cubits. The output range, f(Rc) ∈ ℝ, is given in Gon (decimal degrees), but are treated as if x°(360 degrees). 'Gon' is a correct assumption because the range consists of a 200 gon semi circle. It is obvious that the gon is treated as if a value in x° because, without further conversion, those gon are multiplied by 72 presessional years. The presessional model, of course, is based on the 12 sign 360 dgr(°), minute('), second ('') system.
- * TODO: Plotting rebuild
- */
-function shadeConvexSet() {
-    //
-    ctx.drawImage(img, 0, 0);
-
-    var X1 = 0;
-    var X2 = 0; 
-    var width = 0;
-    var height= 0;
-    var curf="";
-    
-    /** 
-     * f(19.099999.... close enough to infinity left
-     * fraction = 0.06
-     * fraction * rValue.Rpix = 0.06 * 427px = 26px
-     */
-
-    console.info(" Here working.... ");
-    curf = f(19.099999999999, rValue.GraphCalib, rValue.Ryears);
-    X1 = rValue.Rx - (curf.RelX * rValue.Rpix);
-    console.info(`ybp:${curf.Ybp}>> from right at: ${X1}`);
-    
-    /**
-     * f(1000000000.... close enough to infinity right
-     * fraction = 0.78
-     * fraction * rValue.Rpix = 0.78 * 427px = 333px
-     */
-    curf = f(999999999999, rValue.GraphCalib, rValue.Ryears);
-    X2 = rValue.Rx - (curf.RelX * rValue.Rpix);
-    
-    width= (rValue.Rpix-X1)-(rValue.Rpix-X2);
-    height = rValue.By;
-    console.info(`ybp:${curf.Ybp}>> from right at: ${X2}`);
-    
-    console.info(`ctx.fillRect(${X1},${rValue.Ty},${width},${height})`);
-
-    // Define a new Path:
-    ctx.beginPath();
-    // Convex set
-    ctx.fillStyle = "lightblue"; //"#F5F5F5";
-    //Draw convex set window
-    ctx.globalAlpha = 0.21;
-    //fillRect(x, y, width, height)
-    ctx.fillRect(X1, rValue.Ty, width, height);
-    ctx.globalAlpha = 1.0;
-    // Stroke it (Do the Drawing)
-    ctx.stroke();
-
-    ctx.strokeStyle = "black"; //"#F5F5F5";
-    //End draw convex set window
-}
 
 /**
  * data.substring(47).slice(0,-2)) pics data part from 
