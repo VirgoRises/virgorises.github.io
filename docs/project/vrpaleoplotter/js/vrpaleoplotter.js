@@ -31,7 +31,7 @@ function f(RoyalCubit, GraphCalib, Ryears) {
     const cDegPreses = 10 * (cGon / cF_hbar);
     const cYbo = cDegPreses * 72;
     const cCalibPlus = (2450 + GraphCalib);
-    const cYbp = (cDegPreses * 72) + (2450 + rValue.GraphCalib);
+    const cYbp = (cDegPreses * 72) + (2450 + GraphCalib);
     const cRelX = 1 - (cYbp / Ryears);
 
     // return array of values
