@@ -107,7 +107,7 @@ function plotMarker() {
 
     // shade convex set area
     shadeConvexSet();
-
+    var markX = 0; //
     // Start loop over Rc list to draw mappings
     for (let x in lstRc) {
         curRc.listItem = x;
@@ -138,11 +138,23 @@ function plotMarker() {
         // Define a new Path:
         ctx.beginPath();
         ctx.setLineDash([4, 2]);
+
+        //======================
+        var markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        console.info("markX = " + markX);
+
+        //ctx.rect(boxX, boxY, boxWidth, boxHeigth);
+        ctx.setLineDash([4, 3]);
+        ctx.moveTo(markX, gBox.bottom.y + cSet.mPad.bottom);
+        ctx.lineTo(markX, gBox.top.y + cSet.mPad.top);
+
+        //======================
+
         // Define a start Point
-        ctx.moveTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx, rValue.By);
+        //ctx.moveTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx, rValue.By);
 
         // Define an end Point
-        ctx.lineTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx, rValue.Ty);
+        //ctx.lineTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx, rValue.Ty);
 
         // Stroke it (Do the Drawing)
         ctx.stroke();
