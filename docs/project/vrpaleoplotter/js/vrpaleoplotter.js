@@ -111,17 +111,17 @@ function plotMarker() {
     // Start loop over Rc list to draw mappings
     for (let x in lstRc) {
         curRc.listItem = x;
-        //
+        // Fetch Royal Cubit from the list
         curRc.Rc = lstRc[x];
 
         /*  Call The Algorithm with current 
-            Royal cubit value -AND- the callibration
+            Royal cubit value -AND- the calibration
             for the current graph, e.g., A graph based
             on years before present (ybp) is likely 
             to start at 1950 CE. */
 
         curRc.f_calc = f(lstRc[x], gBox.graphCalib, gBox.rYears);
-        console.info(curRc.f_calc);
+        console.info(`${curRc.f_calc}= f(${lstRc[x]},${gBox.graphCalib},${gBox.rYears}))`);
         /*  The algorithm calculates offsets from 
             2450 BCE, 4400 years have to be added to 
             map ybp correctly on our present day graph. */
@@ -134,6 +134,7 @@ function plotMarker() {
         curRc.f_calc.RelX
         ctx.beginPath();
         //======================
+        // works in test gBox.top.x + ((gBox.bottom.x - gBox.top.x) * (fLeft))
         // rev markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
         //markX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
         markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
