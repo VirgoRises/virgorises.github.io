@@ -134,7 +134,7 @@ function plotMarker() {
         ctx.beginPath();
         //======================
         markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
-        //console.info("markX = " + markX);
+        console.info("markX = " + markX);
         
         ctx.setLineDash([4, 2]);
         ctx.moveTo(markX, gBox.bottom.y + cSet.mPad.bottom);
