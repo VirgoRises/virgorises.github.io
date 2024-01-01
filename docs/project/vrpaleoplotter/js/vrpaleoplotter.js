@@ -121,7 +121,7 @@ function plotMarker() {
             to start at 1950 CE. */
 
         curRc.f_calc = f(lstRc[x], gBox.GraphCalib, gBox.rYears);
-
+        console.info(curRc.f_calc);
         /*  The algorithm calculates offsets from 
             2450 BCE, 4400 years have to be added to 
             map ybp correctly on our present day graph. */
@@ -422,7 +422,7 @@ var coord = [
 ];
 
 //===============
-var set = 0;
+var set = 1;
 //===============
 
 gBox.gURI = graph[set];
