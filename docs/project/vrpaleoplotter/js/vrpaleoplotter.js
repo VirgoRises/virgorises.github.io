@@ -137,8 +137,8 @@ function plotMarker() {
         // works in test gBox.top.x + ((gBox.bottom.x - gBox.top.x) * (fLeft))
         // rev markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
         //markX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
-        markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
-        console.info(`${gBox.top.x}+ (${curRc.f_calc.RelX} * (${gBox.bottom.x} - ${gBox.top.x}))`);
+        markX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        console.info(`${gBox.bottom.x} - (${curRc.f_calc.RelX} * (${gBox.bottom.x} - ${gBox.top.x}))`);
         console.info("markX = " + markX);
         
         ctx.setLineDash([4, 2]);
