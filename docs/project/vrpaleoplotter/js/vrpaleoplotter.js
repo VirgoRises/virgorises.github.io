@@ -120,7 +120,7 @@ function plotMarker() {
             on years before present (ybp) is likely 
             to start at 1950 CE. */
 
-        curRc.f_calc = f(lstRc[x], gBox.GraphCalib, gBox.rYears);
+        curRc.f_calc = f(lstRc[x], gBox.graphCalib, gBox.rYears);
         console.info(curRc.f_calc);
         /*  The algorithm calculates offsets from 
             2450 BCE, 4400 years have to be added to 
@@ -131,6 +131,7 @@ function plotMarker() {
         curRc.mLbl = curRc.Rc.toString;
 
         // Define a new Path:
+        curRc.f_calc.RelX
         ctx.beginPath();
         //======================
         markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
