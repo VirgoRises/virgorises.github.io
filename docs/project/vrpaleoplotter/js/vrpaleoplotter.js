@@ -135,7 +135,8 @@ function plotMarker() {
         ctx.beginPath();
         //======================
         // rev markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
-        markX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        //markX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
         console.info(`${gBox.top.x}+ (${curRc.f_calc.RelX} * (${gBox.bottom.x} - ${gBox.top.x}))`);
         console.info("markX = " + markX);
         
