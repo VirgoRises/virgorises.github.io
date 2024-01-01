@@ -113,7 +113,7 @@ function plotMarker() {
         //=== curRc.Calib = 2450 + rValue.GraphCalib;
         Calib = 2450 + gBox.graphCalib;
         RcX = gBox.top.x + (curf.RelX * (gBox.bottom.x - gBox.top.x));
-        mLbl = curRc.Rc.toString; // label not yet in use
+        mLbl = curf.Rc.toString; // label not yet in use
 
         // Define a new Path:
         ctx.beginPath();
