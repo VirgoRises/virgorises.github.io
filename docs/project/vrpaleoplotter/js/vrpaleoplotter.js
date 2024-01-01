@@ -80,8 +80,8 @@ var coord = [
 var set = 1;
 //===============
 
-console.info(graph);
 gBox.gURI = graph[set];
+console.info(gBox.gURI );
 
 gBox.top.x = coord[set][0][0];
 gBox.top.y = coord[set][0][1];
