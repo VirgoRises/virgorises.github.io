@@ -100,7 +100,7 @@ function plotMarker() {
         Rc: "",
         Calib: 0,
         RcX: 0,
-        mLength: rValue.By, //
+        mLength: gBox.bottom.y, //
         mLbl: "",
         f_calc: null,
     }
@@ -120,42 +120,29 @@ function plotMarker() {
             on years before present (ybp) is likely 
             to start at 1950 CE. */
 
-        curRc.f_calc = f(lstRc[x], rValue.GraphCalib, rValue.Ryears);
-
+        curRc.f_calc = f(lstRc[x], gBox.graphCalib, gBox.rYears);
+        console.info(curRc.f_calc);
         /*  The algorithm calculates offsets from 
             2450 BCE, 4400 years have to be added to 
             map ybp correctly on our present day graph. */
-            //=== curRc.Calib = 2450 + rValue.GraphCalib;
-            curRc.Calib = 2450 + gBox.graphCalib;
-
-        /*  Draw the mapping in the shape of a vertical
-            line. */
-            //=== curRc.RcX = (rValue.Rx) - (((curRc.f_calc.Ybo + curRc.Calib) / (rValue.Ryears)) * rValue.Rpix);
-            curRc.RcX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
-
+        //=== curRc.Calib = 2450 + rValue.GraphCalib;
+        curRc.Calib = 2450 + gBox.graphCalib;
+        curRc.RcX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
         curRc.mLbl = curRc.Rc.toString;
 
         // Define a new Path:
+        curRc.f_calc.RelX
         ctx.beginPath();
-        ctx.setLineDash([4, 2]);
-
         //======================
-        var markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        // rev markX = gBox.top.x + (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        markX = gBox.bottom.x - (curRc.f_calc.RelX * (gBox.bottom.x - gBox.top.x));
+        console.info(`${gBox.top.x}+ (${curRc.f_calc.RelX} * (${gBox.bottom.x} - ${gBox.top.x}))`);
         console.info("markX = " + markX);
-
-        //ctx.rect(boxX, boxY, boxWidth, boxHeigth);
-        ctx.setLineDash([4, 3]);
+        
+        ctx.setLineDash([4, 2]);
         ctx.moveTo(markX, gBox.bottom.y + cSet.mPad.bottom);
         ctx.lineTo(markX, gBox.top.y + cSet.mPad.top);
-
         //======================
-
-        // Define a start Point
-        //ctx.moveTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx, rValue.By);
-
-        // Define an end Point
-        //ctx.lineTo((curRc.f_calc.RelX * rValue.Rpix) + rValue.Lx, rValue.Ty);
-
         // Stroke it (Do the Drawing)
         ctx.stroke();
 
@@ -256,6 +243,7 @@ mPlot.mRoyalCubits = "";
  * TODO: switch backdrop graphs dynamically, e.g., Alley 2004 Gisp2 ice core, and, for instance, the Lea 2003 Caraco Basin sediment core data. 
  * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
  */
+/*
 var rValue = {
     graphId: '',
     GraphCalib: 0,
@@ -274,11 +262,14 @@ var rValue = {
     GraphURI: '',
     GraphDocURI: 0
 };
+*/
 
 /**
  * @abstract Populate rValue array (todo: UI, db). Db of graphs and callibration info. Google share links, format URI as follows: 'https://drive.google.com/uc?id=...<long number>...';  Location: ..\sitesgoogle\vrmedia\graphs.
  * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
  */
+
+/*
 rValue.graphId = "vr_graph_0001";
 rValue.GraphCalib = 1950;
 rValue.Lx = 78;
@@ -295,6 +286,7 @@ rValue.GraphStored = "..\virgorises\google_site\vrmedia\graphs";
 rValue.dsetURI = 'https://drive.google.com/uc?...';
 rValue.GraphURI = 'https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh';
 rValue.GraphDocURI = "void";
+*/
 
 /**
  * @abstract Status array sets. Each set has an arithmetic template for expanding the core seed values into mappings of events in time. Template string literals in back-tic:'a*b*c*...', `${a}*${b}*${c}*...`, execute automatically. Therefore are stored in quotes "2*2.02*2.52* ..", triggered --> calc = eval("2*2.02*2.52* .."). Depending on AorM={A,M}, zero value columns get set to 0 or 1, to preserve overall results. A(dditive)-> 0, or M(ultiplicative), e.g., (A)[a+0+c+d+0+...], or (M)[a*1*c*d*1*...]
@@ -433,11 +425,11 @@ var coord = [
 ];
 
 //===============
-var set = 0;
+var set = 1;
 //===============
 
 gBox.gURI = graph[set];
-console.info(gBox.gURI );
+console.info(gBox.gURI);
 
 gBox.top.x = coord[set][0][0];
 gBox.top.y = coord[set][0][1];
@@ -983,6 +975,11 @@ function sheetToTbl(jsonString, atr_id, atr_class, theCaption) {
     table += '</table>'
     return table
 };
+
+/**
+ * @abstract Indicate convex set by shading. The convex set. All function values map Royal cubits line segments to presessional degree circle segments. The algorithm's domain is (all) the rational numbers, given in Royal cubits. The output range, f(Rc) ∈ ℝ, is given in Gon (decimal degrees), but are treated as if x°(360 degrees). 'Gon' is a correct assumption because the range consists of a 200 gon semi circle. It is obvious that the gon is treated as if a value in x° because, without further conversion, those gon are multiplied by 72 presessional years. The presessional model, of course, is based on the 12 sign 360 dgr(°), minute('), second ('') system.
+ * TODO: Plotting rebuild (working)
+ */
 function shadeConvexSet() {  // was drawConvexSet() {
     // init 
     ctx.drawImage(img, 0, 0);
@@ -1009,10 +1006,7 @@ function shadeConvexSet() {  // was drawConvexSet() {
 
 }
 
-/**
- * @abstract Indicate convex set by shading. The convex set. All function values map Royal cubits line segments to presessional degree circle segments. The algorithm's domain is (all) the rational numbers, given in Royal cubits. The output range, f(Rc) ∈ ℝ, is given in Gon (decimal degrees), but are treated as if x°(360 degrees). 'Gon' is a correct assumption because the range consists of a 200 gon semi circle. It is obvious that the gon is treated as if a value in x° because, without further conversion, those gon are multiplied by 72 presessional years. The presessional model, of course, is based on the 12 sign 360 dgr(°), minute('), second ('') system.
- * TODO: Plotting rebuild
- */
+
 function xx_shadeConvexSet() {
     //
     ctx.drawImage(img, 0, 0);
@@ -1029,24 +1023,24 @@ function xx_shadeConvexSet() {
      * fraction * rValue.Rpix = 0.06 * 427px = 26px
      */
 
-    console.info(" Here working.... ");
-    curf = f(19.099999999999, rValue.GraphCalib, rValue.Ryears);
-    X1 = rValue.Rx - (curf.RelX * rValue.Rpix);
-    console.info(`ybp:${curf.Ybp}>> from right at: ${X1}`);
+    //console.info(" Here working.... ");
+    //curf = f(19.099999999999, rValue.GraphCalib, rValue.Ryears);
+    //X1 = rValue.Rx - (curf.RelX * rValue.Rpix);
+    //console.info(`ybp:${curf.Ybp}>> from right at: ${X1}`);
 
     /**
      * f(1000000000.... close enough to infinity right
      * fraction = 0.78
      * fraction * rValue.Rpix = 0.78 * 427px = 333px
      */
-    curf = f(999999999999, rValue.GraphCalib, rValue.Ryears);
-    X2 = rValue.Rx - (curf.RelX * rValue.Rpix);
+    //curf = f(999999999999, rValue.GraphCalib, rValue.Ryears);
+    //X2 = rValue.Rx - (curf.RelX * rValue.Rpix);
 
-    width = (rValue.Rpix - X1) - (rValue.Rpix - X2);
-    height = rValue.By;
-    console.info(`ybp:${curf.Ybp}>> from right at: ${X2}`);
+    //width = (rValue.Rpix - X1) - (rValue.Rpix - X2);
+    //height = rValue.By;
+    //console.info(`ybp:${curf.Ybp}>> from right at: ${X2}`);
 
-    console.info(`ctx.fillRect(${X1},${rValue.Ty},${width},${height})`);
+    //console.info(`ctx.fillRect(${X1},${rValue.Ty},${width},${height})`);
 
     // Define a new Path:
     ctx.beginPath();
@@ -1055,7 +1049,7 @@ function xx_shadeConvexSet() {
     //Draw convex set window
     ctx.globalAlpha = 0.21;
     //fillRect(x, y, width, height)
-    ctx.fillRect(X1, rValue.Ty, width, height);
+    //ctx.fillRect(X1, rValue.Ty, width, height);
     ctx.globalAlpha = 1.0;
     // Stroke it (Do the Drawing)
     ctx.stroke();
