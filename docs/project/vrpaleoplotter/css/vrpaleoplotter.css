@@ -6,6 +6,15 @@ canvas {
     border: 1px solid black;
     cursor: crosshair;
 }
+img {
+    max-width: 100%;
+    height: auto;
+  }
+
+#xxvrCanvasPlotRc{
+    width: 100%;
+
+}
 .seedselected {
     font-weight:500;
 }

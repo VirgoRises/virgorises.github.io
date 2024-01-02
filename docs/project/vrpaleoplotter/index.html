@@ -3,8 +3,7 @@
 
 <head>
     <title>Virgo Rises - The Algorithm</title>
-    <!-- meta http-equiv="content-type" content="text/html; charset=utf-8" /-->
-    <script src="https//:polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!-- meta http-equiv="content-type" content="text/html; charset=utf-8" -->
     <!--    MathJax delimeters \( math \) for sites.google
             compatibilaty.  -->
     <script type="text/x-mathjax-config">
@@ -22,14 +21,14 @@
     <script id="MathJax-script" async
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML">
         </script>
-        <!-- Prevent ENTER from submitting forms (After implementing Bootstrap?)
+    <!-- Prevent ENTER from submitting forms (After implementing Bootstrap?)
         https://jkorpela.fi/forms/enter.html 
          <script> function noenter() { return !(window.event && window.event.keyCode == 13); } </script>
         Add the following attribute into each input type="text" tag(s) in your form:
         onkeypress="return noenter()"
         This works simply so that if the user hits ENTER and if that would trigger form submission on the browser, then (if JavaScript is enabled) the onkeypress attribute causes form submission to be aborted, since it executes a return statement with value false.
         I changed <form> ... </form> to <xform> ... </xform>. Keep remark for the time being.
-        -->       
+        -->
     <!-- CSS -->
     <link rel="stylesheet" href="css/vrpaleoplotter.css">
     <!--
@@ -44,7 +43,7 @@
     <div class="container  px-4">
         <div class="row">
             <div class="col">
-                <canvas id="vrCanvasPlotRc" width=600 height=500></canvas>
+                <canvas id="vrCanvasPlotRc" width=800 height=200></canvas>
             </div>
         </div>
         <div class="row">
@@ -53,7 +52,8 @@
                     <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
                     <xform> <!-- No Form, No trigger: onkeypress="return noenter()"-->
                         <label for="csvSeeds">csv Seeds</label>
-                        <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset" onchange="expandSeedSet()" />
+                        <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
+                            onchange="expandSeedSet()" />
                     </xform>
                 </fieldset>
             </div>
@@ -62,7 +62,8 @@
                     <legend>Mapping</legend>
                     <xform> <!-- No Form, No trigger: onkeypress="return noenter()"-->
                         <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                        <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." />
+                        <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()"
+                            pattern="" placeholder="2,2.02,2.52,..." />
                     </xform>
                 </fieldset>
             </div>
@@ -165,7 +166,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- ... -->
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="theset">
                         <!-- makeTheSeedXTbl() table id="theseedxtbl" -->
                     </div>
@@ -187,7 +187,7 @@
                     <h1 class="modal-title fs-5" id="XXtblwrapperModalLabel">Tabels</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div id="tblwrapperModalbody" class="modal-body" >
+                <div id="tblwrapperModalbody" class="modal-body">
                     <!-- here the accordion  -->
                     <div class="table-responsive accordion" id="accordionExample">
                         <div class="accordion-item">

@@ -374,6 +374,12 @@ var canvas = document.getElementById("vrCanvasPlotRc");
 var ctx = canvas.getContext("2d");
 var img = new Image();
 img.onload = function () {
+
+    var aspectRatio = img.width/img.height;
+    canvas.setAttribute("width",img.width);
+    console.info(img.width +":"+ aspectRatio);
+    canvas.setAttribute("height",img.width/aspectRatio);
+
     ctx.drawImage(img, 0, 0);
 
     // Initial run 
@@ -403,7 +409,7 @@ var coord = [
 ];
 
 //===============
-var set = 0;
+var set = 1;
 //===============
 
 gBox.gURI = graph[set];
