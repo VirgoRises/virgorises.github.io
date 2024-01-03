@@ -396,48 +396,6 @@ function triggerRedrawAll() {
  * .i.e.,(cutting of the last brace from the string.)
  */
 function getSheetData() {
-    let gid = '0'
-    let url = ''
-    let id = '';
-    // Fetch 'data_vrpaleoplotter';
-    // For delay add .then(sleeper(20)) in fetch().then list
-    id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';
-    url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
-    fetch(url)
-        .then(response => response.text())
-        .then(data => document.getElementById("place_vrpaleoplotter").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "data_vrpaleoplotter", "table table-striped caption-top table-sm table-hover", "list of tables"))
-
-    // Fetch 'tbl_mplot'
-    id = '1QRR_9DZsyRXTc2hsp4U5YX8gC4vtbWCi2KFugu63Cug';
-    //arrayFromSheet(tbl_mplot_id);
-    url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
-    fetch(url)
-        .then(response => response.text())
-        .then(data => document.getElementById("place_mplot").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_mplot", "table table-striped caption-top table-sm table-hover", "tbl mplot"))
-
-    // Fetch 'tbl_rvalue'
-    id = '1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY';
-    //arrayFromSheet(tbl_rvalue_id);
-    url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
-    fetch(url)
-        .then(response => response.text())
-        .then(data => document.getElementById("place_rvalue").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_rvalue", "table table-striped caption-top table-sm table-hover", "tbl rvalue"))
-
-    // Fetch 'tbl_sets'
-    id = '1jKLwi9l8ck5KgbgmhwG4clmd70b6zKvsPEUPA036Tlk';
-    //arrayFromSheet(tbl_sets_id);
-    url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
-    fetch(url)
-        .then(response => response.text())
-        .then(data => document.getElementById("place_sets").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_sets", "table table-striped caption-top table-sm table-hover", "tbl sets"))
-
-    // Fetch 'tbl_presets'
-    id = '1GdTl9vU4KPBG9nA9g6XWcVX2__PuAh1Y5HkrogYLhyw';
-    //arrayFromSheet(tbl_presets_id);
-    url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
-    fetch(url)
-        .then(response => response.text())
-        .then(data => document.getElementById("place_presets").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_presets", "table table-striped caption-top table-sm table-hover", "tbl presets"))
 }
 
 /**
@@ -483,4 +441,96 @@ function sleeper(ms) {
     return function (x) {
         return new Promise(resolve => setTimeout(() => resolve(x), ms));
     };
+}
+
+/**
+ *  @abstract Event Listener for set, and preset input elements.
+ */
+function setEventListeners() {
+    /**
+     * Event Listener for preset input elements.
+     * chkPres[0] = document.querySelector("input[id=chk_pall]")
+     */
+    var chkPres = [];
+    chkPres[0] = document.querySelector("input[id=chk_f1]");
+    chkPres[1] = document.querySelector("input[id=chk_seeds]");
+    chkPres[2] = document.querySelector("input[id=chk_kc]");
+    chkPres[3] = document.querySelector("input[id=chk_extr]");
+
+    for (let i = 0; i <= 3; i++) {
+        chkPres[i].addEventListener('change', function () {
+            //console.info(this.id + " checked=" + this.checked);
+
+            if (this.id == 'chk_f1') {
+                lstPreset.f1.show = this.checked;
+            };
+            if (this.id == 'chk_seeds') {
+                lstPreset.seeds.show = this.checked;
+
+                /*  If checked: Also resets the csvSeeds field 
+                    to the initial 5 seeds from the 1th Passage */
+                if (this.checked) {
+                    // trigger event change text csvSeeds
+                    /*  answered Dec 14, 2022 at 14:21 Hamid Heydari
+                        stackoverflow: 
+                        The question is Where and How? 
+                        "Where" we want the change event to be triggered exactly at the moment after a bunch of codes is executed, and "How" is in the form of the following syntax: */
+                    var triggerThis = document.getElementById("csvSeeds");
+                    // do stuff: modify the value
+                    triggerThis.value = lstPreset.seeds.csvRc;
+                    // trigger change event on text box
+                    triggerThis.dispatchEvent(new Event("change"));
+                }
+            };
+            if (this.id == 'chk_kc') {
+                lstPreset.kc.show = this.checked;
+            };
+            if (this.id == 'chk_extr') {
+                lstPreset.extr.show = this.checked;
+            };
+            // Add presets to csvRc and redraw
+            procesPreset(lstPreset)
+        })
+    };
+
+
+    /**
+     * Event Listener for set input elements. 
+     * chkSet[0] = document.querySelector("input[id=chk_sall]")
+     */
+    var chkSet = [];
+    //chkSet[0] = document.querySelector("input[id=chk_sall]");
+    chkSet[0] = document.querySelector("input[id=chk_s1]");
+    chkSet[1] = document.querySelector("input[id=chk_s2]");
+    chkSet[2] = document.querySelector("input[id=chk_s3]");
+    chkSet[3] = document.querySelector("input[id=chk_s4]");
+    chkSet[4] = document.querySelector("input[id=chk_s5]");
+    chkSet[5] = document.querySelector("input[id=chk_s6]");
+
+    for (i in chkSet) {
+        chkSet[i].addEventListener('change', function () {
+            //console.info(`${this.id} checked=${this.checked}`);
+            if (this.id == 'chk_s1') {
+                lstSet.set1.show = this.checked;
+            };
+            if (this.id == 'chk_s2') {
+                lstSet.set2.show = this.checked;
+            };
+            if (this.id == 'chk_s3') {
+                lstSet.set3.show = this.checked;
+            };
+            if (this.id == 'chk_s4') {
+                lstSet.set4.show = this.checked;
+            };
+            if (this.id == 'chk_s5') {
+                lstSet.set5.show = this.checked;
+            };
+            if (this.id == 'chk_s6') {
+                lstSet.set6.show = this.checked;
+            };
+            // Add to csvRc
+            procesSet(lstSet) //
+        });
+    }
+
 }
