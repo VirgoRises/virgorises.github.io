@@ -388,17 +388,6 @@ function triggerRedrawAll() {
 
 
 /**
- * data.substring(47).slice(0,-2)) pics data part from 
- * the sheets response string. substring(4) (from pos 47, 
- * just past the brace to the end), and from this slice 
- * the part from the mostleft character (0th), uptil -2
- * characters from the end of the response string
- * .i.e.,(cutting of the last brace from the string.)
- */
-function getSheetData() {
-}
-
-/**
  * called from fetch(url)
  * @param {*} jsonString 
  * @param {*} atr_id 
@@ -544,24 +533,26 @@ function initGraphBox() {
         graphId: "",
         graphCalib: "", //  Iest data
         top: {
-            x: 103,     //  78      103,
-            y: 15       //  85      15
+            x: 78,     //  78      103,
+            y: 85       //  85      15
         },
         bottom: {
-            x: 393,     //  583     393
-            y: 420      //  310     420
+            x: 583,     //  583     393
+            y: 310      //  310     420
         },
         rPix: "<calc>",
         rYears: 20000,
         yPerPix: "<calc>",
-        reverseX: true,
+        reverseX: true, // graph with reversed x-axis
         gFileName: "",
         gStored: "",
         dsetURI: "",
         gURI: "",
         gDocURI: ""
     }
-
+    // x-axis
+    gBox.rPix = gBox.bottom.x - gBox.top.x;
+    gBox.yPerPix=gBox.rYears / gBox.rPix;
     /**
      * include the fetch 
      * 

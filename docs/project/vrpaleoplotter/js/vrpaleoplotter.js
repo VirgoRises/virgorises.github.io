@@ -29,52 +29,60 @@
  * @returns cSet
  */
 function initConvexSet(gBox) {
-    const fLeft = f(19.099999999, 1950, 20000).RelX;
-    const fRight = f(999999999999, 1950, 20000).RelX;
-    const tmpPix = gBox.bottom.x - gBox.top.x;
+    var fLeft = f(999999999999, 1950, 20000).RelX; // x-axis 0-->20k
+    var fRight = f(19.099999999, 1950, 20000).RelX; // x-axis 0-->20k
+    var tmpPix= gBox.bottom.x - gBox.top.x;
+    console.info(`fLeft = f(999999999999, 1950, 20000).RelX = ${fLeft}`);
+    console.info(`fRight = f(19.099999999, 1950, 20000).RelX = ${fRight}`);
+    
     let cSet = {
-        xPix: tmpPix,
-        cX: gBox.top.x + ((gBox.bottom.x - gBox.top.x) * (fLeft)),
-        cY: gBox.top.y,
-        cW: (fRight * tmpPix) - (fLeft * tmpPix),
-        cH: gBox.bottom.y - gBox.top.y,
+        xPix: gBox.bottom.x - gBox.top.x,
+        cX: (gBox.top.x + ((1-fLeft) * tmpPix)), //),
+        cY: gBox.top.y ,
+        cW: ((fLeft * tmpPix) - (fRight * tmpPix)),
+        cH: (gBox.bottom.y - gBox.top.y),
         fill: {
             color: "lightblue",
-            gAlpha: 0.21
+            gAlpha: 0.15
         },
         mPad: {
             top: 5,
             bottom: -5
         } // draw mapping lines in/outside bounds 
     };
-    return cSet
-}
+    // calculated values
+    //gBox.reverseX = true;
+    if (gBox.reverseX) {
+        console.info("gBox reverse");
+        gBox.top.x - (fLeft * gBox.rPix);
+        }
 
-/**
- * @abstract Indicate convex set by shading. The convex set. All function values map Royal cubits line segments to presessional degree circle segments. The algorithm's domain is (all) the rational numbers, given in Royal cubits. The output range, f(Rc) ∈ ℝ, is given in Gon (decimal degrees), but are treated as if x°(360 degrees). 'Gon' is a correct assumption because the range consists of a 200 gon semi circle. It is obvious that the gon is treated as if a value in x° because, without further conversion, those gon are multiplied by 72 presessional years. The presessional model, of course, is based on the 12 sign 360 dgr(°), minute('), second ('') system.
- * TODO: Plotting rebuild (working)
- * TODO: Goobledigook to math jargon. 
- */
-function shadeConvexSet() {  // was drawConvexSet() {
-    // init 
-    ctx.drawImage(img, 0, 0);
+    // shade Convex Set;
+    ctx = document.getElementById("vrCanvasPlotRc").getContext("2d");
+    
+    // If the x-axis is reversed;
+    if (gBox.reverseX) {
+        cSet.cX = (gBox.bottom.x - ((1-fLeft) * tmpPix));
+        cSet.cW = -cSet.cW;
+    }
+
     ctx.beginPath();
-    // Convex set
-    // draw gBox window
-    ctx.fillStyle = "lightgrey"; //"#F5F5F5";
-    ctx.globalAlpha = 0.3;
-    //ctx.fillRect(gBox.top.x, gBox.top.y, (gBox.bottom.x - gBox.top.x), (gBox.bottom.y - gBox.top.y));
-    ctx.fillStyle = cSet.fill.color; //"#F5F5F5";
-    //Draw convex set window
+    ctx.fillStyle = cSet.fill.color;
     ctx.globalAlpha = cSet.fill.gAlpha;
-    //shading
-    ctx.fillRect(cSet.cX, cSet.cY, cSet.cW, cSet.cH);
+
+    // shade offset and reverse flag of rectangle width
+    ctx.fillRect(cSet.cX , cSet.cY, cSet.cW, cSet.cH );
+    //};
     ctx.globalAlpha = 1.0;
     // Stroke it (Do the Drawing)
     ctx.stroke();
-    ctx.strokeStyle = "black"; //"#F5F5F5";
+    // ctx.strokeStyle = "black"; //"#F5F5F5";
     //End draw convex set window
+
+    // console.info(`ctx.fillRect(${cSet.cX}, ${cSet.mPad.bottom}, ${cSet.cW}, ${cSet.cH + cSet.mPad.top})`);
+    return cSet
 }
+
 
 /**
  * 
@@ -83,28 +91,41 @@ function shadeConvexSet() {  // was drawConvexSet() {
 function plotMarker() {
     let plotSelection = "";
 
-    /*  Preserve users manually added  Royal cubit values */
-    let manualInput = document.getElementById("csvRc").value;
+    /*  Preserve userlist of manually added Royal cubit values */
+    const manualInput = document.getElementById("csvRc").value;
     plotSelection += manualInput;
+    //console.info(`manualInput+=${manualInput}`);
 
-    /*  plotMarker() will add the current preset 
-        selection (lstPreset.addPresets.csvRc) to the 
-        Rc list got from the csvMap manual entry. */
+    /* add the current preset 
+        selection to the Rc list */
     plotSelection += lstPreset.addPresets.csvRc;
+    //console.info(`lstPreset.addPresets.csvRc=${lstPreset.addPresets.csvRc}`)
 
-    /*  plotMarker() will add the current set 
-        selection (lstSet.addSets.csvRc) to the 
-        Rc list got from the csvMap manual entry. */
+    /* add the current set selection to the Rc list. */
     plotSelection += lstSet.addSets.csvRc;
+    //console.info(`lstSet.addPresets.csvRc=${lstSet.addSets.csvRc}`)
 
-    /*  shade the convex set area   
-        Array declaration: Use eval() for on the fly array construction. */
+    /* shade the convex set area */
     lstRc = eval("[" + plotSelection + "]");
 
-    // shade convex set area
-    shadeConvexSet();
+    // Plot markers
+    ctx = document.getElementById("vrCanvasPlotRc").getContext("2d");
+    // Set orientation of the x-axis
+    const reverseAxis = gBox.reverseX ? -1 : 1;
+    //translate(x,y) based on axis orientation
+    /*
+    if (reverseAxis == -1) {
+        ctx.translate(gBox.bottom.x, gBox.bottom.y);
+    } else {
+        ctx.translate(gBox.top.x, gBox.bottom.y);
+    };
+    */
+    let cSet = initConvexSet(gBox);
+    const markerLength = (-1) * ((gBox.bottom.y + cSet.mPad.bottom) - (gBox.top.y + cSet.mPad.top));
+    const markerYoffset = cSet.mPad.bottom;
+    // console.info(plotSelection);
+    // console.info(lstRc);
 
-    var markX = 0; //
     // Start loop over Rc list to draw mappings
     for (let x in lstRc) {
 
@@ -112,22 +133,16 @@ function plotMarker() {
             Royal cubit value -AND- the calibration
             for the current graph */
         curf = f(lstRc[x], gBox.graphCalib, gBox.rYears);
-        RcX = gBox.top.x + (curf.RelX * (gBox.bottom.x - gBox.top.x));
+
+        RcX = curf.RelX * gBox.rPix * reverseAxis;
+        //console.info(`RcX = ${curf.RelX} * ${gBox.rPix} * ${reverseAxis} = ${RcX}`);
 
         // Define a new Path:
         ctx.beginPath();
-        //======================
-        // reversed x-axis
-        // works in test gBox.top.x + ((gBox.bottom.x - gBox.top.x) * (fLeft))
-        // How big a chunck from the x-axis?
-        chunck = (curf.RelX * (gBox.bottom.x - gBox.top.x));
-        //console.info(`chunck <- ${chunck} = ${curf.RelX} * (${gBox.bottom.x} - ${gBox.top.x})`);
-        markX = gBox.bottom.x - chunck;
-        //console.info("markX = " + markX);
 
         ctx.setLineDash([4, 2]);
-        ctx.moveTo(markX, gBox.bottom.y + cSet.mPad.bottom);
-        ctx.lineTo(markX, gBox.top.y + cSet.mPad.top);
+        ctx.moveTo(RcX, markerYoffset);
+        ctx.lineTo(RcX, markerLength);
         //======================
         // Stroke it (Do the Drawing)
         ctx.stroke();
@@ -135,7 +150,6 @@ function plotMarker() {
     }
 
 }
-
 
 // Initialize global arrays
 console.info('init Arrays over here');
@@ -167,24 +181,20 @@ var coord = [
 ];
 
 //===============
-var set = 0;
+var set = 1;
 //===============
-
 
 gBox.gURI = graph[set];
 //console.info(gBox.gURI);
-
 gBox.top.x = coord[set][0][0];
 gBox.top.y = coord[set][0][1];
 gBox.bottom.x = coord[set][1][0];
 gBox.bottom.y = coord[set][1][1];
-console.info(gBox);
+//console.info(gBox);
 
 // initialize convex set
 cSet = initConvexSet(gBox);
-
-console.info(cSet);
-
+//console.info(cSet);
 
 /**
  *  @abstract Delay execution until canvas is ready for bussiness
@@ -193,14 +203,10 @@ var canvas = document.getElementById("vrCanvasPlotRc");
 var ctx = canvas.getContext("2d");
 var img = new Image();
 img.onload = function () {
-
     // Draw graph
     ctx.drawImage(img, 0, 0);
     // Actions 
     setEventListeners();
-    // Fetch google sheet data
-    // fetches all tables
-    // getSheetData(); // All in init Arrays now
     // Call expandSeedSet()
     expandSeedSet();
     // Call plotMarker()
@@ -208,5 +214,5 @@ img.onload = function () {
 };
 
 var rect = canvas.getBoundingClientRect();
-img.src = gBox.gURI; //strDataURI;
+img.src = gBox.gURI;
 
