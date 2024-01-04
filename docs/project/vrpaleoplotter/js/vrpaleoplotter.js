@@ -203,6 +203,10 @@ var canvas = document.getElementById("vrCanvasPlotRc");
 var ctx = canvas.getContext("2d");
 var img = new Image();
 img.onload = function () {
+    // tidy up
+    canvas.width = img.width;
+    canvas.height = canvas.width / (img.width / img.height);
+
     // Draw graph
     ctx.drawImage(img, 0, 0);
     // Actions 
@@ -212,7 +216,6 @@ img.onload = function () {
     // Call plotMarker()
     plotMarker();
 };
-
 var rect = canvas.getBoundingClientRect();
 img.src = gBox.gURI;
 
