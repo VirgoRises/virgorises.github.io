@@ -33,6 +33,94 @@ function f(RoyalCubit, GraphCalib, Ryears) {
 }
 
 /**
+ * 
+ * TODO: Plotting rebuild ... 
+ */
+function plotMarker() {
+    //console.info('plotMarker in:' + ++called); // var called = 0;
+    //console.info('plotMarker out:' + ++called); // var called = 0;
+
+    let plotSelection = "";
+    /*  Preserve userlist of manually added Royal cubit values */
+    const manualInput = document.getElementById("csvRc").value;
+    plotSelection += manualInput;
+    //console.info(`manualInput+=${manualInput}`);
+    /* add the current preset 
+        selection to the Rc list */
+    plotSelection += lstPreset.addPresets.csvRc;
+    //console.info(`lstPreset.addPresets.csvRc=${lstPreset.addPresets.csvRc}`)
+    /* add the current set selection to the Rc list. */
+    plotSelection += lstSet.addSets.csvRc;
+    //console.info(`lstSet.addPresets.csvRc=${lstSet.addSets.csvRc}`)
+    /* plotselection to array */
+    lstRc = eval("[" + plotSelection + "]");
+
+    // Plot markers
+    ctx = document.getElementById("vrCanvasPlotRc").getContext("2d");
+    let cSet = initConvexSet(gBox);
+    //===============
+    // here clear the ctx / canvas
+    // how to repaint the clear image
+    // var memPristene = = canvas.toDataURL(); 
+    img = new Image();
+    img.src = gBox.gURI;
+    ctx.drawImage(img, 0, 0);
+    img.onload = function () {
+//        console.info("Binnen?")
+
+        const markerLength = (cSet.cH);
+        const markerYoffset = cSet.mPad.bottom;
+        //===============
+        // prep shade Convex Set;
+        const saveFillStyle = ctx.fillStyle;
+        const saveGlobalAlpha = ctx.globalAlpha;
+        // shade 
+        ctx.beginPath();
+        //    ctx.clearRect(cSet.cX, cSet.cY, cSet.cW, cSet.cH);
+        ctx.fillStyle = cSet.fill.color;
+        ctx.globalAlpha = cSet.fill.gAlpha;
+        ctx.fillRect(cSet.cX, cSet.cY + cSet.mPad.top, cSet.cW, cSet.cH + cSet.mPad.bottom);
+        ctx.stroke();
+        // restore values
+        ctx.globalAlpha = saveGlobalAlpha;
+        ctx.fillStyle = saveFillStyle;
+        //End shade convex set
+
+        // Start loop over Rc list to draw mappings
+
+        for (let x in lstRc) {
+
+            /*  Call The Algorithm with current 
+                Royal cubit value -AND- the calibration
+                for the current graph */
+            curf = f(lstRc[x], gBox.graphCalib, gBox.rYears);
+
+            // If the x-axis is reversed;
+            if (gBox.reverseX) {
+                // Works! Hands off!
+                RcX = cSet.cX - ((1 - curf.RelX) * cSet.xPix);
+                //console.info(`${RcX} = ${cSet.cX} - ((${1 - curf.RelX}) * ${cSet.xPix})`);
+            } else {
+                //
+                RcX = cSet.cX + (curf.RelX * cSet.xPix);
+                console.info(`${RcX} = ${cSet.cX} + (${curf.RelX} * ${cSet.xPix})`);
+            }
+            //console.info(`RcX = ${RcX} : cSet.cX - ${cSet.cX}`);
+
+            // Define a new Path:
+            ctx.beginPath();
+            ctx.setLineDash([5, 2]);
+            ctx.strokeStyle = "black";
+            ctx.moveTo(RcX, cSet.cY + cSet.mPad.top);
+            ctx.lineTo(RcX, cSet.cY + markerLength + cSet.mPad.bottom);
+            // Stroke it (Do the Drawing)
+            ctx.stroke();
+
+        }
+    }
+}
+
+/**
  * @abstract Defines the coordinates for the bounds in which the function values for f(Rc), i.e., the mappings, will occur. The algorithm 'folds' the real number line, and segments the real numberline in sections of interlaced function values. It, in fact, structures an addressable overlay onto a 14400 year window of time. The overlay has two hyperdense focii at f(1), the geometric center, and at f(infinity), at the right side (time 0) of the timeline. The latter represented by fRight=f(9 x10^(12)). The 'fold' occurs at f(Rc < 20), at which the function values 'reflect back' and a subset of these pile-up creating the hyperdensity at f(1), while the rest go to f(infinity) causing the hyperdensity there.
  * TODO: Goobledigook to math jargon. 
  * @param {*} gBox 
@@ -41,55 +129,33 @@ function f(RoyalCubit, GraphCalib, Ryears) {
 function initConvexSet(gBox) {
     var fLeft = f(999999999999, 1950, 20000).RelX; // x-axis 0-->20k
     var fRight = f(19.099999999, 1950, 20000).RelX; // x-axis 0-->20k
-    var tmpPix= gBox.bottom.x - gBox.top.x;
-    //console.info(`fLeft = f(999999999999, 1950, 20000).RelX = ${fLeft}`);
-    //console.info(`fRight = f(19.099999999, 1950, 20000).RelX = ${fRight}`);
-    
+    var tmpPix = gBox.bottom.x - gBox.top.x;
+ 
     let cSet = {
         xPix: gBox.bottom.x - gBox.top.x,
-        cX: (gBox.top.x + ((1-fLeft) * tmpPix)), //),
-        cY: gBox.top.y ,
+        cX: (gBox.top.x + ((1 - fLeft) * tmpPix)), //),
+        cY: gBox.top.y,
         cW: ((fLeft * tmpPix) - (fRight * tmpPix)),
         cH: (gBox.bottom.y - gBox.top.y),
         fill: {
             color: "lightblue",
-            gAlpha: 0.05
+            gAlpha: 0.10
         },
         mPad: {
             top: 5,
             bottom: -5
-        } // draw mapping lines in/outside bounds 
+        }, // draw mapping lines in/outside bounds 
+        img: "" // image for redrawing
     };
-    // calculated values
-    //gBox.reverseX = true;
+
+    // If the x-axis is reversed;
     if (gBox.reverseX) {
         //console.info("gBox reverse");
         gBox.top.x - (fLeft * gBox.rPix);
-        }
-
-    // shade Convex Set;
-    ctx = document.getElementById("vrCanvasPlotRc").getContext("2d");
-    
-    // If the x-axis is reversed;
-    if (gBox.reverseX) {
-        cSet.cX = (gBox.bottom.x - ((1-fLeft) * tmpPix));
+        cSet.cX = (gBox.bottom.x - ((1 - fLeft) * tmpPix));
         cSet.cW = -cSet.cW;
     }
 
-    ctx.beginPath();
-    ctx.fillStyle = cSet.fill.color;
-    ctx.globalAlpha = cSet.fill.gAlpha;
-
-    // shade offset and reverse flag of rectangle width
-    ctx.fillRect(cSet.cX , cSet.cY, cSet.cW, cSet.cH );
-    //};
-    ctx.globalAlpha = 1.0;
-    // Stroke it (Do the Drawing)
-    ctx.stroke();
-    // ctx.strokeStyle = "black"; //"#F5F5F5";
-    //End draw convex set window
-
-    // console.info(`ctx.fillRect(${cSet.cX}, ${cSet.mPad.bottom}, ${cSet.cW}, ${cSet.cH + cSet.mPad.top})`);
     return cSet
 }
 
@@ -99,17 +165,20 @@ function initConvexSet(gBox) {
  */
 function procesPreset(lstPreset) {
     //  Set addPresets.csvRc = ""
+    console.info(lstPreset);
     lstPreset.addPresets.csvRc = "";
     for (x in lstPreset) {
+        console.info(`x = ${x} :lstPreset[${x}].show = ${lstPreset[x].show}`);
         if (lstPreset[x].show) {
             lstPreset.addPresets.csvRc += "," + lstPreset[x].csvRc;
+            console.info(`Preset[${x}].show`);
         }
     }
     /*   plotMarker() will add the current preSet 
          selection (lstpreSet.addSets) to the 
          Rc list got from the csvMap manual entry. */
-         //console.info(lstPreset.addPresets.csvRc);
-    plotMarker();
+    //console.info(lstPreset.addPresets.csvRc);
+    plotMarker(lstPreset);
 }
 
 /**
@@ -120,18 +189,21 @@ function procesSet(lstSet) {
     let ad_Rc = document.querySelector("input[id=csvRc]");
     // Prevent addSets from accumulating
     lstSet.addSets.csvRc = "";
-    for (x in lstSet) {
-        if (lstSet[x].show) {
+    // 
+    for (x in lstSet) { //x is here 'set1', 'set2',... not 1,2,3,...
+        console.info(`x = ${x} :lstSet[${x}].show = ${lstSet[x].show}`);
 
+        if (lstSet[x].show) {
             populateSetCsvRc(x)
             lstSet.addSets.csvRc += "," + lstSet[x].csvRc;
-            //console.info(lstSet[x]);
+            console.info(`passed: if (lstSet[${x}].show) {`);
+            //alert(`passed: if (lstSet[${x}].show) {`);
         }
     }
     /*   plotMarker() will add the current set 
          selection (lstSet.addSets) to the 
          Rc list got from the csvMap manual entry. */
-    plotMarker();
+    plotMarker(lstSet);
 }
 
 /**
@@ -236,7 +308,6 @@ function expandSeedSet() {
     var varArray = eval("[" + varList + "]");
     // sort the array in ascending order, and
     // maintain numerical order
-    // https://www.w3schools.com/jsref/jsref_sort.asp
     varArray.sort(function (a, b) {
         return a - b
     });
@@ -283,8 +354,8 @@ function expandSeedSet() {
     } else {
         seedAlert.classList.remove("maxseeds");
     };
+ 
     // Proceed with a set of maximum 9 unique values 
-
     /* 
         convert the set of unique values to a exhaustive
         list of combinations. This list of seeds will form 
@@ -352,6 +423,7 @@ function expandSeedSet() {
     // 
     theSet = Array.from(expandedSet);
     makeTheSeedXTbl();
+    // redraw all
     plotMarker();
 }
 
@@ -418,16 +490,13 @@ function makeTheSeedXTbl() {
     // Adding the table to div theset
     document.getElementById('theset').appendChild(table);
 
-    /*
-        
-    */
-    triggerRedrawAll();
+    // triggerRedrawAll();
 }
 
 /**
- *  @abstract Refresh html table, trigger redraw current selection. Just toggle preset id='chk_s1' which forces recalculating mappings based on new 2^n combinations. 
+ *  @abstract Obsolete??
  */
-function triggerRedrawAll() {
+function xxx_triggerRedrawAll() {
     // Trigger twice to leave current user selection unchanged
     for (let i = 0; i <= 1; i++) {
         const event = new MouseEvent("click", {
@@ -495,9 +564,9 @@ function sleeper(ms) {
 }
 
 /**
- *  @abstract Event Listener for set, and preset input elements.
+ *  @abstract Event Listener for preset input elements.
  */
-function setEventListeners() {
+function presetEventListener() {
     /**
      * Event Listener for preset input elements.
      * chkPres[0] = document.querySelector("input[id=chk_pall]")
@@ -540,12 +609,16 @@ function setEventListeners() {
                 lstPreset.extr.show = this.checked;
             };
             // Add presets to csvRc and redraw
-            console.info(lstPreset);
+            //console.info(lstPreset);
             procesPreset(lstPreset);
         })
     };
+}
 
-
+/**
+ * @abstract Event Listener for set input elements.
+ */
+function setEventListener() {
     /**
      * Event Listener for set input elements. 
      * chkSet[0] = document.querySelector("input[id=chk_sall]")
@@ -559,9 +632,9 @@ function setEventListeners() {
     chkSet[4] = document.querySelector("input[id=chk_s5]");
     chkSet[5] = document.querySelector("input[id=chk_s6]");
 
-    for (i in chkSet) {
+    for (let i in chkSet) {
         chkSet[i].addEventListener('change', function () {
-            //console.info(`${this.id} checked=${this.checked}`);
+            console.info(`${this.id} checked=${this.checked}`);
             if (this.id == 'chk_s1') {
                 lstSet.set1.show = this.checked;
             };
@@ -611,11 +684,14 @@ function initGraphBox() {
         gStored: "",
         dsetURI: "",
         gURI: "",
-        gDocURI: ""
+        gDocURI: "",
+        saveImg: ""
     }
     // x-axis
     gBox.rPix = gBox.bottom.x - gBox.top.x;
-    gBox.yPerPix=gBox.rYears / gBox.rPix;
+    gBox.yPerPix = gBox.rYears / gBox.rPix;
+
+
     /**
      * include the fetch 
      * 
@@ -700,7 +776,6 @@ function initArrayMplot() {
     fetch(url)
         .then(response => response.text())
         .then(data => document.getElementById("place_mplot").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_mplot", "table table-striped caption-top table-sm table-hover", "tbl mplot"))
-
 
     return mPlot
 }

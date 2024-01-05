@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xml:lang="en">
-
 <head>
     <title>Virgo Rises - The Algorithm</title>
     <!-- meta http-equiv="content-type" content="text/html; charset=utf-8" -->
@@ -27,7 +26,7 @@
         Add the following attribute into each input type="text" tag(s) in your form:
         onkeypress="return noenter()"
         This works simply so that if the user hits ENTER and if that would trigger form submission on the browser, then (if JavaScript is enabled) the onkeypress attribute causes form submission to be aborted, since it executes a return statement with value false.
-        I changed <form> ... </form> to <xform> ... </xform>. Keep remark for the time being.
+        I changed <form> ... </form> to <xxx_form> ... </xxx_form>. Keep remark for the time being.
         -->
     <!-- CSS -->
     <link rel="stylesheet" href="css/vrpaleoplotter.css">
@@ -50,21 +49,21 @@
             <div class="col">
                 <fieldset>
                     <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
-                    <xform> <!-- No Form, No trigger: onkeypress="return noenter()"-->
+                    <xxx_form> <!-- No Form, No trigger: onkeypress="return noenter()"-->
                         <label for="csvSeeds">csv Seeds</label>
                         <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
                             onchange="expandSeedSet()" />
-                    </xform>
+                    </xxx_form>
                 </fieldset>
             </div>
             <div class="col">
                 <fieldset>
                     <legend>Mapping</legend>
-                    <xform> <!-- No Form, No trigger: onkeypress="return noenter()"-->
+                    <xxx_form> <!-- No Form, No trigger: onkeypress="return noenter()"-->
                         <label for="csvRc">csv Map&nbsp;&nbsp;</label>
                         <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()"
                             pattern="" placeholder="2,2.02,2.52,..." />
-                    </xform>
+                    </xxx_form>
                 </fieldset>
             </div>
         </div>
@@ -73,7 +72,7 @@
                 <p>Select presets</p>
                 <fieldset>
                     <legend>Select presets:</legend>
-                    <form class="frm_changepreset" id="frm_changepreset">
+                    <xxx_form class="frm_changepreset" id="frm_changepreset">
                         <input id="chk_extr" type="checkbox" name="presets" value="19.0999,999999" /><label
                             for="chk_extr">Map
                             extremes convex set</label><br />
@@ -88,17 +87,16 @@
                         <input id="chk_seeds" type="checkbox" name="presets" value="2,2.02,2.52,2.98,5.5" /><label
                             for="chk_seeds">The 1<sub>th</sub> Passage
                             (reset the 5 seeds)</label>
-                    </form>
+                    </xxx_form>
                 </fieldset>
             </div>
             <div class="col">
                 <p>Select mapping set</p>
                 <fieldset>
                     <legend>Select mapping set:</legend>
-                    <form id="frm_setselect">
+                    <xxx_form id="frm_setselect">
 
-                        <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1"><span>Set
-                                1</span> : <span>\({\small \{a\},\{a\times b\},\{a\times b\times
+                        <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1"><span>Set 1</span> : <span>\({\small \{a\},\{a\times b\},\{a\times b\times
                                 c\}}\)</span></label><br />
 
                         <input id="chk_s2" type="checkbox" name="sets" value="s2" /><label for="chk_s2"><span>Set
@@ -120,7 +118,7 @@
                         <input id="chk_s6" type="checkbox" name="sets" value="s6" /><label for="chk_s6"><span>Set
                                 6</span> : <span>\({\small
                                 \{\sqrt{a}\},\{\sqrt{a}+\sqrt{b}\},\{\sqrt{a}+\sqrt{b}+\sqrt{c}\}}\)</span></label>
-                    </form>
+                    </xxx_form>
                 </fieldset>
             </div>
         </div>

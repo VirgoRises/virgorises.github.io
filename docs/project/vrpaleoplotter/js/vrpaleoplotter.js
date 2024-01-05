@@ -24,68 +24,8 @@
 
 
 
-/**
- * 
- * TODO: Plotting rebuild ... 
- */
-function plotMarker() {
-    let plotSelection = "";
-    /*  Preserve userlist of manually added Royal cubit values */
-    const manualInput = document.getElementById("csvRc").value;
-    plotSelection += manualInput;
-    //console.info(`manualInput+=${manualInput}`);
-    /* add the current preset 
-        selection to the Rc list */
-    plotSelection += lstPreset.addPresets.csvRc;
-    //console.info(`lstPreset.addPresets.csvRc=${lstPreset.addPresets.csvRc}`)
-    /* add the current set selection to the Rc list. */
-    plotSelection += lstSet.addSets.csvRc;
-    //console.info(`lstSet.addPresets.csvRc=${lstSet.addSets.csvRc}`)
-    /* plotselection to array */
-    lstRc = eval("[" + plotSelection + "]");
-
-    // Plot markers
-    ctx = document.getElementById("vrCanvasPlotRc").getContext("2d");
-    let cSet = initConvexSet(gBox);
-    const markerLength = (cSet.cH);
-    const markerYoffset = cSet.mPad.bottom;
-
-    // Start loop over Rc list to draw mappings
-    var testcnt = 0;
-    for (let x in lstRc) {
-
-        /*  Call The Algorithm with current 
-            Royal cubit value -AND- the calibration
-            for the current graph */
-        curf = f(lstRc[x], gBox.graphCalib, gBox.rYears);
-
-        // If the x-axis is reversed;
-        if (gBox.reverseX) {
-            // Works! Hands off!
-            RcX = cSet.cX - ((1 - curf.RelX) * cSet.xPix);
-            console.info(`${RcX} = ${cSet.cX} - ((${1 - curf.RelX}) * ${cSet.xPix})`);
-        } else {
-            //
-            RcX = cSet.cX + (curf.RelX * cSet.xPix);
-            console.info(`${RcX} = ${cSet.cX} + (${curf.RelX} * ${cSet.xPix})`);
-        }
-        //console.info(`RcX = ${RcX} : cSet.cX - ${cSet.cX}`);
-
-        // Define a new Path:
-        ctx.beginPath();
-        ctx.setLineDash([5, 2]);
-        ctx.moveTo(RcX, cSet.cY + cSet.mPad.top);
-        ctx.lineTo(RcX, cSet.cY + markerLength + cSet.mPad.bottom);
-        // Stroke it (Do the Drawing)
-        ctx.stroke();
-        testcnt += 4;
-
-    }
-
-}
-
 // Initialize global arrays
-console.info('init Arrays over here');
+//console.info('init Arrays over here');
 var lstPreset = initArrayPresets();
 var lstSet = initArraySets();
 var mPlot = initArrayMplot();
@@ -129,26 +69,33 @@ gBox.bottom.y = coord[set][1][1];
 cSet = initConvexSet(gBox);
 //console.info(cSet);
 
-/**
- *  @abstract Delay execution until canvas is ready for bussiness
- */
-var canvas = document.getElementById("vrCanvasPlotRc");
-var ctx = canvas.getContext("2d");
-var img = new Image();
-img.onload = function () {
-    // tidy up
-    canvas.width = img.width;
-    canvas.height = canvas.width / (img.width / img.height);
+document.addEventListener('DOMContentLoaded', (event) => {
 
-    // Draw graph
-    ctx.drawImage(img, 0, 0);
-    // Actions 
-    setEventListeners();
-    // Call expandSeedSet()
-    expandSeedSet();
-    // Call plotMarker()
-    plotMarker();
-};
-var rect = canvas.getBoundingClientRect();
-img.src = gBox.gURI;
+    /**
+     *  @abstract Delay execution until canvas is ready for bussiness
+     */
+    var canvas = document.getElementById("vrCanvasPlotRc");
+    var ctx = canvas.getContext("2d");
+    var img = new Image();
+    img.onload = function () {
+        // tidy up
+        canvas.width = img.width;
+        canvas.height = canvas.width / (img.width / img.height);
+        // Save the pristene picture 
+        gBox.saveImg = canvas.toDataURL();
 
+        // Draw graph
+        ctx.drawImage(img, 0, 0);
+        // Actions 
+        // event listeners
+        setEventListener();
+        presetEventListener();
+        // Call expandSeedSet()
+        expandSeedSet();
+        // Call plotMarker()
+        plotMarker();
+    };
+    var rect = canvas.getBoundingClientRect();
+    img.src = gBox.gURI;
+   
+}); // end document.addEventListener('DOMContentLoaded', (event))
