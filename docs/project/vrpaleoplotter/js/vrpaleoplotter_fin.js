@@ -109,8 +109,9 @@ function plotMarker() {
 
             // Define a new Path:
             ctx.beginPath();
-            ctx.setLineDash([5, 2]);
+            ctx.setLineDash([1, 3]);
             ctx.strokeStyle = "black";
+            ctx.lineWidth = 1;
             ctx.moveTo(RcX, cSet.cY + cSet.mPad.top);
             ctx.lineTo(RcX, cSet.cY + markerLength + cSet.mPad.bottom);
             // Stroke it (Do the Drawing)
@@ -490,13 +491,13 @@ function makeTheSeedXTbl() {
     // Adding the table to div theset
     document.getElementById('theset').appendChild(table);
 
-    // triggerRedrawAll();
+    triggerRedrawAll();
 }
 
 /**
  *  @abstract Obsolete??
  */
-function xxx_triggerRedrawAll() {
+function triggerRedrawAll() {
     // Trigger twice to leave current user selection unchanged
     for (let i = 0; i <= 1; i++) {
         const event = new MouseEvent("click", {
