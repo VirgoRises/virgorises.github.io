@@ -1,29 +1,4 @@
 
-/**
- * for reminder
- * multiplication(2, 3);
- * @--example // returns -6
- * @--param {number} a - a number to multiply
- * @--param {number} b - a number to multiply
- * multiplication(-2, 3);
-    function multiplication(a, b) {
-        return a * b;
-    };
- */
-
-/**
- * for reminder
- * @--param {*} e 
-    function setPosition(e) {
-        let canvas = document.getElementById("canvas")
-        let bounds = canvas.getBoundingClientRect()
-        pos.x = e.clientX - bounds.x
-        pos.y = e.clientY - bounds.y
-    }
- */
-
-
-
 // Initialize global arrays
 //console.info('init Arrays over here');
 var lstPreset = initArrayPresets();
@@ -39,22 +14,45 @@ var theSet = '',
     numberXhaustive = '';
 
 
-// Temporary test goof
-var graph = Array.from(['https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh', 'https://drive.google.com/uc?id=171Me953e5MFlMZvAltIkyKI0HiPk1NA_']);
+// TEST GRAPHS [0,1,2]
+/**
+ *   [0]  GISP2, reverse axis, range 0-20000ka, 1950
+ */ 
 
-var coord = [
-    [
+/** 
+ *      [1] GISP2, Cariaco, Dome C, fresh water flux 
+ *          reverse axis, range 0-20000ka, 1950
+ * / 
+      
+/** 
+ * TODO [2] b) Soreq Cave, c) GISP2, d) EM TEX, e) Red Sea, 
+ *          f) Alboran Sea, g) EM proportion Sahara dust 
+ *          axis left to right, range 0-28 000ka 1950
+ */
+
+var graph = Array.from(
+    ['https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh', 
+    'https://drive.google.com/uc?id=171Me953e5MFlMZvAltIkyKI0HiPk1NA_',
+    'https://drive.google.com/uc?id=1J6a0GsHypYRLuxSXikfWIekiguPQaZM3']
+    );
+
+var coord = [                      
+    [               // [0]
         [78, 85],
         [583, 310]
     ],
-    [
-        [103, 15],
+    [               // [1] 
+        [103, 15],   
         [393, 420]
+    ],
+    [               // TODO: [2] Normal axis, range 28000
+        [73, 73],    
+        [902, 1428]  
     ]
 ];
 
 //===============
-var set = 1;
+var set = 2;
 //===============
 
 gBox.gURI = graph[set];
