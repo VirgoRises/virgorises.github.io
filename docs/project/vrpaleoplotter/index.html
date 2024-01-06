@@ -72,9 +72,12 @@
             <div class="col">
                 <p>Select mapping set</p>
                 <!-- begin include subdocs/*.js -->
+                <!-- subdocs mechanics will not allow execution of MathJax.-->
                 <div id="fieldset_selectsets_div">
-                    <!-- ..._div.insertAdjacentHTML(' -->
-                </div>
+            <!-- start set fieldset -->
+
+            <!-- end set fieldset -->
+            </div>
                 <!-- end include subdocs/*.js -->
             </div>
         </div>
@@ -156,9 +159,14 @@
     </div>
     <!-- include html subdocs/ *.js-->
     <script src="subdocs/fieldset_selectpresets_div.js"></script>
-    <script src="subdocs/fieldset_selectsets_div.js"></script>
     <script src="subdocs/accordion_lst_tables_div.js"></script>
-
+    <!-- 
+        subdocs mechanics will not allow execution of MathJax.
+        <script src="subdocs/fieldset_selectsets_div_MathJax.js"></script> 
+        Replaced MathJax with MathML works.
+    -->
+    <script src="subdocs/fieldset_selectsets_div.js"></script>
+    
     <!-- 
         include JavaScript vrpaleoplotter 
     -->
