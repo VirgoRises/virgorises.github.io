@@ -3,23 +3,9 @@
 
 <head>
     <title>Virgo Rises - The Algorithm</title>
-    <!--    MathJax delimeters \( math \) for sites.google
-            compatibilaty.  -->
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            TeX: {extensions:["cancel.js"]},
-            extensions:["tex2jax.js"]},
-            jax: ["input/TeX","output/HTML/CSS"],
-            displayAlign: "center",displayIndent: "2em",
-            text2jax:{
-            inlineMath:  [ [ '$','$'], ['\\(','\\)'] ],
-            displayMath:[ [ '$$','$$'], ['\\\[','\\\]'] ],
-            processEscapes: true
-            });
-    </script>
-    <script id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML">
-        </script>
+    <!-- subdocs mechanics will not allow execution of MathJax.
+         Switched to MathML - see subdox head_section_with_mathjax.txt
+        if need for copy/paste math on page -->
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/vrpaleoplotter.css">
@@ -34,7 +20,7 @@
 </head>
 
 <body>
-    <div class="container  px-4">
+    <div id="container" class="container  px-4">
         <div class="row">
             <div class="col">
                 <canvas id="vrCanvasPlotRc" width=800 height=600></canvas>
@@ -44,40 +30,37 @@
             <div class="col">
                 <fieldset>
                     <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
-                        <label for="csvSeeds">csv Seeds</label>
-                        <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
-                            onchange="expandSeedSet()" />
+                    <label for="csvSeeds">csv Seeds</label>
+                    <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
+                        onchange="expandSeedSet()" />
                 </fieldset>
             </div>
             <div class="col">
                 <fieldset>
                     <legend>Mapping</legend>
-                        <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                        <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()"
-                            pattern="" placeholder="2,2.02,2.52,..." />
+                    <label for="csvRc">csv Map&nbsp;&nbsp;</label>
+                    <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()" pattern=""
+                        placeholder="2,2.02,2.52,..." />
                 </fieldset>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <p>Select presets</p>
+                <!-- Select presets -->
                 <!-- begin include subdocs/*.js 
                 stackoverflow.com 
                 answered May 1, 2022 user342550-->
                 <div id="fieldset_selectpresets_div">
                     <!-- ..._div.insertAdjacentHTML(' -->
-                </div> 
+                </div>
                 <!-- end include subdocs/*.js -->
             </div>
             <div class="col">
-                <p>Select mapping set</p>
+                <!-- Select mapping set -->
                 <!-- begin include subdocs/*.js -->
-                <!-- subdocs mechanics will not allow execution of MathJax.-->
                 <div id="fieldset_selectsets_div">
-            <!-- start set fieldset -->
-
-            <!-- end set fieldset -->
-            </div>
+                    <!-- HTML to be inserted here -->
+                </div>
                 <!-- end include subdocs/*.js -->
             </div>
         </div>
@@ -109,7 +92,6 @@
             kofiwidget2.draw();
         </script>
     </div>
-
 
     <!--    Wrapping the Expanded seed table in a pop-up box 
             See Twitter bootstrap Components - Modal 
@@ -146,8 +128,8 @@
                 <div id="tblwrapperModalbody" class="modal-body">
                     <!-- begin include subdocs/*.js -->
                     <div id="accordion_lst_tables_div">
-                        <!-- ..._div.insertAdjacentHTML(' -->
-                    </div> 
+                        <!-- HTML to be inserted here -->
+                    </div>
                     <!-- end include subdocs/*.js -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -166,7 +148,7 @@
         Replaced MathJax with MathML works.
     -->
     <script src="subdocs/fieldset_selectsets_div.js"></script>
-    
+
     <!-- 
         include JavaScript vrpaleoplotter 
     -->

@@ -96,6 +96,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
         plotMarker();
     };
     var rect = canvas.getBoundingClientRect();
-    img.src = gBox.gURI;
-   
+    img.src = gBox.gURI;  
 }); // end document.addEventListener('DOMContentLoaded', (event))

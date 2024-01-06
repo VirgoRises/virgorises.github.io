@@ -1,107 +1,26 @@
+/* font Lato as chosen lay-out virgorises.pages.google.com */
 body {
     font-family: Lato, Verdana, Geneva, Arial, sans-serif;
-    font-size:small; }
+    }
 
-canvas {
+    #vrCanvasPlotRc{
     border: 1px solid black;
     cursor: crosshair;
-}
-img {
-    max-width: 100%;
-    height: auto;
-  }
-
-#vrCanvasPlotRc{
     width: 100%;
-
 }
+/* function makeTheSeedXTbl();
+    data[d].setAttribute('class', 'seedselected');
+*/
 .seedselected {
     font-weight:500;
 }
-/*  tables: 
-    makeTheSeedXTbl() id="theseedxtbl" */
-xtable {
-    margin-left: 5px;
-    margin-right: 5px;
-    border: thin solid black;
-    border-collapse: collapse;
-    font-size: 0.75em;
-}
 
-xcaption {
-    padding-top: 4px;
-    caption-side: top;
-    /*font-style: italic;*/
-    font-size: 1.5em;
-}
-
-
-/*  .cellcolor applied to every uneven 
-    row when table is constructed */
-.xcellcolor {
-    background-color: #1111;
-}
-
-xtd,
-xth {
-    border: thin dotted grey;
-    padding: 5px;
-    text-align: right;
-}
-
-/*  Reduce the vertical height the table occupies, 
-    and make it scrollable (overflow-y:auto;)
-    Make the header stick to the top of the frame. */
-.xtableFixHead {
-    overflow-y: auto;
-    /* make the table scrollable */
-    height: 265px;
-    /* initial table height of 150px */
-    width: 345px;
-    float: left;
-    margin: 1px;
-    padding: 1px;
-    border-width: thick;
-    border-color: black;
-}
-
-.xtableFixHead thead th {
-    position: sticky;
-    /* make the table heads sticky */
-    top: 0px;
-    /* ... placed from the top ... and sticks */
-    background-color: lightgray;
-    /*X underscrolling visible */
-}
-
-#xtablepane {
-    float: left;
-}
-
-#xkofi {
-    margin: 20px;
-    clear: both;
-}
-
-
-/* Format the frameing of the input forms */
-xfieldset {
-    font-size: 0.5em;
-    width: 230px;
-    padding-top: 4px;
-    /* Stack the forms vertically */
-    float:left;
-    clear: right;
-}
-
-#userinterface {
-    padding-top: 5px;
-}
-.formpane {
-    float:left;
-}
+/* function expandSeedSet();
+    if (varArray.length > 9) {
+        seedAlert.classList.add("maxseeds"); 
+*/
 
 .maxseeds {
     background-color: red;
-    font-size: 1.5em;
 }
+

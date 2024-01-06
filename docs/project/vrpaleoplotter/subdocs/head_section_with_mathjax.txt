@@ -1,0 +1,34 @@
+<head>
+    <title>Virgo Rises - The Algorithm</title>
+    <!-- subdocs mechanics will not allow execution of MathJax.
+         Switched to MathML - see subdox head_section_with_mathjax.txt
+        if need for copy/paste math on page -->
+    <!--    MathJax delimeters \( math \) for sites.google
+            compatibilaty.  -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {extensions:["cancel.js"]},
+            extensions:["tex2jax.js"]},
+            jax: ["input/TeX","output/HTML/CSS"],
+            displayAlign: "center",displayIndent: "2em",
+            text2jax:{
+            inlineMath:  [ [ '$','$'], ['\\(','\\)'] ],
+            displayMath:[ [ '$$','$$'], ['\\\[','\\\]'] ],
+            processEscapes: true
+            });
+    </script>
+    <script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/vrpaleoplotter.css">
+
+    <!-- Twitter Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--
+        Twitter bootstrap 5 bundle. Just before 
+        the </body> tag, end of file.
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    -->
+</head>
