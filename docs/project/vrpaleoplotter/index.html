@@ -22,75 +22,135 @@
 <body>
     <div id="container" class="container  px-4">
         <div class="row">
+            <!-- ========== Start Mappings Button Menu in from left =========== -->
+            <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasPreset" role="button"
+                aria-controls="offcanvasPreset">
+                Select mappings
+            </a>
+            <!-- ========== End Mappings button Menu in from left =========== -->
+
+        </div>
+        <div class="row">
+
+        </div>
+        <div class="row">
             <div class="col">
                 <canvas id="vrCanvasPlotRc" width=800 height=600></canvas>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <fieldset>
-                    <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
-                    <label for="csvSeeds">csv Seeds</label>
-                    <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
-                        onchange="expandSeedSet()" />
-                </fieldset>
-            </div>
-            <div class="col">
-                <fieldset>
-                    <legend>Mapping</legend>
-                    <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                    <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()" pattern=""
-                        placeholder="2,2.02,2.52,..." />
-                </fieldset>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <!-- Select presets -->
-                <!-- begin include subdocs/*.js 
-                stackoverflow.com 
-                answered May 1, 2022 user342550-->
-                <div id="fieldset_selectpresets_div">
-                    <!-- ..._div.insertAdjacentHTML(' -->
-                </div>
-                <!-- end include subdocs/*.js -->
-            </div>
-            <div class="col">
-                <!-- Select mapping set -->
-                <!-- begin include subdocs/*.js -->
-                <div id="fieldset_selectsets_div">
-                    <!-- HTML to be inserted here -->
-                </div>
-                <!-- end include subdocs/*.js -->
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <!-- Button trigger modal 
-                             expandSeedModal -->
-                <button id="expandedseedbuttonLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#expandSeedModal">
-                </button>
-            </div>
-            <div class="col">
-                <!-- id="tblwrapperModal"-->
-                <button id="tblwrapperModalLabel" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#tblwrapperModal">Show
-                    <b>VR Paleoplotter</b><br />
-                    The tables
-                </button>
-            </div><!-- here ends the body -->
-        </div>
+                <!-- ========== Start Mappings panel Menu in from left =========== -->
 
-        <div class="col">
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasPreset"
+                    aria-labelledby="offcanvasPresetLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasPresetLabel">Mappings</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div class="row">
+                            <div class="col">
+                                <br />
+                                <p>The text input are simply comma seperated lists of rational numbers, i.e.
+                                    measurements of Royal Cubits.</p>
+                                <fieldset>
+                                    <legend>Mapping</legend>
+                                    <label for="csvRc">csv Map&nbsp;&nbsp;</label>
+                                    <input type="text" id="csvRc" value=" " name="seed_map_preset"
+                                        onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." />
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <br />
+                                <p>
+                                    Some text as placeholder. In real life you can have the elements you have chosen.
+                                    Like,
+                                    text, images, lists, etc.</p>
+                                <!-- Select presets -->
+                                <!-- begin include subdocs/*.js 
+                                    stackoverflow.com 
+                                    answered May 1, 2022 user342550-->
+                                <div id="fieldset_selectpresets_div">
+                                    <!-- ..._div.insertAdjacentHTML(' -->
+                                </div>
+                                <!-- end include subdocs/*.js -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <br />
+                                <p>
+                                    Some text as placeholder. In real life you can have the elements you have chosen.
+                                    Like,
+                                    text, images, lists, etc.</p>
+                                <fieldset>
+                                    <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
+                                    <label for="csvSeeds">csv Seeds</label>
+                                    <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
+                                        onchange="expandSeedSet()" />
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <br />
+                                <p>
+                                    Some text as placeholder. In real life you can have the elements you have chosen.
+                                    Like,
+                                    text, images, lists, etc.</p>
+                                <!-- Select mapping set -->
+                                <!-- begin include subdocs/*.js -->
+                                <div id="fieldset_selectsets_div">
+                                    <!-- HTML to be inserted here -->
+                                </div>
+                                <!-- end include subdocs/*.js -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br />
+                            <p>
+                                Some text as placeholder. In real life you can have the elements you have chosen. Like,
+                                text, images, lists, etc.</p>
+                            <br />
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <!-- Button trigger modal 
+                                                 expandSeedModal -->
+                                <button id="expandedseedbuttonLabel" type="button" class="btn btn-primary"
+                                    data-bs-toggle="modal" data-bs-target="#expandSeedModal">
+                                </button>
+                            </div>
+                            <div class="col">
+                                <!-- id="tblwrapperModal"-->
+                                <button id="tblwrapperModalLabel" type="button" class="btn btn-primary"
+                                    data-bs-toggle="modal" data-bs-target="#tblwrapperModal">Show
+                                    <b>VR Paleoplotter</b><br />
+                                    The tables
+                                </button>
+                            </div><!-- here ends the body -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- ========== end Mappings Panel Menu in from left =========== -->
 
         </div>
-        <!-- Presenting the jar -->
-        <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
-        <script type='text/javascript'>
-            kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
-            kofiwidget2.draw();
-        </script>
+    </div>
+
+    <div class="col">
+
+    </div>
+    <!-- Presenting the jar -->
+    <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
+    <script type='text/javascript'>
+        kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
+        kofiwidget2.draw();
+    </script>
     </div>
 
     <!--    Wrapping the Expanded seed table in a pop-up box 

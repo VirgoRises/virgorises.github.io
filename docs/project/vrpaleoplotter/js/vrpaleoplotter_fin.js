@@ -680,7 +680,7 @@ function initGraphBox() {
         rPix: "<calc>",
         rYears: 20000,
         yPerPix: "<calc>",
-        reverseX: true, // graph with reversed x-axis
+        reverseX: 'regular', // graph with reversed x-axis
         gFileName: "",
         gStored: "",
         dsetURI: "",
@@ -708,7 +708,6 @@ function initGraphBox() {
     fetch(url)
         .then(response => response.text())
         .then(data => document.getElementById("place_gbox").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_gbox", "table table-striped caption-top table-sm table-hover", "tbl gbox"))
-
 
     return gBox
 }
