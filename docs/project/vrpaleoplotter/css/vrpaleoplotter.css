@@ -3,14 +3,11 @@ body {
     font-family: Lato, Verdana, Geneva, Arial, sans-serif;
     }
 
-#vrCanvasPlotRc{
+    #vrCanvasPlotRc{
     border: 1px solid black;
     cursor: crosshair;
     width: 100%;
 }
-canvas {
-    border: solid
-  }
 /* function makeTheSeedXTbl();
     data[d].setAttribute('class', 'seedselected');
 */
@@ -22,6 +19,8 @@ canvas {
     if (varArray.length > 9) {
         seedAlert.classList.add("maxseeds"); 
 */
+
 .maxseeds {
     background-color: red;
 }
+
