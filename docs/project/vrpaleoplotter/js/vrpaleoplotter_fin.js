@@ -109,9 +109,9 @@ function plotMarker() {
 
             // Define a new Path:
             ctx.beginPath();
-            ctx.setLineDash([3, 6]);
+            ctx.setLineDash([4, 3]);
             ctx.strokeStyle = "black";
-            ctx.lineWidth = 2;
+            ctx.lineWidth = .35;
             ctx.moveTo(RcX, cSet.cY + cSet.mPad.top);
             ctx.lineTo(RcX, cSet.cY + markerLength + cSet.mPad.bottom);
             // Stroke it (Do the Drawing)
