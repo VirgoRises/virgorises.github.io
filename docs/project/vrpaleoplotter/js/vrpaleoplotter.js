@@ -40,7 +40,7 @@ var theSet = '',
 
 
 // Temporary test goof
-var graph = Array.from(['https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh', 'https://drive.google.com/uc?id=171Me953e5MFlMZvAltIkyKI0HiPk1NA_']);
+var graph = Array.from(['https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh', 'https://drive.google.com/uc?id=171Me953e5MFlMZvAltIkyKI0HiPk1NA_','https://drive.google.com/uc?id=1J6a0GsHypYRLuxSXikfWIekiguPQaZM3']);
 
 var coord = [
     [
@@ -50,6 +50,10 @@ var coord = [
     [
         [103, 15],
         [393, 420]
+    ],
+    [
+        [73, 73],
+        [902, 1428]
     ]
 ];
 

@@ -109,9 +109,9 @@ function plotMarker() {
 
             // Define a new Path:
             ctx.beginPath();
-            ctx.setLineDash([1, 3]);
+            ctx.setLineDash([3, 6]);
             ctx.strokeStyle = "black";
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 2;
             ctx.moveTo(RcX, cSet.cY + cSet.mPad.top);
             ctx.lineTo(RcX, cSet.cY + markerLength + cSet.mPad.bottom);
             // Stroke it (Do the Drawing)
@@ -169,10 +169,10 @@ function procesPreset(lstPreset) {
     console.info(lstPreset);
     lstPreset.addPresets.csvRc = "";
     for (x in lstPreset) {
-        console.info(`x = ${x} :lstPreset[${x}].show = ${lstPreset[x].show}`);
+        //console.info(`x = ${x} :lstPreset[${x}].show = ${lstPreset[x].show}`);
         if (lstPreset[x].show) {
             lstPreset.addPresets.csvRc += "," + lstPreset[x].csvRc;
-            console.info(`Preset[${x}].show`);
+            //console.info(`Preset[${x}].show`);
         }
     }
     /*   plotMarker() will add the current preSet 
@@ -192,12 +192,12 @@ function procesSet(lstSet) {
     lstSet.addSets.csvRc = "";
     // 
     for (x in lstSet) { //x is here 'set1', 'set2',... not 1,2,3,...
-        console.info(`x = ${x} :lstSet[${x}].show = ${lstSet[x].show}`);
+        //console.info(`x = ${x} :lstSet[${x}].show = ${lstSet[x].show}`);
 
         if (lstSet[x].show) {
             populateSetCsvRc(x)
             lstSet.addSets.csvRc += "," + lstSet[x].csvRc;
-            console.info(`passed: if (lstSet[${x}].show) {`);
+            //console.info(`passed: if (lstSet[${x}].show) {`);
             //alert(`passed: if (lstSet[${x}].show) {`);
         }
     }
@@ -635,7 +635,7 @@ function setEventListener() {
 
     for (let i in chkSet) {
         chkSet[i].addEventListener('change', function () {
-            console.info(`${this.id} checked=${this.checked}`);
+            //console.info(`${this.id} checked=${this.checked}`);
             if (this.id == 'chk_s1') {
                 lstSet.set1.show = this.checked;
             };
