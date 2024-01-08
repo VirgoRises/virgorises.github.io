@@ -1,31 +1,5 @@
 
-/**
- * for reminder
- * multiplication(2, 3);
- * @--example // returns -6
- * @--param {number} a - a number to multiply
- * @--param {number} b - a number to multiply
- * multiplication(-2, 3);
-    function multiplication(a, b) {
-        return a * b;
-    };
- */
-
-/**
- * for reminder
- * @--param {*} e 
-    function setPosition(e) {
-        let canvas = document.getElementById("canvas")
-        let bounds = canvas.getBoundingClientRect()
-        pos.x = e.clientX - bounds.x
-        pos.y = e.clientY - bounds.y
-    }
- */
-
-
-
 // Initialize global arrays
-//console.info('init Arrays over here');
 var lstPreset = initArrayPresets();
 var lstSet = initArraySets();
 var mPlot = initArrayMplot();
@@ -62,16 +36,13 @@ var set = 1;
 //===============
 
 gBox.gURI = graph[set];
-//console.info(gBox.gURI);
 gBox.top.x = coord[set][0][0];
 gBox.top.y = coord[set][0][1];
 gBox.bottom.x = coord[set][1][0];
 gBox.bottom.y = coord[set][1][1];
-//console.info(gBox);
 
 // initialize convex set
 cSet = initConvexSet(gBox);
-//console.info(cSet);
 
 document.addEventListener('DOMContentLoaded', (event) => {
 

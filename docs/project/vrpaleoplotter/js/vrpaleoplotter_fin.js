@@ -278,13 +278,13 @@ function populateSetCsvRc(x) {
 */
 function expandSeedSet() {
     var varList = document.getElementById("csvSeeds").value;
-    // Apply filter for maximum dimensions used for mapping id="dimension"
+    // Apply filter for maximum dimensions used for mapping 
     var maxDim = document.getElementById("dimension").value;
+
     /* convert the varList to a set of unique values
         The algorithm maps (combinations of) seed values
         to a specific window in time.
     */
-
     // Begin simple set construction
     var varArray = eval("[" + varList + "]");
     // sort the array in ascending order, and
@@ -618,7 +618,7 @@ function presetEventListener() {
 function setEventListener() {
     /**
      * Event Listener for set input elements. 
-     * chkSet[0] = document.querySelector("input[id=chk_sall]")
+     * 
      */
     var chkSet = [];
     //chkSet[0] = document.querySelector("input[id=chk_sall]");
