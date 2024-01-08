@@ -3,8 +3,14 @@ fieldset_selectsets_div.insertAdjacentHTML('beforeend', `
 <!-- start set fieldset -->
 <fieldset>
 <legend>Select mapping set:</legend>
+    
+    <p>The square root values for both types of sets project almost exclusively in the Younger Dryas. The lower the calculated value, the closer the mappings occur to 11600 YBP.</p>
+    
     <fieldset>
+
     <legend>Additive sets:</legend> 
+    
+    <p> Additive sets produce low range values and project, for the most, closer to the geometric center of the projection window. </p>
 
     <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1"><span>&nbsp;Set&nbsp;1</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
     <mrow data-mjx-texclass="ORD">
@@ -140,8 +146,12 @@ fieldset_selectsets_div.insertAdjacentHTML('beforeend', `
     </math></span></label><br/>
     </fieldset>
     <br/>
+    
     <fieldset>
     <legend>Multiplicative sets:</legend>
+    
+    <p> Multiplicative sets present two clear focii; at 11600 YBP, and at 4400 YBP. </p>
+    
     <input id="chk_s5" type="checkbox" name="sets" value="s5" />
     <label for="chk_s5"><span>&nbsp;Set&nbsp;5</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
       <mrow data-mjx-texclass="ORD">
