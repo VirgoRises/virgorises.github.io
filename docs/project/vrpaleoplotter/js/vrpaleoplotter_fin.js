@@ -632,6 +632,8 @@ function setEventListener() {
     chkSet[3] = document.querySelector("input[id=chk_s4]");
     chkSet[4] = document.querySelector("input[id=chk_s5]");
     chkSet[5] = document.querySelector("input[id=chk_s6]");
+    chkSet[6] = document.querySelector("input[id=chk_s7]");
+    chkSet[7] = document.querySelector("input[id=chk_s8]");
 
     for (let i in chkSet) {
         chkSet[i].addEventListener('change', function () {
@@ -653,6 +655,12 @@ function setEventListener() {
             };
             if (this.id == 'chk_s6') {
                 lstSet.set6.show = this.checked;
+            };
+            if (this.id == 'chk_s7') {
+                lstSet.set7.show = this.checked;
+            };
+            if (this.id == 'chk_s8') {
+                lstSet.set8.show = this.checked;
             };
             // Add to csvRc
             procesSet(lstSet) //
@@ -790,15 +798,15 @@ function initArraySets() {
             chkId: 'chk_s1',
             show: false,
             info: "Set 1",
-            strlit: 'a*b*c*d*e*f*g*h*i',
-            AorM: 'M',
+            strlit: 'a+b+c+d+e+f+g+h+i',
+            AorM: 'A',
             csvRc: ""
         },
         set2: {
             chkId: 'chk_s2',
             show: false,
             info: "Set 2",
-            strlit: 'a+b+c+d+e+f+g+h+i',
+            strlit: '(a**2)+(b**2)+(c**2)+(d**2)+(e**2)+(f**2)+(g**2)+(h**2)+(i**2)',
             AorM: 'A',
             csvRc: ""
         },
@@ -814,15 +822,16 @@ function initArraySets() {
             chkId: 'chk_s4',
             show: false,
             info: "Set 4",
-            strlit: 'Math.sqrt(a*b*c*d*e*f*g*h*i)',
-            AorM: 'M',
+            strlit: '(a**0.5)+(b**0.5)+(c**0.5)+(d**0.5)+(e**0.5)+(f**0.5)+(g**0.5)+(h**0.5)+(i**0.5)',
+            AorM: 'A',
             csvRc: ""
         },
+
         set5: {
             chkId: 'chk_s5',
             show: false,
             info: "Set 5",
-            strlit: '(a**2)*(b**2)*(c**2)*(d**2)*(e**2)*(f**2)*(g**2)*(h**2)*(i**2)',
+            strlit: 'a*b*c*d*e*f*g*h*i',
             AorM: 'M',
             csvRc: ""
         },
@@ -830,8 +839,24 @@ function initArraySets() {
             chkId: 'chk_s6',
             show: false,
             info: "Set 6",
-            strlit: '(a**0.5)+(b**0.5)+(c**0.5)+(d**0.5)+(e**0.5)+(f**0.5)+(g**0.5)+(h**0.5)+(i**0.5)',
-            AorM: 'A',
+            strlit: '(a**2)*(b**2)*(c**2)*(d**2)*(e**2)*(f**2)*(g**2)*(h**2)*(i**2)',
+            AorM: 'M',
+            csvRc: ""
+        },
+        set7: {
+            chkId: 'chk_s7',
+            show: false,
+            info: "Set 7",
+            strlit: 'Math.sqrt(a*b*c*d*e*f*g*h*i)',
+            AorM: 'M',
+            csvRc: ""
+        },
+        set8: {
+            chkId: 'chk_s8',
+            show: false,
+            info: "Set 8",
+            strlit: '(a**0.5)*(b**0.5)*(c**0.5)*(d**0.5)*(e**0.5)*(f**0.5)*(g**0.5)*(h**0.5)*(i**0.5)',
+            AorM: 'M',
             csvRc: ""
         },
         addSets: {
