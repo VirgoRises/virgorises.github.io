@@ -381,19 +381,23 @@ function expandSeedSet() {
     let binaryColumns = "";
 
     // makeTheSeedXTbl(theSet, binaryLabels)
-    binaryLabels = "['dec','binary',"
-    //
+    //binaryLabels = "['dec','binary',"
+    binaryLabels = "['dec','binary','dim',"
+    //dimCount for the number of none-zero cells
+    var dimCnt = 0;
     for (let j = 0; j <= numberXhaustive; j++) {
         // pad the line with preceding zeros (0)
         // up to numVars in length 
         padBin = "'" + "0".repeat(numVars - (j.toString(2).length)) + j.toString(2) + "'";
         //
-        combiLine = '[' + j + ',' + padBin + ',';
+        dimCnt = 0;
+        combiLine = '[' + j + ',' + padBin + ',' + 'dim'+',';
+        // combiLine =  j + ',' + padBin + ',';
         for (let i = numVars - 1; i >= 0; i--) {
             // Piggyback column labeling on first itteration
             if (j == 0) {
                 binaryLabels += "'" + String.fromCharCode(97 + i) + "'" + (i > 0 ? "," : "]");
-                // console.info(binaryLabels)
+                //console.info(binaryLabels);
             };
             /* 
                 Compare bit position: 'n' AND j, e.g., b100(4) AND dec6(b110) = true 
@@ -401,6 +405,9 @@ function expandSeedSet() {
             if ((chkbit << i) & j) {
                 //console.info('(chkbit << i) & j -> keep value;
                 binaryColumns = varArray[i] + ',' + binaryColumns;
+                //Increase dimCnt
+                dimCnt = dimCnt + 1;
+
             } else {
                 // Set value to 0 (zero)
                 binaryColumns = 0 + ',' + binaryColumns;
@@ -410,6 +417,8 @@ function expandSeedSet() {
             //console.info(combiLine);
             binaryColumns = "";
         }
+        // Postfix dimCnt to combiLine
+        combiLine = combiLine.replace('dim', dimCnt) ;
         // Strip of last delimeter, add end bracket and delimeter.
         combiLine = combiLine.substr(0, combiLine.length - 1) + '],';
         //console.info(combiLine);
@@ -463,7 +472,7 @@ function makeTheSeedXTbl() {
     // console.info(binaryLabels);
     binaryLabels = eval(binaryLabels);
     let heading = [];
-    for (h = 0; h <= numVars + 1; h++) {
+    for (h = 0; h <= numVars + 2; h++) { //numVars + 2 for cols ''dec','binary' and 'dim'
         heading[h] = document.createElement('th')
         heading[h].innerHTML = binaryLabels[h];
         row_1.appendChild(heading[h]);
@@ -477,7 +486,7 @@ function makeTheSeedXTbl() {
         for (d = 0; d <= theSet[r].length - 1; d++) {
             data[d] = document.createElement('td');
             data[d].innerHTML = theSet[r][d];
-            if (d >= 2 & data[d].innerHTML > 0) {
+            if (d >= 3 & data[d].innerHTML > 0) {
                 data[d].setAttribute('class', 'seedselected');
                 //console.info("seedselected: cel "+d+"="+data[d].innerHTML);
             }
