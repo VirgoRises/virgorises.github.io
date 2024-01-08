@@ -49,7 +49,7 @@
         </div>
         <div class="row">
             <div class="col" style="text-align: left;">The Algorithm decoded</div>
-            <div class="col" style="text-align: center;">
+            <div class="col" style="text-align: center; font-size: 4em;">
                 <h5>www.virgorises.com</h5>
             </div>
             <div class="col" style="text-align: right;">&copy; 2024</div>
@@ -138,7 +138,7 @@
                 <div class="col">
                     <!-- Start setModal -->
                     <!-- Modal -->
-                    <div class="modal fade" id="setModal" tabindex="-1" aria-labelledby="setModalLabel"
+                    <div class="modal fade float-left" id="setModal" tabindex="-1" aria-labelledby="setModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -150,11 +150,6 @@
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col">
-                                            <br />
-                                            <p>
-                                                Some text as placeholder. In real life you can have the elements you
-                                                have
-                                                chosen. Like, text, images, lists, etc.</p>
                                             <!-- Select presets -->
                                             <!-- begin include subdocs/*.js 
                                     stackoverflow.com 
@@ -169,16 +164,14 @@
                                     <div class="row">
                                         <div class="col">
                                             <br />
-                                            <p>
-                                                Some text as placeholder. In real life you can have the elements you
-                                                have
-                                                chosen. Like, text, images, lists, etc.</p>
+                                            <p>The first passage has a set of 5 discernable x,y, and z dimensions. Those are hypothesized to represent the seed values for an encripted connected graph of vertices.</p>
                                             <fieldset>
                                                 <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
                                                 <label for="csvSeeds">csv Seeds</label>
                                                 <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5"
-                                                    name="seed_map_preset" onchange="expandSeedSet()" />
-                                            </fieldset>
+                                                    name="seed_map_preset" onchange="expandSeedSet()" /><br/>
+                                                    <label for="dimension">Dimension (1 to 9):</label>                                           <input type="number" id="dimension" name="dimension" min="1" max="9" value="3" onchange="expandSeedSet()">
+                                           </fieldset>
                                         </div>
                                     </div>
                                     <div class="row">

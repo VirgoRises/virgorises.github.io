@@ -28,7 +28,6 @@ function f(RoyalCubit, GraphCalib, Ryears) {
         Ybp: cYbp,
         RelX: cRelX
     }
-    //console.info(f_calc);
     return f_calc
 }
 
@@ -37,21 +36,16 @@ function f(RoyalCubit, GraphCalib, Ryears) {
  * TODO: Plotting rebuild ... 
  */
 function plotMarker() {
-    //console.info('plotMarker in:' + ++called); // var called = 0;
-    //console.info('plotMarker out:' + ++called); // var called = 0;
 
     let plotSelection = "";
     /*  Preserve userlist of manually added Royal cubit values */
     const manualInput = document.getElementById("csvRc").value;
     plotSelection += manualInput;
-    //console.info(`manualInput+=${manualInput}`);
     /* add the current preset 
         selection to the Rc list */
     plotSelection += lstPreset.addPresets.csvRc;
-    //console.info(`lstPreset.addPresets.csvRc=${lstPreset.addPresets.csvRc}`)
     /* add the current set selection to the Rc list. */
     plotSelection += lstSet.addSets.csvRc;
-    //console.info(`lstSet.addPresets.csvRc=${lstSet.addSets.csvRc}`)
     /* plotselection to array */
     lstRc = eval("[" + plotSelection + "]");
 
@@ -66,7 +60,6 @@ function plotMarker() {
     img.src = gBox.gURI;
     ctx.drawImage(img, 0, 0);
     img.onload = function () {
-//        console.info("Binnen?")
 
         const markerLength = (cSet.cH);
         const markerYoffset = cSet.mPad.bottom;
@@ -99,14 +92,10 @@ function plotMarker() {
             if (gBox.reverseX) {
                 // Works! Hands off!
                 RcX = cSet.cX - ((1 - curf.RelX) * cSet.xPix);
-                //console.info(`${RcX} = ${cSet.cX} - ((${1 - curf.RelX}) * ${cSet.xPix})`);
             } else {
                 //
                 RcX = cSet.cX + (curf.RelX * cSet.xPix);
-                console.info(`${RcX} = ${cSet.cX} + (${curf.RelX} * ${cSet.xPix})`);
             }
-            //console.info(`RcX = ${RcX} : cSet.cX - ${cSet.cX}`);
-
             // Define a new Path:
             ctx.beginPath();
             ctx.setLineDash([4, 3]);
@@ -131,7 +120,7 @@ function initConvexSet(gBox) {
     var fLeft = f(999999999999, 1950, 20000).RelX; // x-axis 0-->20k
     var fRight = f(19.099999999, 1950, 20000).RelX; // x-axis 0-->20k
     var tmpPix = gBox.bottom.x - gBox.top.x;
- 
+
     let cSet = {
         xPix: gBox.bottom.x - gBox.top.x,
         cX: (gBox.top.x + ((1 - fLeft) * tmpPix)), //),
@@ -151,7 +140,6 @@ function initConvexSet(gBox) {
 
     // If the x-axis is reversed;
     if (gBox.reverseX) {
-        //console.info("gBox reverse");
         gBox.top.x - (fLeft * gBox.rPix);
         cSet.cX = (gBox.bottom.x - ((1 - fLeft) * tmpPix));
         cSet.cW = -cSet.cW;
@@ -166,19 +154,15 @@ function initConvexSet(gBox) {
  */
 function procesPreset(lstPreset) {
     //  Set addPresets.csvRc = ""
-    console.info(lstPreset);
     lstPreset.addPresets.csvRc = "";
     for (x in lstPreset) {
-        //console.info(`x = ${x} :lstPreset[${x}].show = ${lstPreset[x].show}`);
         if (lstPreset[x].show) {
             lstPreset.addPresets.csvRc += "," + lstPreset[x].csvRc;
-            //console.info(`Preset[${x}].show`);
         }
     }
     /*   plotMarker() will add the current preSet 
          selection (lstpreSet.addSets) to the 
          Rc list got from the csvMap manual entry. */
-    //console.info(lstPreset.addPresets.csvRc);
     plotMarker(lstPreset);
 }
 
@@ -192,13 +176,9 @@ function procesSet(lstSet) {
     lstSet.addSets.csvRc = "";
     // 
     for (x in lstSet) { //x is here 'set1', 'set2',... not 1,2,3,...
-        //console.info(`x = ${x} :lstSet[${x}].show = ${lstSet[x].show}`);
-
         if (lstSet[x].show) {
             populateSetCsvRc(x)
             lstSet.addSets.csvRc += "," + lstSet[x].csvRc;
-            //console.info(`passed: if (lstSet[${x}].show) {`);
-            //alert(`passed: if (lstSet[${x}].show) {`);
         }
     }
     /*   plotMarker() will add the current set 
@@ -227,7 +207,6 @@ function populateSetCsvRc(x) {
     // query selector by id: #theseedxtbl_body
     var tbody = document.querySelectorAll("#theseedxtbl_body")[0];
     var TRs = tbody.querySelectorAll("tr");
-    // console.info(TRs);
     for (let a = 0; a < TRs.length; a++) {
         var TDs = TRs[a].querySelectorAll("td");
 
@@ -288,7 +267,6 @@ function populateSetCsvRc(x) {
         // template = "`${" + template + "}`";
         // Calculate the template
         let calc = eval(("`${" + template + "}`"));
-        //console.info(template + '= ' + calc);
         // Add calc to lstSet.addSets.csvRc
         lstSet[x].csvRc += "," + calc;
     }
@@ -300,11 +278,13 @@ function populateSetCsvRc(x) {
 */
 function expandSeedSet() {
     var varList = document.getElementById("csvSeeds").value;
-
+    // Apply filter for maximum dimensions used for mapping id="dimension"
+    var maxDim = document.getElementById("dimension").value;
     /* convert the varList to a set of unique values
         The algorithm maps (combinations of) seed values
         to a specific window in time.
     */
+
     // Begin simple set construction
     var varArray = eval("[" + varList + "]");
     // sort the array in ascending order, and
@@ -355,7 +335,7 @@ function expandSeedSet() {
     } else {
         seedAlert.classList.remove("maxseeds");
     };
- 
+
     // Proceed with a set of maximum 9 unique values 
     /* 
         convert the set of unique values to a exhaustive
@@ -380,7 +360,6 @@ function expandSeedSet() {
     let padBin = "";
     let binaryColumns = "";
 
-    // makeTheSeedXTbl(theSet, binaryLabels)
     //binaryLabels = "['dec','binary',"
     binaryLabels = "['dec','binary','dim',"
     //dimCount for the number of none-zero cells
@@ -391,45 +370,46 @@ function expandSeedSet() {
         padBin = "'" + "0".repeat(numVars - (j.toString(2).length)) + j.toString(2) + "'";
         //
         dimCnt = 0;
-        combiLine = '[' + j + ',' + padBin + ',' + 'dim'+',';
+        combiLine = '[' + j + ',' + padBin + ',' + 'dim' + ',';
         // combiLine =  j + ',' + padBin + ',';
         for (let i = numVars - 1; i >= 0; i--) {
             // Piggyback column labeling on first itteration
             if (j == 0) {
                 binaryLabels += "'" + String.fromCharCode(97 + i) + "'" + (i > 0 ? "," : "]");
-                //console.info(binaryLabels);
             };
-            /* 
-                Compare bit position: 'n' AND j, e.g., b100(4) AND dec6(b110) = true 
-            */
+            // Compare bit position: 'n' AND j, e.g., b100(4) AND dec6(b110) = true 
             if ((chkbit << i) & j) {
-                //console.info('(chkbit << i) & j -> keep value;
                 binaryColumns = varArray[i] + ',' + binaryColumns;
                 //Increase dimCnt
                 dimCnt = dimCnt + 1;
-
             } else {
                 // Set value to 0 (zero)
                 binaryColumns = 0 + ',' + binaryColumns;
             }
             // Concat binary columns
             combiLine += binaryColumns;
-            //console.info(combiLine);
             binaryColumns = "";
         }
-        // Postfix dimCnt to combiLine
-        combiLine = combiLine.replace('dim', dimCnt) ;
-        // Strip of last delimeter, add end bracket and delimeter.
-        combiLine = combiLine.substr(0, combiLine.length - 1) + '],';
-        //console.info(combiLine);
-        buildSet += combiLine;
+        /** Not all combinations are hypothesized intentional mappings. The expectation 
+         * is that 3 dimensions are used for mappings. All other seed combinations are
+         * needed to generate a connected graph of mappings. It would be an unlikely scenario
+         * if there excist a set of n-seeds which will create a graph of 2^(n+1) - 1
+         * vertices which all map to intended wheater events.
+         */
+        if (dimCnt <= maxDim) {
+            // Postfix dimCnt to combiLine
+            combiLine = combiLine.replace('dim', dimCnt);
+            // Strip of last delimeter, add end bracket and delimeter.
+            combiLine = combiLine.substr(0, combiLine.length - 1) + '],';
+            buildSet += combiLine;
+        } else {
+
+        };
     }
     // Strip last delimeter and add closing bracket
     buildSet = buildSet.substr(0, buildSet.length - 1) + ']';
     //
-    // console.info(buildSet);
     let expandedSet = eval(buildSet);
-
     // 
     theSet = Array.from(expandedSet);
     makeTheSeedXTbl();
@@ -449,19 +429,10 @@ function makeTheSeedXTbl() {
     //theseedxtbl theseedxtbl_body
     table.setAttribute('id', 'theseedxtbl');
     tbody.setAttribute('id', 'theseedxtbl_body');
-
     table.setAttribute('class', 'table table-striped caption-top table-sm table-hover');
     tbody.setAttribute('class', 'table-group-divider');
     thead.setAttribute('class', 'table-light');
-
-    // Set caption
-    let newCaptiontext = `<b>The&nbsp;Seeds</b><br/>2<sup>${numVars}</sup>-1=${numberXhaustive}&nbsp;combinations`;
-    tcaption.innerHTML = newCaptiontext;
-    // set pop-up button text id="expandedseedbuttonLabel"
-    document.getElementById("expandedseedbuttonLabel").innerHTML = newCaptiontext;
-    //console.info(document.getElementById("expandedseedbuttonLabel").innerHTML);
-
-    table.appendChild(tcaption);
+    // 
     table.appendChild(thead);
     table.appendChild(tbody);
 
@@ -469,7 +440,6 @@ function makeTheSeedXTbl() {
     let row_1 = document.createElement('tr');
     // generate header
     // binaryLabels to Array
-    // console.info(binaryLabels);
     binaryLabels = eval(binaryLabels);
     let heading = [];
     for (h = 0; h <= numVars + 2; h++) { //numVars + 2 for cols ''dec','binary' and 'dim'
@@ -481,19 +451,39 @@ function makeTheSeedXTbl() {
     thead.appendChild(row_1);
     let row = [];
     let data = [];
+    /**
+     * numberXhaustive is based on all possible 2^n seed combinations.
+     * With the id='dimension' filter, a reduced set is presented.
+     * Try catch on data rows easy solution for setting numberXhaustive
+     * and provide information rich caption 
+     */
+    // for (r = 0; r <= numberXhaustive; r++) {
     for (r = 0; r <= numberXhaustive; r++) {
-        row[r] = document.createElement('tr');
-        for (d = 0; d <= theSet[r].length - 1; d++) {
-            data[d] = document.createElement('td');
-            data[d].innerHTML = theSet[r][d];
-            if (d >= 3 & data[d].innerHTML > 0) {
-                data[d].setAttribute('class', 'seedselected');
-                //console.info("seedselected: cel "+d+"="+data[d].innerHTML);
+        try {
+            row[r] = document.createElement('tr');
+            for (d = 0; d <= theSet[r].length - 1; d++) {
+                data[d] = document.createElement('td');
+                data[d].innerHTML = theSet[r][d];
+                if (d >= 3 & data[d].innerHTML > 0) {
+                    data[d].setAttribute('class', 'seedselected');
+                }
+                row[r].appendChild(data[d]);
             }
-            row[r].appendChild(data[d]);
+            tbody.appendChild(row[r]);
+        } catch (error) {
+            numberXhaustive = r - 1;
         }
-        tbody.appendChild(row[r]);
+
     }
+    // Set caption
+    var curDim = document.getElementById("dimension").value;
+    let newCaptiontext = `<b>The&nbsp;Seeds</b><br/>2<sup>${numVars}</sup>-1=${numberXhaustive}&nbsp;combinations (Filter: ${curDim}-D)`;
+    tcaption.innerHTML = newCaptiontext;
+    // set pop-up button text id="expandedseedbuttonLabel"
+    document.getElementById("expandedseedbuttonLabel").innerHTML = newCaptiontext;
+   
+    table.appendChild(tcaption);
+
     // remove (previous) table in div 'theset'
     document.getElementById('theset').innerHTML = "";
 
@@ -538,7 +528,6 @@ function triggerRedrawAll() {
  */
 function sheetToTbl(jsonString, atr_id, atr_class, theCaption) {
     var json = JSON.parse(jsonString);
-    //console.info(json);
     var table = `<table class="${atr_class}" id="${atr_id}"><caption>${theCaption}</caption><thead class="table-light"><tr>`
     // Retrieve the header labels got from the first row
     json.table.cols.forEach(column => table += `<th>${column.label}</th>`)
@@ -589,7 +578,6 @@ function presetEventListener() {
 
     for (let i = 0; i <= 3; i++) {
         chkPres[i].addEventListener('change', function () {
-            //console.info(this.id + " checked=" + this.checked);
 
             if (this.id == 'chk_f1') {
                 lstPreset.f1.show = this.checked;
@@ -619,7 +607,6 @@ function presetEventListener() {
                 lstPreset.extr.show = this.checked;
             };
             // Add presets to csvRc and redraw
-            //console.info(lstPreset);
             procesPreset(lstPreset);
         })
     };
@@ -646,7 +633,6 @@ function setEventListener() {
 
     for (let i in chkSet) {
         chkSet[i].addEventListener('change', function () {
-            //console.info(`${this.id} checked=${this.checked}`);
             if (this.id == 'chk_s1') {
                 lstSet.set1.show = this.checked;
             };
