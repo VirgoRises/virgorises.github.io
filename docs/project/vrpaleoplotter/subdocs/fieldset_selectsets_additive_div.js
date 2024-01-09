@@ -1,5 +1,5 @@
-const fieldset_selectsets_div = document.querySelector('#fieldset_selectsets_div');                          
-fieldset_selectsets_div.insertAdjacentHTML('beforeend', `
+const fieldset_selectsets_additive_div = document.querySelector('#fieldset_selectsets_additive_div');                          
+fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
 <!-- start set fieldset -->
 <fieldset>
 
