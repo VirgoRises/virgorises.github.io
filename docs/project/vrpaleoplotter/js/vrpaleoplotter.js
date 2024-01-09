@@ -75,7 +75,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
     let menuBar = document.querySelector("#top-menu-bar");
     /**
-     * @abstract junk off screen
+     * 
+     * @abstract junk off screen - (so) answered Jul, 2022 user imvain2
+     * 
      */
     menuBar.addEventListener("click", function(e) {
       e.preventDefault();
