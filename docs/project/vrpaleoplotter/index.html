@@ -44,22 +44,23 @@
             <ul id="top-menu-bar" class="nav nav-underline">
                 <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#pg_settings">Settings</a></li>
-                
+
                 <!--   -->
-                <li class="nav-item"><a class="nav-link" 
-                href="#page_preset">Preset</a></li>
-                
+                <li class="nav-item"><a class="nav-link" href="#page_preset">Preset</a></li>
+
                 <!--  Sets  -->
                 <li class="nav-item"><a class="nav-link" href="#page_set">Sets</a></li>
 
                 <li class="nav-item"><a class="nav-link" href="#page_set_additive">Sets sub additive</a></li>
-                
-                <li class="nav-item"><a class="nav-link" href="#page_set_multiplicative">Sets sub multiplicative</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="#page_set_multiplicative">Sets sub multiplicative</a>
+                </li>
 
                 <!-- end Sets  -->
-                
+
                 <!-- Table expanded seeds  -->
-                <li class="nav-item"><a class="nav-link" href="#page_tbl_expanded_seeds">Seeds tbl_expanded_seeds</a></li>
+                <li class="nav-item"><a class="nav-link" href="#page_tbl_expanded_seeds">Seeds tbl_expanded_seeds</a>
+                </li>
 
                 <!-- Project database  -->
                 <li class="nav-item"><a class="nav-link" href="#page_database">Project database</a></li>
@@ -73,52 +74,85 @@
         </div>
         <!-- ========================   -->
         <div class="page" id="page_preset"> <!-- menu: "#page_preset"> -->
-        <div class="row">
-            <div class="col">
-                <H1>page_preset</H1>
-                <div class="row">
-                    <div class="col">
-                        <br />
-                        <p>The text input are simply comma seperated lists of rational numbers, i.e.
-                            measurements of Royal Cubits.</p>
-                        <fieldset>
-                            <legend>Mapping</legend>
-                            <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                            <input type="text" id="csvRc" value=" " name="seed_map_preset"
-                                onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." />
-                        </fieldset>
+            <div class="row">
+                <div class="col">
+                    <H1>page_preset</H1>
+                    <div class="row">
+                        <div class="col">
+                            <br />
+                            <p>The text input are simply comma seperated lists of rational numbers, i.e.
+                                measurements of Royal Cubits.</p>
+                            <fieldset>
+                                <legend>Mapping</legend>
+                                <label for="csvRc">csv Map&nbsp;&nbsp;</label>
+                                <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()"
+                                    pattern="" placeholder="2,2.02,2.52,..." />
+                            </fieldset>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <br />
-                        <p>
-                            Some text as placeholder. In real life you can have the elements you have
-                            chosen. Like, text, images, lists, etc.</p>
-                        <!-- Select presets -->
-                        <!-- begin include subdocs/*.js 
+                    <div class="row">
+                        <div class="col">
+                            <br />
+                            <p>
+                                Some text as placeholder. In real life you can have the elements you have
+                                chosen. Like, text, images, lists, etc.</p>
+                            <!-- Select presets -->
+                            <!-- begin include subdocs/*.js 
                     stackoverflow.com 
                     answered May 1, 2022 user342550-->
-                        <div id="fieldset_selectpresets_div">
-                            <!-- ..._div.insertAdjacentHTML(' -->
+                            <div id="fieldset_selectpresets_div">
+                                <!-- ..._div.insertAdjacentHTML(' -->
+                            </div>
+                            <!-- end include subdocs/*.js -->
                         </div>
-                        <!-- end include subdocs/*.js -->
                     </div>
                 </div>
             </div>
         </div>
-    </div>
         <!-- ========================   -->
         <div class="page" id="page_set"> <!-- menu: "#page_set" -->
             <div class="row">
-            <div class="col">
-                page_set
+                <div class="col">
+                    <H1>page_set</H1>
+                    <!-- Start set selection -->
+                    <div class="row">
+                        <div class="col">
+                            <br />
+                            <fieldset>
+                                <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
+                                <label for="csvSeeds">csv Seeds</label>
+                                <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
+                                    onchange="expandSeedSet()" />
+                            </fieldset><br />
+
+                            <label for="dimension">Dimension (1 to 9):</label> <input type="number" id="dimension"
+                                name="dimension" min="1" max="9" value="3" onchange="expandSeedSet()">
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <br />
+                            <!-- Select mapping set -->
+                            <!-- begin include subdocs/*.js -->
+                            <div id="fieldset_selectsets_div">
+                                <!-- HTML to be inserted here -->
+                            </div>
+                            <!-- end include subdocs/*.js -->
+                        </div>
+                    </div><br />
+                    <p>The first passage has a set of 5 unique x,y, and z dimensions. Those are
+                        hypothesized to represent the seed values for reconstructing a connected
+                        graph of vertices.</p>
+                    <p>Guess: A subset of the combinations map climate events. Subsets of 3 or less
+                        seeds map paleoclimatological events.</p>
+                </div>
             </div>
         </div>
     </div>
     <!-- ========================   -->
     <div class="page" id="page_set_additive"> <!-- menu: "#page_set_additive" -->
-    <div class="row">
+        <div class="row">
             <div class="col">
                 page_set_additive
             </div>
@@ -126,7 +160,7 @@
     </div>
     <!-- ========================   -->
     <div class="page" id="page_set_multiplicative"> <!-- menu: "#page_set_multiplicative" -->
-    <div class="row">
+        <div class="row">
             <div class="col">
                 page_set_multiplicative
             </div>
@@ -134,7 +168,7 @@
     </div>
     <!-- ========================   -->
     <div class="page" id="page_tbl_expanded_seeds"> <!-- menu: "#page_tbl_expanded_seeds" -->
-    <div class="row">
+        <div class="row">
             <div class="col">
                 page_tbl_expanded_seeds
             </div>
@@ -142,125 +176,46 @@
     </div>
     <!-- ========================   -->
     <div class="page" id="page_database"> <!-- menu: "#page_database" -->
-    <div class="row">
+        <div class="row">
             <div class="col">
                 page_database
             </div>
         </div>
-        </div>
-        <!--##################################-->
-        <!--##################################-->
-        <!--##################################-->
-        <!--##################################-->
-        <div class="row">
-            <div class="page" id="pg_settings"><!--  navbar wrapper -->
-                <div class="row">
-                    <div class="col">
-                        <!-- ========== Start Presets Button Modal =========== -->
-
-                        <!-- ========== End Presets Button Modal =========== -->
-                    </div>
-                    <div class="col">
-                        <!-- ========== Start Sets Button Modal =========== -->
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setModal">
-                            setModal
-                        </button>
-                        <!-- ========== End Sets Button Modal =========== -->
-                    </div>
-                    <div class="col">
-                        <!-- ========== Start Tables Button Modal =========== -->
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#tablesModal">
-                            tablesModal
-                        </button>
-                        <!-- ========== End Tables Button Modal =========== -->
-                    </div>
-
-                </div><br />
-            </div> <!-- end navbar wrapper -->
-
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <canvas id="vrCanvasPlotRc" width=800 height=600></canvas>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-            </div>
+    </div>
+    <!--##################################-->
+    <!--##################################-->
+    <!--##################################-->
+    <!--##################################-->
+    <div class="row">
+        <div class="page" id="pg_settings"><!--  navbar wrapper -->
             <div class="row">
                 <div class="col">
-                    <!-- Start setModal -->
-                    <!-- Modal -->
-                    <div class="modal fade float-left" id="setModal" tabindex="-1" aria-labelledby="setModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="setModalLabel">Set menu</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <!-- Select presets -->
-                                            <!-- begin include subdocs/*.js 
-                                    stackoverflow.com 
-                                    answered May 1, 2022 user342550-->
-                                            <div id="fieldset_selectpresets_div">
-                                                <!-- ..._div.insertAdjacentHTML(' -->
-                                            </div>
-                                            <!-- end include subdocs/*.js -->
-                                        </div>
-                                    </div>
-                                    <!-- Start set selection -->
-                                    <div class="row">
-                                        <div class="col">
-                                            <br />
+ 
+                </div>
+                <div class="col">
+                    <!-- ========== Start Tables Button Modal =========== -->
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tablesModal">
+                        tablesModal
+                    </button>
+                    <!-- ========== End Tables Button Modal =========== -->
+                </div>
 
-                                            <fieldset>
-                                                <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
-                                                <label for="csvSeeds">csv Seeds</label>
-                                                <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5"
-                                                    name="seed_map_preset" onchange="expandSeedSet()" />
-                                            </fieldset><br />
-
-                                            <label for="dimension">Dimension (1 to 9):</label> <input type="number"
-                                                id="dimension" name="dimension" min="1" max="9" value="3"
-                                                onchange="expandSeedSet()">
-                                            </fieldset>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <br />
-                                            <!-- Select mapping set -->
-                                            <!-- begin include subdocs/*.js -->
-                                            <div id="fieldset_selectsets_div">
-                                                <!-- HTML to be inserted here -->
-                                            </div>
-                                            <!-- end include subdocs/*.js -->
-                                        </div>
-                                    </div><br />
-                                    <p>The first passage has a set of 5 unique x,y, and z dimensions. Those are
-                                        hypothesized to represent the seed values for reconstructing a connected
-                                        graph of vertices.</p>
-                                    <p>Guess: A subset of the combinations map climate events. Subsets of 3 or less
-                                        seeds map paleoclimatological events.</p>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <div class="col">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            </div><br />
+        </div> <!-- end navbar wrapper -->
+    </div>
+    <div class="row">
+        <div class="col">
+            <canvas id="vrCanvasPlotRc" width=800 height=600></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="row">
+            <div class="col">
+                <!-- Start setModal -->
+                <!-- Modal -->
                         <!-- End Modal -->
                         <!-- End setModal -->
                     </div>
