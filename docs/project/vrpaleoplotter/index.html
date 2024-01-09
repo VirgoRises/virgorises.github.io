@@ -2,6 +2,9 @@
 <html lang="en" xml:lang="en">
 
 <head>
+    <!-- Also note that all plugins depend on jQuery (this means jQuery must be included before the plugin files) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <title>Virgo Rises - The Algorithm</title>
     <!-- subdocs mechanics will not allow execution of MathJax.
          Switched to MathML - see subdox head_section_with_mathjax.txt
@@ -20,46 +23,71 @@
         the </body> tag, end of file.
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     -->
+    <script>
+        $(function () {
+            $('.example-popover').popover({
+                container: 'body'
+            })
+        })
+        //does not fly in Modal 
+    </script>
 </head>
 
 <body>
     <div id="container" class="container  px-4">
         <div class="row">
-            <div class="col" style="text-align: left;">The Algorithm decoded</div>
- 
-            <div class="col" style="text-align: right;">&copy; 2024 virgorises.com</div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <!-- ========== Start Presets Button Modal =========== -->
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#presetModal">
-                    presetModal
-                </button>
-                <!-- ========== End Presets Button Modal =========== -->
-            </div>
-            <div class="col">
-                <!-- ========== Start Sets Button Modal =========== -->
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setModal">
-                    setModal
-                </button>
-                <!-- ========== End Sets Button Modal =========== -->
-            </div>
-            <div class="col">
-                <!-- ========== Start Tables Button Modal =========== -->
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tablesModal">
-                    tablesModal
-                </button>
-                <!-- ========== End Tables Button Modal =========== -->
-            </div>
-        </div>
-        <div class="row">
-            <div class="col" style="text-align: center; font-size: 4em;">
+            <div class="col" id="status" style="text-align: center; font-size: 4em;">
                 <h5>www.virgorises.com</h5>
             </div>
         </div>
+        <div class="row">
+            <ul id="top-menu-bar" class="nav nav-underline">
+                <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#pg_settings">Settings</a></li>
+                <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+            </ul>
+            <br/><br/>
+            <!--
+            <p class="page active" id="home">I'm the home page.</p>
+            <p class="page" id="pg_settings">I'm the skills page.</p>
+            <p class="page" id="projects">I'm the projects page.</p>
+            <p class="page" id="languages">I'm the languages page.</p> -->
+        </div>
+        <div class="row">
+            <div class="page" id="pg_settings"><!--  navbar wrapper -->
+                <div class="row">
+                    <div class="col">
+                        <!-- ========== Start Presets Button Modal =========== -->
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#presetModal">
+                            presetModal
+                        </button>
+                        <!-- ========== End Presets Button Modal =========== -->
+                    </div>
+                    <div class="col">
+                        <!-- ========== Start Sets Button Modal =========== -->
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setModal">
+                            setModal
+                        </button>
+                        <!-- ========== End Sets Button Modal =========== -->
+                    </div>
+                    <div class="col">
+                        <!-- ========== Start Tables Button Modal =========== -->
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#tablesModal">
+                            tablesModal
+                        </button>
+                        <!-- ========== End Tables Button Modal =========== -->
+                    </div>
+                    
+                </div><br/>
+            </div> <!-- end navbar wrapper -->
+            
+        </div>
+
         <div class="row">
             <div class="col">
                 <canvas id="vrCanvasPlotRc" width=800 height=600></canvas>
@@ -119,8 +147,8 @@
                                         setModal
                                     </button>
                                     <!-- ========== End Sets Button Modal =========== -->
-                                
-                                    
+
+
                                     <!-- ========== Start Tables Button Modal =========== -->
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -170,15 +198,18 @@
                                     <div class="row">
                                         <div class="col">
                                             <br />
-                                            <p>The first passage has a set of 5 unique x,y, and z dimensions. Those are hypothesized to represent the seed values for reconstructing a connected graph of vertices.</p>
+
                                             <fieldset>
                                                 <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
                                                 <label for="csvSeeds">csv Seeds</label>
                                                 <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5"
-                                                    name="seed_map_preset" onchange="expandSeedSet()" /></fieldset><br/>
-                                                    <p>Hypothesized is that only a subset of the combinations intentionally map climate events. For this hypothesis to hold, subsets of 3 or less seeds should map a statistical significant grouping of paleoclimatological events.</p>
-                                                    <label for="dimension">Dimension (1 to 9):</label>                                           <input type="number" id="dimension" name="dimension" min="1" max="9" value="3" onchange="expandSeedSet()">
-                                           </fieldset>
+                                                    name="seed_map_preset" onchange="expandSeedSet()" />
+                                            </fieldset><br />
+
+                                            <label for="dimension">Dimension (1 to 9):</label> <input type="number"
+                                                id="dimension" name="dimension" min="1" max="9" value="3"
+                                                onchange="expandSeedSet()">
+                                            </fieldset>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -191,7 +222,13 @@
                                             </div>
                                             <!-- end include subdocs/*.js -->
                                         </div>
-                                    </div>
+                                    </div><br />
+                                    <p>The first passage has a set of 5 unique x,y, and z dimensions. Those are
+                                        hypothesized to represent the seed values for reconstructing a connected
+                                        graph of vertices.</p>
+                                    <p>Guess: A subset of the combinations map climate events. Subsets of 3 or less
+                                        seeds map paleoclimatological events.</p>
+
                                 </div>
                                 <div class="modal-footer">
 
@@ -203,7 +240,7 @@
                                             presetModal
                                         </button>
                                         <!-- ========== End Presets Button Modal =========== -->
-                                    
+
                                         <!-- ========== Start Tables Button Modal =========== -->
                                         <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -236,11 +273,10 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="row">
-                                            <br />
-                                            <p>
-                                                Some text as placeholder. In real life you can have the elements you
-                                                have
-                                                chosen. Like, text, images, lists, etc.</p>
+
+                                            <h5>
+                                                Active seed combinations
+                                            </h5>
                                             <br />
                                         </div>
                                         <div class="row">
@@ -252,11 +288,14 @@
                                                     data-bs-target="#expandSeedModal">
                                                 </button>
                                             </div>
+                                        </div>
+                                        <div class="row">
+                                            <h5> Loaded sheets</h5>
                                             <div class="col">
                                                 <!-- id="tblwrapperModal"-->
                                                 <button id="tblwrapperModalLabel" type="button" class="btn btn-primary"
-                                                    data-bs-toggle="modal" data-bs-target="#tblwrapperModal">Show
-                                                    <b>VR Paleoplotter</b><br />
+                                                    data-bs-toggle="modal" data-bs-target="#tblwrapperModal"> <b>VR
+                                                        Paleoplotter</b><br />
                                                     The tables
                                                 </button>
                                             </div><!-- here ends the body -->
@@ -272,7 +311,7 @@
                                                 presetModal
                                             </button>
                                             <!-- ========== End Presets Button Modal =========== -->
-                                       
+
                                             <!-- ========== Start Sets Button Modal =========== -->
                                             <!-- Button trigger modal -->
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -319,8 +358,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary"
-                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
