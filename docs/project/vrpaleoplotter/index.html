@@ -75,7 +75,36 @@
         <div class="page" id="page_preset"> <!-- menu: "#page_preset"> -->
         <div class="row">
             <div class="col">
-                page_preset
+                <H1>page_preset</H1>
+                <div class="row">
+                    <div class="col">
+                        <br />
+                        <p>The text input are simply comma seperated lists of rational numbers, i.e.
+                            measurements of Royal Cubits.</p>
+                        <fieldset>
+                            <legend>Mapping</legend>
+                            <label for="csvRc">csv Map&nbsp;&nbsp;</label>
+                            <input type="text" id="csvRc" value=" " name="seed_map_preset"
+                                onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." />
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <br />
+                        <p>
+                            Some text as placeholder. In real life you can have the elements you have
+                            chosen. Like, text, images, lists, etc.</p>
+                        <!-- Select presets -->
+                        <!-- begin include subdocs/*.js 
+                    stackoverflow.com 
+                    answered May 1, 2022 user342550-->
+                        <div id="fieldset_selectpresets_div">
+                            <!-- ..._div.insertAdjacentHTML(' -->
+                        </div>
+                        <!-- end include subdocs/*.js -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -128,11 +157,7 @@
                 <div class="row">
                     <div class="col">
                         <!-- ========== Start Presets Button Modal =========== -->
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#presetModal">
-                            presetModal
-                        </button>
+
                         <!-- ========== End Presets Button Modal =========== -->
                     </div>
                     <div class="col">
@@ -165,58 +190,6 @@
         </div>
         <div class="row">
             <div class="col">
-                <!-- Modal -->
-                <div class="modal fade" id="presetModal" tabindex="-1" aria-labelledby="presetModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="presetModalLabel">Mappings menu</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <br />
-                                        <p>The text input are simply comma seperated lists of rational numbers, i.e.
-                                            measurements of Royal Cubits.</p>
-                                        <fieldset>
-                                            <legend>Mapping</legend>
-                                            <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                                            <input type="text" id="csvRc" value=" " name="seed_map_preset"
-                                                onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." />
-                                        </fieldset>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <br />
-                                        <p>
-                                            Some text as placeholder. In real life you can have the elements you have
-                                            chosen. Like, text, images, lists, etc.</p>
-                                        <!-- Select presets -->
-                                        <!-- begin include subdocs/*.js 
-                                    stackoverflow.com 
-                                    answered May 1, 2022 user342550-->
-                                        <div id="fieldset_selectpresets_div">
-                                            <!-- ..._div.insertAdjacentHTML(' -->
-                                        </div>
-                                        <!-- end include subdocs/*.js -->
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <div class="col">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Modal -->
-                </div>
             </div>
             <div class="row">
                 <div class="col">
