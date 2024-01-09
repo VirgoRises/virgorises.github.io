@@ -122,11 +122,16 @@
                             <!-- end include subdocs/*.js -->
                         </div>
                     </div><br />
-                    <p>The first passage has a set of 5 unique x,y, and z dimensions. Those are
-                        hypothesized to represent the seed values for reconstructing a connected
-                        graph of vertices.</p>
-                    <p>Guess: A subset of the combinations map climate events. Subsets of 3 or less
-                        seeds map paleoclimatological events.</p>
+                    <p>The first passage has a set of 5 unique x,y, and z dimensions. Those are hypothesized to
+                        represent the seed values for reconstructing a connected graph of vertices.</p>
+                    <p>Guess: A subset of the combinations map climate events. Subsets of 3 or less seeds map
+                        paleoclimatological events.</p>
+                    <p>The square root values for both types of sets project almost exclusively in the Younger Dryas.
+                        The lower the calculated value, the closer the mappings occur to 11600 YBP.</p>
+                    <p> Additive sets produce low range values and project, for the most, closer to the geometric center
+                        of the projection window. </p>
+                    <p> Multiplicative sets present two clear focii; at 11600 YBP, and at 4400 YBP. </p>
+
                 </div>
             </div>
         </div>
@@ -136,6 +141,13 @@
         <div class="row">
             <div class="col">
                 <h1>page_set_additive</h1>
+                <!-- fieldset_selectsets_additive_div.js -->
+                <!-- Select mapping set -->
+                <!-- begin include subdocs/*.js -->
+                <div id="fieldset_selectsets_additive_div">
+                    <!-- HTML to be inserted here -->
+                </div>
+                <!-- end include subdocs/*.js -->
             </div>
         </div>
     </div>
@@ -144,6 +156,15 @@
         <div class="row">
             <div class="col">
                 <h1>page_set_multiplicative</h1>
+
+                <!-- fieldset_selectsets_multiplicative_div.js.js -->
+                <!-- Select mapping set -->
+                <!-- begin include subdocs/*.js -->
+                <div id="fieldset_selectsets_multiplicative_div">
+                    <!-- HTML to be inserted here -->
+                </div>
+                <!-- end include subdocs/*.js -->
+
             </div>
         </div>
     </div>
@@ -206,6 +227,8 @@
         Replaced MathJax with MathML works.
     -->
         <script src="subdocs/fieldset_selectsets_div.js"></script>
+        <script src="subdocs/fieldset_selectsets_additive_div.js"></script>
+        <script src="subdocs/fieldset_selectsets_multiplicative_div.js"></script>
 
         <!-- 
         include JavaScript vrpaleoplotter 
