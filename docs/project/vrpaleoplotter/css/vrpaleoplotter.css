@@ -24,3 +24,16 @@ body {
     background-color: red;
 }
 
+/**
+ * navbar
+ * stackoverflow
+ * answered Jul 14, 2022
+ * imvain2 
+*/
+.page {
+    display: none;
+  }
+  
+  .page.active {
+    display: block;
+  }

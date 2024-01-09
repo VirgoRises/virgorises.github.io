@@ -477,13 +477,13 @@ function makeTheSeedXTbl() {
     }
     // Set caption
     var curDim = document.getElementById("dimension").value;
-    let newCaptiontext = `<b>The&nbsp;Seeds</b><br/>2<sup>${numVars}</sup>-1=${numberXhaustive}&nbsp;combinations (Filter: ${curDim}-D)`;
-    tcaption.innerHTML = newCaptiontext;
+    let newCaptiontext = `<b>The&nbsp;Seeds</b><br />Filter:&nbsp;${curDim}&nbsp;seeds&nbsp;=&nbsp;${numberXhaustive}&nbsp;combinations`;
     // set pop-up button text id="expandedseedbuttonLabel"
     document.getElementById("expandedseedbuttonLabel").innerHTML = newCaptiontext;
-   
+    // set the table caption
+    tcaption.innerHTML = newCaptiontext;
     table.appendChild(tcaption);
-
+    
     // remove (previous) table in div 'theset'
     document.getElementById('theset').innerHTML = "";
 

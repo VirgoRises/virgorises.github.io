@@ -44,8 +44,8 @@ gBox.bottom.y = coord[set][1][1];
 // initialize convex set
 cSet = initConvexSet(gBox);
 
-document.addEventListener('DOMContentLoaded', (event) => {
 
+document.addEventListener('DOMContentLoaded', (event) => {
     /**
      *  @abstract Delay execution until canvas is ready for bussiness
      */
@@ -71,5 +71,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
         plotMarker();
     };
     var rect = canvas.getBoundingClientRect();
-    img.src = gBox.gURI;  
+    img.src = gBox.gURI; 
+    
+    let menuBar = document.querySelector("#top-menu-bar");
+    /**
+     * @abstract junk off screen
+     */
+    menuBar.addEventListener("click", function(e) {
+      e.preventDefault();
+      let nav = e.target;
+      let targetPage = nav.getAttribute("href");
+      if (targetPage) {
+        let visible = document.querySelector(".page.active");
+        if (visible) {
+          visible.classList.remove("active");
+        }
+        let target = document.querySelector(targetPage);
+        target.classList.toggle("active");
+      }
+    });
+        
 }); // end document.addEventListener('DOMContentLoaded', (event))
