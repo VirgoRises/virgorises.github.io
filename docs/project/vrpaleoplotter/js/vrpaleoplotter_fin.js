@@ -98,9 +98,9 @@ function plotMarker() {
             }
             // Define a new Path:
             ctx.beginPath();
-            ctx.setLineDash([4, 3]);
+            ctx.setLineDash([4,4]);
             ctx.strokeStyle = "black";
-            ctx.lineWidth = .35;
+            ctx.lineWidth = .45;
             ctx.moveTo(RcX, cSet.cY + cSet.mPad.top);
             ctx.lineTo(RcX, cSet.cY + markerLength + cSet.mPad.bottom);
             // Stroke it (Do the Drawing)
@@ -493,7 +493,7 @@ function makeTheSeedXTbl() {
 }
 
 /**
- *  @abstract Obsolete??
+ *  @abstract 
  */
 function triggerRedrawAll() {
     // Trigger twice to leave current user selection unchanged
