@@ -4,7 +4,7 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
     <fieldset>
     <legend>Multiplicative sets:</legend>
     <input id="chk_s5" type="checkbox" name="sets" value="s5" />
-    <label for="chk_s5"><span>5</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
+    <label for="chk_s5"><span  class="d-inline-block d-md-none">5&nbsp;:&nbsp;<math xmlns="http://www.w3.org/1998/Math/MathML">
       <mrow data-mjx-texclass="ORD">
         <mstyle mathsize="1em">
           <mo fence="false" stretchy="false">{</mo>
@@ -28,7 +28,7 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
       </mrow>
     </math></span></label><br/>
 
-    <input id="chk_s6" type="checkbox" name="sets" value="s6" /><label for="chk_s6"><span>&nbsp;6</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
+    <input id="chk_s6" type="checkbox" name="sets" value="s6" /><label for="chk_s6"><span  class="d-inline-block d-md-none">&nbsp;6&nbsp;:&nbsp;<math xmlns="http://www.w3.org/1998/Math/MathML">
     <mrow data-mjx-texclass="ORD">
       <mstyle mathsize="1em">
         <mo fence="false" stretchy="false">{</mo>
@@ -70,7 +70,7 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
     </mrow>
     </math></span></label><br/>
 
-    <input id="chk_s7" type="checkbox" name="sets" value="s7" /><label for="chk_s7"><span>&nbsp;7</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
+    <input id="chk_s7" type="checkbox" name="sets" value="s7" /><label for="chk_s7"><span  class="d-inline-block d-md-none">&nbsp;7&nbsp;:&nbsp;<math xmlns="http://www.w3.org/1998/Math/MathML">
               <mrow data-mjx-texclass="ORD">
                 <mstyle mathsize="1em">
                   <mo fence="false" stretchy="false">{</mo>
@@ -100,7 +100,7 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
               </mrow>
             </math></span></label><br/>
 
-            <input id="chk_s8" type="checkbox" name="sets" value="s8" /><label for="chk_s8"><span>&nbsp;8</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
+            <input id="chk_s8" type="checkbox" name="sets" value="s8" /><label for="chk_s8"><span  class="d-inline-block d-md-none">&nbsp;8&nbsp;:&nbsp;<math xmlns="http://www.w3.org/1998/Math/MathML">
             <mrow data-mjx-texclass="ORD">
               <mstyle mathsize="1em">
                 <mo fence="false" stretchy="false">{</mo>
