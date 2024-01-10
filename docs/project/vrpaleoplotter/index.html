@@ -93,12 +93,14 @@
                 <!-- Start set selection -->
                 <div class="row">
                     <div class="col">
+                        
                         <fieldset>
                             <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
                             <label for="csvSeeds">csv Seeds</label>
                             <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
                                 onchange="expandSeedSet()" />
                         </fieldset>
+                    
                     </div>
                     <div class="col">
                         <fieldset>
@@ -121,18 +123,22 @@
                     <div class="col">
                         <!-- Select mapping set -->
                         <!-- begin include subdocs/*.js -->
+                        <small>
                         <div id="fieldset_selectsets_additive_div">
                             <!-- HTML to be inserted here -->
                         </div>
+                    </small>
                         <!-- end include subdocs/*.js -->
                     </div>
                     <div class="col">
                         <!-- fieldset_selectsets_multiplicative_div.js -->
                         <!-- Select mapping set -->
                         <!-- begin include subdocs/*.js -->
+                        <small>
                         <div id="fieldset_selectsets_multiplicative_div">
                             <!-- HTML to be inserted here -->
                         </div>
+                    </small>
                     </div>
                 </div>
             </div>
