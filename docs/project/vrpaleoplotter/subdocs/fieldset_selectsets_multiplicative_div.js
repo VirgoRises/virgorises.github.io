@@ -3,9 +3,6 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
 <!-- start set fieldset -->
     <fieldset>
     <legend>Multiplicative sets:</legend>
-    
-    <p> Multiplicative sets present two clear focii; at 11600 YBP, and at 4400 YBP. </p>
-    
     <input id="chk_s5" type="checkbox" name="sets" value="s5" />
     <label for="chk_s5"><span>&nbsp;Set&nbsp;5</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
       <mrow data-mjx-texclass="ORD">

@@ -26,156 +26,135 @@
 </head>
 
 <body>
-    <div id="container" class="container  px-4">
-        <div class="row">
-            <div class="col" id="status" style="text-align: center; font-size: 4em;">
-                <h5>www.virgorises.com</h5>
+    <div class="row">
+        <div id="container" class="container  px-4">
+            <div class="row">
+                <div class="col" id="status" style="text-align: center; font-size: 4em;">
+                    <h5>www.virgorises.com</h5>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <ul id="top-menu-bar" class="nav nav-underline">
-                <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
 
-                <li class="nav-item"><a class="nav-link" href="#page_preset">Preset</a></li>
+            <div class="row">
+                <ul id="top-menu-bar" class="nav nav-underline">
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
 
-                <!--  Sets  -->
-                <li class="nav-item"><a class="nav-link" href="#page_set">Sets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#page_preset">Preset</a></li>
 
+                    <!--  Sets  -->
+                    <li class="nav-item"><a class="nav-link" href="#page_set">Sets</a></li>
+                    <!--
                 <li class="nav-item"><a class="nav-link" href="#page_set_additive">Sets sub additive</a></li>
 
                 <li class="nav-item"><a class="nav-link" href="#page_set_multiplicative">Sets sub multiplicative</a>
                 </li>
+                -->
 
-                <!-- Table expanded seeds  -->
-                <li class="nav-item"><a class="nav-link" href="#page_tbl_expanded_seeds">Seeds tbl_expanded_seeds</a>
-                </li>
+                    <!-- Table expanded seeds  -->
+                    <li class="nav-item"><a class="nav-link" href="#page_tbl_expanded_seeds">List of combinations</a>
+                    </li>
 
-                <!-- Project database  -->
-                <li class="nav-item"><a class="nav-link" href="#page_database">Project database</a></li>
-            </ul>
-            <br /><br />
-        </div>
-        <!-- menu: "#page_preset" -->
-        <div class="page" id="page_preset">
-            <div class="row">
-                <div class="col">
-                    <div class="row">
-                        <div class="col">
-                            <fieldset>
-                                <legend>Mapping</legend>
-                                <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                                <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()"
-                                    pattern="" placeholder="2,2.02,2.52,..." />
-                            </fieldset>
-                        </div>
-                        <div class="col">
-                            <!-- Select presets -->
-                            <!-- begin include subdocs/*.js 
+                    <!-- Project database  -->
+                    <li class="nav-item"><a class="nav-link" href="#page_database">Data tables</a></li>
+                </ul>
+                <br /><br />
+            </div>
+            <!-- menu: "#page_preset" -->
+            <div class="page" id="page_preset">
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <fieldset>
+                                    <legend>Map Royal cubit(s)</legend>
+                                    <label for="csvRc">csv Map&nbsp;&nbsp;</label>
+                                    <input type="text" id="csvRc" value=" " name="seed_map_preset"
+                                        onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." />
+                                </fieldset>
+                                <p>
+                                    The text input consists of a comma seperated lists of rational numbers, i.e.
+                                    measurements of Royal Cubits.
+                                </p>
+                            </div>
+                            <div class="col">
+                                <!-- Select presets -->
+                                <!-- begin include subdocs/*.js 
                                 stackoverflow.com 
                                 answered May 1, 2022 user342550-->
-                            <div id="fieldset_selectpresets_div">
-                                <!-- ..._div.insertAdjacentHTML(' -->
+                                <div id="fieldset_selectpresets_div">
+                                    <!-- ..._div.insertAdjacentHTML(' -->
+                                </div>
+                                <!-- end include subdocs/*.js -->
                             </div>
-                            <!-- end include subdocs/*.js -->
                         </div>
+                    </div>
+                </div>
+            </div>
+            <!-- menu: "#page_set" -->
+            <div class="page" id="page_set">
+                <!-- Start set selection -->
+                <div class="row">
+                    <div class="col">
+                        <fieldset>
+                            <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
+                            <label for="csvSeeds">csv Seeds</label>
+                            <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
+                                onchange="expandSeedSet()" />
+                        </fieldset>
+                    </div>
+                    <div class="col">
+                        <fieldset>
+                            <legend id="legenddimensionsmap" class="">Dimension</legend>
+
+                            <label for="dimension">(1 to 9)</label> <input type="number" id="dimension" name="dimension"
+                                min="1" max="9" value="3" onchange="expandSeedSet()">
+                        </fieldset>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        <br />
-                        <p>The text input consists of a comma seperated lists of rational numbers, i.e. measurements of
-                            Royal Cubits.
-                        </p>
+                        <p>The first passage's 5 unique measures in Royal Cubit.</p>
+                    </div>
+                    <div class="col">
+                        <p>Guess: Combinations of 3 or less seeds map climate events.</p>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- menu: "#page_set" -->
-        <div class="page" id="page_set">
-            <div class="row">
-                <div class="col">
-                    <H1>page_set</H1>
-                    <!-- Start set selection -->
-                    <div class="row">
-                        <div class="col">
-                            <br />
-                            <fieldset>
-                                <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
-                                <label for="csvSeeds">csv Seeds</label>
-                                <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
-                                    onchange="expandSeedSet()" />
-                            </fieldset><br />
-
-                            <label for="dimension">Dimension (1 to 9):</label> <input type="number" id="dimension"
-                                name="dimension" min="1" max="9" value="3" onchange="expandSeedSet()">
-                            </fieldset>
+                <div class="row">
+                    <div class="col">
+                        <!-- Select mapping set -->
+                        <!-- begin include subdocs/*.js -->
+                        <div id="fieldset_selectsets_additive_div">
+                            <!-- HTML to be inserted here -->
+                        </div>
+                        <!-- end include subdocs/*.js -->
+                    </div>
+                    <div class="col">
+                        <!-- fieldset_selectsets_multiplicative_div.js -->
+                        <!-- Select mapping set -->
+                        <!-- begin include subdocs/*.js -->
+                        <div id="fieldset_selectsets_multiplicative_div">
+                            <!-- HTML to be inserted here -->
                         </div>
                     </div>
-                    <div class="row">
-                        <p>The first passage has a set of 5 unique x,y, and z dimensions. Those are hypothesized to
-                            represent the seed values for reconstructing a connected graph of vertices.</p>
-                        <p>Guess: A subset of the combinations map climate events. Subsets of 3 or less seeds map
-                            paleoclimatological events.</p>
-                        <p>The square root values for both types of sets project almost exclusively in the Younger
-                            Dryas.
-                            The lower the calculated value, the closer the mappings occur to 11600 YBP.</p>
-                        <p> Additive sets produce low range values and project, for the most, closer to the geometric
-                            center
-                            of the projection window. </p>
-                        <p> Multiplicative sets present two clear focii; at 11600 YBP, and at 4400 YBP. </p>
-                    </div><br />
                 </div>
             </div>
         </div>
-    </div>
-    <!-- menu: "#page_set_additive" -->
-    <div class="page" id="page_set_additive">
-        <div class="row">
-            <div class="col">
-                <h1>page_set_additive</h1>
-                <!-- fieldset_selectsets_additive_div.js -->
-                <!-- Select mapping set -->
-                <!-- begin include subdocs/*.js -->
-                <div id="fieldset_selectsets_additive_div">
-                    <!-- HTML to be inserted here -->
-                </div>
-                <!-- end include subdocs/*.js -->
-            </div>
-        </div>
-    </div>
-    <!-- menu: "#page_set_multiplicative" -->
-    <div class="page" id="page_set_multiplicative">
-        <div class="row">
-            <div class="col">
-                <h1>page_set_multiplicative</h1>
-
-                <!-- fieldset_selectsets_multiplicative_div.js -->
-                <!-- Select mapping set -->
-                <!-- begin include subdocs/*.js -->
-                <div id="fieldset_selectsets_multiplicative_div">
-                    <!-- HTML to be inserted here -->
-                </div>
-                <!-- end include subdocs/*.js -->
-
-            </div>
-        </div>
-    </div>
-    <!-- menu: "#page_tbl_expanded_seeds" -->
-    <div class="page" id="page_tbl_expanded_seeds">
-        <div class="row">
-            <div class="col">
-                <h1>page_tbl_expanded_seeds</h1>
-                <div id="theset">
-                    <!-- makeTheSeedXTbl() table id="theseedxtbl" -->
+        <!-- menu: "#page_tbl_expanded_seeds"  style="height: 400px;" -->
+        <div class="page" id="page_tbl_expanded_seeds">
+            <!-- stackoverflow answered Jun 17, 2022 Jesper Martinez-->
+            <div class="container-fluid h-20">
+                <div class="row">
+                    <div id="theset" class="col-md-6 overflow-scroll" style="height:250px;">
+                        <!-- makeTheSeedXTbl() table id="theseedxtbl" -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- menu: "#page_database" -->
     <div class="page" id="page_database">
-        <div class="row">
-            <div class="col">
-                <h1>page_database</h1>
+        <div class="container-fluid h-20">
+            <div class="row">
+            <div class="col-md-6 overflow-scroll" style="height:250px;">
                 <!-- begin include subdocs/*.js -->
                 <div id="accordion_lst_tables_div">
                     <!-- HTML to be inserted here -->
@@ -183,59 +162,52 @@
                 <!-- end include subdocs/*.js -->
             </div>
         </div>
+        </div>
     </div>
     <!--##################################-->
-    <!--##################################-->
-    <!--##################################-->
-    <!--##################################-->
 
+    <!-- Define the canvas -->
     <div class="row">
         <div class="col">
             <canvas id="vrCanvasPlotRc" width=800 height=600></canvas>
         </div>
-    </div>
-    <div class="row">
+        <!-- Presenting the ko-fee jar for bread and butter -->
         <div class="row">
-            <div class="col">
-            </div>
-        </div>
-
-        <div>
-            <!-- Presenting the jar -->
             <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
             <script type='text/javascript'>
                 kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
                 kofiwidget2.draw();
             </script>
         </div>
+    </div>
 
-
-        <!-- include html subdocs/ *.js-->
-        <script src="subdocs/fieldset_selectpresets_div.js"></script>
-        <script src="subdocs/accordion_lst_tables_div.js"></script>
-        <!-- 
+    <!-- include html subdocs/ *.js-->
+    <script src="subdocs/fieldset_selectpresets_div.js"></script>
+    <script src="subdocs/accordion_lst_tables_div.js"></script>
+    <!-- 
         subdocs mechanics will not allow execution of MathJax.
         <script src="subdocs/fieldset_selectsets_div_MathJax.js"></script> 
-        Replaced MathJax with MathML works.
+        Replaced MathJax with MathML works with sub docs mechanics.
     -->
-        <script src="subdocs/fieldset_selectsets_div.js"></script>
-        <script src="subdocs/fieldset_selectsets_additive_div.js"></script>
-        <script src="subdocs/fieldset_selectsets_multiplicative_div.js"></script>
+    <!-- Include <ul> with math text -->
+    <script src="subdocs/fieldset_selectsets_additive_div.js"></script>
+    <script src="subdocs/fieldset_selectsets_multiplicative_div.js"></script>
 
-        <!-- 
+    <!-- 
         include JavaScript vrpaleoplotter 
     -->
-        <!-- code not currently worked on in vrpaleoplotter_fin.js -->
-        <script src="js/vrpaleoplotter_fin.js"></script>
-        <!-- So code currently worked on -->
-        <script src="js/vrpaleoplotter.js"></script>
+    <!-- code not currently worked on in vrpaleoplotter_fin.js -->
+    <script src="js/vrpaleoplotter_fin.js"></script>
+    <!-- So code currently worked on -->
+    <script src="js/vrpaleoplotter.js"></script>
 
-        <!-- JS bootstrap
+    <!-- JS bootstrap
         Many of our components require the use of JavaScript to function. Specifically, they require our own JavaScript plugins and Popper. Place one of the following <script>s near the end of your pages, right before the closing </body> tag, to enable them.
     -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
 </body>
 
 </html>
