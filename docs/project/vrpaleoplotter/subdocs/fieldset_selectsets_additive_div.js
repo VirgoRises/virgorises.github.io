@@ -4,7 +4,7 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
 <fieldset>
 
     <legend>Additive sets:</legend> 
-    <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1"><span>&nbsp;1</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
+    <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1"><span class="d-inline-block text-truncate" style="max-width: 150px;">&nbsp;1</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
     <mrow data-mjx-texclass="ORD">
     <mstyle mathsize="1em">
       <mo fence="false" stretchy="false">{</mo>
@@ -29,7 +29,7 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
     </math></span></label><br/>
 
 
-    <input id="chk_s2" type="checkbox" name="sets" value="s2" /><label for="chk_s2"><span>&nbsp;2</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
+    <input id="chk_s2" type="checkbox" name="sets" value="s2" /><label for="chk_s2"><span class="d-inline-block text-truncate" style="max-width: 150px;">&nbsp;2</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
     <mrow data-mjx-texclass="ORD">
     <mstyle mathsize="1em">
     <mo fence="false" stretchy="false">{</mo>
@@ -71,7 +71,7 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
     </mrow>
     </math></span></label><br/>
 
-    <input id="chk_s3" type="checkbox" name="sets" value="s3" /><label for="chk_s3"><span>&nbsp;3</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
+    <input id="chk_s3" type="checkbox" name="sets" value="s3" /><label for="chk_s3"><span class="d-inline-block text-truncate" style="max-width: 150px;">&nbsp;3</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
     <mrow data-mjx-texclass="ORD">
     <mstyle mathsize="1em">
     <mo fence="false" stretchy="false">{</mo>
@@ -100,8 +100,8 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
     </mstyle>
     </mrow>
     </math></span></label><br/>
-
-    <input id="chk_s4" type="checkbox" name="sets" value="s4" /><label for="chk_s4"><span>&nbsp;4</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
+    
+    <input id="chk_s4" type="checkbox" name="sets" value="s4" /><label for="chk_s4"><span class="d-inline-block text-truncate" style="max-width: 150px;">&nbsp;4</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
     <mrow data-mjx-texclass="ORD">
     <mstyle mathsize="1em">
     <mo fence="false" stretchy="false">{</mo>
