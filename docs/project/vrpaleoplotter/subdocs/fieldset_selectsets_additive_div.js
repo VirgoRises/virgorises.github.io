@@ -4,9 +4,6 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
 <fieldset>
 
     <legend>Additive sets:</legend> 
-    
-    <p> Additive sets produce low range values and project, for the most, closer to the geometric center of the projection window. </p>
-
     <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1"><span>&nbsp;Set&nbsp;1</span>&nbsp;:&nbsp;<span><math xmlns="http://www.w3.org/1998/Math/MathML">
     <mrow data-mjx-texclass="ORD">
     <mstyle mathsize="1em">
