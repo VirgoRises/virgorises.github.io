@@ -26,81 +26,34 @@
 </head>
 
 <body>
-    <div class="row">
-        <div id="container" class="container  px-4">
-            <div class="row">
-                <div class="col" id="status" style="text-align: center; font-size: 4em;">
-                    <h5>www.virgorises.com</h5>
-                </div>
-            </div>
-
+    <div id="container" class="container  px-1">
+        <div class="row">
             <div class="row">
                 <ul id="top-menu-bar" class="nav nav-underline">
-                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item active"><a class="nav-link active" href="#page_home">Home</a></li>
+                    <!--  Sets  -->
+                    <li class="nav-item"><a class="nav-link" href="#page_set">Sets</a></li>
 
                     <li class="nav-item"><a class="nav-link" href="#page_preset">Preset</a></li>
 
-                    <!--  Sets  -->
-                    <li class="nav-item"><a class="nav-link" href="#page_set">Sets</a></li>
-                    <!--
-                <li class="nav-item"><a class="nav-link" href="#page_set_additive">Sets sub additive</a></li>
-
-                <li class="nav-item"><a class="nav-link" href="#page_set_multiplicative">Sets sub multiplicative</a>
-                </li>
-                -->
-
                     <!-- Table expanded seeds  -->
-                    <li class="nav-item"><a class="nav-link" href="#page_tbl_expanded_seeds">List of combinations</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#page_tbl_expanded_seeds">To map</a></li>
 
                     <!-- Project database  -->
                     <li class="nav-item"><a class="nav-link" href="#page_database">Data tables</a></li>
                 </ul>
                 <br /><br />
             </div>
-            <!-- menu: "#page_preset" -->
-            <div class="page" id="page_preset">
+            <!-- menu: "#home" -->
+            <div class="page active" id="page_home">
                 <div class="row">
                     <div class="col">
-                        <div class="row">
-                            <div class="col">
-                                <fieldset>
-                                    <legend>Map Royal cubit(s)</legend>
-                                    <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                                    <input type="text" id="csvRc" value=" " name="seed_map_preset"
-                                        onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." />
-                                </fieldset>
-                                <p>
-                                    A comma seperated lists of rational numbers (fractions of Royal Cubits).
-                                </p>
-                            </div>
-                            <div class="col">
-                                <!-- Select presets -->
-                                <!-- begin include subdocs/*.js 
-                                stackoverflow.com 
-                                answered May 1, 2022 user342550-->
-                                <div id="fieldset_selectpresets_div">
-                                    <!-- ..._div.insertAdjacentHTML(' -->
-                                </div>
-                                <!-- end include subdocs/*.js -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- menu: "#page_set" -->
-            <div class="page" id="page_set">
-                <!-- Start set selection -->
-                <div class="row">
-                    <div class="col">
-                        
                         <fieldset>
                             <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
                             <label for="csvSeeds">csv Seeds</label>
                             <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
                                 onchange="expandSeedSet()" />
                         </fieldset>
-                    
                     </div>
                     <div class="col">
                         <fieldset>
@@ -110,24 +63,58 @@
                                 min="1" max="9" value="3" onchange="expandSeedSet()">
                         </fieldset>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <p>The first passage's 5 unique measures in Royal Cubit.</p>
+                        </div>
+                        <div class="col">
+                            <p>Guess: Combinations of 3 or less seeds map climate events.</p>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <!-- menu: "#page_preset" -->
+            <div class="page" id="page_preset">
                 <div class="row">
                     <div class="col">
-                        <p>The first passage's 5 unique measures in Royal Cubit.</p>
+                        <fieldset>
+                            <legend>Map Royal cubit(s)</legend>
+                            <label for="csvRc">csv Map&nbsp;&nbsp;</label>
+                            <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()"
+                                pattern="" placeholder="2,2.02,2.52,..." />
+                        </fieldset>
+                        <p>
+                            A comma seperated lists of rational numbers (fractions of Royal Cubits).
+                        </p>
                     </div>
                     <div class="col">
-                        <p>Guess: Combinations of 3 or less seeds map climate events.</p>
+                        <!-- Select presets -->
+                        <!-- begin include subdocs/*.js 
+                                stackoverflow.com 
+                                answered May 1, 2022 user342550-->
+                        <div id="fieldset_selectpresets_div">
+                            <!-- ..._div.insertAdjacentHTML(' -->
+                        </div>
+                        <!-- end include subdocs/*.js -->
                     </div>
                 </div>
+            </div>
+            <!-- menu: "#page_set" -->
+            <div class="page" id="page_set">
+                <!-- Start set selection -->
+                <div class="row">
+
+                </div>
+
                 <div class="row">
                     <div class="col">
                         <!-- Select mapping set -->
                         <!-- begin include subdocs/*.js -->
                         <small>
-                        <div id="fieldset_selectsets_additive_div">
-                            <!-- HTML to be inserted here -->
-                        </div>
-                    </small>
+                            <div id="fieldset_selectsets_additive_div">
+                                <!-- HTML to be inserted here -->
+                            </div>
+                        </small>
                         <!-- end include subdocs/*.js -->
                     </div>
                     <div class="col">
@@ -135,57 +122,57 @@
                         <!-- Select mapping set -->
                         <!-- begin include subdocs/*.js -->
                         <small>
-                        <div id="fieldset_selectsets_multiplicative_div">
-                            <!-- HTML to be inserted here -->
+                            <div id="fieldset_selectsets_multiplicative_div">
+                                <!-- HTML to be inserted here -->
+                            </div>
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- menu: "#page_tbl_expanded_seeds"  style="height: 400px;" -->
+            <div class="page" id="page_tbl_expanded_seeds">
+                <!-- stackoverflow answered Jun 17, 2022 Jesper Martinez-->
+                <div class="container-fluid h-20">
+                    <div class="row">
+                        <div id="theset" class="col-md-6 overflow-scroll" style="height:180px;">
+                            <!-- makeTheSeedXTbl() table id="theseedxtbl" -->
                         </div>
-                    </small>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- menu: "#page_tbl_expanded_seeds"  style="height: 400px;" -->
-        <div class="page" id="page_tbl_expanded_seeds">
-            <!-- stackoverflow answered Jun 17, 2022 Jesper Martinez-->
+        <!-- menu: "#page_database" -->
+        <div class="page" id="page_database">
             <div class="container-fluid h-20">
                 <div class="row">
-                    <div id="theset" class="col-md-6 overflow-scroll" style="height:250px;">
-                        <!-- makeTheSeedXTbl() table id="theseedxtbl" -->
+                    <div class="col-md-6 overflow-scroll" style="height:225px;">
+                        <!-- begin include subdocs/*.js -->
+                        <div id="accordion_lst_tables_div">
+                            <!-- HTML to be inserted here -->
+                        </div>
+                        <!-- end include subdocs/*.js -->
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- menu: "#page_database" -->
-    <div class="page" id="page_database">
-        <div class="container-fluid h-20">
+        <!--##################################-->
+
+        <!-- Define the canvas -->
+        <div class="row">
+            <div class="col">
+                <canvas id="vrCanvasPlotRc" width=800 height=600></canvas>
+            </div>
+            <!-- Presenting the ko-fee jar for bread and butter -->
             <div class="row">
-            <div class="col-md-6 overflow-scroll" style="height:250px;">
-                <!-- begin include subdocs/*.js -->
-                <div id="accordion_lst_tables_div">
-                    <!-- HTML to be inserted here -->
-                </div>
-                <!-- end include subdocs/*.js -->
+                <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
+                <script type='text/javascript'>
+                    kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
+                    kofiwidget2.draw();
+                </script>
             </div>
         </div>
-        </div>
     </div>
-    <!--##################################-->
-
-    <!-- Define the canvas -->
-    <div class="row">
-        <div class="col">
-            <canvas id="vrCanvasPlotRc" width=800 height=600></canvas>
-        </div>
-        <!-- Presenting the ko-fee jar for bread and butter -->
-        <div class="row">
-            <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
-            <script type='text/javascript'>
-                kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'L3L6AEPS3');
-                kofiwidget2.draw();
-            </script>
-        </div>
-    </div>
-
     <!-- include html subdocs/ *.js-->
     <script src="subdocs/fieldset_selectpresets_div.js"></script>
     <script src="subdocs/accordion_lst_tables_div.js"></script>
