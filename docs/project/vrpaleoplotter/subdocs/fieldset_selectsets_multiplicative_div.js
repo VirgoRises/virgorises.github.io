@@ -2,9 +2,9 @@ const fieldset_selectsets_multiplicative_div = document.querySelector('#fieldset
 fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
 <!-- start set fieldset -->
     <fieldset>
-    <legend>Multiplicative gog</legend>
- 
- <input id="chk_s5" type="checkbox" name="sets" value="s5" />
+    <legend>Multiplicative</legend>
+
+<input id="chk_s5" type="checkbox" name="sets" value="s5" />
  <label for="chk_s5">
  <span class="d-inline-block d-md-none">
  <math xmlns="http://www.w3.org/1998/Math/MathML">
