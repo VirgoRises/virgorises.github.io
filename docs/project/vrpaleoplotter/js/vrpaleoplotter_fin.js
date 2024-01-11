@@ -326,14 +326,20 @@ function expandSeedSet() {
 
     /* 
         Validate number of seed values: <legend class="maxseeds">
-    */
-    let seedAlert = document.getElementById("legendseedsmaps");
+    .is-invalid .is-valid
+        */
+    let seedAlert = document.getElementById("csvSeeds");
+    let labelseedsmaps = document.getElementById("labelseedsmaps");
+    //let curLabel = labelseedsmaps.innerHTML;
+    seedAlert.classList.add("is-valid");
     if (varArray.length > 9) {
-        seedAlert.classList.add("maxseeds");
-        document.getElementById("csvSeeds").focus;
+        labelseedsmaps.innerHTML = `${varArray.length-9} too many!`;
+        seedAlert.classList.add("is-invalid");
+        seedAlert.focus();
         return;
     } else {
-        seedAlert.classList.remove("maxseeds");
+        seedAlert.classList.remove("is-invalid");
+        labelseedsmaps.innerHTML = "Seeds (max. 9)";
     };
 
     // Proceed with a set of maximum 9 unique values 
