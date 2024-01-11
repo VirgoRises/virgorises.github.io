@@ -3,7 +3,7 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
 <!-- start set fieldset -->
 <fieldset>
 
-    <legend>Additive sets:</legend> 
+    <legend>Additive</legend> 
     <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1">
     <span class="d-inline-block d-md-none">
     <math xmlns="http://www.w3.org/1998/Math/MathML">
