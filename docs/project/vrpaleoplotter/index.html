@@ -26,7 +26,7 @@
 </head>
 
 <body>
-    <div id="container" class="container  px-1">
+    <div id="container" class="container  px-4">
         <div class="row">
             <div class="row">
                 <ul id="top-menu-bar" class="nav nav-underline">
@@ -48,29 +48,24 @@
             <div class="page active" id="page_home">
                 <div class="row">
                     <div class="col">
+                        <p><small>The first passage: 5 unique measures in Royal Cubit. <br/><em>Guess:</em> Combinations of 3 or less seeds map climate events.</small></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
                         <fieldset>
-                            <legend id="legendseedsmaps" class="">Seeds (max. 9) </legend>
-                            <label for="csvSeeds">csv Seeds</label>
-                            <input type="text" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
+                            <label for="csvSeeds">Seeds (max. 9)</label>
+                            <input type="text" class="form-control" id="csvSeeds" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
                                 onchange="expandSeedSet()" />
                         </fieldset>
                     </div>
                     <div class="col">
                         <fieldset>
-                            <legend id="legenddimensionsmap" class="">Dimension</legend>
-
-                            <label for="dimension">(1 to 9)</label> <input type="number" id="dimension" name="dimension"
+                             <label for="dimension">Max. group</label> <input type="number" class="form-control" id="dimension" name="dimension"
                                 min="1" max="9" value="3" onchange="expandSeedSet()">
                         </fieldset>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <p>The first passage's 5 unique measures in Royal Cubit.</p>
-                        </div>
-                        <div class="col">
-                            <p>Guess: Combinations of 3 or less seeds map climate events.</p>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <!-- menu: "#page_preset" -->
@@ -78,14 +73,11 @@
                 <div class="row">
                     <div class="col">
                         <fieldset>
-                            <legend>Map Royal cubit(s)</legend>
-                            <label for="csvRc">csv Map&nbsp;&nbsp;</label>
-                            <input type="text" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()"
+                           <label for="csvRc">Map Royal cubit(s)&nbsp;&nbsp;</label>
+                            <input type="text" class="form-control" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()"
                                 pattern="" placeholder="2,2.02,2.52,..." />
                         </fieldset>
-                        <p>
-                            A comma seperated lists of rational numbers (fractions of Royal Cubits).
-                        </p>
+                        <p><small>Comma Separated Q&in;R</small></p>
                     </div>
                     <div class="col">
                         <!-- Select presets -->
@@ -135,7 +127,7 @@
                 <!-- stackoverflow answered Jun 17, 2022 Jesper Martinez-->
                 <div class="container-fluid h-20">
                     <div class="row">
-                        <div id="theset" class="col-md-6 overflow-scroll" style="height:180px;">
+                        <div id="theset" class="col-md-12 overflow-scroll" style="height:180px;">
                             <!-- makeTheSeedXTbl() table id="theseedxtbl" -->
                         </div>
                     </div>
@@ -146,7 +138,7 @@
         <div class="page" id="page_database">
             <div class="container-fluid h-20">
                 <div class="row">
-                    <div class="col-md-6 overflow-scroll" style="height:225px;">
+                    <div class="col-md-12 overflow-scroll" style="height:225px;">
                         <!-- begin include subdocs/*.js -->
                         <div id="accordion_lst_tables_div">
                             <!-- HTML to be inserted here -->

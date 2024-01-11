@@ -2,7 +2,6 @@ const fieldset_selectpresets_div = document.querySelector('#fieldset_selectprese
 fieldset_selectpresets_div.insertAdjacentHTML('beforeend', `
 <!-- start preset fieldset -->
 <fieldset>
-<legend>Select presets:</legend>
     <input id="chk_extr" type="checkbox" name="presets" value="19.0999,999999" /><label
         for="chk_extr">Bounds convex set</label><br />
 
