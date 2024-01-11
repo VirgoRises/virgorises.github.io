@@ -6,7 +6,7 @@ accordion_lst_tables_div.insertAdjacentHTML('beforeend', `
         <h2 class="accordion-header" id="headingTwo">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                tbl_tbllist Item #2
+                List of tables
             </button>
         </h2>
     </div>
@@ -21,7 +21,7 @@ accordion_lst_tables_div.insertAdjacentHTML('beforeend', `
         <h2 class="accordion-header" id="headingThree">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                tbl_mplot Item #3
+                Table of plot studies
             </button>
         </h2>
         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
@@ -35,7 +35,7 @@ accordion_lst_tables_div.insertAdjacentHTML('beforeend', `
         <h2 class="accordion-header" id="headingFour">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                tbl_gbox Item #4
+                Table of graphs
             </button>
         </h2>
         <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
@@ -50,7 +50,7 @@ accordion_lst_tables_div.insertAdjacentHTML('beforeend', `
         <h2 class="accordion-header" id="headingFive">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                tbl_sets Item #5
+                Table of sets
             </button>
         </h2>
         <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
@@ -64,7 +64,7 @@ accordion_lst_tables_div.insertAdjacentHTML('beforeend', `
         <h2 class="accordion-header" id="headingSix">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                tbl_presets Item #6
+                Table of presets
             </button>
         </h2>
         <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
