@@ -280,6 +280,7 @@ function expandSeedSet() {
     var varList = document.getElementById("csvSeeds").value;
     // Apply filter for maximum dimensions used for mapping 
     var maxDim = document.getElementById("dimension").value;
+    document.getElementById("labeldimension").innerHTML = `Max group: ${maxDim}`;
 
     /* convert the varList to a set of unique values
         The algorithm maps (combinations of) seed values

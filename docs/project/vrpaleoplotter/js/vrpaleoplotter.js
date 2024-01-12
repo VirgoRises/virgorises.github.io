@@ -15,7 +15,7 @@ var theSet = '',
 
 // Temporary test goof
 //var graph = Array.from(['https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh', 'https://drive.google.com/uc?id=171Me953e5MFlMZvAltIkyKI0HiPk1NA_','https://drive.google.com/uc?id=1J6a0GsHypYRLuxSXikfWIekiguPQaZM3']);
-var graph = Array.from(['media\\Alley, R.B.. 2004. GISP2 Ice Core Temperature .png', 'media\\Years-before-present-Younger-Dryasplushydro.png','media\\Comparison-of-climate-records-The-intervals-of-Heinrich-event-2-H2-the-Last-Glacial.png']);
+var graph = Array.from(['media\\Alley, R.B.. 2004. GISP2 Ice Core Temperature .png', 'media\\Years-before-present-Younger-Dryasplushydro.png', 'media\\Comparison-of-climate-records-The-intervals-of-Heinrich-event-2-H2-the-Last-Glacial.png']);
 
 
 var coord = [
@@ -73,26 +73,26 @@ document.addEventListener('DOMContentLoaded', (event) => {
         plotMarker();
     };
     var rect = canvas.getBoundingClientRect();
-    img.src = gBox.gURI; 
-    
+    img.src = gBox.gURI;
+
     let menuBar = document.querySelector("#top-menu-bar");
     /**
      * 
-     * @abstract junk off screen - (so) answered Jul, 2022 user imvain2
+     * @abstract Handle menu bar
      * 
      */
-    menuBar.addEventListener("click", function(e) {
-      e.preventDefault();
-      let nav = e.target;
-      let targetPage = nav.getAttribute("href");
-      if (targetPage) {
-        let visible = document.querySelector(".page.active");
-        if (visible) {
-          visible.classList.remove("active");
+    menuBar.addEventListener("click", function (e) {
+        e.preventDefault();
+        let nav = e.target;
+        let targetPage = nav.getAttribute("href");
+        if (targetPage) {
+            let visible = document.querySelector(".page.active");
+            if (visible) {
+                visible.classList.remove("active");
+            }
+            let target = document.querySelector(targetPage);
+            target.classList.toggle("active");
         }
-        let target = document.querySelector(targetPage);
-        target.classList.toggle("active");
-      }
     });
-        
+
 }); // end document.addEventListener('DOMContentLoaded', (event))
