@@ -33,9 +33,7 @@
                     <li class="nav-item active"><a class="nav-link active" href="#page_home">Home</a></li>
                     <!--  Sets  -->
                     <li class="nav-item"><a class="nav-link" href="#page_set">Sets</a></li>
-
                     <li class="nav-item"><a class="nav-link" href="#page_preset">Preset</a></li>
-
                     <!-- Table expanded seeds  -->
                     <li class="nav-item"><a class="nav-link" href="#page_tbl_expanded_seeds">To map</a></li>
 
@@ -50,35 +48,29 @@
                     <div class="col">
                         <fieldset>
                             <label id="labelseedsmaps" for="csvSeeds">Seeds (max. 9)</label>
-                            <input type="text" id="csvSeeds" class="form-control" value="2,2.02,2.52,2.98,5.5" name="seed_map_preset"
+                            <input type="text" id="csvSeeds" class="form-control" value="2,2.02,2.52,2.98,5.5"
+                                name="seed_map_preset" onchange="expandSeedSet()" />
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row"><!-- Range -->
+                    <div class="col">
+                        <fieldset>
+                            <label id="labeldimension" for="dimension">Max group: n</label>
+                            <input type="range" id="dimension" name="vol" min="1" step="1" max="9" value="3"
                                 onchange="expandSeedSet()" />
                         </fieldset>
                     </div>
-                    <div class="col">
-                        <fieldset>
-
-                            <label for="dimension">Grouping: 1 to n</label> <input type="number" class="form-control" id="dimension" name="dimension"
-                                min="1" max="9" value="3" onchange="expandSeedSet()">
-                        </fieldset>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <p><small>First passage: 5 lengths.</small></p>
-                        </div>
-                        <div class="col">
-                            <p><small><em>Guess:</em> Up to 3 map events.</small></p>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <!-- menu: "#page_preset" -->
+            <!-- menu: " #page_preset" -->
             <div class="page" id="page_preset">
                 <div class="row">
                     <div class="col">
                         <fieldset>
                             <label for="csvRc">Royal cubit(s): q&in;R = {q1,q2,q3, ... }</label>
-                            <input type="text" class="form-control" id="csvRc" value=" " name="seed_map_preset" onchange="plotMarker()"
-                                pattern="" placeholder="2,2.02,2.52,..." />
+                            <input type="text" class="form-control" id="csvRc" value=" " name="seed_map_preset"
+                                onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." />
                         </fieldset>
                     </div>
                     <div class="col">
