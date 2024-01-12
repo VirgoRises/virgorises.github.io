@@ -12,8 +12,8 @@ function f(RoyalCubit, GraphCalib, Ryears) {
     const cF_hbar = cIsFloor === 0 ? 1 : cIsFloor;
     const cDegPreses = 10 * (cGon / cF_hbar);
     const cYbo = cDegPreses * 72;
-    const cCalibPlus = (2450 + GraphCalib);
-    const cYbp = (cDegPreses * 72) + (2450 + GraphCalib);
+    const cCalibPlus = (2450 + Number(GraphCalib));
+    const cYbp = cYbo + cCalibPlus;
     const cRelX = 1 - (cYbp / Ryears);
 
     // return array of values
@@ -28,8 +28,10 @@ function f(RoyalCubit, GraphCalib, Ryears) {
         Ybp: cYbp,
         RelX: cRelX
     }
+    console.info(f_calc);
+    
     return f_calc
-}
+    }
 
 /**
  * 
