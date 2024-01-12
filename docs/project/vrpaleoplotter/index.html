@@ -38,7 +38,7 @@
                     <li class="nav-item"><a class="nav-link" href="#page_tbl_expanded_seeds">To map</a></li>
 
                     <!-- Project database  -->
-                    <li class="nav-item"><a class="nav-link" href="#page_database">Data tables</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#page_database">DB</a></li>
                 </ul>
                 <br /><br />
             </div>
@@ -51,6 +51,11 @@
                             <input type="text" id="csvSeeds" class="form-control" value="2,2.02,2.52,2.98,5.5"
                                 name="seed_map_preset" onchange="expandSeedSet()" />
                         </fieldset>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p><small>Group: 1:{a}, 2:{a,b}, n:{a,b,c,...}</small></p>
                     </div>
                 </div>
                 <div class="row"><!-- Range -->
@@ -73,6 +78,8 @@
                                 onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." />
                         </fieldset>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col">
                         <!-- Select presets -->
                         <!-- begin include subdocs/*.js 
