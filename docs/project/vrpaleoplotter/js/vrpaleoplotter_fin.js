@@ -12,10 +12,15 @@ function f(RoyalCubit, GraphCalib, Ryears) {
     const cF_hbar = cIsFloor === 0 ? 1 : cIsFloor;
     const cDegPreses = 10 * (cGon / cF_hbar);
     const cYbo = cDegPreses * 72;
-    const cCalibPlus = (2450 + Number(GraphCalib));
+    /** const cCalibPlus = (2450 + Number(GraphCalib));
     const cYbp = cYbo + cCalibPlus;
     const cRelX = 1 - (cYbp / Ryears);
-
+    */
+    const cCalibPlus = (2450 + Number(GraphCalib));
+    const cYbp = cYbo + cCalibPlus;
+    const cRyears = Number(Ryears);
+    //const cRelX = 1 - (cYbp / cRyears);   
+    const cRelX = (cYbp / cRyears);   
     // return array of values
     const f_calc = {
         Rc: RoyalCubit,
@@ -23,12 +28,12 @@ function f(RoyalCubit, GraphCalib, Ryears) {
         isFloor: cIsFloor,
         f_hbar: cF_hbar,
         degPreses: cDegPreses,
-        Ybo: cYbo,
+        rYears: cRyears,
         CalibPlus: cCalibPlus,
         Ybp: cYbp,
         RelX: cRelX
     }
-    console.info(f_calc);
+    //console.info(f_calc);
     
     return f_calc
     }
@@ -40,78 +45,101 @@ function f(RoyalCubit, GraphCalib, Ryears) {
 function plotMarker() {
 
     let plotSelection = "";
-    /*  Preserve userlist of manually added Royal cubit values */
+    /**  Preserve manually added Royal cubit list */
     const manualInput = document.getElementById("csvRc").value;
     plotSelection += manualInput;
-    /* add the current preset 
-        selection to the Rc list */
+    /** add the preset selection to the list */
     plotSelection += lstPreset.addPresets.csvRc;
-    /* add the current set selection to the Rc list. */
+    /** add the set selection to the list. */
     plotSelection += lstSet.addSets.csvRc;
-    /* plotselection to array */
+
+    /** Convert plotselection to array */
     lstRc = eval("[" + plotSelection + "]");
 
-    // Plot markers
-    ctx = document.getElementById("vrCanvasPlotRc").getContext("2d");
+    /** Start the plot markers procedure */
+    let ctx = document.getElementById("vrCanvasPlotRc").getContext("2d");
     let cSet = initConvexSet(gBox);
-    //===============
-    // here clear the ctx / canvas
-    // how to repaint the clear image
-    // var memPristene = = canvas.toDataURL(); 
+
+    /** 
+     * repaint the clear image
+     */
     img = new Image();
     img.src = gBox.gURI;
     ctx.drawImage(img, 0, 0);
+    /** 
+     * Wait until the image is loaded
+     */
     img.onload = function () {
 
+        /** 
+         * TODO: Make UI for positioning
+         * Indicate graph data area
+         */
+        ctx.beginPath();
+        ctx.lineWidth = 6;
+        ctx.setLineDash([6, 6]);
+        ctx.strokeStyle = "red";
+        ctx.rect(gBox.top.x, gBox.top.y, gBox.bottom.x, gBox.bottom.y);
+        ctx.stroke();
+        ctx.strokeStyle = "black";
+        /** End graph area indicater */
+
+        /**
+         *  prep shade Convex Set
+         */
         const markerLength = (cSet.cH);
         const markerYoffset = cSet.mPad.bottom;
-        //===============
-        // prep shade Convex Set;
         const saveFillStyle = ctx.fillStyle;
         const saveGlobalAlpha = ctx.globalAlpha;
-        // shade 
+        /**  shade */ 
         ctx.beginPath();
-        //    ctx.clearRect(cSet.cX, cSet.cY, cSet.cW, cSet.cH);
+        ctx.lineWidth = 2;
         ctx.fillStyle = cSet.fill.color;
         ctx.globalAlpha = cSet.fill.gAlpha;
         ctx.fillRect(cSet.cX, cSet.cY + cSet.mPad.top, cSet.cW, cSet.cH + cSet.mPad.bottom);
         ctx.stroke();
-        // restore values
+        /** restore values */
         ctx.globalAlpha = saveGlobalAlpha;
         ctx.fillStyle = saveFillStyle;
-        //End shade convex set
+        /** End shade convex set */
 
-        // Start loop over Rc list to draw mappings
-
+        /**
+         *  Start loop over Rc list to draw mappings
+         */
+        var RcX = 0;
         for (let x in lstRc) {
+            var lineDash = [0, 0];
+            var lineColor = "black";
+            var lineWidth = 1
+            /** Call the algorithm for relative marker position */
+            curf = f(lstRc[x], gBox.graphCalib, gBox.rYears).RelX;
 
-            /*  Call The Algorithm with current 
-                Royal cubit value -AND- the calibration
-                for the current graph */
-            curf = f(lstRc[x], gBox.graphCalib, gBox.rYears);
+            /** Relative portion offset from left side,
+             *  or right side of x-axis */
+            if (gBox.reverseX == 'R2L') {
+                RcX = (gBox.bottom.x - gBox.rPix * curf);
+                lineDash = [9, 3];
+                lineColor = "red";
+                lineWidth = 1;
 
-            // If the x-axis is reversed;
-            if (gBox.reverseX) {
-                // Works! Hands off!
-                RcX = cSet.cX - ((1 - curf.RelX) * cSet.xPix);
             } else {
-                //
-                RcX = cSet.cX + (curf.RelX * cSet.xPix);
+                RcX = (gBox.top.x + gBox.rPix * curf);
+                lineDash = [6, 6];
+                lineColor = "blue";
+                lineWidth = 2;
             }
-            // Define a new Path:
+
+            /** Plot the current marking */
             ctx.beginPath();
-            ctx.setLineDash([4,4]);
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = .45;
+            ctx.setLineDash(lineDash);
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = lineWidth;
             ctx.moveTo(RcX, cSet.cY + cSet.mPad.top);
             ctx.lineTo(RcX, cSet.cY + markerLength + cSet.mPad.bottom);
-            // Stroke it (Do the Drawing)
             ctx.stroke();
-
         }
     }
 }
-
 /**
  * @abstract Defines the coordinates for the bounds in which the function values for f(Rc), i.e., 'the mappings', will occur. The algorithm 'folds' the real number line, and segments the real numberline in sections of interlaced function values. It, in fact, structures an addressable overlay onto a 14400 year window of time. The overlay has two hyperdense focii at f(1), the geometric center, and at f(infinity), at the right side (time 0) of the timeline. The latter represented by fRight=f(9 x10^(12)). The 'fold' occurs at f(Rc < 20), at which the function values 'reflect back' and a subset of these pile-up creating the hyperdensity at f(1), while the rest go to f(infinity) causing the hyperdensity there.
  * TODO: Goobledigook to math jargon. 
@@ -119,10 +147,15 @@ function plotMarker() {
  * @returns cSet
  */
 function initConvexSet(gBox) {
-    var fLeft = f(999999999999, 1950, 20000).RelX; // x-axis 0-->20k
-    var fRight = f(19.099999999, 1950, 20000).RelX; // x-axis 0-->20k
+    //var fLeft = f(999999999999, 1950, 20000).RelX; // x-axis 0-->20k
+    //var fRight = f(19.099999999, 1950, 20000).RelX; // x-axis 0-->20k
+    var fLeft = f(999999999999, gBox.graphCalib, gBox.rYears).RelX; // x-axis 0-->20k
+    var fRight = f(19.099999999, gBox.graphCalib, gBox.rYears).RelX; // x-axis 0-->20k
     var tmpPix = gBox.bottom.x - gBox.top.x;
-
+    if (gBox.reverseX=='R2L'){
+        fLeft=1-fLeft;
+        fRight=1-fRight;
+    }
     let cSet = {
         xPix: gBox.bottom.x - gBox.top.x,
         cX: (gBox.top.x + ((1 - fLeft) * tmpPix)), //),
@@ -131,7 +164,7 @@ function initConvexSet(gBox) {
         cH: (gBox.bottom.y - gBox.top.y),
         fill: {
             color: "lightblue",
-            gAlpha: 0.10
+            gAlpha: 0.15
         },
         mPad: {
             top: 5,
@@ -141,13 +174,15 @@ function initConvexSet(gBox) {
     };
 
     // If the x-axis is reversed;
-    if (gBox.reverseX) {
+        if (gBox.reverseX=='R2L') {
         gBox.top.x - (fLeft * gBox.rPix);
         cSet.cX = (gBox.bottom.x - ((1 - fLeft) * tmpPix));
         cSet.cW = -cSet.cW;
     }
 
     return cSet
+    // console.info(`gBox.reverseX=${gBox.reverseX}`);
+    //console.info(`passed: if (gBox.reverseX)=${gBox.reverseX}`);
 }
 
 /**
