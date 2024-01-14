@@ -140,50 +140,6 @@ function plotMarker() {
         }
     }
 }
-/**
- * @abstract Defines the coordinates for the bounds in which the function values for f(Rc), i.e., 'the mappings', will occur. The algorithm 'folds' the real number line, and segments the real numberline in sections of interlaced function values. It, in fact, structures an addressable overlay onto a 14400 year window of time. The overlay has two hyperdense focii at f(1), the geometric center, and at f(infinity), at the right side (time 0) of the timeline. The latter represented by fRight=f(9 x10^(12)). The 'fold' occurs at f(Rc < 20), at which the function values 'reflect back' and a subset of these pile-up creating the hyperdensity at f(1), while the rest go to f(infinity) causing the hyperdensity there.
- * TODO: Goobledigook to math jargon. 
- * @param {*} gBox 
- * @returns cSet
- */
-function initConvexSet(gBox) {
-    //var fLeft = f(999999999999, 1950, 20000).RelX; // x-axis 0-->20k
-    //var fRight = f(19.099999999, 1950, 20000).RelX; // x-axis 0-->20k
-    var fLeft = f(999999999999, gBox.graphCalib, gBox.rYears).RelX; // x-axis 0-->20k
-    var fRight = f(19.099999999, gBox.graphCalib, gBox.rYears).RelX; // x-axis 0-->20k
-    var tmpPix = gBox.bottom.x - gBox.top.x;
-    if (gBox.reverseX=='R2L'){
-        fLeft=1-fLeft;
-        fRight=1-fRight;
-    }
-    let cSet = {
-        xPix: gBox.bottom.x - gBox.top.x,
-        cX: (gBox.top.x + ((1 - fLeft) * tmpPix)), //),
-        cY: gBox.top.y,
-        cW: ((fLeft * tmpPix) - (fRight * tmpPix)),
-        cH: (gBox.bottom.y - gBox.top.y),
-        fill: {
-            color: "lightblue",
-            gAlpha: 0.15
-        },
-        mPad: {
-            top: 5,
-            bottom: -5
-        }, // draw mapping lines in/outside bounds 
-        img: "" // image for redrawing
-    };
-
-    // If the x-axis is reversed;
-        if (gBox.reverseX=='R2L') {
-        gBox.top.x - (fLeft * gBox.rPix);
-        cSet.cX = (gBox.bottom.x - ((1 - fLeft) * tmpPix));
-        cSet.cW = -cSet.cW;
-    }
-
-    return cSet
-    // console.info(`gBox.reverseX=${gBox.reverseX}`);
-    //console.info(`passed: if (gBox.reverseX)=${gBox.reverseX}`);
-}
 
 /**
  * @param {*} lstPreset 
