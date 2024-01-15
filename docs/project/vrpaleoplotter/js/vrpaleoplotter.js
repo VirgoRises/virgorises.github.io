@@ -21,26 +21,26 @@ var graph = Array.from(['media\\Alley, R.B.. 2004. GISP2 Ice Core Temperature .p
 var coord = [
     [
         [78, 85],           //gBox.top.x ,gBox.top.y
-        [503, 225],         //gBox.bottom.x, gBox.bottom.y
+        [581, 310],         //gBox.bottom.x, gBox.bottom.y
         [1950, 20000],      //gBox.graphCalib, gBox.rYears
         ["R2L", "<unused>"] //gBox.reverseX
     ],
     [
         [103, 15],
-        [290, 406],         // Aanpassen aan view port. Daarna mappen..
+        [393, 420],         // Aanpassen aan view port. Daarna mappen..
         [1950, 20000],
         ["R2L", "<unused>"]
     ],
     [
         [120, 75],
-        [600, 1355],
+        [720, 1430],
         [1950, 28000],
         ["L2R", "<unused>"]
     ]
 ];
 
 //==============
-var set = 1;
+var set = 0;
 //===============
 
 gBox.gURI = graph[set];
@@ -53,8 +53,6 @@ gBox.graphCalib = coord[set][2][0];
 gBox.rYears = coord[set][2][1];
 gBox.reverseX = coord[set][3][0];
 
-// initialize convex set
-cSet = initConvexSet(gBox);
 
 //console.info(cSet);
 

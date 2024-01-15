@@ -12,10 +12,6 @@ function f(RoyalCubit, GraphCalib, Ryears) {
     const cF_hbar = cIsFloor === 0 ? 1 : cIsFloor;
     const cDegPreses = 10 * (cGon / cF_hbar);
     const cYbo = cDegPreses * 72;
-    /** const cCalibPlus = (2450 + Number(GraphCalib));
-    const cYbp = cYbo + cCalibPlus;
-    const cRelX = 1 - (cYbp / Ryears);
-    */
     const cCalibPlus = (2450 + Number(GraphCalib));
     const cYbp = cYbo + cCalibPlus;
     const cRyears = Number(Ryears);
@@ -58,8 +54,7 @@ function plotMarker() {
 
     /** Start the plot markers procedure */
     let ctx = document.getElementById("vrCanvasPlotRc").getContext("2d");
-    let cSet = initConvexSet(gBox);
-
+   
     /** 
      * repaint the clear image
      */
@@ -76,10 +71,18 @@ function plotMarker() {
          * Indicate graph data area
          */
         ctx.beginPath();
-        ctx.lineWidth = 6;
-        ctx.setLineDash([6, 6]);
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6,4]);
         ctx.strokeStyle = "red";
-        ctx.rect(gBox.top.x, gBox.top.y, gBox.bottom.x, gBox.bottom.y);
+        //ctx.rect(gBox.top.x, gBox.top.y, gBox.bottom.x-gBox.top.x, gBox.bottom.y-gBox.top.y);
+        /** */
+        ctx.moveTo(gBox.top.x,gBox.top.y);
+        ctx.lineTo(gBox.bottom.x,gBox.top.y);
+        ctx.lineTo(gBox.bottom.x,gBox.bottom.y);
+        ctx.lineTo(gBox.top.x,gBox.bottom.y);
+        ctx.lineTo(gBox.top.x,gBox.bottom.y);
+        ctx.lineTo(gBox.top.x,gBox.top.y);
+        //*/
         ctx.stroke();
         ctx.strokeStyle = "black";
         /** End graph area indicater */
@@ -87,16 +90,70 @@ function plotMarker() {
         /**
          *  prep shade Convex Set
          */
-        const markerLength = (cSet.cH);
-        const markerYoffset = cSet.mPad.bottom;
+        const fYearZero = f(999999,gBox.graphCalib,gBox.rYears).RelX;
+        const fYear14k4 = f(19.09999,gBox.graphCalib,gBox.rYears).RelX;
+        let startX = gBox.top.x;
+        /** 
+         * startX plus or minus relative part of x-axis 
+         * 
+        */
+        let xDistanceZero = fYearZero * gBox.rPix;
+        let xDistance14k4 = fYear14k4 * gBox.rPix;
+        /**  
+         * for ctx.rect and ctx.fillRect, the width of the rectangle
+         * is needed, not the x-position of the opposing corner.
+         */
+        let areaWidth = xDistance14k4 - xDistanceZero;
+        /** When graph has reversed x-axis */
+        if (gBox.reverseX == 'R2L') {
+            startX = gBox.bottom.x;
+            xDistanceZero *= -1;
+            xDistance14k4 *= -1;
+            areaWidth *= -1;
+        }
+
+        const markerYoffset = -5;
+        /** compensate length marker with markerYoffset */
+        const markerLength = (gBox.bottom.y - gBox.top.y) + markerYoffset;
         const saveFillStyle = ctx.fillStyle;
-        const saveGlobalAlpha = ctx.globalAlpha;
-        /**  shade */ 
+        const saveGlobalAlpha = ctx.globalAlpha;        
+        /**  
+         * Indicate Graph upper left and lower right
+         * TODO: Method for including user graphs
+         */ 
         ctx.beginPath();
         ctx.lineWidth = 2;
-        ctx.fillStyle = cSet.fill.color;
-        ctx.globalAlpha = cSet.fill.gAlpha;
-        ctx.fillRect(cSet.cX, cSet.cY + cSet.mPad.top, cSet.cW, cSet.cH + cSet.mPad.bottom);
+        ctx.setLineDash([2,1]);
+        ctx.strokeStyle = "red";
+        // Indicate begin x-axis
+    //ctx.rect(gBox.top.x-5,gBox.top.y - 5, 10,10);
+        // Indicate end x-axis
+    //ctx.rect(gBox.bottom.x-5,gBox.bottom.y - 5, 10,10);
+        ctx.stroke();
+        ctx.strokeStyle = "black";
+        /**  End indicate x-axis */ 
+        
+        /**  
+         * Shade convex set window for selected graph
+         */ 
+        ctx.beginPath();
+        ctx.lineWidth = 2;
+        ctx.fillStyle = "lightblue";
+        ctx.globalAlpha = 0.15;
+        //
+        if (gBox.reverseX == 'L2R') {
+            ctx.fillRect(gBox.top.x,gBox.top.y,xDistanceZero,gBox.bottom.y-gBox.top.y);
+            ctx.fillRect(gBox.bottom.x,gBox.top.y,(xDistance14k4-gBox.bottom.x),gBox.bottom.y-gBox.top.y);    
+         } else {
+            ctx.fillRect(gBox.bottom.x,gBox.top.y,xDistanceZero,gBox.bottom.y-gBox.top.y);
+            ctx.fillRect(gBox.bottom.x+xDistance14k4,gBox.top.y,-(gBox.rPix+xDistance14k4),gBox.bottom.y-gBox.top.y);    
+         }
+         /*
+            ctx.moveTo(startX+xDistanceZero,gBox.bottom.y);
+            ctx.lineTo(startX+xDistanceZero,gBox.top.y)
+            ctx.moveTo(startX+xDistance14k4,gBox.bottom.y);
+            ctx.lineTo(startX+xDistance14k4,gBox.top.y)
+        */
         ctx.stroke();
         /** restore values */
         ctx.globalAlpha = saveGlobalAlpha;
@@ -118,9 +175,9 @@ function plotMarker() {
              *  or right side of x-axis */
             if (gBox.reverseX == 'R2L') {
                 RcX = (gBox.bottom.x - gBox.rPix * curf);
-                lineDash = [9, 3];
-                lineColor = "red";
-                lineWidth = 1;
+                lineDash = [4, 2];
+                lineColor = "blue";
+                lineWidth = .5;
 
             } else {
                 RcX = (gBox.top.x + gBox.rPix * curf);
@@ -134,8 +191,8 @@ function plotMarker() {
             ctx.setLineDash(lineDash);
             ctx.strokeStyle = lineColor;
             ctx.lineWidth = lineWidth;
-            ctx.moveTo(RcX, cSet.cY + cSet.mPad.top);
-            ctx.lineTo(RcX, cSet.cY + markerLength + cSet.mPad.bottom);
+            ctx.moveTo(RcX, gBox.top.y - markerYoffset);
+            ctx.lineTo(RcX, gBox.bottom.y + markerYoffset);
             ctx.stroke();
         }
     }
