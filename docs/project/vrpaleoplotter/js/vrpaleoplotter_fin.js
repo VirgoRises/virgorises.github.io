@@ -724,6 +724,22 @@ function setEventListener() {
  * @abstract canvas[graphbox[convex set[mapping range]]]. Defines the square y,x axis range, the year range, and wether the x-axis is in reverse series. The used graphs are publicly shared, read only. Also a link to the dataset is provided, and a document uri. 
  */
 function initGraphBox(useGraph) {
+    /**
+     * include the fetch 
+     * 
+     */
+    let gid = '0'
+    let url = ''
+    let id = '';
+
+    // Fetch 'tbl_gBox'
+    id = '1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY';
+    //arrayFromSheet(tbl_gBox_id);
+    url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
+
+    fetch(url)
+        .then(response => response.text())
+        .then(data => document.getElementById("place_gbox").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_gbox", "table table-striped caption-top table-sm table-hover", "tbl gbox"))
 
     // var graphBox
     var gBox = {
@@ -748,15 +764,16 @@ function initGraphBox(useGraph) {
         gDocURI: "",
         saveImg: ""
     }
-    //####################################################
-    /** var graph = Array.from(
-     * ['https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh', 
-     * 'https://drive.google.com/uc?id=171Me953e5MFlMZvAltIkyKI0HiPk1NA_',
-     * 'https://drive.google.com/uc?id=1J6a0GsHypYRLuxSXikfWIekiguPQaZM3']);
-     */
+
+    /** 
+     var graph = Array.from(
+      ['https://drive.google.com/uc?id=11FcRDMQ1UXYX6g6N9z18GTSiSMvkhDMh', 
+      'https://drive.google.com/uc?id=171Me953e5MFlMZvAltIkyKI0HiPk1NA_',
+      'https://drive.google.com/uc?id=1J6a0GsHypYRLuxSXikfWIekiguPQaZM3']);
+      */
     
     var graph = Array.from(['media\\Alley, R.B.. 2004. GISP2 Ice Core Temperature .png', 'media\\Years-before-present-Younger-Dryasplushydro.png', 'media\\Comparison-of-climate-records-The-intervals-of-Heinrich-event-2-H2-the-Last-Glacial.png']);
-
+    
     var coord = [
         [
             [78, 85],           //gBox.top.x ,gBox.top.y
@@ -777,42 +794,20 @@ function initGraphBox(useGraph) {
             ["L2R", "<unused>"]
         ]
     ];
-    
-    //====================
-    var set = useGraph;
-    //====================
-    console.info(`set = ${useGraph};`);
-    gBox.gURI = graph[set];
-    gBox.top.x = coord[set][0][0];
-    gBox.top.y = coord[set][0][1];
-    gBox.bottom.x = coord[set][1][0];
-    gBox.bottom.y = coord[set][1][1];
-    gBox.graphCalib = coord[set][2][0];
-    gBox.rYears = coord[set][2][1];
-    gBox.reverseX = coord[set][3][0];
 
-    //++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // x-axis
+    //console.info(`set = ${useGraph};`);
+    gBox.gURI = graph[useGraph];
+    gBox.top.x = coord[useGraph][0][0];
+    gBox.top.y = coord[useGraph][0][1];
+    gBox.bottom.x = coord[useGraph][1][0];
+    gBox.bottom.y = coord[useGraph][1][1];
+    gBox.graphCalib = coord[useGraph][2][0];
+    gBox.rYears = coord[useGraph][2][1];
+    gBox.reverseX = coord[useGraph][3][0];
+
+    // x-axis calculated values
     gBox.rPix = gBox.bottom.x - gBox.top.x;
     gBox.yPerPix = gBox.rYears / gBox.rPix;
-
-    //####################################################
-    /**
-     * include the fetch 
-     * 
-     */
-    let gid = '0'
-    let url = ''
-    let id = '';
-
-    // Fetch 'tbl_gBox'
-    id = '1bB-SIFalx3B3WfEzbuobIr6utT0kU7LKuEyuxzLT2VY';
-    //arrayFromSheet(tbl_gBox_id);
-    url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
-
-    fetch(url)
-        .then(response => response.text())
-        .then(data => document.getElementById("place_gbox").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_gbox", "table table-striped caption-top table-sm table-hover", "tbl gbox"))
 
     return gBox
 }
