@@ -159,8 +159,8 @@ function plotMarker(gBox) {
         ctx.globalAlpha = 0.5;
         //
         if (gBox.reverseX == 'L2R') {
-            ctx.fillRect(gBox.top.x, gBox.top.y, xDistanceZero, gBox.bottom.y + gBox.top.y);
-            ctx.fillRect(gBox.top.x + xDistance14k4, gBox.top.y, (gBox.rPix + xDistance14k4), gBox.bottom.y - gBox.top.y);
+           ctx.fillRect(gBox.top.x, gBox.top.y, xDistanceZero, gBox.bottom.y + gBox.top.y);
+            ctx.fillRect(gBox.top.x + xDistance14k4, gBox.top.y, (gBox.rPix - xDistance14k4), gBox.bottom.y - gBox.top.y);
         } else {
             ctx.fillRect(gBox.bottom.x, gBox.top.y, xDistanceZero, gBox.bottom.y - gBox.top.y);
             ctx.fillRect(gBox.bottom.x + xDistance14k4, gBox.top.y, -(gBox.rPix + xDistance14k4), gBox.bottom.y - gBox.top.y);
