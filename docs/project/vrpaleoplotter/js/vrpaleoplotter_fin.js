@@ -67,21 +67,19 @@ function plotMarker(gBox) {
     /** 
      * repaint the clear image
      */
-
     var img = new Image();
     img.src = gBox.gURI;
     /** 
      * Wait until the image is loaded
      */
     img.onload = function () {
-    
-        // tidy up
+        /** 
+         * maximize graph to screen width, and reduce 
+         * whitespace below */
         canvas.width = img.width;
         canvas.height = canvas.width / (img.width / img.height);
-        // Save the pristene picture 
-        gBox.saveImg = canvas.toDataURL();
         
-        /** draw image in first path statement */
+        /** draw image */
         ctx.beginPath();
         ctx.drawImage(img, 0, 0);
         ctx.stroke();
@@ -91,7 +89,7 @@ function plotMarker(gBox) {
          * Indicate graph data area
          */
         ctx.beginPath();
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 4;
         ctx.setLineDash([6, 4]);
         ctx.strokeStyle = "red";
         /** */
@@ -145,9 +143,9 @@ function plotMarker(gBox) {
         ctx.setLineDash([2, 1]);
         ctx.strokeStyle = "red";
         // Indicate begin x-axis
-        //ctx.rect(gBox.top.x-5,gBox.top.y - 5, 10,10);
+        ctx.rect(gBox.top.x-5,gBox.top.y - 5, 10,10);
         // Indicate end x-axis
-        //ctx.rect(gBox.bottom.x-5,gBox.bottom.y - 5, 10,10);
+        ctx.rect(gBox.bottom.x-5,gBox.bottom.y - 5, 10,10);
         ctx.stroke();
         ctx.strokeStyle = "black";
         /**  End indicate x-axis */
@@ -158,21 +156,17 @@ function plotMarker(gBox) {
         ctx.beginPath();
         ctx.lineWidth = 2;
         ctx.fillStyle = "lightblue";
-        ctx.globalAlpha = 0.15;
+        ctx.globalAlpha = 0.5;
         //
         if (gBox.reverseX == 'L2R') {
-            ctx.fillRect(gBox.top.x, gBox.top.y, xDistanceZero, gBox.bottom.y - gBox.top.y);
-            ctx.fillRect(gBox.bottom.x, gBox.top.y, (xDistance14k4 - gBox.bottom.x), gBox.bottom.y - gBox.top.y);
+            ctx.fillRect(gBox.top.x, gBox.top.y, xDistanceZero, gBox.bottom.y + gBox.top.y);
+            ctx.fillRect(gBox.top.x + xDistance14k4, gBox.top.y, (gBox.rPix + xDistance14k4), gBox.bottom.y - gBox.top.y);
         } else {
             ctx.fillRect(gBox.bottom.x, gBox.top.y, xDistanceZero, gBox.bottom.y - gBox.top.y);
             ctx.fillRect(gBox.bottom.x + xDistance14k4, gBox.top.y, -(gBox.rPix + xDistance14k4), gBox.bottom.y - gBox.top.y);
         }
-        /*
-           ctx.moveTo(startX+xDistanceZero,gBox.bottom.y);
-           ctx.lineTo(startX+xDistanceZero,gBox.top.y)
-           ctx.moveTo(startX+xDistance14k4,gBox.bottom.y);
-           ctx.lineTo(startX+xDistance14k4,gBox.top.y)
-       */
+
+        /** Draw path */
         ctx.stroke();
         /** restore values */
         ctx.globalAlpha = saveGlobalAlpha;
@@ -184,9 +178,6 @@ function plotMarker(gBox) {
          */
         var RcX = 0;
         for (let x in lstRc) {
-            var lineDash = [0, 0];
-            var lineColor = "black";
-            var lineWidth = 1
             /** Call the algorithm for relative marker position */
             curf = f(lstRc[x], gBox.graphCalib, gBox.rYears).RelX;
 
@@ -204,6 +195,11 @@ function plotMarker(gBox) {
                 lineColor = "blue";
                 lineWidth = 2;
             }
+
+            /**  */
+            var lineDash = [11,5];
+            var lineColor = "blue";
+            var lineWidth = 1
 
             /** Plot the current marking */
             ctx.beginPath();

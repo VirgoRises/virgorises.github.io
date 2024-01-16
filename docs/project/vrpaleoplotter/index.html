@@ -27,14 +27,14 @@
 
 <body>
     <div id="container" class="container  px-4">
-       <div class="row">
-        <div class="col">
-            <p style="text-align: left; font-size: 0.75em;"><b>virgorises.com</b></p>     
+        <div class="row">
+            <div class="col">
+                <p style="text-align: left; font-size: 0.75em;"><b>virgorises.com</b></p>
+            </div>
+            <div class="col">
+                <p style="text-align: right; font-size: 0.75em;"><b>&copy; 2024</b></p>
+            </div>
         </div>
-        <div class="col">
-            <p style="text-align: right; font-size: 0.75em;"><b>&copy; 2024</b></p>
-        </div>
-       </div>
         <div class="row">
             <div class="row">
                 <ul id="top-menu-bar" class="nav nav-underline">
@@ -74,7 +74,23 @@
                                 onchange="expandSeedSet()" />
                         </fieldset>
                     </div>
+                
+                <div class="col">
+                    <fieldset>
+                        <div id="grp_radio_graph">
+                            <label id="labelgrp_radio_graph" for="grp_radio_graph">Graph:</label>
+                            <input type="radio" id="graph00" name="radio_graph" value="0" checked /><label
+                                for="graph00"> 0</label>
+                            <input type="radio" id="graph01" name="radio_graph" value="1" /><label for="graph01">
+                                1</label>
+                            <input type="radio" id="graph02" name="radio_graph" value="2" /><label for="graph02">
+                                2</label>
+                            <input type="radio" id="graph03" name="radio_graph" value="3" /><label for="graph03">
+                                3</label>
+                        </div>
+                    </fieldset>
                 </div>
+            </div>
             </div>
             <!-- menu: " #page_preset" -->
             <div class="page" id="page_preset">
@@ -86,17 +102,7 @@
                                 onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." />
                         </fieldset>
                     </div>
-                    <div class="col">
-                        <fieldset>
-                            <p>Select a graph:</p>
-                            <div>
-                                <input type="radio" id="graph00" name="radio_graph"  value="0" checked /><label for="graph00"> 0</label>
-                                <input type="radio" id="graph01" name="radio_graph" value="1" /><label for="graph01"> 1</label>
-                                <input type="radio" id="graph02" name="radio_graph" value="2"  /><label for="graph02"> 2</label>
-                                <input type="radio" id="graph03" name="radio_graph" value="3"  /><label for="graph03"> 3</label>
-                            </div>
-                    </fieldset>
-                    </div>
+
                 </div>
                 <div class="row">
                     <div class="col">
