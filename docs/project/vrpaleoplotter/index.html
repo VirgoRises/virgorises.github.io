@@ -81,10 +81,21 @@
                 <div class="row">
                     <div class="col">
                         <fieldset>
-                            <label for="csvRc">Royal cubit(s): q&in;R = {q1,q2,q3, ... }</label>
+                            <label for="csvRc">Royal cubit(s): q&in;R = {q1,q2,q3,...}</label>
                             <input type="text" class="form-control" id="csvRc" value=" " name="seed_map_preset"
                                 onchange="plotMarker()" pattern="" placeholder="2,2.02,2.52,..." />
                         </fieldset>
+                    </div>
+                    <div class="col">
+                        <fieldset>
+                            <p>Select a graph:</p>
+                            <div>
+                                <input type="radio" id="graph00" name="radio_graph"  value="0" checked /><label for="graph00"> 0</label>
+                                <input type="radio" id="graph01" name="radio_graph" value="1" /><label for="graph01"> 1</label>
+                                <input type="radio" id="graph02" name="radio_graph" value="2"  /><label for="graph02"> 2</label>
+                                <input type="radio" id="graph03" name="radio_graph" value="3"  /><label for="graph03"> 3</label>
+                            </div>
+                    </fieldset>
                     </div>
                 </div>
                 <div class="row">

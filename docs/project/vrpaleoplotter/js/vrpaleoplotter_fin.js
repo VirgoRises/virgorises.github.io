@@ -16,7 +16,7 @@ function f(RoyalCubit, GraphCalib, Ryears) {
     const cYbp = cYbo + cCalibPlus;
     const cRyears = Number(Ryears);
     //const cRelX = 1 - (cYbp / cRyears);   
-    const cRelX = (cYbp / cRyears);   
+    const cRelX = (cYbp / cRyears);
     // return array of values
     const f_calc = {
         Rc: RoyalCubit,
@@ -30,15 +30,15 @@ function f(RoyalCubit, GraphCalib, Ryears) {
         RelX: cRelX
     }
     //console.info(f_calc);
-    
+
     return f_calc
-    }
+}
 
 /**
  * 
  * TODO: Plotting rebuild ... 
  */
-function plotMarker() {
+function plotMarker(gBox) {
 
     let plotSelection = "";
     /**  Preserve manually added Royal cubit list */
@@ -53,35 +53,54 @@ function plotMarker() {
     lstRc = eval("[" + plotSelection + "]");
 
     /** Start the plot markers procedure */
-    let ctx = document.getElementById("vrCanvasPlotRc").getContext("2d");
-   
+    var canvas = document.getElementById("vrCanvasPlotRc");
+    var ctx = canvas.getContext("2d");
+    //let ctx = document.getElementById("vrCanvasPlotRc").getContext("2d");
+
+    /**
+     * Call initGraphBox for currend graph
+     */
+    let useGraph = document.querySelector('input[name="radio_graph"]:checked').value;
+    //console.info(`${useGraph} = document.querySelector("radio_graph").value`);
+    var gBox = initGraphBox(useGraph) //
+
     /** 
      * repaint the clear image
      */
-    img = new Image();
+
+    var img = new Image();
     img.src = gBox.gURI;
-    ctx.drawImage(img, 0, 0);
     /** 
      * Wait until the image is loaded
      */
     img.onload = function () {
-
+    
+        // tidy up
+        canvas.width = img.width;
+        canvas.height = canvas.width / (img.width / img.height);
+        // Save the pristene picture 
+        gBox.saveImg = canvas.toDataURL();
+        
+        /** draw image in first path statement */
+        ctx.beginPath();
+        ctx.drawImage(img, 0, 0);
+        ctx.stroke();
+        
         /** 
          * TODO: Make UI for positioning
          * Indicate graph data area
          */
         ctx.beginPath();
         ctx.lineWidth = 2;
-        ctx.setLineDash([6,4]);
+        ctx.setLineDash([6, 4]);
         ctx.strokeStyle = "red";
-        //ctx.rect(gBox.top.x, gBox.top.y, gBox.bottom.x-gBox.top.x, gBox.bottom.y-gBox.top.y);
         /** */
-        ctx.moveTo(gBox.top.x,gBox.top.y);
-        ctx.lineTo(gBox.bottom.x,gBox.top.y);
-        ctx.lineTo(gBox.bottom.x,gBox.bottom.y);
-        ctx.lineTo(gBox.top.x,gBox.bottom.y);
-        ctx.lineTo(gBox.top.x,gBox.bottom.y);
-        ctx.lineTo(gBox.top.x,gBox.top.y);
+        ctx.moveTo(gBox.top.x, gBox.top.y);
+        ctx.lineTo(gBox.bottom.x, gBox.top.y);
+        ctx.lineTo(gBox.bottom.x, gBox.bottom.y);
+        ctx.lineTo(gBox.top.x, gBox.bottom.y);
+        ctx.lineTo(gBox.top.x, gBox.bottom.y);
+        ctx.lineTo(gBox.top.x, gBox.top.y);
         //*/
         ctx.stroke();
         ctx.strokeStyle = "black";
@@ -90,8 +109,8 @@ function plotMarker() {
         /**
          *  prep shade Convex Set
          */
-        const fYearZero = f(999999,gBox.graphCalib,gBox.rYears).RelX;
-        const fYear14k4 = f(19.09999,gBox.graphCalib,gBox.rYears).RelX;
+        const fYearZero = f(999999, gBox.graphCalib, gBox.rYears).RelX;
+        const fYear14k4 = f(19.09999, gBox.graphCalib, gBox.rYears).RelX;
         let startX = gBox.top.x;
         /** 
          * startX plus or minus relative part of x-axis 
@@ -116,44 +135,44 @@ function plotMarker() {
         /** compensate length marker with markerYoffset */
         const markerLength = (gBox.bottom.y - gBox.top.y) + markerYoffset;
         const saveFillStyle = ctx.fillStyle;
-        const saveGlobalAlpha = ctx.globalAlpha;        
+        const saveGlobalAlpha = ctx.globalAlpha;
         /**  
          * Indicate Graph upper left and lower right
          * TODO: Method for including user graphs
-         */ 
+         */
         ctx.beginPath();
         ctx.lineWidth = 2;
-        ctx.setLineDash([2,1]);
+        ctx.setLineDash([2, 1]);
         ctx.strokeStyle = "red";
         // Indicate begin x-axis
-    //ctx.rect(gBox.top.x-5,gBox.top.y - 5, 10,10);
+        //ctx.rect(gBox.top.x-5,gBox.top.y - 5, 10,10);
         // Indicate end x-axis
-    //ctx.rect(gBox.bottom.x-5,gBox.bottom.y - 5, 10,10);
+        //ctx.rect(gBox.bottom.x-5,gBox.bottom.y - 5, 10,10);
         ctx.stroke();
         ctx.strokeStyle = "black";
-        /**  End indicate x-axis */ 
-        
+        /**  End indicate x-axis */
+
         /**  
          * Shade convex set window for selected graph
-         */ 
+         */
         ctx.beginPath();
         ctx.lineWidth = 2;
         ctx.fillStyle = "lightblue";
         ctx.globalAlpha = 0.15;
         //
         if (gBox.reverseX == 'L2R') {
-            ctx.fillRect(gBox.top.x,gBox.top.y,xDistanceZero,gBox.bottom.y-gBox.top.y);
-            ctx.fillRect(gBox.bottom.x,gBox.top.y,(xDistance14k4-gBox.bottom.x),gBox.bottom.y-gBox.top.y);    
-         } else {
-            ctx.fillRect(gBox.bottom.x,gBox.top.y,xDistanceZero,gBox.bottom.y-gBox.top.y);
-            ctx.fillRect(gBox.bottom.x+xDistance14k4,gBox.top.y,-(gBox.rPix+xDistance14k4),gBox.bottom.y-gBox.top.y);    
-         }
-         /*
-            ctx.moveTo(startX+xDistanceZero,gBox.bottom.y);
-            ctx.lineTo(startX+xDistanceZero,gBox.top.y)
-            ctx.moveTo(startX+xDistance14k4,gBox.bottom.y);
-            ctx.lineTo(startX+xDistance14k4,gBox.top.y)
-        */
+            ctx.fillRect(gBox.top.x, gBox.top.y, xDistanceZero, gBox.bottom.y - gBox.top.y);
+            ctx.fillRect(gBox.bottom.x, gBox.top.y, (xDistance14k4 - gBox.bottom.x), gBox.bottom.y - gBox.top.y);
+        } else {
+            ctx.fillRect(gBox.bottom.x, gBox.top.y, xDistanceZero, gBox.bottom.y - gBox.top.y);
+            ctx.fillRect(gBox.bottom.x + xDistance14k4, gBox.top.y, -(gBox.rPix + xDistance14k4), gBox.bottom.y - gBox.top.y);
+        }
+        /*
+           ctx.moveTo(startX+xDistanceZero,gBox.bottom.y);
+           ctx.lineTo(startX+xDistanceZero,gBox.top.y)
+           ctx.moveTo(startX+xDistance14k4,gBox.bottom.y);
+           ctx.lineTo(startX+xDistance14k4,gBox.top.y)
+       */
         ctx.stroke();
         /** restore values */
         ctx.globalAlpha = saveGlobalAlpha;
@@ -384,7 +403,7 @@ function expandSeedSet() {
     //let curLabel = labelseedsmaps.innerHTML;
     seedAlert.classList.add("is-valid");
     if (varArray.length > 9) {
-        labelseedsmaps.innerHTML = `${varArray.length-9} too many!`;
+        labelseedsmaps.innerHTML = `${varArray.length - 9} too many!`;
         seedAlert.classList.add("is-invalid");
         seedAlert.focus();
         return;
@@ -539,7 +558,7 @@ function makeTheSeedXTbl() {
     // set the table caption
     tcaption.innerHTML = newCaptiontext;
     table.appendChild(tcaption);
-    
+
     // remove (previous) table in div 'theset'
     document.getElementById('theset').innerHTML = "";
 
@@ -718,6 +737,37 @@ function setEventListener() {
         });
     }
 
+    /**
+     * Event Listener for graph select input elements. 
+     * 
+     */
+    var radioG = [];
+    radioG[0] = document.querySelector("input[id=graph00]");
+    radioG[1] = document.querySelector("input[id=graph01]");
+    radioG[2] = document.querySelector("input[id=graph02]");
+    radioG[3] = document.querySelector("input[id=graph03]");
+    for (let i in radioG) {
+        radioG[i].addEventListener('change', function () {
+            if (this.id == 'graph00') {
+                gBox = initGraphBox(this.value);
+                plotMarker(gBox);            
+            };
+            if (this.id == 'graph01') {
+                gBox = initGraphBox(this.value);
+                plotMarker(gBox);  
+            };
+            if (this.id == 'graph02') {
+                gBox = initGraphBox(this.value);
+                plotMarker(gBox);  
+            };
+            if (this.id == 'graph03') {
+                gBox = initGraphBox(this.value);
+                plotMarker(gBox);  
+            };
+        });
+                
+    }
+
 }
 
 /**
@@ -771,9 +821,10 @@ function initGraphBox(useGraph) {
       'https://drive.google.com/uc?id=171Me953e5MFlMZvAltIkyKI0HiPk1NA_',
       'https://drive.google.com/uc?id=1J6a0GsHypYRLuxSXikfWIekiguPQaZM3']);
       */
-    
-    var graph = Array.from(['media\\Alley, R.B.. 2004. GISP2 Ice Core Temperature .png', 'media\\Years-before-present-Younger-Dryasplushydro.png', 'media\\Comparison-of-climate-records-The-intervals-of-Heinrich-event-2-H2-the-Last-Glacial.png']);
-    
+
+    var graph = Array.from(['media\\Alley, R.B.. 2004. GISP2 Ice Core Temperature .png', 'media\\Years-before-present-Younger-Dryasplushydro.png', 'media\\Comparison-of-climate-records-The-intervals-of-Heinrich-event-2-H2-the-Last-Glacial.png', 'media\\deglacial_forest_conundrum_Nature.png']);
+
+
     var coord = [
         [
             [78, 85],           //gBox.top.x ,gBox.top.y
@@ -792,6 +843,12 @@ function initGraphBox(useGraph) {
             [720, 1430],
             [1950, 28000],
             ["L2R", "<unused>"]
+        ],
+        [
+            [137, 0],
+            [591, 674],
+            [1950, 20000],
+            ["R2L", "<unused>"]
         ]
     ];
 
@@ -827,6 +884,7 @@ function initArrayLstTables() {
     let gid = '0'
     let url = ''
     let id = '';
+
     // Fetch 'data_vrpaleoplotter';
     // For delay add .then(sleeper(20)) in fetch().then list
     id = '1p6pFIaJQI_KIA8KFmJQmAkF8b9HzX1y6NCu9gIBTaDg';

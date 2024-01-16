@@ -5,7 +5,7 @@ var lstSet = initArraySets();
 var mPlot = initArrayMplot();
 var lstTables = initArrayLstTables();
 
-var useGraph = 1; // {0,1,2}
+var useGraph = document.querySelector('input[name="radio_graph"]:checked').value; // {0,1,2}
 var gBox = initGraphBox(useGraph);
 
 // Declare global variables
@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     var canvas = document.getElementById("vrCanvasPlotRc");
     var ctx = canvas.getContext("2d");
     var img = new Image();
+ 
     img.onload = function () {
         // tidy up
         canvas.width = img.width;
