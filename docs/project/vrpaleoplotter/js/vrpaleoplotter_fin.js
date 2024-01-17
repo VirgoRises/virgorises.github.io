@@ -343,9 +343,6 @@ function populateSetCsvRc(x) {
 */
 function expandSeedSet() {
     var varList = document.getElementById("csvSeeds").value;
-    // Apply filter for maximum dimensions used for mapping 
-    var maxDim = document.getElementById("dimension").value;
-    document.getElementById("labeldimension").innerHTML = `Max group: ${maxDim}`;
 
     /* convert the varList to a set of unique values
         The algorithm maps (combinations of) seed values
@@ -407,7 +404,7 @@ function expandSeedSet() {
         seedAlert.classList.remove("is-invalid");
         labelseedsmaps.innerHTML = "Seeds (max. 9)";
     };
-
+ 
     // Proceed with a set of maximum 9 unique values 
     /* 
         convert the set of unique values to a exhaustive
@@ -418,6 +415,12 @@ function expandSeedSet() {
         window in time.
     */
     numVars = varArray.length;
+    /* set max dimension to given number of seed values */
+    document.getElementById("dimension").max = numVars;
+    // Apply filter for maximum dimensions used for mapping 
+    var maxDim = document.getElementById("dimension").value;
+    document.getElementById("labeldimension").innerHTML = `Group: ${maxDim}`;
+
     /* 
         Generate the list of combinations 
         2^{numVars} => {1,2,4,8,16,32,64,128,...}. 
@@ -462,13 +465,21 @@ function expandSeedSet() {
             combiLine += binaryColumns;
             binaryColumns = "";
         }
-        /** Not all combinations are hypothesized intentional mappings. The expectation 
-         * is that 3 dimensions are used for mappings. All other seed combinations are
-         * needed to generate a connected graph of mappings. It would be an unlikely scenario
-         * if there excist a set of n-seeds which will create a graph of 2^(n+1) - 1
-         * vertices which all map to intended wheater events.
+        /** 
+         * The expectation is that not all combinations possible with n-seeds, 
+         * do map to selected weather events . 
+         * It seems unlikely for there to exsist a set of n-seeds which 
+         * will create a graph of (2^(n+1) - 1) x 8 sets, vertices which all map 
+         * to wheater events selected to be included. However: ((2^5)-1) x 8 sets
+         * = 248 mappings, lets say 248 integer year numbers. The convex set = 14400
+         * years wide. The Hamming distance consists of increments of 0.01 Rc (~0.5 cm).
+         * The algorithm aids in selecting seeds <20Rc (~10 meters), 2000 choices/seed.
+         * 5 seeds = 2000^5 configurations, or 3.2 x 10^16. Divide this by 14400 and
+         * we find 2.22 x 10^12 available combinations to 'paint' the convex set.
+         * Is it possible to find a matching set of seeds by given set of 248 mappings?
+         * 
          */
-        if (dimCnt <= maxDim) {
+        if (dimCnt == maxDim || maxDim==0) {
             // Postfix dimCnt to combiLine
             combiLine = combiLine.replace('dim', dimCnt);
             // Strip of last delimeter, add end bracket and delimeter.
@@ -548,7 +559,7 @@ function makeTheSeedXTbl() {
     }
     // Set caption
     var curDim = document.getElementById("dimension").value;
-    let newCaptiontext = `<b>The&nbsp;Seeds</b><br />Max group:&nbsp;${curDim}&nbsp;seeds&nbsp;=&nbsp;${numberXhaustive}&nbsp;combinations`;
+    let newCaptiontext = `<b>The&nbsp;Seeds</b><br />Group:&nbsp;${curDim}&nbsp;seeds&nbsp;=&nbsp;${numberXhaustive+1}&nbsp;combinations`;
     // set pop-up button text id="expandedseedbuttonLabel"
     //document.getElementById("expandedseedbuttonLabel").innerHTML = newCaptiontext;
     // set the table caption
