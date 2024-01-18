@@ -26,10 +26,11 @@ function f(RoyalCubit, GraphCalib, Ryears) {
         degPreses: cDegPreses,
         rYears: cRyears,
         CalibPlus: cCalibPlus,
+        Ybo: cYbo,
         Ybp: cYbp,
         RelX: cRelX
     }
-    //console.info(f_calc);
+    console.info(f_calc);
 
     return f_calc
 }
@@ -177,6 +178,7 @@ function plotMarker(gBox) {
          *  Start loop over Rc list to draw mappings
          */
         var RcX = 0;
+        //console.info(lstRc);
         for (let x in lstRc) {
             /** Call the algorithm for relative marker position */
             curf = f(lstRc[x], gBox.graphCalib, gBox.rYears).RelX;
@@ -261,14 +263,14 @@ function populateSetCsvRc(x) {
     // Declare string litteral variables (max 9)
     // initialize for Additive, or Multiplicative 
     // arithmatic mapping.
-    let AorM = (lstSet[x].AorM == 'M' ? 1 : 0);
+    var AorM = (lstSet[x].AorM == 'M' ? 1 : 0);
     // let a, b, c, d, e, f, g, h, i = 0;
     let template = lstSet[x].strlit;
     let toMatch = "abcdefghi";
     var prepSeeds = [];
     var curSeeds = document.getElementById("csvSeeds").value
     // + 2, account for columns "dec", and "binary"
-    var numcols = curSeeds.split(",").length + 1;
+    var numcols = curSeeds.split(",").length + 2;
     // query selector by id: #theseedxtbl_body
     var tbody = document.querySelectorAll("#theseedxtbl_body")[0];
     var TRs = tbody.querySelectorAll("tr");
@@ -305,6 +307,8 @@ function populateSetCsvRc(x) {
         }
         prepSeeds.push(tupleSeeds);
     }
+    
+    //onsole.info(prepSeeds);
 
     /*  Rebuild the mappings for this set. This not
         a static set; Each set of n seeds has 2^n-1 
@@ -313,23 +317,28 @@ function populateSetCsvRc(x) {
 
     // Select template for this set
     var useTemplate = lstSet[x].strlit;
+    //console.info(template);
+    
     for (let y = 0; y <= numberXhaustive; y++) {
 
         // Restore template
         template = useTemplate;
         // Save 'Math.' from death by replacement   
-        template = template.replace("Math.", "M@t@.");
-        for (let i in toMatch) {
+        template = template.replace("Math.", "wxyz.");
+        for (let v in toMatch) {            
             //template = template.replace(toMatch.charAt(x), eval(toMatch.charAt(x)));
-            if (i <= numcols - 2) {
-                template = template.replace(toMatch.charAt(i), prepSeeds[y][numcols - i]);
+            if (v <= numcols - 3) {
+                template = template.replace(toMatch.charAt(v), prepSeeds[y][numcols - v]);
             } else {
-                template = template.replace(toMatch.charAt(i), AorM);
+                template = template.replace(toMatch.charAt(v), AorM);
             }
+            //console.info(template);
+    
         };
         // Take 'Math.' out of hiding, all is safe     
-        template = template.replace("M@t@.", "Math.");
+        template = template.replace("wxyz.", "Math.");
         // template = "`${" + template + "}`";
+        //console.info(template);
         // Calculate the template
         let calc = eval(("`${" + template + "}`"));
         // Add calc to lstSet.addSets.csvRc
