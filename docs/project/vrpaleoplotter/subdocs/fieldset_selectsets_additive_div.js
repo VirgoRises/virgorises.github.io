@@ -5,7 +5,7 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
 
     <legend>Additive</legend> 
     <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1">
-    <span class="d-inline-block d-md-none">
+    <span class="d-inline-block">
     <math xmlns="http://www.w3.org/1998/Math/MathML">
     <mtext>S1</mtext>
     <mo>:</mo>
@@ -27,7 +27,7 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
 
 
     <input id="chk_s2" type="checkbox" name="sets" value="s2" /><label for="chk_s2">
-    <span class="d-inline-block d-md-none">
+    <span class="d-inline-block">
     <math xmlns="http://www.w3.org/1998/Math/MathML">
     <mtext>S2</mtext>
     <mo>:</mo>
@@ -57,7 +57,7 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
   </span></label><br/>
 
     <input id="chk_s3" type="checkbox" name="sets" value="s3" /><label for="chk_s3">
-    <span class="d-inline-block d-md-none">
+    <span class="d-inline-block">
     <math xmlns="http://www.w3.org/1998/Math/MathML">
     <mtext>S3</mtext>
     <mo>:</mo>
@@ -82,7 +82,7 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
   </span></label><br/>
     
     <input id="chk_s4" type="checkbox" name="sets" value="s4" /><label for="chk_s4">
-    <span class="d-inline-block d-md-none">
+    <span class="d-inline-block">
     <math xmlns="http://www.w3.org/1998/Math/MathML">
     <mtext>S4</mtext>
     <mo>:</mo>

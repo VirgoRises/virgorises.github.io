@@ -6,7 +6,7 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
 
 <input id="chk_s5" type="checkbox" name="sets" value="s5" />
  <label for="chk_s5">
- <span class="d-inline-block d-md-none">
+ <span class="d-inline-block">
  <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mtext>S5</mtext>
   <mo>:</mo>
@@ -27,7 +27,7 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
 </span></label><br/>
 
 <input id="chk_s6" type="checkbox" name="sets" value="s6" /><label for="chk_s6">
-<span class="d-inline-block d-md-none">
+<span class="d-inline-block">
 <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mtext>S6</mtext>
   <mo>:</mo>
@@ -57,7 +57,7 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
 </span></label><br/>
 
 <input id="chk_s7" type="checkbox" name="sets" value="s7" /><label for="chk_s7">
-    <span class="d-inline-block d-md-none">
+    <span class="d-inline-block">
     <math xmlns="http://www.w3.org/1998/Math/MathML">
     <mtext>S7</mtext>
     <mo>:</mo>
@@ -82,7 +82,7 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
   </span></label><br/>
 
   <input id="chk_s8" type="checkbox" name="sets" value="s8" /><label for="chk_s8">
-  <span class="d-inline-block d-md-none">
+  <span class="d-inline-block">
   <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mtext>S8</mtext>
   <mo>:</mo>
