@@ -2,7 +2,7 @@ const fieldset_selectsets_multiplicative_div = document.querySelector('#fieldset
 fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
 <!-- start set fieldset -->
     <fieldset>
-    <legend>Multiplicative</legend>
+    <!-- <legend>Multiplicative</legend> -->
 
 <input id="chk_s5" type="checkbox" name="sets" value="s5" />
  <label for="chk_s5">
@@ -87,18 +87,21 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
   <mtext>S8</mtext>
   <mo>:</mo>
   <mo fence="false" stretchy="false">{</mo>
+  <mi>a</mi>
   <msqrt>
-    <mi>a</mi>
+    <mn>2</mn>
   </msqrt>
   <mo fence="false" stretchy="false">}</mo>
   <mo>,</mo>
   <mo fence="false" stretchy="false">{</mo>
+  <mi>a</mi>
   <msqrt>
-    <mi>a</mi>
+    <mn>2</mn>
   </msqrt>
-  <mo>&#xD7;</mo>
+  <mo>+</mo>
+  <mi>b</mi>
   <msqrt>
-    <mi>b</mi>
+    <mn>2</mn>
   </msqrt>
   <mo fence="false" stretchy="false">}</mo>
   <mo>,</mo>
@@ -106,7 +109,9 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
   <mo>&#x2026;</mo>
   <mo fence="false" stretchy="false">}</mo>
 </math>
-</span></label><br/>
+  </span></label><br/>
+  </fieldset>
+  <br/>
 
 </fieldset>
 <!-- end set fieldset -->

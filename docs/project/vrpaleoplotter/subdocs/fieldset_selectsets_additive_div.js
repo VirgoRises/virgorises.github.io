@@ -3,7 +3,7 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
 <!-- start set fieldset -->
 <fieldset>
 
-    <legend>Additive</legend> 
+    <!-- <legend>Additive</legend> --> 
     <input id="chk_s1" type="checkbox" name="sets" value="s1" /><label for="chk_s1">
     <span class="d-inline-block">
     <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -81,34 +81,34 @@ fieldset_selectsets_additive_div.insertAdjacentHTML('beforeend', `
   </math>
   </span></label><br/>
     
-    <input id="chk_s4" type="checkbox" name="sets" value="s4" /><label for="chk_s4">
-    <span class="d-inline-block">
-    <math xmlns="http://www.w3.org/1998/Math/MathML">
-    <mtext>S4</mtext>
-    <mo>:</mo>
-    <mo fence="false" stretchy="false">{</mo>
-    <msqrt>
-      <mi>a</mi>
-    </msqrt>
-    <mo fence="false" stretchy="false">}</mo>
-    <mo>,</mo>
-    <mo fence="false" stretchy="false">{</mo>
-    <msqrt>
-      <mi>a</mi>
-    </msqrt>
-    <mo>+</mo>
-    <msqrt>
-      <mi>b</mi>
-    </msqrt>
-    <mo fence="false" stretchy="false">}</mo>
-    <mo>,</mo>
-    <mo fence="false" stretchy="false">{</mo>
-    <mo>&#x2026;</mo>
-    <mo fence="false" stretchy="false">}</mo>
-  </math>
-  </span></label><br/>
-  </fieldset>
-  <br/>
+  <input id="chk_s4" type="checkbox" name="sets" value="s4" /><label for="chk_s4">
+  <span class="d-inline-block">
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtext>S4</mtext>
+  <mo>:</mo>
+  <mo fence="false" stretchy="false">{</mo>
+  <msqrt>
+    <mi>a</mi>
+  </msqrt>
+  <mo fence="false" stretchy="false">}</mo>
+  <mo>,</mo>
+  <mo fence="false" stretchy="false">{</mo>
+  <msqrt>
+    <mi>a</mi>
+  </msqrt>
+  <mo>+</mo>
+  <msqrt>
+    <mi>b</mi>
+  </msqrt>
+  <mo fence="false" stretchy="false">}</mo>
+  <mo>,</mo>
+  <mo fence="false" stretchy="false">{</mo>
+  <mo>&#x2026;</mo>
+  <mo fence="false" stretchy="false">}</mo>
+</math>
+</span></label><br/>
+</fieldset>
+<br/>
 
 </fieldset>
 <!-- end set fieldset -->
