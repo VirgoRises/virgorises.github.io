@@ -4,7 +4,7 @@ var lstPreset = initArrayPresets();
 var lstSet = initArraySets();
 var mPlot = initArrayMplot();
 var lstTables = initArrayLstTables();
-
+var lstEvents = initArrayClimateEvents();
 var useGraph = document.querySelector('input[name="radio_graph"]:checked').value; // {0,1,2}
 var gBox = initGraphBox(useGraph);
 

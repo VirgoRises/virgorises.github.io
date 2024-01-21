@@ -74,6 +74,21 @@ accordion_lst_tables_div.insertAdjacentHTML('beforeend', `
             </div>
         </div>
     </div>
-</div><!-- here ends accordion  -->
+    <!-- id="headingSeven" place_tbl_climate_events -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingSeven">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseFive">
+                Table of climate events
+            </button>
+        </h2>
+        <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div id="place_tbl_climate_events">place_tbl_climate_events here</div>
+            </div>
+        </div>
+    </div>
+    </div><!-- here ends accordion  -->
 
 `);

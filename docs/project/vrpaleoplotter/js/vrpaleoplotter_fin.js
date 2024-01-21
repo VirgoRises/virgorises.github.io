@@ -911,6 +911,34 @@ function initArrayLstTables() {
 
     return lstTables
 }
+
+function initArrayClimateEvents() {
+//event	fromYbp	toYbp	Date	eventWikiURI 	Event
+    let lstEvents = {
+        idx: "",
+        fromYbp: "",
+        toYbp: "",
+        Date: "",
+        eventWikiURI: "",
+        event:"",
+        DiscordSrvr: "",
+        dataDocURI: ""
+    }
+
+    let gid = '0'
+    let url = ''
+    let id = '';
+
+    // Fetch 'data_vrpaleoplotter';
+    // For delay add .then(sleeper(20)) in fetch().then list
+    id = '192rybkZWgCFWsjdAsbViNwtsbGhV79viUjxoYj8dUok';
+    url = 'https://docs.google.com/spreadsheets/d/' + id + '/gviz/tq?tqx=out:json&tq&gid=' + gid;
+    fetch(url)
+        .then(response => response.text())
+        .then(data => document.getElementById("place_tbl_climate_events").innerHTML = sheetToTbl(data.substring(47).slice(0, -2), "tbl_climate_events", "table table-striped caption-top table-sm table-hover", "tbl_climate_events"))
+
+    return lstTables
+}
 /**
  * @abstract The m(arker) Plot array: mPlot array. The array contains the active mPlot session. Each mPlot session: plotId; Description. A focus list of Royal cubits for this plot. Links to: plotWikiURI and a plotDocURI. 
  * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
@@ -925,6 +953,7 @@ function initArrayMplot() {
         plotDocURI: "",
         mRoyalCubits: ""
     }
+
     /**
      * @abstract Populate mPlot array (todo: UI, db). Db of plots and callibration info.
      * TODO: getSheetData() imports google sheet data to HTML tabels. Replace the use of the arrays by use of the HTML tabels.
