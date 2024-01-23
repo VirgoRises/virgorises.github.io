@@ -46,7 +46,8 @@
                     <li class="nav-item"><a class="nav-link" href="#page_tbl_expanded_seeds">To map</a></li>
 
                     <!-- Project database  -->
-                    <li class="nav-item"><a class="nav-link" href="#page_database">DB</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#page_database">db</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#page_ui">UI</a></li>
                 </ul>
                 <br /><br />
             </div>
@@ -174,6 +175,21 @@
                 </div>
             </div>
         </div>
+        <!-- menu: "#page_ui" -->
+        <div class="page" id="page_ui">
+            <div class="container-fluid h-20">
+                <div class="row">
+                    <div class="col-md-12 overflow-scroll" style="height:225px;">
+                        <p>User interface settings</p>
+                        <!-- begin include subdocs/*.js -->
+                        <div id="fieldset_ui_settings_div">
+                            <!-- HTML to be inserted here -->
+                        </div>
+                        <!-- end include subdocs/*.js -->
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--##################################-->
 
         <!-- Define the canvas -->
@@ -194,6 +210,8 @@
     <!-- include html subdocs/ *.js-->
     <script src="subdocs/fieldset_selectpresets_div.js"></script>
     <script src="subdocs/accordion_lst_tables_div.js"></script>
+    <script src="subdocs/fieldset_ui_settings_div.js"></script>
+    
     <!-- 
         subdocs mechanics will not allow execution of MathJax.
         <script src="subdocs/fieldset_selectsets_div_MathJax.js"></script> 

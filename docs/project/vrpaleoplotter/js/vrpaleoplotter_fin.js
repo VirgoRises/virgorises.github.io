@@ -89,20 +89,39 @@ function plotMarker(gBox) {
          * TODO: Make UI for positioning
          * Indicate graph data area
          */
-        ctx.beginPath();
-        ctx.lineWidth = 4;
-        ctx.setLineDash([6, 4]);
-        ctx.strokeStyle = "red";
-        /** */
-        ctx.moveTo(gBox.top.x, gBox.top.y);
-        ctx.lineTo(gBox.bottom.x, gBox.top.y);
-        ctx.lineTo(gBox.bottom.x, gBox.bottom.y);
-        ctx.lineTo(gBox.top.x, gBox.bottom.y);
-        ctx.lineTo(gBox.top.x, gBox.bottom.y);
-        ctx.lineTo(gBox.top.x, gBox.top.y);
-        //*/
-        ctx.stroke();
-        ctx.strokeStyle = "black";
+        let showGbounds = document.getElementById("UI_graph_area");
+        if (showGbounds.checked){
+            ctx.beginPath();
+            ctx.lineWidth = 4;
+            ctx.setLineDash([6, 4]);
+            ctx.strokeStyle = "red";
+            /** */
+            ctx.moveTo(gBox.top.x, gBox.top.y);
+            ctx.lineTo(gBox.bottom.x, gBox.top.y);
+            ctx.lineTo(gBox.bottom.x, gBox.bottom.y);
+            ctx.lineTo(gBox.top.x, gBox.bottom.y);
+            ctx.lineTo(gBox.top.x, gBox.bottom.y);
+            ctx.lineTo(gBox.top.x, gBox.top.y);
+            //*/
+            ctx.stroke();
+            ctx.strokeStyle = "black";
+
+            /**  
+             * Indicate Graph upper left and lower right
+             * TODO: Method for including user graphs
+             */
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.setLineDash([2, 1]);
+            ctx.strokeStyle = "red";
+            // Indicate begin x-axis
+            ctx.rect(gBox.top.x-5,gBox.top.y - 5, 10,10);
+            // Indicate end x-axis
+            ctx.rect(gBox.bottom.x-5,gBox.bottom.y - 5, 10,10);
+            ctx.stroke();
+            ctx.strokeStyle = "black";
+            /**  End Indicate Graph upper left and lower right */
+        }        
         /** End graph area indicater */
 
         /**
@@ -135,21 +154,6 @@ function plotMarker(gBox) {
         const markerLength = (gBox.bottom.y - gBox.top.y) + markerYoffset;
         const saveFillStyle = ctx.fillStyle;
         const saveGlobalAlpha = ctx.globalAlpha;
-        /**  
-         * Indicate Graph upper left and lower right
-         * TODO: Method for including user graphs
-         */
-        ctx.beginPath();
-        ctx.lineWidth = 2;
-        ctx.setLineDash([2, 1]);
-        ctx.strokeStyle = "red";
-        // Indicate begin x-axis
-        ctx.rect(gBox.top.x-5,gBox.top.y - 5, 10,10);
-        // Indicate end x-axis
-        ctx.rect(gBox.bottom.x-5,gBox.bottom.y - 5, 10,10);
-        ctx.stroke();
-        ctx.strokeStyle = "black";
-        /**  End indicate x-axis */
 
         /**  
          * Shade convex set window for selected graph
@@ -160,7 +164,7 @@ function plotMarker(gBox) {
         ctx.globalAlpha = 0.5;
         //
         if (gBox.reverseX == 'L2R') {
-           ctx.fillRect(gBox.top.x, gBox.top.y, xDistanceZero, gBox.bottom.y + gBox.top.y);
+           ctx.fillRect(gBox.top.x, gBox.top.y, xDistanceZero, gBox.bottom.y - gBox.top.y);
             ctx.fillRect(gBox.top.x + xDistance14k4, gBox.top.y, (gBox.rPix - xDistance14k4), gBox.bottom.y - gBox.top.y);
         } else {
             ctx.fillRect(gBox.bottom.x, gBox.top.y, xDistanceZero, gBox.bottom.y - gBox.top.y);
@@ -177,6 +181,10 @@ function plotMarker(gBox) {
         /**
          *  Start loop over Rc list to draw mappings
          */
+        //id="linedashspc"
+        var ldashL = document.getElementById("linedash").value;
+        var ldashS = document.getElementById("linedashspc").value;
+        var lcolor = document.getElementById("UI_line_color").value;
         var RcX = 0;
         //console.info(lstRc);
         for (let x in lstRc) {
@@ -187,20 +195,14 @@ function plotMarker(gBox) {
              *  or right side of x-axis */
             if (gBox.reverseX == 'R2L') {
                 RcX = (gBox.bottom.x - gBox.rPix * curf);
-                lineDash = [4, 2];
-                lineColor = "blue";
-                lineWidth = .5;
-
             } else {
                 RcX = (gBox.top.x + gBox.rPix * curf);
-                lineDash = [6, 6];
-                lineColor = "blue";
-                lineWidth = 2;
             }
 
             /**  */
-            var lineDash = [11,5];
-            var lineColor = "blue";
+
+            var lineDash = [ldashL,ldashS];
+            var lineColor = lcolor;
             var lineWidth = 1
 
             /** Plot the current marking */
@@ -492,15 +494,16 @@ function expandSeedSet() {
             // Postfix dimCnt to combiLine
             combiLine = combiLine.replace('dim', dimCnt);
             // Strip of last delimeter, add end bracket and delimeter.
-            combiLine = combiLine.substr(0, combiLine.length - 1) + '],';
+            //combiLine = combiLine.substr(0, combiLine.length - 1) + '],';
+            combiLine = combiLine.substring(0).slice(0,-1) + '],';
             buildSet += combiLine;
         } else {
 
         };
     }
     // Strip last delimeter and add closing bracket
-    buildSet = buildSet.substr(0, buildSet.length - 1) + ']';
-    //
+    buildSet = buildSet.substring(0).slice(0,-1) + ']';
+    //substring(47).slice(0, -2) -- , buildSet.length - 1)
     let expandedSet = eval(buildSet);
     // 
     theSet = Array.from(expandedSet);
