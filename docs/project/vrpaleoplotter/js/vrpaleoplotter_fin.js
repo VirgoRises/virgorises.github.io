@@ -724,6 +724,7 @@ function setEventListener() {
     chkSet[5] = document.querySelector("input[id=chk_s6]");
     chkSet[6] = document.querySelector("input[id=chk_s7]");
     chkSet[7] = document.querySelector("input[id=chk_s8]");
+    chkSet[8] = document.querySelector("input[id=chk_s9]");
 
     for (let i in chkSet) {
         chkSet[i].addEventListener('change', function () {
@@ -750,6 +751,9 @@ function setEventListener() {
             };
             if (this.id == 'chk_s8') {
                 lstSet.set8.show = this.checked;
+            };
+            if (this.id == 'chk_s9') {
+                lstSet.set9.show = this.checked;
             };
             // Add to csvRc
             procesSet(lstSet) //
@@ -1053,9 +1057,17 @@ function initArraySets() {
             chkId: 'chk_s8',
             show: false,
             info: "Set 8",
-            // sqrt(pi) strlit: '(a*1.772)+(b*1.772)+(c*1.772)+(d*1.772)+(e*1.772)+(f*1.772)+(g*1.772)+(h*1.772)+(i*1.772)',
             // sqrt(2) 
             strlit: '(a*1.414)+(b*1.414)+(c*1.414)+(d*1.414)+(e*1.414)+(f*1.414)+(g*1.414)+(h*1.414)+(i*1.414)',
+            AorM: 'A',
+            csvRc: ""
+        },
+        set9: {
+            chkId: 'chk_s9',
+            show: false,
+            info: "Set 9",
+            // sqrt(5) 
+            strlit: '(a*2.236)+(b*2.236)+(c*2.236)+(d*2.236)+(e*2.236)+(f*2.236)+(g*2.236)+(h*2.236)+(i*2.236)',
             AorM: 'A',
             csvRc: ""
         },

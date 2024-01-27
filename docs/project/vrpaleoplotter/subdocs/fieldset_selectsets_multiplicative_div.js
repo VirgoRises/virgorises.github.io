@@ -110,6 +110,35 @@ fieldset_selectsets_multiplicative_div.insertAdjacentHTML('beforeend', `
   <mo fence="false" stretchy="false">}</mo>
 </math>
   </span></label><br/>
+  <input id="chk_s9" type="checkbox" name="sets" value="s9" /><label for="chk_s9">
+  <span class="d-inline-block">
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtext>S9</mtext>
+  <mo>:</mo>
+  <mo fence="false" stretchy="false">{</mo>
+  <mi>a</mi>
+  <msqrt>
+    <mn>5</mn>
+  </msqrt>
+  <mo fence="false" stretchy="false">}</mo>
+  <mo>,</mo>
+  <mo fence="false" stretchy="false">{</mo>
+  <mi>a</mi>
+  <msqrt>
+    <mn>5</mn>
+  </msqrt>
+  <mo>+</mo>
+  <mi>b</mi>
+  <msqrt>
+    <mn>5</mn>
+  </msqrt>
+  <mo fence="false" stretchy="false">}</mo>
+  <mo>,</mo>
+  <mo fence="false" stretchy="false">{</mo>
+  <mo>&#x2026;</mo>
+  <mo fence="false" stretchy="false">}</mo>
+</math>
+  </span></label><br/>
   </fieldset>
   <br/>
 
