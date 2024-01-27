@@ -244,7 +244,7 @@ function procesSet(lstSet) {
     // Prevent addSets from accumulating
     lstSet.addSets.csvRc = "";
     // 
-    var selectedSets="Mapping set ∈ { ";
+    var selectedSets="Map set ∈ { ";
     for (x in lstSet) { //x is here 'set1', 'set2',... not 1,2,3,...
         if (lstSet[x].show) {
             //
@@ -256,7 +256,7 @@ function procesSet(lstSet) {
     selectedSets = selectedSets.substring(0).slice(0,-1) +' }';
     //labelmapsets
     document.getElementById("labelmapsets").innerHTML=selectedSets;
-    console.info(selectedSets);
+    //console.info(selectedSets);
             
 
     /*   plotMarker() will add the current set 
