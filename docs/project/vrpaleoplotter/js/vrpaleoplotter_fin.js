@@ -30,7 +30,7 @@ function f(RoyalCubit, GraphCalib, Ryears) {
         Ybp: cYbp,
         RelX: cRelX
     }
-    console.info(f_calc);
+    //console.info(f_calc);
 
     return f_calc
 }
@@ -244,12 +244,21 @@ function procesSet(lstSet) {
     // Prevent addSets from accumulating
     lstSet.addSets.csvRc = "";
     // 
+    var selectedSets="Mapping set ∈ { ";
     for (x in lstSet) { //x is here 'set1', 'set2',... not 1,2,3,...
         if (lstSet[x].show) {
+            //
+            selectedSets = selectedSets + x.replace("set","") +',';
             populateSetCsvRc(x)
             lstSet.addSets.csvRc += "," + lstSet[x].csvRc;
         }
     }
+    selectedSets = selectedSets.substring(0).slice(0,-1) +' }';
+    //labelmapsets
+    document.getElementById("labelmapsets").innerHTML=selectedSets;
+    console.info(selectedSets);
+            
+
     /*   plotMarker() will add the current set 
          selection (lstSet.addSets) to the 
          Rc list got from the csvMap manual entry. */
