@@ -1,82 +1,273 @@
 <!DOCTYPE html>
-<html lang="en" xml:lang="en">
-
+<html lang="en">
 <head>
-    <title>Virgo Rises - Github home</title>
-    <!-- meta http-equiv="content-type" content="text/html; charset=utf-8" /-->
-    <script src="https//:polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <!--    MathJax delimeters \( math \) for sites.google
-            compatibilaty.  -->
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            TeX: {extensions:["cancel.js"]},
-            extensions:["tex2jax.js"]},
-            jax: ["input/TeX","output/HTML/CSS"],
-            displayAlign: "center",displayIndent: "2em",
-            text2jax:{
-            inlineMath:  [ [ '$','$'], ['\\(','\\)'] ],
-            displayMath:[ [ '$$','$$'], ['\\\[','\\\]'] ],
-            processEscapes: true
-            }
-        );
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_HTMLorMML">
-    </script>
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/virgorises.css">
-    <link rel="stylesheet" href="css/vrw3schoolsnavbar.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Virgorises — Unexpected Connective Tissue Central</title>
+  <meta name="description" content="Virgorises is a clean, public square for science-curious puzzles and notebooks. Read the weekly digest, visit the Zeta Zero Café, and explore the archive." />
 
+  <style>
+    :root{
+      --bg: #0b0c10;
+      --paper: #0f1115;
+      --ink: #e5e7eb;
+      --muted: #a7b0be;
+      --accent: #9ae6b4; /* soft science green */
+      --accent-2: #7dd3fc; /* cyan for links */
+      --line: #1a1d24;
+      --card: #12151c;
+      --btn-bg: #151924;
+      --btn-border: #222833;
+      --shadow: 0 10px 20px rgba(0,0,0,.25);
+      --radius: 16px;
+      --maxw: 1024px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg: #f7fafc;
+        --paper: #ffffff;
+        --ink: #0f172a;
+        --muted: #475569;
+        --accent: #16a34a;
+        --accent-2: #0284c7;
+        --line: #e5e7eb;
+        --card: #ffffff;
+        --btn-bg: #f8fafc;
+        --btn-border: #e5e7eb;
+        --shadow: 0 8px 16px rgba(2,6,23,.06);
+      }
+    }
+
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--ink);
+      background: radial-gradient(1200px 600px at 50% -20%, #1b2130 0%, var(--bg) 60%);
+      background-attachment: fixed;
+    }
+
+    .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 24px; }
+    header{
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent);
+    }
+    .masthead{
+      display: grid; gap: 12px; padding: 32px 0 28px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:14px;
+    }
+    .brand svg{ width: 32px; height:32px; }
+    .brand .title{
+      font-weight: 800; letter-spacing:.4px; font-size: 1.3rem;
+    }
+    .brand .tag{
+      color: var(--muted); font-size:.95rem;
+    }
+
+    .hero{
+      padding: 36px 0 22px;
+      display: grid; gap: 18px;
+    }
+    .hero h1{
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.15;
+      margin: 0;
+      letter-spacing:.2px;
+    }
+    .subtitle{ color: var(--muted); font-size: clamp(16px, 1.7vw, 20px); }
+
+    .ribbon{
+      display:flex; flex-wrap: wrap; gap:10px; align-items:center;
+      padding:10px 0 4px;
+    }
+    .chip{
+      border: 1px solid var(--btn-border);
+      background: var(--btn-bg);
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: .85rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    @media(min-width: 720px){
+      .grid{ grid-template-columns: 1.1fr 1fr; }
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .card h2{ margin: 0 0 6px; font-size: 1.25rem; letter-spacing:.2px; }
+    .card p{ margin: 0; color: var(--muted); }
+
+    .btnrow{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 14px; }
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border:1px solid var(--btn-border);
+      background: var(--btn-bg);
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(154,230,180,.18), rgba(125,211,252,.18));
+      border-color: #2c374a;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0); }
+
+    .section{ padding: 28px 0; }
+    .section h3{ margin: 0 0 10px; font-size: 1.1rem; letter-spacing:.2px; }
+    .list{ display:grid; gap: 12px; }
+    .list .item{
+      background: var(--card);
+      border:1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display:flex; justify-content: space-between; gap: 10px; align-items: center;
+    }
+    .item .meta{ color: var(--muted); font-size:.92rem; }
+    .item .go{
+      font-weight: 700; color: var(--accent-2); text-decoration:none;
+    }
+
+    .kicker{ color: var(--muted); margin-top: 4px; }
+    .accent{ color: var(--accent); font-weight:700; }
+
+    footer{
+      border-top:1px solid var(--line);
+      margin-top: 30px;
+      padding: 20px 0 40px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    .small{ font-size: .88rem; color: var(--muted); }
+    .sep{ opacity:.3; margin: 0 8px; }
+  </style>
 </head>
 <body>
-    <div class="navbar">
-        <a href="#home">Home</a>
-        <a href="#news">News</a>
-        <a href="#contact">Contact</a>
-        <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>    
+  <header>
+    <div class="wrap masthead" role="banner" aria-label="Site header">
+      <div class="brand">
+        <!-- simple connective glyph -->
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="6" cy="6" r="3" stroke="currentColor" opacity=".7"/>
+          <circle cx="18" cy="6" r="3" stroke="currentColor" opacity=".7"/>
+          <circle cx="12" cy="18" r="3" stroke="currentColor" opacity=".7"/>
+          <path d="M9 6h6M7.5 8.5l3 7M16.5 8.5l-3 7" stroke="currentColor" opacity=".5"/>
+        </svg>
+        <div>
+          <div class="title">Virgorises</div>
+          <div class="tag">Unexpected Connective Tissue Central</div>
+        </div>
       </div>
-      
-      <div class="main">
-        <p>Some text some text some text some text..</p>
-     
-    <h1>Virgo Rises</h1>
-    <h2>Interactive Resources</h2>
-    <p>Information and Communication Technology (ICT). Ancient engineers set up a radio station. It is still sending messages 4474 years after cranking it up.</p>
-    
-    <p>An unknown culture prior to 2450 BCE possessed a detailed database of climate events stretching back to at least 18000 BCE (stretching back15500 years before 2450 BCE).</p> 
-    
-    <blockquote cite="Carl Sagan">
-        <p>Extraordinary claims require extraordinary evidence.</p>
-        <footer>—Carl Sagan <cite>In his 1979 book <a href="https://en.wikipedia.org/wiki/Broca%27s_Brain" target="_blank">Broca's Brain.</a>
-            
-        </cite> </footer>
-    </blockquote>
-<H2>Too good to be true?</H2>
-<p>Yes, I thought so. However, you want to know. I need you to review and bash this hypothesis mercilessly.</p>
-    <blockquote cite="Christopher Hitchens">
-        <p>What can be asserted without evidence can also be dismissed without evidence.</p>
-        <footer>—Christopher Hitchens <cite><a href="https://en.wikipedia.org/wiki/Hitchens%27s_razor" target="_blank">Hitchens's razor</a></cite> </footer>
-    </blockquote>
 
-    <p>Science aims to achieve the maximally satisfactory effect with minimal effort, materials, or steps.
-The law of parsimony: ‘It is pointless to do with more what can be done with fewer’.</p>
+      <div class="hero">
+        <h1>The Connective Issue</h1>
+        <p class="subtitle">A clean, public square for science-curious puzzles and notebooks. Cafés host the conversations. A weekly digest reports the highlights. The archive keeps the record.</p>
 
-<p>Because it is an ICT claim, I figured; Why not provide you with some tools to aid you in your quest for falsification?</p>
-<p>It is enlightening to see the algorithm work, being able to play with it. But you need to verify. Make sure you do not ‘believe’ the program; All calculations are basic, and easy to replicate with scientific calculator, pencil, straightedge, and printouts of graphs to draw on. It is satisfying to measure out and draw the occasional line.</p>
+        <div class="ribbon" aria-label="Quick facts">
+          <span class="chip">Open notebook culture</span>
+          <span class="chip">Skeptics welcome</span>
+          <span class="chip">Weekly digest</span>
+          <span class="chip">OSF archive</span>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<blockquote cite="Virgo Rises">
-    <p>I am an expert in nothing. So ‘peer review’ is a goner. Next best thing, though, is energetic ‘sneer review’. Lest you pause from trampling my life’s work, you may hear a muffled voice raising from beneath your feet. It will thank you for your effort. The dust it whirls up might draw a more favorable crowd. That been said; If you enjoy yourself bashing my impeccable logic reasoning? Why not put some bread in my jar for the sheer joy of that? I sprinkled blue buttons over the content, always available to accept your kind donations.</p>
-    <footer>—JH <cite><a href="https://www.virgorises.com" target="_blank">Virgo Rises</a></cite> </footer>
-</blockquote>
-</div> <!--top menu div -->
-<!-- ko-fi button -->
-<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-<script>
-  kofiWidgetOverlay.draw('virgorises', {
-    'type': 'floating-chat',
-    'floating-chat.donateButton.text': 'Support me',
-    'floating-chat.donateButton.background-color': '#00b9fe',
-    'floating-chat.donateButton.text-color': '#fff'
-  });
-</script>
+  <main class="wrap" role="main">
+    <section class="grid">
+      <!-- Left column: Zeta Zero Café feature -->
+      <article class="card" aria-labelledby="cafe-title">
+        <h2 id="cafe-title">☕ Zeta Zero Café</h2>
+        <p>Exploring zeta, primes, and triangular patterns — the first establishment on the square.</p>
+        <p class="kicker">Read the weekly <span class="accent">Connective Issue</span>, follow the puzzles, and join the debate.</p>
+        <div class="btnrow" role="group" aria-label="Café links">
+          <!-- TODO: replace # with your actual links -->
+          <a class="btn primary" href="/zeta-zero-cafe" aria-label="Visit the Zeta Zero Café page">Visit Café</a>
+          <a class="btn" href="https://discord.gg/your-invite" aria-label="Join the Discord">Join Discord</a>
+          <a class="btn" href="https://osf.io/8nhuj/" aria-label="Open the OSF archival project">OSF Archive</a>
+        </div>
+      </article>
+
+      <!-- Right column: How it works -->
+      <aside class="card" aria-labelledby="how-title">
+        <h2 id="how-title">How it Works</h2>
+        <ol class="small" style="margin: 0 0 10px 20px;">
+          <li><strong>Notebook</strong> — OSF preserves citable snapshots and releases.</li>
+          <li><strong>Café</strong> — Discord hosts live puzzles, critiques, and experiments.</li>
+          <li><strong>Newspaper</strong> — Weekly digest summarizes the best threads.</li>
+        </ol>
+        <p class="small">Low-energy for the founder; community-driven heat.</p>
+      </aside>
+    </section>
+
+    <!-- Quick navigation section -->
+    <section class="section" aria-labelledby="nav-title">
+      <h3 id="nav-title">On the Square</h3>
+      <div class="list" role="list">
+        <div class="item" role="listitem">
+          <div>
+            <strong>Zeta Zero Café</strong>
+            <div class="meta">Weekly digest · Puzzles · Archive links</div>
+          </div>
+          <a class="go" href="/zeta-zero-cafe" aria-label="Go to Zeta Zero Café">Enter →</a>
+        </div>
+
+        <!-- Future establishments (placeholder) -->
+        <div class="item" role="listitem" aria-live="polite">
+          <div>
+            <strong>Seedcode Café</strong>
+            <div class="meta">Statistics, scaling, and real-world data (coming soon)</div>
+          </div>
+          <span class="go" aria-hidden="true">Soon</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calls to action -->
+    <section class="section" aria-labelledby="join-title">
+      <h3 id="join-title">Join the Conversation</h3>
+      <div class="btnrow">
+        <a class="btn primary" href="https://discord.gg/your-invite">Join the Agora on Discord</a>
+        <a class="btn" href="/digest">Read the Weekly Digest</a>
+        <a class="btn" href="https://osf.io/8nhuj/">Open the OSF Archive</a>
+      </div>
+    </section>
+
+    <!-- Disclaimers (short, visible) -->
+    <section class="section" aria-labelledby="disc-title">
+      <h3 id="disc-title">Disclaimers</h3>
+      <p class="small"><strong>Formal:</strong> This space curates open notebooks and digests. Content can be speculative, unfinished, and not peer-reviewed; archives are provided for the record, not as formal proofs.</p>
+      <p class="small"><strong>Friendly:</strong> A science café vibe — ideas in public, gaps and all. Enjoy the journey even if the destination is uncertain.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div>© <span id="y"></span> Virgorises · <span class="sep">•</span> The Connective Issue</div>
+      <div class="small">Built to keep the archive stable (OSF) and the conversation lively (Discord). When SEEDCODE arrives, the square is ready.</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+
 </body>
 </html>
