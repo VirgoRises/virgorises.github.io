@@ -1,1 +1,191 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zeta Zero Café — Virgorises</title>
+  <meta name="description" content="Zeta Zero Café explores zeta, primes, and triangular patterns. Weekly digest, puzzles, and archival notebook links." />
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="/css/virgorises.css" />
+
+  <!-- MathJax -->
+  <script>
+    MathJax = { tex:{ inlineMath:[['$','$'],['\\(','\\)']] }, svg:{ fontCache:'global' } };
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <header>
+    <div class="wrap masthead">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="6" cy="6" r="3" stroke="currentColor" opacity=".7"/>
+          <circle cx="18" cy="6" r="3" stroke="currentColor" opacity=".7"/>
+          <circle cx="12" cy="18" r="3" stroke="currentColor" opacity=".7"/>
+          <path d="M9 6h6M7.5 8.5l3 7M16.5 8.5l-3 7" stroke="currentColor" opacity=".5"/>
+        </svg>
+        <div>
+          <div class="title">Virgorises</div>
+          <div class="tag">Unexpected Connective Tissue Central</div>
+        </div>
+      </div>
+
+      <div class="hero" style="padding-bottom:12px">
+        <nav class="small" aria-label="Breadcrumb">
+          <a href="/" style="text-decoration:none;color:inherit">Home</a>
+          <span class="sep">•</span>
+          <span>Zeta Zero Café</span>
+        </nav>
+        <h1>☕ Zeta Zero Café</h1>
+        <p class="subtitle">
+          Exploring zeta, primes, and triangular patterns — the first establishment on the square.
+          Weekly digest, community puzzles, and the archival notebook on OSF.
+        </p>
+        <div class="ribbon">
+          <span class="chip">Open notebook</span>
+          <span class="chip">Skeptics welcome</span>
+          <span class="chip">Weekly digest</span>
+          <span class="chip">OSF archive</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Top CTA row -->
+    <section class="section">
+      <div class="btnrow">
+        <a class="btn primary" href="/digest">Read the Weekly Digest</a>
+        <a class="btn" href="https://discord.gg/your-invite">Join Discord</a>
+        <a class="btn" href="https://osf.io/8nhuj/">Open OSF Archive</a>
+      </div>
+    </section>
+
+    <!-- Intro / House rules -->
+    <section class="grid">
+      <article class="card">
+        <h2>What this Café is</h2>
+        <p class="kicker">A public thread where ideas can ripen.</p>
+        <p>
+          Treat this as a <strong>working notebook in public</strong>. Expect gaps and conjectures.
+          Share counterexamples, visualizations, or references. If you post equations, feel free to use
+          MathJax: \( \zeta(2)=\pi^2/6 \).
+        </p>
+        <p class="small">
+          <strong>House rules:</strong> Be rigorous, be kind, cite when possible. Skepticism is welcome; ad hominem is not.
+        </p>
+      </article>
+
+      <aside class="card">
+        <h2>Quick Links</h2>
+        <div class="list">
+          <div class="item">
+            <div><strong>Old_main.pdf</strong><div class="meta">Original dense note</div></div>
+            <a class="go" href="https://osf.io/8nhuj/">Open →</a>
+          </div>
+          <div class="item">
+            <div><strong>Editorial Checklist</strong><div class="meta">Pothole map</div></div>
+            <a class="go" href="https://osf.io/8nhuj/">Open →</a>
+          </div>
+          <div class="item">
+            <div><strong>Notebook Snapshots</strong><div class="meta">Versioned releases</div></div>
+            <a class="go" href="https://osf.io/8nhuj/">Open →</a>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Puzzles -->
+    <section class="section" aria-labelledby="pz">
+      <h3 id="pz">Current Puzzles</h3>
+      <div class="list">
+        <div class="item">
+          <div>
+            <strong>Puzzle 1 — The Projection & Triangular Plane</strong>
+            <div class="meta">Show how triangular numbers map onto a projection plane. Provide a construction or code.</div>
+          </div>
+          <a class="go" href="https://discord.gg/your-invite">Discuss →</a>
+        </div>
+
+        <div class="item">
+          <div>
+            <strong>Puzzle 2 — Primorial Oscillations</strong>
+            <div class="meta">What structure do you see in Table 3.02 (lb/ub oscillation)? Is it artifact or necessity?</div>
+          </div>
+          <a class="go" href="https://discord.gg/your-invite">Discuss →</a>
+        </div>
+
+        <div class="item">
+          <div>
+            <strong>Puzzle 3 — ζ(2) and Scaling</strong>
+            <div class="meta">Propose (or refute) a concrete path from inverse squares to a geometric scaling law.</div>
+          </div>
+          <a class="go" href="https://discord.gg/your-invite">Discuss →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Weekly Digest snippets (manually updated or auto-embedded later) -->
+    <section class="section" aria-labelledby="dg">
+      <h3 id="dg">This Week in the Café</h3>
+      <div class="grid">
+        <article class="card">
+          <h2>Heat Watch</h2>
+          <p class="small">
+            Hottest thread: <em>Primorial Oscillations vs. CH</em> — best counterexample attempts, strongest rebuttals,
+            and visualizations shared by the community.
+          </p>
+          <p class="small">Report your favorite posts in Discord and we’ll feature them here.</p>
+        </article>
+
+        <article class="card">
+          <h2>Figure of the Week</h2>
+          <p class="small">A reader’s visualization of the 3×3-in-6×6 grid and its triangular number mapping.</p>
+          <p class="small">Inline math test: \( T_n = \frac{n(n+1)}{2} \).</p>
+        </article>
+      </div>
+      <div class="btnrow" style="margin-top:12px">
+        <a class="btn primary" href="/digest">Read Full Digest</a>
+        <a class="btn" href="https://discord.gg/your-invite">Post Your Take</a>
+      </div>
+    </section>
+
+    <!-- OSF buttons -->
+    <section class="section" aria-labelledby="osf">
+      <h3 id="osf">Archival Notebook (OSF)</h3>
+      <div class="btnrow">
+        <a class="btn" href="https://osf.io/8nhuj/">Open Project</a>
+        <a class="btn" href="https://osf.io/8nhuj/">Latest Snapshot (PDF)</a>
+        <a class="btn" href="https://osf.io/8nhuj/">All Releases</a>
+      </div>
+      <p class="small">Tip: link to a specific, versioned PDF when you “freeze” a milestone.</p>
+    </section>
+
+    <!-- MathJax test (optional) -->
+    <section class="section">
+      <h3>Quick MathJax Check</h3>
+      <p>Inline: \( \sum_{n=1}^{\infty}\frac{1}{n^2}=\frac{\pi^2}{6} \). Display:</p>
+      <p>$$ \int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi} $$</p>
+    </section>
+
+    <!-- Disclaimers -->
+    <section class="section">
+      <h3>Disclaimers</h3>
+      <p class="small"><strong>Formal:</strong> Exploratory, unfinished, not peer-reviewed; archived for the record, not as a formal proof.</p>
+      <p class="small"><strong>Friendly:</strong> A science café vibe — ideas in public, gaps and all.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div>© <span id="y"></span> Virgorises · Zeta Zero Café</div>
+      <div class="small">Archive on OSF · Conversation on Discord · Digest on the site</div>
+    </div>
+  </footer>
+
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
