@@ -1,35 +1,201 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Chapter 2 — The spatial aspect of zeta</title>
-<meta name="description" content="Mirror page for Chapter 2 — The spatial aspect of zeta." />
-<link rel="stylesheet" href="css/notebook.css" />
-<script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
-<body><a id="top"></a><header><div class="wrap"><h1>Chapter 2 — The spatial aspect of zeta</h1>
-<nav><a href="index.html">Notebook Home</a> <a href="../">Zeta Zero Café</a></nav>
-</div></header>
-<main class="wrap">
-<div class="card">
-  <div class="toc"> <a href="#figs">Figures</a> <a href="#tabs">Tables</a></div>
-  <p>×</p>
-<p>Chapter 3: The primorial function</p>
-<p>Toggle view:</p>
-<p>ViewEditCompare</p>
-<p>NewDelete</p>
-<p></p>
-  <p class="small"><a href="#top">Back to top ↑</a></p>
-  <div class="pager">
-    <a href="chapter-1.html" >← Prev</a>
-    <a href="chapter-3.html" >Next →</a>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chapter 2 — The spatial aspect of zeta</title>
+  <link rel="stylesheet" href="css/notebook.css" />
 
-<section class="card" id="figs"><h2>Figures</h2><div class="gallery"><figure><img loading="lazy" src="figures/Figure 2.1 SA as a Volume.GIF" alt="Figure 2.1 SA as a Volume.GIF"><figcaption class="small">Figure 2.1 SA as a Volume.GIF</figcaption></figure></div></section>
-<section class="card" id="tabs"><h2>Tables</h2><div class="gallery"><figure><img loading="lazy" src="tables/Table 2.1 Zeta function values.GIF" alt="Table 2.1 Zeta function values.GIF"><figcaption class="small">Table 2.1 Zeta function values.GIF</figcaption></figure>
-<figure><img loading="lazy" src="tables/Table 2.2 Zeta as a scale invariant proportion.GIF" alt="Table 2.2 Zeta as a scale invariant proportion.GIF"><figcaption class="small">Table 2.2 Zeta as a scale invariant proportion.GIF</figcaption></figure></div></section>
+  <!-- MathJax for LaTeX-style math -->
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="wrap masthead" role="banner" aria-label="Site header">
+  <div class="brand">
+    <div class="title">Chapter 2 — The spatial aspect of zeta</div>
+    <nav>
+      <a href="index.html">Notebook Home</a>
+      <a href="../../index.html">Virgorises Home</a>
+      <a href="../index.html">Zeta Zero Café</a>
+    </nav>
+  </div>
+  <p class="tagline">Working notebook — speculative, unfinished, not peer-reviewed.</p>
+</header>
+
+<main class="wrap">
+  <!-- Mini table of contents -->
+  <section class="card">
+    <h2 id="toc">Contents</h2>
+    <ul class="toc">
+      <li><a href="#volume">Volume over zeta</a></li>
+      <li><a href="#table201">Table 2.01 — Zeta function values</a></li>
+      <li><a href="#structure">The structure of Volume over zeta</a></li>
+      <li><a href="#ratios">The scale invariant ratios</a></li>
+      <li><a href="#gp">Geometric progression</a></li>
+      <li><a href="#progression">Progression and common ratios</a></li>
+      <li><a href="#selforg">Inevitable self organisation</a></li>
+      <li><a href="#sense">Making sense of zeta</a></li>
+      <li><a href="#figure201">Figure 2.01 — SA as a Volume</a></li>
+      <li><a href="#contrast">Contrasting discrete and continuous aspects</a></li>
+      <li><a href="#detached">Detached from spatial dimensions</a></li>
+      <li><a href="#abinitio">Ab initio principle</a></li>
+      <li><a href="#from-abs">From abstract spatial to observed continuity</a></li>
+      <li><a href="#formulas">Consider the following formulas</a></li>
+      <li><a href="#not-spatial">Not from a spatial context or abstraction thereof</a></li>
+      <li><a href="#scale-prop">Spherical scale-invariant proportion</a></li>
+      <li><a href="#map-circ">Mapping to a circumference</a></li>
+      <li><a href="#map-sa">Mapping to a surface area</a></li>
+      <li><a href="#table202">Table 2.02 — Zeta as a scale invariant proportion</a></li>
+    </ul>
+  </section>
+
+  <!-- 2. Volume over zeta -->
+  <section class="card" id="volume">
+    <h2>Volume over zeta</h2>
+    <p>The chapter examines how the value $\\zeta(2)=\\pi^2/6$ behaves like a <em>spatial ratio</em> that links surface area and volume through scale-invariant steps. We use simple ratios to keep spatial interpretations honest, and delay any operation that would smuggle in geometry where the algorithm itself provides none.</p>
+  </section>
+
+  <!-- Table 2.01 -->
+  <section class="card" id="table201">
+    <h2>Table 2.01 — Zeta function values</h2>
+    <p>Closed forms for even $s$ (and numerical values for odd $s$) as context for the spatial ratio story.</p>
+    <figure class="gallery">
+      <img loading="lazy" src="tables/Table_2.1_Zeta_function_values.GIF"
+           alt="Table 2.01 Zeta function values" />
+      <figcaption class="small">Table 2.01 — Zeta function values.</figcaption>
+    </figure>
+  </section>
+
+  <!-- The structure of Volume over zeta -->
+  <section class="card" id="structure">
+    <h2>The structure of Volume over zeta</h2>
+    <p>Write $\\zeta(2)=\\dfrac{\\pi^2}{6}$. Treat the value as a ratio that “sits in the middle” of a three-stage cycle:
+      an initial volume $V_{\\text{init}}$, a middle stage $V_{\\text{sa}}$ (tied to a surface area), and a next volume $V_{\\text{next}}$.
+      The working relations (labels (02.02)–(02.05) in the OSF text) are summarized:</p>
+    <p class="math">
+      $\\displaystyle \\zeta(2)=\\frac{\\pi^2}{6},\\qquad
+      V_{\\text{init}}\\;\\approx\\;\\frac{1}{8}V_{\\text{sa}},\\qquad
+      V_{\\text{next}}\\;\\approx\\;\\frac{\\pi}{2\\sqrt{2}}\\,V_{\\text{sa}}.$
+    </p>
+    <p>Interpreted via scale-free ratios, this reads as a snapshot of a sphere inflating by doubling radius.</p>
+  </section>
+
+  <!-- The scale invariant ratios -->
+  <section class="card" id="ratios">
+    <h2>The scale invariant ratios</h2>
+    <p>The cycle $V_{\\text{init}} \\to V_{\\text{sa}} \\to V_{\\text{next}}$ uses constant quotients (volume $\\,\\times 8$ for each radius doubling) and pins a <em>surface-area factor</em> of $4$ as the common ratio between consecutive stages when viewed appropriately. Those constants are what let us talk about geometry without importing units.</p>
+  </section>
+
+  <!-- Geometric progression -->
+  <section class="card" id="gp">
+    <h2>Geometric progression</h2>
+    <p>Recall $\\zeta(2)=\\sum_{n\\ge 1} n^{-2} = \\prod_{p}(1-p^{-2})^{-1}$. The additive and multiplicative views mirror geometric sequences:
+      doubling radii, area factors of $4$, volume factors of $8$.</p>
+  </section>
+
+  <!-- Progression and common ratios -->
+  <section class="card" id="progression">
+    <h2>Progression and common ratios</h2>
+    <p>Numerator-like terms scale by $2$ (radius), denominator-like terms by $8$ (volume). The overall ratio keeps a constant surface-area factor of $4$ between consecutive stages.</p>
+  </section>
+
+  <!-- Inevitable self organisation -->
+  <section class="card" id="selforg">
+    <h2>Inevitable self organisation</h2>
+    <p>The inverse-square footprint and the geometric progressions conspire to yield a stable “surface-first” description. The infinite sum/product locks the common ratio at the completion stage of the cycle.</p>
+  </section>
+
+  <!-- Making sense of zeta -->
+  <section class="card" id="sense">
+    <h2>Making sense of zeta</h2>
+    <p>The cleanest reading is to treat <em>surface area</em> as primary: the numerator/denominator structure exposes area growth, and the resulting “volume” is what wrapped area traces.</p>
+  </section>
+
+  <!-- Figure 2.01 -->
+  <section class="card" id="figure201">
+    <h2>Figure 2.01 — SA as a Volume</h2>
+    <figure class="gallery">
+      <img loading="lazy" src="figures/Figure_2.1_SA_as_a_Volume.GIF"
+           alt="Figure 2.01 SA as a Volume" />
+      <figcaption class="small">Figure 2.01 — SA as a Volume.</figcaption>
+    </figure>
+    <p class="muted small">A schematic “wrapped surface area” picture to build geometric intuition without assuming continuous curvature in the series itself.</p>
+  </section>
+
+  <!-- Contrasting discrete and continuous aspects -->
+  <section class="card" id="contrast">
+    <h2>Contrasting discrete and continuous aspects</h2>
+    <p>The $\\zeta(2)$ algorithm is purely rational and discrete. The scale-invariant ratios let us read off spherical features without invoking physical space.</p>
+  </section>
+
+  <section class="card" id="detached">
+    <h2>Detached from spatial dimensions</h2>
+    <p>No spatial dataset is being sampled; we are reading geometry out of number-theoretic structure alone. That’s why we avoid operations that silently assert “volume” or “radius” unless the ratio demands it.</p>
+  </section>
+
+  <section class="card" id="abinitio">
+    <h2>Ab initio principle</h2>
+    <p>The conjectured pre-mathematical principle (developed later) is intended to bridge this abstract ratio to observed spatial phenomena.</p>
+  </section>
+
+  <section class="card" id="from-abs">
+    <h2>From abstract spatial to observed continuity</h2>
+    <p>We interpret the value as a spatial ratio because it carries the same invariants a true spherical process would, but we keep everything dimensionless.</p>
+  </section>
+
+  <!-- Consider the following formulas -->
+  <section class="card" id="formulas">
+    <h2>Consider the following formulas</h2>
+    <p>When a mapping requires a radius or area, we <em>derive</em> the powered quantity but stop short of taking roots that would presume a spatial context not granted by the series.</p>
+  </section>
+
+  <section class="card" id="not-spatial">
+    <h2>Not from a spatial context or abstraction thereof</h2>
+    <p>Example: taking $\\sqrt[3]{V}$ presupposes “volume”. In this notebook we keep $r^3$ as the working quantity when a step speaks about “radius” embedded in a cubic relation, rather than reducing it to $r$ as if a physical $V$ had been measured.</p>
+  </section>
+
+  <!-- Spherical scale-invariant proportion & mappings -->
+  <section class="card" id="scale-prop">
+    <h2>Spherical scale-invariant proportion</h2>
+    <p>Assume $\\zeta(s)$ can be mapped proportionally to spherical measures by differentiating the numerator and keeping the denominator proportional, yielding clean $2\\pi$ and $\\pi^2$ targets.</p>
+  </section>
+
+  <section class="card" id="map-circ">
+    <h2>Mapping to a circumference</h2>
+    <p>For $s=2$ the first derivative in the numerator maps to a $2\\pi$–scaled circumference over radius relation; the denominator is adjusted proportionally so the ratio remains faithful to the original $\\zeta(s)$ value.</p>
+  </section>
+
+  <section class="card" id="map-sa">
+    <h2>Mapping to a surface area</h2>
+    <p>Likewise, higher derivatives (via factorial factors) map to $\\pi^2$–scaled surface area. We tabulate the first few $s$ to show the approach to the ideal scale-invariant proportion.</p>
+  </section>
+
+  <!-- Table 2.02 -->
+  <section class="card" id="table202">
+    <h2>Table 2.02 — Zeta as a scale invariant proportion</h2>
+    <figure class="gallery">
+      <img loading="lazy" src="tables/Table_2.2_Zeta_as_a_scale_invariant_proportion.GIF"
+           alt="Table 2.02 Zeta as a scale invariant proportion" />
+      <figcaption class="small">Table 2.02 — Mapping $\\zeta(s)$ to a scale-invariant $\\pi^2$ proportion (selected $s$).</figcaption>
+    </figure>
+  </section>
+
+  <!-- Prev/Next -->
+  <nav class="pager" aria-label="Pagination">
+    <a class="prev" href="chapter-1.html" aria-label="Previous chapter">← Chapter 1</a>
+    <a class="next" href="chapter-3.html" aria-label="Next chapter">Chapter 3 →</a>
+  </nav>
 </main>
-<footer><div class="wrap">© <span id="y"></span> Virgorises</div></footer>
-<script>document.getElementById('y').textContent=new Date().getFullYear()</script>
-</body></html>
+
+<footer class="wrap">
+  © 2025 Virgorises
+</footer>
+</body>
+</html>
