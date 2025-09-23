@@ -1,35 +1,140 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Chapter 1 — The Basel problem</title>
-<meta name="description" content="Mirror page for Chapter 1 — The Basel problem." />
-<link rel="stylesheet" href="css/notebook.css" />
-<script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
-<body><a id="top"></a><header><div class="wrap"><h1>Chapter 1 — The Basel problem</h1>
-<nav><a href="index.html">Notebook Home</a> <a href="../">Zeta Zero Café</a></nav>
-</div></header>
-<main class="wrap">
-<div class="card">
-  <div class="toc"> <a href="#figs">Figures</a> <a href="#tabs">Tables</a></div>
-  <p>×</p>
-<p>Chapter 2: The spatial aspect of zeta</p>
-<p>Toggle view:</p>
-<p>ViewEditCompare</p>
-<p>NewDelete</p>
-<p></p>
-  <p class="small"><a href="#top">Back to top ↑</a></p>
-  <div class="pager">
-    <a href="#" aria-disabled="true">← Prev</a>
-    <a href="chapter-2.html" >Next →</a>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chapter 1 — The Basel problem — Notebook</title>
+  <meta name="description" content="Offsite OSF mirror. Chapter 1 — The Basel problem." />
 
-<section class="card" id="figs"><h2>Figures</h2><div class="gallery"><figure><img loading="lazy" src="figures/Figure 1.1 The sum formula.GIF" alt="Figure 1.1 The sum formula.GIF"><figcaption class="small">Figure 1.1 The sum formula.GIF</figcaption></figure>
-<figure><img loading="lazy" src="figures/Figure 1.2 The product formula.GIF" alt="Figure 1.2 The product formula.GIF"><figcaption class="small">Figure 1.2 The product formula.GIF</figcaption></figure></div></section>
-<section class="card" id="tabs"><h2>Tables</h2><div class="gallery"><p class='small'>No tables listed for this chapter.</p></div></section>
-</main>
-<footer><div class="wrap">© <span id="y"></span> Virgorises</div></footer>
-<script>document.getElementById('y').textContent=new Date().getFullYear()</script>
-</body></html>
+  <!-- Styles (relative path because this page lives under /zeta-zero-cafe/notebook/) -->
+  <link rel="stylesheet" href="css/notebook.css" />
+
+  <!-- MathJax -->
+  <script>
+    MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <a id="top"></a>
+  <header>
+    <div class="wrap">
+      <h1>Chapter 1 — The Basel problem</h1>
+      <nav>
+        <a href="index.html">Notebook Home</a>
+        <a href="../">Zeta Zero Café</a>
+      </nav>
+      <p class="small">Working notebook — speculative, unfinished, not peer-reviewed.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Mini TOC (anchors jump to the headings below).
+         You can rename these link labels to match your actual section titles. -->
+    <div class="card">
+      <div class="toc">
+        <a href="#sec-1">Setup & notation</a>
+        <a href="#sec-2">Basel series</a>
+        <a href="#sec-3">Euler’s strategy</a>
+        <a href="#sec-4">Geometric view</a>
+        <a href="#sec-5">Consequences</a>
+        <a href="#figs">Figures</a>
+        <a href="#tabs">Tables</a>
+      </div>
+
+      <!-- === Chapter body ===
+           Replace the placeholder paragraphs below with the real text you extracted.
+           MathJax is enabled, so LaTeX inline math \( ... \) and $$ ... $$ will render. -->
+
+      <h2 id="sec-1">Setup & notation</h2>
+      <p>
+        We consider the series \( \sum_{n=1}^{\infty} \frac{1}{n^2} \) and its relation to
+        the Riemann zeta function \( \zeta(s) = \sum_{n=1}^{\infty} n^{-s} \) for \( \Re(s) > 1 \).
+        Throughout, \( \pi \) denotes the circle constant and \( T_n = \frac{n(n+1)}{2} \) the \(n\)-th triangular number.
+      </p>
+
+      <h2 id="sec-2">Basel series</h2>
+      <p>
+        The Basel problem asks for the exact value of \( \sum_{n=1}^{\infty} \frac{1}{n^2} \).
+        The well-known result is \( \zeta(2) = \frac{\pi^2}{6} \).
+        We record comparison bounds and the convergence rate as \( N \to \infty \) for partial sums
+        \( S_N = \sum_{n=1}^{N} \frac{1}{n^2} \).
+      </p>
+
+      <h2 id="sec-3">Euler’s strategy</h2>
+      <p>
+        Euler’s classical approach factors \( \sin(\pi x) \) via its zeros \( \{ \pm n \}_{n\in\mathbb{N}} \) and
+        compares coefficients of its power series with its product expansion, culminating in
+        \( \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6} \).
+        Variants consider \( \frac{\sin(\pi x)}{\pi x} \) and logarithmic differentiation.
+      </p>
+
+      <h2 id="sec-4">Geometric view</h2>
+      <p>
+        In this notebook we track a geometric lens: how inverse-square decay relates to
+        grid-based constructions and triangular counts. Where useful we reference figures by label
+        (see the <a href="#figs">Figures</a> section).
+      </p>
+
+      <h2 id="sec-5">Consequences</h2>
+      <p>
+        Among immediate corollaries are relations between \( \zeta(2) \), series of chord lengths,
+        and scaling laws used in later chapters. We also note identities for even arguments \( \zeta(2k) \).
+      </p>
+
+      <p class="small"><a href="#top">Back to top ↑</a></p>
+
+      <!-- Prev / Next pager -->
+      <div class="pager">
+        <a href="#" aria-disabled="true">← Prev</a>
+        <a href="chapter-2.html">Next →</a>
+      </div>
+    </div>
+
+    <!-- === Figures gallery ===
+         Place Chapter 1 images in docs/zeta-zero-cafe/notebook/figures/ with filenames
+         that include “1.” (e.g., “Figure 1.1 … .png”). Then list them here.
+         GitHub Pages cannot auto-discover files, so we enumerate them manually.
+         Example entries are shown; replace with your real filenames. -->
+    <section class="card" id="figs">
+      <h2>Figures</h2>
+      <div class="gallery">
+        <!-- EXAMPLES — replace with your actual files (exact names, case-sensitive) -->
+        <!--
+        <figure>
+          <img loading="lazy" src="figures/Figure 1.1 Basel partial sums.png" alt="Figure 1.1 Basel partial sums" />
+          <figcaption class="small">Figure 1.1 Basel partial sums</figcaption>
+        </figure>
+        <figure>
+          <img loading="lazy" src="figures/Figure 1.2 Sine-product idea.png" alt="Figure 1.2 Sine-product idea" />
+          <figcaption class="small">Figure 1.2 Sine-product idea</figcaption>
+        </figure>
+        -->
+      </div>
+      <p class="small">Put Chapter&nbsp;1 images in <code>figures/</code> and list them here.</p>
+    </section>
+
+    <!-- === Tables gallery ===
+         Same idea: put Chapter 1 tables in …/tables/ using names that include “1.”
+         and enumerate them below. -->
+    <section class="card" id="tabs">
+      <h2>Tables</h2>
+      <div class="gallery">
+        <!-- EXAMPLE
+        <figure>
+          <img loading="lazy" src="tables/Table 1.1 Bounds on S_N.png" alt="Table 1.1 Bounds on S_N" />
+          <figcaption class="small">Table 1.1 Bounds on \(S_N\)</figcaption>
+        </figure>
+        -->
+      </div>
+      <p class="small">Put Chapter&nbsp;1 tables in <code>tables/</code> and list them here.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">© <span id="y"></span> Virgorises</div>
+  </footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
