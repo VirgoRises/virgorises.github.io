@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chapter 1 — The Basel problem — Notebook</title>
   <meta name="description" content="Offsite OSF mirror. Chapter 1 — The Basel problem." />
-
-  <!-- Styles (relative path because this page lives under /zeta-zero-cafe/notebook/) -->
   <link rel="stylesheet" href="css/notebook.css" />
-
-  <!-- MathJax for LaTeX rendering -->
   <script>
     MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }, svg: { fontCache: 'global' } };
   </script>
@@ -31,132 +27,69 @@
 
   <main class="wrap">
     <div class="card">
-      <!-- Mini Table of Contents -->
-      <div class="toc">
-        <a href="#why">Why the Basel problem</a>
-        <a href="#sum">The sum formula</a>
-        <a href="#product">The product formula</a>
-        <a href="#equality">The sum/product equality</a>
-        <a href="#rationals">Rational and Real numbers</a>
-      </div>
+      <p>Why the Basel problem</p>
+      <p>The focus in this document is not on the classic Riemann zeta function involving Complex Analysis.</p>
+      <p>However, the results provide a solution to the distribution of the zeta zeros and consequently an</p>
+      <p>answer to the Riemann hypothesis.</p>
+      <p>The problem that superseded the Riemann zeta function, the “Basel Problem”, is named after the Swiss</p>
+      <p>city. At the University of Basel the Bernoulli brothers successively served as professor of mathematics</p>
+      <p>(Jakob, 1687–1705; Johann, 1705–1748). Jakob Bernoulli stated the problem: find a closed form for the</p>
+      <p>infinite series of reciprocal squares of the natural numbers. This is closely related to the harmonic</p>
+      <p>series, for which the Bernoulli brothers found a proof of divergence.</p>
+      <p>In essence this paper starts in 1735, the year that Leonhard Euler in St. Petersburg found the answer</p>
+      <p>to the Basel problem: he found the closed (exact) form surprisingly to add up to an irrational number.</p>
+      <p>The sum formula</p>
+      <p>The zeta function for s=2 is the infinite sum of reciprocal squares of the natural numbers:</p>
+      <p>\[ \zeta(2) = \sum_{n=1}^{\infty}\frac{1}{n^2} = 1 + \frac{1}{2^2} + \frac{1}{3^2} + \cdots \]</p>
+      <p>The infinite sum of the shaded squares adds up to a fraction of a square. The closed form indicates that</p>
+      <p>rational squares add up to a fraction of an irrational surface with sides \(\pi\). It is in precisely this</p>
+      <p>mapping that an alternative pathway for investigation presented itself.</p>
 
-      <!-- Cleaned chapter content (from the OSF export) -->
-      <h2 id="why">Why the Basel problem</h2>
-      <p>
-        The focus in this document is not on the classic Riemann zeta function involving Complex Analysis.
-        However, the results provide a solution to the distribution of the zeta zeros and consequently an
-        answer to the Riemann hypothesis.
-      </p>
-      <p>
-        The problem that superseded the Riemann zeta function, the “Basel Problem”, is named after the Swiss
-        city. At the University of Basel the Bernoulli brothers successively served as professor of mathematics
-        (Jakob, 1687–1705; Johann, 1705–1748). Jakob Bernoulli stated the problem: find a closed form for the
-        infinite series of reciprocal squares of the natural numbers. This is closely related to the harmonic
-        series, for which the Bernoulli brothers found a proof of divergence.
-      </p>
-      <p>
-        In essence this paper starts in 1735, the year that Leonhard Euler in St. Petersburg found the answer
-        to the Basel problem: he found the closed (exact) form surprisingly to add up to an irrational number.
-      </p>
+      <!-- Inline Figure 1.xx — matched to your repo filename -->
+      <figure>
+        <img loading="lazy" src="figures/Figure 1.01 The sum formula.png" alt="Figure 1.01 The sum formula" />
+        <figcaption class="small">Figure 1.01 The sum formula</figcaption>
+      </figure>
 
-      <h2 id="sum">The sum formula</h2>
-      <p>
-        The zeta function for \(s=2\) is the infinite sum of reciprocal squares of the natural numbers:
-      </p>
-      <p>
-        \[
-          \zeta(2) \;=\; \sum_{n=1}^{\infty}\frac{1}{n^{2}}
-          \;=\; 1 + \frac{1}{2^2} + \frac{1}{3^2} + \frac{1}{4^2} + \cdots
-        \]
-      </p>
-      <p>
-        The infinite sum of the shaded squares adds up to a fraction of a square. The closed form
-        indicates that rational squares add up to a fraction of an irrational surface with sides \(\pi\).
-        It is in precisely this mapping that an alternative pathway for investigation presented itself.
-      </p>
+      <p>The product formula</p>
+      <p>The zeta function for s=2 can also be stated as a product over the primes:</p>
+      <p>\[ \zeta(2) \;=\; \prod_{p \ \text{prime}} \frac{1}{1 - p^{-2}} \;=\; \prod_{p \ \text{prime}} \left(1 - \frac{1}{p^2}\right)^{-1} .\]</p>
+      <p>This can be represented as a product of square area ratios. The ratio between 3^2 and 4^2 does not appear</p>
+      <p>because 4 is not a prime number. The rational quotients multiply out to an irrational square with sides \(\pi\).</p>
 
-      <h2 id="product">The product formula</h2>
-      <p>
-        The zeta function for \(s=2\) can also be stated as a product over the primes:
-      </p>
-      <p>
-        \[
-          \zeta(2) \;=\; \prod_{p\ \text{prime}}\frac{1}{1 - p^{-2}}
-          \;=\; \prod_{p\ \text{prime}}\left(1 - \frac{1}{p^{2}}\right)^{-1}.
-        \]
-      </p>
-      <p>
-        This can be represented as a product of square area ratios. The ratio between \(3^2\) and \(4^2\) does not
-        appear because \(4\) is not a prime number. The rational quotients multiply out to an irrational square
-        with sides \(\pi\).
-      </p>
+      <!-- Inline Figure 1.xx — matched to your repo filename -->
+      <figure>
+        <img loading="lazy" src="figures/Figure 1.02 The product formula.png" alt="Figure 1.02 The product formula" />
+        <figcaption class="small">Figure 1.02 The product formula</figcaption>
+      </figure>
 
-      <h2 id="equality">The sum/product equality</h2>
-      <p>
-        The sum of the reciprocal squares of the natural numbers equals an infinite product whose factors
-        iterate over all prime numbers. The geometric projection of the sum and product formulas shows the
-        evolution of the formula to the result as a function of area:
-      </p>
-      <p>
-        \[
-          \zeta(2) \;=\; \sum_{n=1}^{\infty}\frac{1}{n^2}
-          \;=\; \prod_{p\ \text{prime}}\frac{1}{1 - p^{-2}}
-          \;=\; \frac{\pi^2}{6}.
-        \]
-      </p>
+      <p>The sum/product equality</p>
+      <p>The sum of the reciprocal squares of the natural numbers equals an infinite product whose factors iterate</p>
+      <p>over all prime numbers. The geometric projection of the sum and product formulas shows the evolution of</p>
+      <p>the formula to the result as a function of area:</p>
+      <p>\[ \zeta(2) \;=\; \sum_{n=1}^{\infty}\frac{1}{n^2} \;=\; \prod_{p \ \text{prime}} \frac{1}{1 - p^{-2}} \;=\; \frac{\pi^2}{6} .\]</p>
 
-      <h2 id="rationals">Rational and Real numbers</h2>
-      <p>
-        The rationals are a dense subset of the real numbers: every real number has rational numbers
-        arbitrarily close to it. A related property is that rational numbers are the only numbers with finite
-        expansions as regular continued fractions.
-      </p>
-      <p>
-        A sum or product of rational quantities resulting in a real number value raises a philosophical question:
-        is the result \(\zeta(2)=\pi^2/6\) a real number “reached” by the rationals, or an infinitely close
-        rational approximation?
-      </p>
+      <p>Rational and Real numbers</p>
+      <p>The rationals are a dense subset of the real numbers: every real number has rational numbers arbitrarily</p>
+      <p>close to it. A related property is that rational numbers are the only numbers with finite expansions as</p>
+      <p>regular continued fractions.</p>
+      <p>A sum or product of rational quantities resulting in a real number value raises a philosophical question:</p>
+      <p>is the result \(\zeta(2)=\pi^2/6\) a real number “reached” by the rationals, or an infinitely close rational</p>
+      <p>approximation?</p>
+
+      <!-- If you have any Chapter-1 tables in docs/.../tables/, insert them similarly:
+      <figure>
+        <img loading="lazy" src="tables/Table 1.01 Basel partial sums.png" alt="Table 1.01 Basel partial sums" />
+        <figcaption class="small">Table 1.01 Basel partial sums</figcaption>
+      </figure>
+      -->
 
       <p class="small"><a href="#top">Back to top ↑</a></p>
-
-      <!-- Prev / Next pager -->
       <div class="pager">
         <a href="#" aria-disabled="true">← Prev</a>
         <a href="chapter-2.html">Next →</a>
       </div>
     </div>
-
-    <!-- Figures (add actual files under docs/zeta-zero-cafe/notebook/figures/ and list them here) -->
-    <section class="card" id="figs">
-      <h2>Figures</h2>
-      <div class="gallery">
-        <!-- Example placeholders; replace with real filenames if desired
-        <figure>
-          <img loading="lazy" src="figures/Figure 1.01 The sum formula.png" alt="Figure 1.01 The sum formula" />
-          <figcaption class="small">Figure 1.01 — The sum formula</figcaption>
-        </figure>
-        <figure>
-          <img loading="lazy" src="figures/Figure 1.02 The product formula.png" alt="Figure 1.02 The product formula" />
-          <figcaption class="small">Figure 1.02 — The product formula</figcaption>
-        </figure>
-        -->
-      </div>
-      <p class="small">Place Chapter&nbsp;1 images in <code>figures/</code> and enumerate them here (exact filenames, case-sensitive).</p>
-    </section>
-
-    <!-- Tables (add actual files under docs/zeta-zero-cafe/notebook/tables/ and list them here) -->
-    <section class="card" id="tabs">
-      <h2>Tables</h2>
-      <div class="gallery">
-        <!-- Example placeholder
-        <figure>
-          <img loading="lazy" src="tables/Table 1.01 Basel partial sums.png" alt="Table 1.01 Basel partial sums" />
-          <figcaption class="small">Table 1.01 — Basel partial sums</figcaption>
-        </figure>
-        -->
-      </div>
-      <p class="small">Place Chapter&nbsp;1 tables in <code>tables/</code> and enumerate them here.</p>
-    </section>
   </main>
 
   <footer>
