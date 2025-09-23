@@ -1,0 +1,47 @@
+:root{
+  --bg:#0b0c10; --paper:#0f1115; --ink:#e5e7eb; --muted:#a7b0be;
+  --line:#1a1d24; --accent:#7dd3fc; --accent2:#9ae6b4;
+  --radius:16px; --maxw:980px;
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#f7fafc; --paper:#fff; --ink:#0f172a; --muted:#475569; --line:#e5e7eb; }
+}
+html,body{height:100%}
+body{
+  margin:0; font:16px/1.6 system-ui,Segoe UI,Roboto,Helvetica,Arial;
+  color:var(--ink); background:radial-gradient(1200px 600px at 50% -20%, #1b2130 0%, var(--bg) 60%);
+  background-attachment:fixed;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:24px}
+header{border-bottom:1px solid var(--line); background:linear-gradient(180deg,rgba(255,255,255,.04),transparent)}
+.mast{display:grid; gap:8px; padding:24px 0}
+h1{font-size:clamp(28px,4vw,44px); margin:.2em 0}
+h2{margin:1.2em 0 .4em}
+p.small{color:var(--muted); font-size:.92rem}
+.nav{
+  display:flex; flex-wrap:wrap; gap:10px; margin:12px 0 0
+}
+.tag{border:1px solid var(--line); border-radius:999px; padding:6px 10px; color:var(--muted); background:#12151a}
+.main{display:grid; gap:16px}
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
+  border:1px solid var(--line); border-radius:var(--radius); padding:18px
+}
+.btnrow{display:flex; flex-wrap:wrap; gap:10px; margin:12px 0}
+.btn{
+  display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px;
+  text-decoration:none; color:var(--ink); border:1px solid var(--line); background:#12151a
+}
+.btn.primary{background:linear-gradient(90deg,rgba(125,211,252,.18),rgba(154,230,180,.18))}
+.list{display:grid; gap:10px}
+.item{display:flex; justify-content:space-between; gap:10px; align-items:center; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:#12151a}
+.meta{color:var(--muted); font-size:.92rem}
+footer{border-top:1px solid var(--line); margin-top:24px; padding:20px 0 40px; color:var(--muted); font-size:.9rem}
+figure{margin:1em auto; text-align:center}
+figcaption{color:var(--muted); font-size:.9rem}
+img{max-width:100%; height:auto; border-radius:10px; border:1px solid var(--line)}
+/* MathJax tweaks */
+mjx-container[jax="SVG"][display="true"]{display:block;text-align:center;margin:1.2em 0}
+mjx-container[jax="SVG"]{font-size:1.05em}
+.breadcrumb{font-size:.9rem;color:var(--muted)}
+.prevnext{display:flex; justify-content:space-between; margin-top:18px}
