@@ -1,0 +1,614 @@
+Figures and tables
+==================
+@[toc]
+
+Chapter 01
+----------
+
+### **Figures**
+
+#### F1.01 The sum formula
+
+![F1.01 The sum formula ](https://osf.io/ef5j7/download =400x400)
+
+    ![F1.01 The sum formula ](https://osf.io/ef5j7/download =400x400)
+
+
+#### F1.02 The product formula
+
+![F1.02 The product formula](https://osf.io/rxwsa/download =400x400)
+
+    ![F1.02 The product formula](https://osf.io/rxwsa/download =400x400)
+
+
+### **tables**
+
+Chapter 02
+----------
+
+### **Figures**
+
+#### F2.01 SA as a Volume
+
+![F2.01 SA as a Volume](https://osf.io/tm7au/download =200x200)
+
+    ![F2.01 SA as a Volume](https://osf.io/tm7au/download =200x200)
+
+
+### **tables**
+
+
+#### T2.01 Zeta function values
+
+![T2.01 Zeta function values](https://osf.io/bmh98/download =200x200)
+
+    ![T2.01 Zeta function values](https://osf.io/bmh98/download =200x200)
+
+
+#### T2.02 Zeta as scale invariant proportion
+
+![T2.02 Zeta as scale invariant proportion](https://osf.io/xh3md/download =400x400)
+
+    ![T2.02 Zeta as scale invariant proportion](https://osf.io/xh3md/download =400x400)
+
+
+Chapter 03
+----------
+
+### **Figures**
+
+#### F3.01 Quadrature constant - leap
+
+![F3.01 Quadrature constant - leap](https://osf.io/awgcu/download =300x300)
+
+    ![F3.01 Quadrature constant - leap](https://osf.io/awgcu/download =300x300)
+
+
+#### F3.02 Quadrature continuum
+
+![F3.02 Quadrature continuum](https://osf.io/2qcvd/download =300x300)
+
+    ![F3.02 Quadrature continuum](https://osf.io/2qcvd/download =300x300)
+
+
+#### F3.03  Quadrature reference frame
+
+![F3.03  Quadrature reference frame](https://osf.io/rnjkd/download =300x300)
+
+    ![F3.03  Quadrature reference frame](https://osf.io/rnjkd/download =300x300)
+
+
+#### F3.04 Primorial hexagon
+
+![F3.04 Primorial hexagon](https://osf.io/657tn/download =300x300)
+
+    ![F3.04 Primorial hexagon](https://osf.io/657tn/download =300x300)
+
+
+### **tables**
+
+
+#### T3.01 Primorial root 2 approach
+
+![T3.01 Primorial root 2 approach](https://osf.io/c3fbx/download =300x300)
+
+    ![T3.01 Primorial root 2 approach](https://osf.io/c3fbx/download =300x300)
+
+
+#### T3.02 Primorial lb/ub oscillation
+
+![T3.02 Primorial lb/ub oscillation](https://osf.io/37e5r/download =300x300)
+
+    ![T3.02 Primorial lb/ub oscillation](https://osf.io/37e5r/download =300x300)
+
+![See Table 3.02 - Upper and Lower bound partial primorial sum ](https://osf.io/dw7my/download =300x300)
+
+    ![See Table 3.02 - Upper and Lower bound partial primorial sum ](https://osf.io/dw7my/download =300x300)
+
+Chapter 04
+----------
+
+### **Figures**
+
+#### F4.01 The sum formula and first six triangular numbers
+
+![F4.01 The sum formula and first six triangular numbers](https://osf.io/wbhq8/download =400x400)
+
+    ![F4.01 The sum formula and first six triangular numbers](https://osf.io/wbhq8/download =400x400)
+
+
+#### F4.02 The projection plane
+
+![F4.02 The projection plane](https://osf.io/be3s2/download =250x250)
+
+    ![F4.02 The projection plane](https://osf.io/be3s2/download =250x250)
+
+
+#### F4.03 The triangular plane
+
+![F4.03 The triangular plane](https://osf.io/g9te2/download =250x250)
+
+    ![F4.03 The triangular plane](https://osf.io/g9te2/download =250x250)
+
+
+#### F4.04 Triangular to projection plane
+
+![F4.04 Triangular to projection plane](https://osf.io/fs93a/download =250x250)
+
+    ![F4.04 Triangular to projection plane](https://osf.io/fs93a/download =250x250)
+
+
+#### F4.05 Exceeding the bounds of the Triangular plane
+
+![F4.05 Exceeding the bounds of the Triangular plane](https://osf.io/49hca/download =250x250)
+
+    ![F4.05 Exceeding the bounds of the Triangular plane](https://osf.io/49hca/download =250x250)
+
+
+#### F4.06 Projection plane extended zeta
+
+![F4.06 Projection plane extended zeta](https://osf.io/ct8py/download =225x225)
+
+    ![F4.06 Projection plane extended zeta](https://osf.io/ct8py/download =225x225)
+
+
+#### F4.07 Projection plane bulk
+
+![F4.07 Projection plane bulk](https://osf.io/nxcy4/download =225x225)
+
+    ![F4.07 Projection plane bulk](https://osf.io/nxcy4/download =225x225)
+
+
+#### F4.08 The triangular plane bulk
+
+![F4.08 The triangular plane bulk](https://osf.io/yjctm/download =250x250)
+
+    ![F4.08 The triangular plane bulk](https://osf.io/yjctm/download =250x250)
+
+
+#### F4.09 Projection plane regression
+
+![F4.09 Projection plane regression](https://osf.io/m9ja4/download =250x250)
+
+    ![F4.09 Projection plane regression](https://osf.io/m9ja4/download =250x250)
+
+
+#### F4.10 Fractal stack
+
+![F4.10 Fractal stack](https://osf.io/926q3/download =125x125)
+
+    ![F4.10 Fractal stack](https://osf.io/926q3/download =125x125)
+
+
+### **tables**
+
+#### T4.01 Discrete triangular - Continues projection plane
+    
+![T4.01 Discrete triangular - Continues projection plane](https://osf.io/7m9cg/download =400x400)
+
+
+    ![T4.01 Discrete triangular - Continues projection plane](https://osf.io/7m9cg/download =400x400)
+
+![See Table 4.01, Projection Triangular Plane](https://osf.io/xje93/download =400x400)
+
+    ![See Table 4.01, Projection Triangular Plane](https://osf.io/xje93/download =400x400)
+
+#### T4.02 Projection plane range for all s
+
+![T4.02 Projection plane range for all s](https://osf.io/z8k2g/download =400x400)
+
+    ![T4.02 Projection plane range for all s](https://osf.io/z8k2g/download =400x400)
+
+
+#### T4.03 The base of Plancks constant
+
+![T4.03 The base of Plancks constant](https://osf.io/hu62x/download =200x200)
+
+    ![T4.03 The base of Plancks constant](https://osf.io/hu62x/download =200x200)
+
+
+#### T4.04 Zeta, the SA/Volume equilibrium
+
+![T4.04 Zeta, the SA/Volume equilibrium](https://osf.io/puzeh/download =400x400)
+
+    ![T4.04 Zeta, the SA/Volume equilibrium](https://osf.io/puzeh/download =400x400)
+
+
+Chapter 05
+----------
+
+### **Figures**
+
+#### F5.01 Hexagonal chord versus h
+
+![F5.01 Hexagonal chord versus h](https://osf.io/5pf3g/download =250x250)
+
+    ![F5.01 Hexagonal chord versus h](https://osf.io/5pf3g/download =250x250)
+
+
+#### F5.02 Planck base-Unity chord
+
+![F5.02 Planck base-Unity chord](https://osf.io/d9nw5/download =250x250)
+
+    ![F5.02 Planck base-Unity chord](https://osf.io/d9nw5/download =250x250)
+
+
+#### F5.03 Triangular numbers-chord density
+
+![F5.03 Triangular numbers-chord density](https://osf.io/tnez4/download =250x250)
+
+    ![F5.03 Triangular numbers-chord density](https://osf.io/tnez4/download =250x250)
+
+
+#### F5.04 Plot triangular Tn=1 and Tn=2
+
+![F5.04 Plot triangular Tn=1 and Tn=2](https://osf.io/d52v7/download =250x250)
+
+    ![F5.04 Plot triangular Tn=1 and Tn=2](https://osf.io/d52v7/download =250x250)
+
+
+#### F5.05 Planck base-Transition Tn=3 to Tn=4
+
+![F5.05 Planck base-Transition Tn=3 to Tn=4](https://osf.io/ebyzm/download =250x250)
+
+    ![F5.05 Planck base-Transition Tn=3 to Tn=4](https://osf.io/ebyzm/download =250x250)
+
+
+#### F5.06 Root 2 equilibrium
+
+![F5.06 Root 2 equilibrium](https://osf.io/8nzgt/download =350x350)
+
+    ![F5.06 Root 2 equilibrium](https://osf.io/8nzgt/download =350x350)
+
+
+#### F5.07 Spherical triangle
+
+![F5.07 Spherical triangle](https://osf.io/vyfus/download =150x150)
+
+    ![F5.07 Spherical triangle](https://osf.io/vyfus/download =150x150)
+
+
+#### F5.08 M-brane hemisphere mono surface
+
+![F5.08 M-brane hemisphere mono surface](https://osf.io/ka9wx/download =200x200)
+
+    ![F5.08 M-brane hemisphere mono surface](https://osf.io/ka9wx/download =200x200)
+
+
+### **tables**
+
+#### T5.01 Hexagonal equilibrium
+
+![T5.01 Hexagonal equilibrium](https://osf.io/a7853/download =400x400)
+
+    ![T5.01 Hexagonal equilibrium](https://osf.io/a7853/download =400x400)
+
+
+Chapter 06
+----------
+
+### **Figures**
+
+#### F6.01 Some affected area configurations
+
+![F6.01 Some affected area configurations](https://osf.io/mvjtx/download =300x300)
+
+    ![F6.01 Some affected area configurations](https://osf.io/mvjtx/download =300x300)
+
+
+#### F6.02 M-brane mono surface r2 contraction
+
+![F6.02 M-brane mono surface r2 contraction](https://osf.io/4bkzw/download =300x300)
+
+    ![F6.02 M-brane mono surface r2 contraction](https://osf.io/4bkzw/download =300x300)
+
+
+#### F6.03 M-brane mono surface radii group III
+
+![F6.03 M-brane mono surface radii group III](https://osf.io/mht4k/download =300x300)
+
+    ![F6.03 M-brane mono surface radii group III](https://osf.io/mht4k/download =300x300)
+
+
+#### F6.04 M-brane mono surface area contraction
+
+![F6.04 M-brane mono surface area contraction](https://osf.io/6pbjd/download =300x300)
+
+    ![F6.04 M-brane mono surface area contraction](https://osf.io/6pbjd/download =300x300)
+
+
+#### F6.05 M-brane mono surface zeta equilibrium
+
+![F6.05 M-brane mono surface zeta equilibrium](https://osf.io/6bnmk/download =300x300)
+
+    ![F6.05 M-brane mono surface zeta equilibrium](https://osf.io/6bnmk/download =300x300)
+
+
+#### F6.06 M-brane mono surface-detail 9 over 60
+
+![F6.06 M-brane mono surface-detail 9 over 60](https://osf.io/7dshx/download =300x300)
+
+    ![F6.06 M-brane mono surface-detail 9 over 60](https://osf.io/7dshx/download =300x300)
+
+
+### **tables**
+
+#### T6.01 4-5 proportion Spherical vs Cartesian projection
+
+![T6.01 4-5 proportion Spherical vs Cartesian projection](https://osf.io/u6edw/download =400x400)
+
+    ![T6.01 4-5 proportion Spherical vs Cartesian projection](https://osf.io/u6edw/download =400x400)
+
+
+Chapter 07
+----------
+
+### **Figures**
+
+#### F7.01 Convex set
+
+![F7.01 Convex set](https://osf.io/exzt2/download =200x200)
+
+    ![F7.01 Convex set](https://osf.io/exzt2/download =200x200)
+
+
+#### F7.02 Quadrature Geometric Framework
+
+![F7.02 Quadrature Geometric Framework](https://osf.io/jh4qw/download =300x300)
+
+    ![F7.02 Quadrature Geometric Framework](https://osf.io/jh4qw/download =300x300)
+
+
+#### F7.03 QGF natural state
+
+![F7.03 QGF natural state](https://osf.io/k8cfr/download =300x300)
+
+    ![F7.03 QGF natural state](https://osf.io/k8cfr/download =300x300)
+
+
+#### F7.04 QGF natural state normalized pole
+
+![F7.04 QGF natural state normalized pole](https://osf.io/x9a5g/download =300x300)
+
+    ![F7.04 QGF natural state normalized pole](https://osf.io/x9a5g/download =300x300)
+
+
+#### F7.05 Particle in a box and Harmonic oscillator
+
+![F7.05 Particle in a box and Harmonic oscillator](https://osf.io/2pfyj/download =250x250)
+
+    ![F7.05 Particle in a box and Harmonic oscillator](https://osf.io/2pfyj/download =250x250)
+
+
+#### F7.06 Pair correlation numerical calculation by Odlyzko
+
+![F7.06 Pair correlation numerical calculation by Odlyzko](https://osf.io/25b3v/download =250x250)
+
+    ![F7.06 Pair correlation numerical calculation by Odlyzko](https://osf.io/25b3v/download =250x250)
+
+
+#### F7.07 Geometric primes and Pair correlation
+
+![F7.07 Geometric primes and Pair correlation](https://osf.io/x4kvc/download =250x250)
+
+    ![F7.07 Geometric primes and Pair correlation](https://osf.io/x4kvc/download =250x250)
+
+
+#### F7.08 Pair correlation proportional chord
+
+![F7.08 Pair correlation proportional chord](https://osf.io/dwsem/download =250x250)
+
+    ![F7.08 Pair correlation proportional chord](https://osf.io/dwsem/download =250x250)
+
+
+#### F7.09 Zeta zeros normalized to pole range
+
+![F7.09 Zeta zeros normalized to pole range](https://osf.io/cqt7v/download =250x250)
+
+    ![F7.09 Zeta zeros normalized to pole range](https://osf.io/cqt7v/download =250x250)
+
+
+#### F7.10 Zeta zero modulus as proportional chord
+
+![F7.10 Zeta zero modulus as proportional chord](https://osf.io/hzsfy/download =250x250)
+
+    ![F7.10 Zeta zero modulus as proportional chord](https://osf.io/hzsfy/download =250x250)
+
+
+#### F7.11 Interlaced zeta zeros
+
+![F7.11 Interlaced zeta zeros](https://osf.io/gr3x6/download =300x300)
+
+    ![F7.11 Interlaced zeta zeros](https://osf.io/gr3x6/download =300x300)
+
+
+#### F7.12 Interlaced zeta zero detail
+
+![F7.12 Interlaced zeta zero detail](https://osf.io/sv9jw/download =300x300)
+
+    ![F7.12 Interlaced zeta zero detail](https://osf.io/sv9jw/download =300x300)
+
+
+#### F7.13 Decent for zeta N
+
+![F7.13 Decent for zeta N](https://osf.io/pwafh/download =300x300)
+
+    ![F7.13 Decent for zeta N](https://osf.io/pwafh/download =300x300)
+
+
+#### F7.14 Decent for levels
+
+![F7.14 Decent for levels](https://osf.io/5v3zw/download =300x300)
+
+    ![F7.14 Decent for levels](https://osf.io/5v3zw/download =300x300)
+
+
+#### F7.15 Zeta zeros walk about
+
+![F7.15 Zeta zeros walk about](https://osf.io/rspn5/download =300x300)
+
+    ![F7.15 Zeta zeros walk about](https://osf.io/rspn5/download =300x300)
+
+
+#### F7.16 Prime number triangular core set
+
+![F7.16 Prime number triangular core set](https://osf.io/nzgr7/download =300x300)
+
+    ![F7.16 Prime number triangular core set](https://osf.io/nzgr7/download =300x300)
+
+
+#### F7.17 Stacking the core
+
+![F7.17 Stacking the core](https://osf.io/rf2hq/download =300x300)
+
+    ![F7.17 Stacking the core](https://osf.io/rf2hq/download =300x300)
+
+
+#### F7.18 Orthogonal succession
+
+![F7.18 Orthogonal succession](https://osf.io/bfr4p/download =300x300)
+
+    ![F7.18 Orthogonal succession](https://osf.io/bfr4p/download =300x300)
+
+
+#### F7.19 Orthogonal fractal stack
+
+![F7.19 Orthogonal fractal stack](https://osf.io/86eam/download =300x300)
+
+    ![F7.19 Orthogonal fractal stack](https://osf.io/86eam/download =300x300)
+
+
+#### F7.20 Orthogonal diagonal as circumference
+
+![F7.20 Orthogonal diagonal as circumference](https://osf.io/nw7p3/download =300x300)
+
+    ![F7.20 Orthogonal diagonal as circumference](https://osf.io/nw7p3/download =300x300)
+
+
+#### F7.21 Projecting the stack
+
+![F7.21 Projecting the stack](https://osf.io/6rjaq/download =300x300)
+
+    ![F7.21 Projecting the stack](https://osf.io/6rjaq/download =300x300)
+
+
+#### F7.22 Stack rythm in the plane
+
+![F7.22 Stack rythm in the plane](https://osf.io/rp3qg/download =300x300)
+
+    ![F7.22 Stack rythm in the plane](https://osf.io/rp3qg/download =300x300)
+
+
+#### F7.23 Prime rythm in the plane
+
+![F7.23 Prime rythm in the plane](https://osf.io/pwfm6/download =300x300)
+
+    ![F7.23 Prime rythm in the plane](https://osf.io/pwfm6/download =300x300)
+
+
+### **tables**
+
+#### T7.01 QGF standard chord and deviation
+
+![T7.01 QGF standard chord and deviation](https://osf.io/jmhtp/download =300x300)
+
+    ![T7.01 QGF standard chord and deviation](https://osf.io/jmhtp/download =300x300)
+
+
+#### T7.02 Chord length and relative density
+
+![T7.02 Chord length and relative density](https://osf.io/6sx57/download =300x300)
+
+    ![T7.02 Chord length and relative density](https://osf.io/6sx57/download =300x300)
+
+
+#### T7.03 Non trivial zero to Unity chord
+ 
+![T7.03 Non trivial zero to Unity chord](https://osf.io/jyp4f/download =300x300)
+ 
+    ![T7.03 Non trivial zero to Unity chord](https://osf.io/jyp4f/download =300x300)
+
+
+#### T7.04 Non trivial zeros-Levels
+
+![T7.04 Non trivial zeros-Levels](https://osf.io/eq5mu/download =300x300)
+
+    ![T7.04 Non trivial zeros-Levels](https://osf.io/eq5mu/download =300x300)
+
+
+#### T7.05 Level 1 coordinate listing
+
+![T7.05 Level 1 coordinate listing](https://osf.io/wmaq9/download =300x300)
+
+    ![T7.05 Level 1 coordinate listing](https://osf.io/wmaq9/download =300x300)
+
+
+Chapter 08
+----------
+
+### **Figures**
+
+#### F8.01 Spectrum core orthogonal diagonal
+
+![F8.01 Spectrum core orthogonal diagonal](https://osf.io/ka26d/download =300x300)
+
+    ![F8.01 Spectrum core orthogonal diagonal](https://osf.io/ka26d/download =300x300)
+
+
+#### F8.02 Spectrum composite stack links
+
+![F8.02 Spectrum composite stack links](https://osf.io/k9rp8/download =300x300)
+
+    ![F8.02 Spectrum composite stack links](https://osf.io/k9rp8/download =300x300)
+
+
+#### F8.03 Spectrum composite stack midfield
+
+![F8.03 Spectrum composite stack midfield](https://osf.io/dakp3/download =300x300)
+
+    ![F8.03 Spectrum composite stack midfield](https://osf.io/dakp3/download =300x300)
+
+
+#### F8.04 Midfield radial connections
+
+![F8.04 Midfield radial connections](https://osf.io/jgr68/download =300x300)
+
+    ![F8.04 Midfield radial connections](https://osf.io/jgr68/download =300x300)
+
+
+#### F8.05 The primorial stack
+
+![F8.05 The primorial stack](https://osf.io/x6fvq/download =300x300)
+
+    ![F8.05 The primorial stack](https://osf.io/x6fvq/download =300x300)
+
+
+#### F8.06 Primorial spectrum
+
+![F8.06 Primorial spectrum](https://osf.io/jaur3/download =300x300)
+
+    ![F8.06 Primorial spectrum](https://osf.io/jaur3/download =300x300)
+
+
+#### F8.07 Primorial Pn over 6 spectrum
+
+![F8.07 Primorial Pn over 6 spectrum](https://osf.io/hf54c/download =300x300)
+
+    ![F8.07 Primorial Pn over 6 spectrum](https://osf.io/hf54c/download =300x300)
+
+
+#### F8.08 QGF solution
+
+![F8.08 QGF solution](https://osf.io/g7yv2/download =300x300)
+
+    ![F8.08 QGF solution](https://osf.io/g7yv2/download =300x300)
+
+
+### **tables**
+
+#### T8.01 Spectrum orthogonal diagonal full cycle
+
+![T8.01 Spectrum orthogonal diagonal full cycle](https://osf.io/xfqub/download =300x300)
+
+    ![T8.01 Spectrum orthogonal diagonal full cycle](https://osf.io/xfqub/download =300x300)
+

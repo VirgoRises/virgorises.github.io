@@ -1,0 +1,607 @@
+LaTex table source
+==================
+
+@[toc]
+
+### LaTex opening
+
+    \documentclass{article}
+    \usepackage{booktabs}
+    \usepackage{booktabs,multirow}
+    \begin{document}
+
+Chapter 01
+----------
+**tables**
+T1.01@[osf]()
+
+Chapter 02
+----------
+
+### Table 2.01 Zeta function values
+
+![T2.01 Zeta function values](https://osf.io/sxqgv/download =300x300)
+
+    \begin{table}
+    \centering
+    \caption{Table 2.01 Zeta function values}
+    \label{tab:zetafunctionvalues}
+    \begin{tabular}{|l|l|l|} 
+    \toprule
+    s & Closed exact  & Calculated value\\ 
+    \hline
+    \hline
+    1 & no value & no value\\ 
+    \hline
+    %2 & \begin{tabular}[c]{@{}l@{}}$\frac{\pi^{2}}{6}$\\\end{tabular} & 1.644934067...\\ 
+    2 & $\frac{\pi^{2}}{6}$ & 1.644934067...\\ 
+    \hline
+    3 & unknown & 1.202056903...\\ 
+    \hline
+    4 & $\frac{\pi^{4}}{90}$ & 1.082323234...\\ 
+    \hline
+    5 & unknown & 1.036927755...\\ 
+    \hline
+    6 & $\frac{\pi^{6}}{945}$ & 1.017343062...\\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+### Table 2.02 Zeta as a scale invariant proportion
+
+![T2.02 Zeta as scale invariant proportion](https://osf.io/ts6qk/download =400x400)
+
+    \begin{table}
+    \centering
+    \caption{Table 2.02 Zeta as a scale invariant proportion}
+    \label{tab:zetascaleinvarprop}
+    \begin{tabular}{|c|c|c|c|c|c|} 
+    \toprule
+    s & value & \multicolumn{2}{c|}{$preserving\,\propto$ } & $ratio\,\propto2\pi$ &$ratio\propto\pi^2$\\ 
+    \hline
+     & $\zeta\left(s\right)$ & $\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{-1}}$  &$\frac{s!\pi}{x}$ & $\frac{2}{s!}\times\frac{s!\pi}{x}$ &$\frac{\pi^2}{\left(\pi^2\right)\left(\zeta\left(s\right)^{-1}\right)}$\\ 
+    \hline
+    \hline
+    1 & no value yet&  &  &  &\\ 
+    \hline
+    2 & \begin{tabular}[c]{@{}l@{}}$\frac{\pi^{2}}{6}$\\
+    \end{tabular}
+    & $\frac{2\pi}{\left(2\pi\right)\left(1.644934066848\right)^{-1}}$ &$\frac{2\pi}{3.819718634}$&$\frac{2\pi}{3.819718634}$ &$\frac{\pi^{2}}{6}$\\ 
+    \hline
+    3 & 1.202056903159& $\frac{6\pi}{\left(6\pi\right)\left(1.202056903159\right)^{-1}}$ & $\frac{6\pi}{15.68108454}$ & $\frac{2\pi}{5.22702818}$  & $\frac{\pi^{2}}{8.210596}$\\  
+    \hline
+    4 & \begin{tabular}[c]{@{}l@{}}$\frac{\pi^{4}}{90}$\\\end{tabular} & $\frac{24\pi}{\left(24\pi\right)\left(1.082323233711\right)^{-1}}$ & $\frac{24\pi}{69.66331438}$&$\frac{2\pi}{5.80276198}$ & $\frac{\pi^{2}}{9.118906528}$\\  
+    \hline
+    5 & $1.036927755143$ & $\frac{120\pi}{\left(120\pi\right)\left(1.036927755143\right)^{-1}}$ & $\frac{120\pi}{363.5654621}$ & $\frac{2\pi}{6.059424368}$  & $\frac{\pi^{2}}{9.518121539}$\\  
+    \hline
+    6 & \begin{tabular}[c]{@{}l@{}}$\frac{\pi^{6}}{945}$\\
+    \end{tabular}
+    & $\frac{720\pi}{\left(720\pi\right)\left(1.017343061984\right)^{-1}}$ & $\frac{720\pi}{2223.386383}$ & $\frac{2\pi}{6.176073286}$ & $\frac{\pi^{2}}{9.7013553231}$\\ 
+    \hline
+    $\infty$ & 
+    \begin{tabular}[c]{@{}l@{}}$\frac{\pi^{\infty}}{\infty}$\\
+    \end{tabular} & & & $\frac{2\pi}{2\pi}$ & $\frac{\pi^{2}}{\pi^{2}}$\\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+Chapter 03
+----------
+
+### Table 3.01 Primorial root 2 approach
+
+![T3.01 Primorial root 2 approach](https://osf.io/rde8g/download =300x300)
+
+    \begin{table}
+    \centering
+    \caption{Table 3.01 Primorial root 2 approach}
+    \label{tab:primorialroot2approach}
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \bottomrule
+    $P_n$ & $P_{n}\#$ & $\left(P_{n}\#\right)^{-1}$ & $P_{s}=\sum_{n=1}^{\infty}\left(\prod_{k=1}^{n-1}P_{k}\right)^{-1}$ & $\Delta P_{s}\rightarrow\left(\sqrt{2}\right)^{-1}$ & $\uparrow\downarrow$\\
+    \toprule
+    \toprule
+    2 & 2 & $\frac{1}{2}$ & $\frac{1}{2}$ & $\sqrt{2}$ & ub\\
+    3 & 6 & $\frac{1}{6}$ & $\frac{2}{3}$ & $\frac{\sqrt{2}^{-1}}{\frac{2}{3}}$ & lb\\
+    \midrule
+    5 & 30 & $\frac{1}{30}$ & $\frac{7}{10}$ & $\frac{\sqrt{2}^{-1}}{\frac{7}{10}}$ & ub\\
+    7 & 210 & $\frac{1}{210}$ & 0.7047619048 & 1.00332719 & lb\\
+    \midrule
+    11 & 2310 & $\frac{1}{2310}$ & 0.7051948052 & 1.002711274 & ub\\
+    13 & 30030 & $\frac{1}{30030}$ & 0.7052281052 & 1.002663927 & lb\\
+    \midrule
+    17 & 510510 & $\frac{1}{510510}$ & 0.7052300641 & 1.002661142 & ub\\
+    19 & 9699690 & $\frac{1}{9699690}$ & 0.7052301671 & 1.002660995 & lb\\
+    \midrule
+    23 & 223092870 & $\frac{1}{223092870}$ & 0.7052301716 & 1.002660989 & ub\\
+    29 & 6469693230 & $\frac{1}{6469693230}$ & 0.7052301718 & 1.002660989 & lb\\
+    \bottomrule
+    $\infty$ & & & $\sim\left(\sqrt{2}\right)^{-1}$ & $\sqrt{\looparrowright}=\sqrt{\frac{2\pi}{2.5^2}}$ & \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+### Table 3.02 Primorial lb/ub oscillation
+
+![T3.02 Primorial lb/ub oscillation](https://osf.io/xf83y/download =300x300)
+
+    \begin{table}
+    \centering
+    \caption{Table 3.02 Primorial lb/ub oscillation}
+    \label{tab:primoriallbuboscillation}
+    \begin{tabular}{|c|c|c|c|c|}
+    \toprule
+    $P_n$ & $\uparrow\downarrow$ & $P_{s}\, increment$ & $\frac{lb}{ub}$ & $\frac{lb_{\infty}}{lb_{n=1}}$\\
+    \midrule
+    \bottomrule
+    2 & ub & $\frac{1}{2}$ & & \\
+    3 & lb & $\frac{1}{6}$ & $\frac{1}{3}$ & 1\\
+    \midrule
+    5 & ub & $\frac{\frac{16}{3}}{10}=0.5333\dots$ & & \\
+    7 & lb & 0.1714285714 & 0.3214285714 & 0.964285714\\
+    \midrule
+    11 & ub & 0.5337662338 & & \\
+    13 & lb & 0.1714618715 & 0.3212302701 & 0.96369081\\
+    \midrule
+    17 & ub & 0.5337681926 & & \\
+    19 & lb & 0.1714619746 & 0.3212292844 & 0.963687853 \\
+    \midrule
+    23 & ub & 0.5337681971 & & \\
+    29 & lb & 0.1714619747 & 0.321229282 & 0.963687846\\
+    \midrule
+    $\infty$ & & $\sim\left(\sqrt{2}\right)^{-1}$ & $0.32=\frac{1}{3.125}$ & $P\Delta=\frac{24}{25}=0.96$\\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+
+Chapter 04
+----------
+
+### Table 4.01 Discrete triangular - Continues projection plane
+
+![T4.01 Discrete triangular - Continues projection plane](https://osf.io/3gjmu/download =400x400)
+
+    \begin{table}
+    \centering
+    \caption{Table 4.01 Discrete triangular - Continues projection plane}
+    \label{tab:discretetriangularcontinuesprojectionplane}
+    %reduce intercolumn spacing if needed
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+    \toprule
+    \multicolumn{6}{|c|}{ $A_{\triangle}Triangular\,plane$ } & & \multicolumn{2}{c|}{ $A_{\Box}Projection\,plane$ } & & $Proportional\,SA$\\
+    \bottomrule
+    \multicolumn{5}{|c|}{ $Discrete$ } & $Continue$ & \multirow{12}{*}{ } & \multicolumn{2}{c|}{ $\underset{n\rightarrow\infty}{lim}a=\frac{1}{2}\rightarrow r_{q}=\frac{0.5}{a}$ } & \multirow{12}{*}{ } & $r_{q}\rightarrow r_{x}$\\
+    \bottomrule
+    \multicolumn{3}{|c|}{ $\propto A_{\triangle}$ } & \multicolumn{2}{|c|}{ $\propto A_{\Box}$ } & $Sides\,ab$ & & $Closed$ & $Calculated$ & & $radius\, r_{x}\propto SA$\\
+    \bottomrule
+    $n$ & $T_n$ & $\frac{T_n}{n^2}$ & $\frac{T_n}{4n^2}$ & $A$ & $a=\sqrt{2\times A}$ & & $r_q=\sqrt{\frac{n}{n+1}}$ & $r_q=\frac{0.5}{a}$ & & $r_{x}=\frac{r_{q}}{\sqrt{P\Delta\left(\looparrowright^{-1}\right)}}$\\
+    \toprule
+    toprule
+    1 & 1 & 1 & $\frac{1}{4}$ & $\frac{1}{4}$ & $\sqrt{2}^{\thinspace-1}$ & & $\sqrt{\frac{1}{2}}$ & 0.7071067812 & & $\propto SA=\frac{2}{3}\pi^2$\\
+    2 & 3 & $\frac{3}{4}$ & $\frac{3}{16}$ & $\frac{3}{16}$ & $\sqrt{\left(2\frac{2}{3}\right)^{-1}}$ & & $\sqrt{\frac{2}{3}}$ & 0.8164965809 & & $\propto SA=\frac{8}{9}\pi^2$\\
+    3 & 6 & $\frac{6}{9}$ & $\frac{6}{36}$ & $\frac{1}{6}$ & $\sqrt{\frac{1}{3}}$ & & $\sqrt{\frac{3}{4}}$ & 0.8660254038 & & $\propto SA=\pi^2$\\
+    4 & 10 & $\frac{10}{16}$ & $\frac{10}{64}$ & $\frac{5}{32}$ & $\sqrt{\frac{10}{32}}$ & & $\sqrt{\frac{4}{5}}$ & 0.894427191 & & $\propto SA=\frac{16}{15}\pi^2$\\
+    5 & 15 & $\frac{15}{25}$ & $\frac{15}{100}$ & $\frac{3}{20}$ & $\sqrt{\frac{3}{10}}$ & & $\sqrt{\frac{5}{6}}$ & 0.9128709292 & & $\propto SA=\frac{10}{9}\pi^2$\\
+    6 & 21 & $\frac{21}{36}$ & $\frac{21}{144}$ & $\frac{7}{48}$ & 0.5400617249 & & $\sqrt{\frac{6}{7}}$ & 0.9258200998 & & $\propto SA=\frac{8}{7}\pi^2$\\
+    7 & 28 & $\frac{28}{49}$ & $\frac{28}{196}$ & $\frac{1}{7}$ & 0.5345224838 & & $\sqrt{\frac{7}{8}}$ & 0.9354143467 & & $\propto SA=\frac{7}{6}\pi^2$\\
+    8 & 36 & $\frac{36}{64}$ & $\frac{36}{256}$ & $\frac{9}{64}$ & 0.5303300859 & & $\sqrt{\frac{8}{9}}$ & 0.9428090416 & & $\propto SA=\frac{32}{27}\pi^2$\\
+    \bottomrule
+    $\infty$ & $\infty$ & & & $\frac{1}{8}$ & 0.5 & & 1 & 1 & & $\propto SA=\frac{4}{3}\pi^2$\\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+
+### Table 4.02 Projection plane range for all s
+
+![T4.02 Projection plane range for all s](https://osf.io/hd9fk/download =400x400)
+
+    \begin{table}
+    \centering
+    \caption{Table 4.02 Projection plane range for all s}
+    \label{tab:projectionplanerangeforalls}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \toprule
+    $s$ & $value$ & $\frac{\pi^2}{\left(\pi^2\right)\left(\zeta\left(s\right)^{-1}\right)}$ & $a=\sqrt{2A}$ & $r_q=\frac{0.5}{a}$ & $r_{x}=\frac{r_{q}}{\sqrt{P\Delta\left(\looparrowright^{-1}\right)}}$ & $SA\propto\pi^2$\\
+    \toprule
+    \bottomrule
+    \multirow{2}{*}{ 1 } & \multirow{2}{*}{ $\frac{\pi^{2}}{4}$ } & \multirow{2}{*}{ $\frac{\pi^{2}}{4}$ } & $\sqrt{2\times\frac{1}{4}}$ & \multirow{2}{*}{ $\sqrt{2}^{-1}$ } & $\sqrt{\frac{2\pi\times\left(P\Delta\left(\looparrowright^{-1}\right)\right)^{-1}}{4\pi}}$ & \multirow{2}{*}{ $SA\propto\frac{6}{9}\pi^2$ }\\
+    & & & $=0.7071067812$ & & $=0.7236012546$ & \\
+    \bottomrule
+    \multirow{2}{*}{ 2 } & \multirow{2}{*}{ $\frac{\pi^{2}}{6}$ } & \multirow{2}{*}{ $\frac{\pi^{2}}{6}$ } & $\sqrt{2\times\frac{1}{6}}$ & \multirow{2}{*}{ $\sqrt{\frac{3}{4}}$ } & $\sqrt{\frac{\pi^{2}}{4\pi}}$ & \multirow{2}{*}{ $SA\propto\pi^2$ }\\
+    & & & $=0.5773502692$ & & $=0.8862269255$ & \\
+    \bottomrule
+    \multirow{2}{*}{ 3 } & \multirow{2}{*}{ $\frac{\pi^{2}}{8.210596}$ } & \multirow{2}{*}{ $\frac{\pi^{2}}{8.210596}$ } & $\sqrt{2\times\frac{1}{8.210596}}$ & \multirow{2}{*}{ 1.013076749 } & \multirow{2}{*}{} & \multirow{2}{*}{}\\
+    & & & $=0.4935460224$ & & & \\
+    \bottomrule
+    \multirow{2}{*}{ 4 } & \multirow{2}{*}{ $\frac{\pi^{4}}{90}$ } & \multirow{2}{*}{ $\frac{\pi^{2}}{9.118906528}$ } & $\sqrt{2\times\frac{1}{9.118906528}}$ & \multirow{2}{*}{ 1.067643851 } & \multirow{2}{*}{} & \multirow{2}{*}{}\\
+    & & & $=0.4683209821$ & & & \\
+    \bottomrule
+    \multirow{2}{*}{ 5 } & \multirow{2}{*}{ $\frac{\pi^{2}}{9.518121541}$ } & \multirow{2}{*}{ $\frac{\pi^{2}}{9.518121541}$ } & $\sqrt{2\times\frac{1}{9.518121541}}$ & \multirow{2}{*}{ 1.090763582 } & \multirow{2}{*}{} & \multirow{2}{*}{}\\
+    & & & $=0.4583944753$ & & & \\
+    \bottomrule
+    \multirow{2}{*}{ 6 } & \multirow{2}{*}{ $\frac{\pi^{6}}{945}$ } & \multirow{2}{*}{ $\frac{\pi^{2}}{9.701359231}$ } & $\sqrt{2\times\frac{1}{9.701359231}}$ & \multirow{2}{*}{ 1.101212924 } & \multirow{2}{*}{} & \multirow{2}{*}{}\\
+    & & & $=0.4540447984$ & & & \\
+    \bottomrule
+    \multirow{2}{*}{ $\infty$ } & \multirow{2}{*}{ $\frac{\pi^{\infty}}{\infty}$ } & \multirow{2}{*}{ $\frac{\pi^2}{\pi^2}$ } & $\sqrt{2\times\frac{1}{\pi^{2}}}=\frac{1}{\pi}\sqrt{2}$ & \multirow{2}{*}{ 1.110720734 } & $\sqrt{\frac{\frac{\pi^{2}}{6}\times\pi^{2}}{4\pi}}$ & \multirow{2}{*}{ $SA\propto\frac{\pi^2}{6}\times\pi^2$ }\\
+    & & & $=0.4501581581$ & & $=1.136630193$ & \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+### Table 4.03 The base of Planck's constant
+
+![T4.03 The base of Plancks constant](https://osf.io/ktxs2/download =200x200)
+
+    \begin{table}
+    \centering
+    \caption{Table 4.03 The base of Planck's constant}
+    \label{tab:thebaseofplancksconstant}
+    \begin{tabular}{|c|c|c|}
+    \toprule
+    $SA$ & $V$ & $$\\
+    \toprule
+    \toprule
+    $4\pi r^2$ & $\frac{4}{3}\pi r^2$ & $/ \pi$\\
+    $4r^2$ & $\frac{4}{3}r^3$ & $/ 4$\\
+    $r^2$ & $\frac{1}{3}r^3$ & $/ r^2$\\
+    $1$ & $\frac{1}{3}r^1$ & $x^2$\\
+    \bottomrule
+    $SA=1$ & $V=\frac{1}{9}$ & $SA\propto\left(\frac{1}{8}+\frac{1}{24}\right)\propto V$\\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+
+### Table 4.04 Zeta, the SA/Volume equilibrium
+
+![T4.04 Zeta, the SA/Volume equilibrium](https://osf.io/mvdcq/download =400x400)
+
+    \begin{table}
+    \centering
+    \caption{Table 4.04 Zeta, the SA/Volume equilibrium}
+    \label{tab:zetathesavolumeequilibrium}
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \toprule
+     & \multicolumn{2}{c|}{ $\frac{1}{4}\propto A_{\Box}$ } & \multicolumn{2}{c|}{ $\frac{6}{9}\propto A_{\triangle}$ } & $ratio\propto\zeta\left(2\right)$\\
+     \multirow{2}{*}{ $s$ } & $\#\Box\,cells $ & $\#\blacksquare\, cells$ & $\#\triangle\thinspace cells$ & $\#\blacktriangle\, cells$ & \multirow{2}{*}{ $\frac{\#\Box}{\#\blacktriangle}\rightarrow\frac{SA}{V}$ }\\
+     & $A_{\Box}$ & $A_{\blacksquare}$ & $A_{\triangle}$ & $A_{\blacktriangle}$ & \\
+    \bottomrule
+    \bottomrule
+    $0$ & $6^{0}=1$ & $\frac{3^{0}}{6^{0}}=1$ & $3^{0}=1$ & $\frac{6}{9}\times3^{0}=\frac{6}{9}$ & $\frac{6^{0}}{\frac{6}{9}}=\frac{9}{6}$\\
+    $1$ & $6^{1}=6$ & $\frac{3^{1}}{6^{1}}=\frac{1}{2}$ & $3^{1}=3$ & $\frac{6}{9}\times3^{1}=2$ & $\frac{6^{1}}{2}=3$\\
+    $2^{\bigstar}$ & $6^{2}=36$ & $\frac{3^{2}}{6^{2}}=\frac{1}{4}$ & $3^{2}=9$ & $\frac{6}{9}\times3^{2}=6^{\,\bigstar}$ & $\frac{6^{2}}{6}=6^{\thinspace\bigstar}$\\
+    $3$ & $6^{3}=216$ & $\frac{3^{3}}{6^{3}}=\frac{1}{8}$ & $3^{3}=27$ & $\frac{6}{9}\times3^{3}=18$ & $\frac{6^{3}}{18}=12$\\
+    $4$ & $6^{4}=1296$ & $\frac{3^{4}}{6^{4}}=\frac{1}{16}$ & $3^{4}=81$ & $\frac{6}{9}\times3^{4}=54$ & $\frac{6^{4}}{54}=24$\\
+    $5$ & $6^{5}=7776$ & $\frac{3^{5}}{6^{5}}=\frac{1}{32}$ & $3^{5}=243$ & $\frac{6}{9}\times3^{5}=162$ & $\frac{6^{5}}{162}=48$\\
+    \bottomrule
+    \end{tabular}	
+    \end{table}
+
+Chapter 05
+----------
+### Table 5.01 Hexagonal equilibrium
+
+![T5.01 Hexagonal equilibrium](https://osf.io/gwaz4/download =400x400)
+
+
+    \begin{table}
+    \centering
+    \caption{Table 5.01 Hexagonal equilibrium}
+    \label{tab:hexagonalequilibrium}
+    %reduce intercolumn spacing
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \toprule
+    \multirow{4}{*}{ $n$ } & \multirow{4}{*}{ $\left(\sqrt{2}\right)^{-n}$ } & $a$ & $\left|b\right|$ & $c$ & $c_{\hbar}$ & $360\text{°}$ & $\pi\,rad$\\
+    \bottomrule
+     & & $\left(\sqrt{2}\right)^{-n}$ & \multirow{3}{*}{ $\sqrt{\frac{3}{2^{n}}}$ } & $\sqrt{a^{2}+b^{2}}$ & $\sqrt{a^{2}+c^{2}}$ & \multirow{3}{*}{ $\left(\frac{b_{n}}{b_{2}}\right)\cdot60\text{°}$ } & \multirow{3}{*}{ $\left(\frac{b_{n}}{b_{2}}\right)\cdot\left|\sqrt{\frac{3}{4}}\right|$ }\\
+     & & \multirow{2}{*}{ $\rightarrow\sqrt{\frac{1}{2^{n}}}$ } & & $\sqrt{\frac{1}{2^{n}}+\frac{3}{2^{n}}}$ & \multirow{2}{*}{ $a\times\sqrt{5}$ } & & \\
+     & & & & $\rightarrow a_{n-2}$ & & & \\
+     \bottomrule
+     \bottomrule
+     $0$ & $1$ & $1$ & $\sqrt{\frac{3}{1}}$ & $\sqrt{\frac{4}{1}}$ & $1\cdot\sqrt{5}$ & $120\text{°}$ & $\frac{2\pi}{3}$\\
+     $1$ & $0.70710...$ & $\sqrt{\frac{1}{2}}$ & $\sqrt{\frac{3}{2}}$ & $\sqrt{\frac{4}{2}}$ & $\sqrt{\frac{1}{2}}\cdot\sqrt{5}$ & $84.8528\text{°}$ & $\frac{2\pi}{6\times\sqrt{\frac{1}{2}}}$\\
+    $2^{\,\bigstar}$ & $0.5$ & $\sqrt{\frac{1}{4}}$ & $\sqrt{\frac{3}{4}}$ & $1$ & $\sqrt{\frac{1}{4}}\cdot\sqrt{5}$ & $60\text{°}$ & $\frac{2\pi}{6}^{\,\bigstar}$\\
+    $3$ & $0.35355...$ & $\sqrt{\frac{1}{8}}$ & $\sqrt{\frac{3}{8}}$ & $\sqrt{\frac{1}{2}}$ & $\sqrt{\frac{1}{8}}\cdot\sqrt{5}$ & $37.7612\text{°}$ & $\frac{2\pi}{12\times\sqrt{2}}$\\
+    $4$ & $0.25$ & $\sqrt{\frac{1}{16}}$ & $\sqrt{\frac{3}{16}}$ & $\sqrt{\frac{1}{4}}$ & $\sqrt{\frac{1}{16}}\cdot\sqrt{5}$ & $30\text{°}$ & $\frac{2\pi}{12}$\\
+    $5$ & $0.17678...$ & $\sqrt{\frac{1}{32}}$ & $\sqrt{\frac{3}{32}}$ & $\sqrt{\frac{1}{8}}$ & $\sqrt{\frac{1}{32}}\cdot\sqrt{5}$ & $21.2132\text{°}$ & $\frac{2\pi}{12\times\sqrt{2}}$\\
+    $6$ & $0.125$ & $\sqrt{\frac{1}{64}}$ & $\sqrt{\frac{3}{64}}$ & $\sqrt{\frac{1}{16}}$ & $\sqrt{\frac{1}{64}}\cdot\sqrt{5}$ & $15\text{°}$ & $\frac{2\pi}{24}$\\
+    $7$ & $0.08839...$ & $\sqrt{\frac{1}{128}}$ & $\sqrt{\frac{3}{128}}$ & $\sqrt{\frac{1}{32}}$ & $\sqrt{\frac{1}{128}}\cdot\sqrt{5}$ & $10.6066\text{°}$ & $\frac{2\pi}{24\times\sqrt{2}}$\\
+    $8$ & $0.0625$ & $\sqrt{\frac{1}{256}}$ & $\sqrt{\frac{3}{256}}$ & $\sqrt{\frac{1}{64}}$ & $\sqrt{\frac{1}{256}}\cdot\sqrt{5}$ & $7.5\text{°}$ & $\frac{2\pi}{48}$\\
+    $9$ & $0.04419...$ & $\sqrt{\frac{1}{512}}$ & $\sqrt{\frac{3}{512}}$ & $\sqrt{\frac{1}{128}}$ & $\sqrt{\frac{1}{512}}\cdot\sqrt{5}$ & $5.3033\text{°}$ & $\frac{2\pi}{48\times\sqrt{2}}$\\
+    $10$ & $0.03125$ & $\sqrt{\frac{1}{1024}}$ & $\sqrt{\frac{3}{1024}}$ & $\sqrt{\frac{1}{256}}$ & $\sqrt{\frac{1}{1024}}\cdot\sqrt{5}$ & $3.75\text{°}$ & $\frac{2\pi}{96}$\\
+    $11$ & $0.0221...$ & $\sqrt{\frac{1}{2048}}$ & $\sqrt{\frac{3}{2048}}$ & $\sqrt{\frac{1}{512}}$ & $\sqrt{\frac{1}{2048}}\cdot\sqrt{5}$ & $2.6517\text{°}$ & $\frac{2\pi}{96\times\sqrt{2}}$\\
+    $12$ & $0.015625$ & $\sqrt{\frac{1}{4096}}$ & $\sqrt{\frac{3}{4096}}$ & $\sqrt{\frac{1}{1024}}$ & $\sqrt{\frac{1}{4096}}\cdot\sqrt{5}$ & $1.875\text{°}$ & $\frac{2\pi}{192}$\\
+    \bottomrule
+     & \multicolumn{5}{c|}{ $\bigstar\rightarrow\left|b\right|=\sqrt{\frac{3}{4}}=\sin\left(\frac{\pi}{3}\right)\approx0.8660254038$ } & \multicolumn{2}{c|}{ $\bigstar\rightarrow\left(P\triangle\right)^{-1}\looparrowright$ }\\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+Chapter 06
+----------
+
+### Table 6.01 4/5 proportion Spherical vs Cartesian projection (exc. $\looparrowright$)
+
+![T6.01 4-5 proportion Spherical vs Cartesian projection](https://osf.io/ehmbv/download =400x400)
+
+    \begin{table}
+    \centering
+    \caption{Table 6.01 4/5 proportion Spherical vs Cartesian projection (exc. $\looparrowright$)}
+    \label{45proportionsphericalvscartesianprojection}
+    %reduce intercolumn spacing if needed
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+    \toprule
+     & \multicolumn{2}{c|}{ $Cartesian$ } & \multirow{14}{*}{ } & \multicolumn{3}{c|}{ $Spherical$ } & \multirow{14}{*}{ } & $\bigtriangleup\frac{Cartesian}{Spherical}$\\
+     & \multicolumn{2}{c|}{ $\sqrt{2}^{\,-n}$ } & & \multicolumn{3}{c|}{ $\left(\frac{4}{5}\sqrt{2}^{\thinspace-1}^{\,n}\right)\leftrightarrow\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\thinspace-1}\leftrightarrow2^{5\left(\frac{n}{2}\right)}\times10^{-n}$ } & & \\
+    $n$ & $Calculated$ & $Closed$ & & $Calculated$ & $Closed$ & $Closed$ & &  \\
+    \bottomrule
+    \bottomrule
+    $0$ & $1$ & $\sqrt{2}^{\,-0}$ & & $1$ & $\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\,0}$ & $2^{0}\times10^{\,0}$ & & $1$ \\
+    $1$ & $0.70710...$ & $\sqrt{2}^{\,-1}$ & & $0.5656854249...$ & $\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\,-1}$ & $2^{2.5}\times10^{-1}$ & & $\left(1\frac{1}{4}\right)^{1}$\\
+    $2^{\,\bigstar}$ & $0.5$ & $\sqrt{2}^{\,-2}$ & & $0.32$ & $\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\,-2}$ & $2^{5}\times10^{-2}$ & & $\left(1\frac{1}{4}\right)^{2}$\\
+    $3$ & $0.35355...$ & $\sqrt{2}^{\,-3}$ & & $0.181019336...$ & $\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\,-3}$ & $2^{7.5}\times10^{-3}$ & & $\left(1\frac{1}{4}\right)^{3}$\\
+    $4$ & $0.25$ & $\sqrt{2}^{\,-4}$ & & $0.1024$ & $\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\,-4}$ & $2^{10}\times10^{-4}$ & & $\left(1\frac{1}{4}\right)^{4}$\\
+    $5$ & $0.17678...$ & $\sqrt{2}^{\,-5}$ & & $0.057926187...$ & $\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\,-5}$ & $2^{12.5}\times10^{-5}$ & & $\left(1\frac{1}{4}\right)^{5}$\\
+    $6$ & $0.125$ & $\sqrt{2}^{\,-6}$ & & $0.032768$ & $\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\,-6}$ & $2^{15}\times10^{-6}$ & & $\left(1\frac{1}{4}\right)^{6}$\\
+    $7$ & $0.08839...$ & $\sqrt{2}^{\,-7}$ & & $0.01853638...$ & $\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\,-7}$ & $2^{17.5}\times10^{-7}$ & & $\left(1\frac{1}{4}\right)^{7}$\\
+    $8$ & $0.0625$ & $\sqrt{2}^{\,-8}$ & & $0.01048576$ & $\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\,-8}$ & $2^{20}\times10^{-8}$ & & $\left(1\frac{1}{4}\right)^{8}$\\
+    $9$ & $0.04419...$ & $\sqrt{2}^{\,-9}$ & & $0.0059316416...$ & $\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\,-9}$ & $2^{22.5}\times10^{-9}$ & & $\left(1\frac{1}{4}\right)^{9}$\\
+    $10$ & $0.03125$ & $\sqrt{2}^{\,-10}$ & & $0.0033554432$ & $\sqrt{\pi\left(\looparrowright\right)^{-1}}^{\,-10}$ & $2^{25}\times10^{-10}$ & & $\left(1\frac{1}{4}\right)^{10}$\\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+Chapter 07
+----------
+
+### Table 7.01 QGF standard chord and deviation
+
+![T7.01 QGF standard chord and deviation](https://osf.io/2dnmq/download =300x300)
+
+
+    \begin{table}
+    \centering
+    \caption{Table 7.01 QGF standard chord and deviation}
+    \label{tab:qgfstandardchordanddeviation}
+    %reduce intercolumn spacing if needed
+    %\setlength{\tabcolsep}{4pt}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \toprule
+    $n$ & $c_{n}=\sin\left(\frac{2\pi}{2\times n}\right)$ & $closed$ & $cl_{n}=2n\times c_{n}$ & \multicolumn{2}{c|}{ $\Delta\frac{cl_{n}}{cl_{6}}$ } & \multirow{2}{*}{ }\\
+    \bottomrule
+    \bottomrule
+    $1$ & $0$ & $0$ & $0$ & $0$ & $0$ & \\
+    $2$ & $1$ & $$ & $4$ & $0.666666\dots$ & $\frac{2}{3}$ & \multirow{9}{*}{ $\Delta\frac{2}{\pi}$ }\\
+    $3$ & $0.8660254038^{\,\bigstar}$ & $\sqrt{\frac{3}{4}}$ & $5.196152423^{\,\bigstar}$ & $0.8660254038^{\,\bigstar}$ & $\propto\zeta\left(2\right)$ & \\
+    $4$ & $0.7071067812$ & $\sqrt{2}^{\,-1}$ & $5.656854249$ & $0.9428090415$ & $\frac{2}{3}\sqrt{2}$ & \\
+    $5$ & $0.5877852532$ & $$ & $5.877852523$ & $0.9796429872$ & $$ & \\
+    $6$ & $0.5$ & $$ & $6^{\,\bigstar}$ & $1$ & $\sin\left(\frac{\pi}{2}\right)$ & \\
+    $7$ & $0.4338837391$ & $$ & $6.074372348$ & $1.012395391$ & $$ & \\
+    $8$ & $0.3826834324$ & $$ & $6.122934918$ & $1.040481718$ & $$ & \\
+    $16$ & $0.195090322$ & $$ & $6.242890305$ & $1.047197551$ & $$ & \\
+    \bottomrule
+    $\infty$ & $$ & $$ & $2\pi$ & $\frac{\pi}{3}\rightarrow\left(\Delta\frac{2}{\pi}\right)\times\zeta\left(2\right)$ & $P_{\ast}$ & \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+### Table 7.02 Chord length and relative density
+
+![T7.02 Chord length and relative density](https://osf.io/y2hxc/download =300x300)
+
+
+    \begin{table}
+    \centering
+    \caption{Table 7.02 Chord length and relative density}
+    \label{tab:chordlengthandrelativedensity}
+    %reduce intercolumn spacing if needed
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{|c|l|l|c|c|}
+    \toprule
+    $n$ & $x_{n}=2n\times sin\left(\frac{2\pi}{2n}\right)$ & $\rho_{n}=\frac{x_{n}}{x_{6}}$ & $\frac{1}{6}n$ & $surplus$\\
+    \bottomrule
+    \bottomrule
+    $6$ & $6$ & $1=\frac{6}{6}=\frac{24}{24}$ & $1=\frac{6}{6}$ & $0$\\
+    $7$ & $6.0743723476$ & $1.012395391$ & $1\frac{1}{6}=\frac{7}{6}$ & $1$\\
+    $8$ & $6.122934918$ & $1.020489153$ & $1\frac{2}{6}=\frac{8}{6}$ & $2$\\
+    $9$ & $6.15636258$ & $1.02606043$ & $1\frac{3}{6}=\frac{9}{6}$ & $3$\\
+    $10$ & $6.180339887$ & $1.030056648$ & $1\frac{4}{6}=\frac{10}{6}$ & $4$\\
+    $11$ & $6.198116251$ & $1.033019375$ & $1\frac{5}{6}=\frac{11}{6}$ & $5$\\
+    $12$ & $6.211657082$ & $1.03527618$ & $2=\frac{12}{6}$ & $6$\\
+    $13$ & $6.2222072771$ & $1.037034545$ & $2\frac{1}{6}=\frac{13}{6}$ & $7$\\
+    $14$ & $6.230586151$ & $1.038431025$ & $2\frac{2}{6}=\frac{14}{6}$ & $8$\\
+    $15$ & $6.237350725$ & $1.039558454$ & $2\frac{3}{6}=\frac{15}{6}$ & $9$\\
+    $16$ & $6.242890305$ & $1.040481717$ & $2\frac{4}{6}=\frac{16}{6}$ & $10$\\
+    \bottomrule
+    $\infty$ & $2\pi$ & $\frac{\pi}{3}$ & $\frac{1}{6}$ & $\mathbb{N}$\\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+### Table 7.03 Non trivial zero to Unity chord
+
+![T7.03 Non trivial zero to Unity chord](https://osf.io/x3dbk/download =300x300)
+
+
+    \begin{table}
+    \centering
+    \caption{Table 7.03 Non trivial zero to Unity chord}
+    \label{tab:nontrivialzerotounitychord}
+    %reduce intercolumn spacing if needed
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{|c|c|l|l|c|l|c|l|}
+    \toprule
+     & \multicolumn{3}{c|}{ $Complex$ } & \multirow{28}{*}{ } & \multicolumn{3}{c|}{ $C_{unity} \,Hexagonal\,unity\,chords$ }\\
+    \multirow{2}{*}{ $n$ } & $a$ & $bi$ & $c\,(modulus)$ & & $d$ & \multirow{2}{*}{ $Level$ } & $C_{box}$\\
+     & $Real$ & $Zero\,(imaginary)$ & $\left|a\right|=\sqrt{a^{2}+bi^{2}}$ & & $\sqrt[4]{\left|a\right|}$ & & $x=\frac{\sqrt[4]{\left|a\right|}}{\left\lfloor \sqrt[4]{\left|a\right|}\right\rfloor }$\\
+    \bottomrule
+    \bottomrule
+    $1$ & $0.5$ & $14.13472514$ & $14.14356585$ & & $1.939276475$ & $0$ & $1.939276475$\\
+    \midrule
+    $2$ & $0.5$ & $21.02203964$ & $21.02798494$ & & $2.141407968$ & $1$ & $1.070703984$\\
+    $3$ & $0.5$ & $25.01085758$ & $25.01585491$ & & $2.23642242$ & $1$ & $1.11821121$\\
+    $4$ & $0.5$ & $30.42487613$ & $30.42898433$ & & $2.348669263$ & $1$ & $1.174334631$\\
+    $5$ & $0.5$ & $32.93506159$ & $32.93885672$ & & $2.395670749 $ & $1$ & $1.197835375$\\
+    $6$ & $0.5$ & $37.58617816$ & $37.5895037 $ & & $2.476091264$ & $1$ & $1.238045632$\\
+    $7$ & $0.5$ & $40.91871901$ & $40.92177373$ & & $2.529231677$ & $1$ & $1.264615838$\\
+    $8$ & $0.5$ & $43.32707328$ & $43.32995822$ & & $2.565647973$ & $1$ & $1.282823987$\\
+    $9$ & $0.5$ & $48.00515088$ & $48.0077547 $ & & $2.632254329$ & $1$ & $1.316127165$\\
+    $10$ & $0.5$ & $49.77383248$ & $ 49.77634377$ & & $2.656169272$ & $1$ & $1.328084636$\\
+    $11$ & $0.5$ & $52.97032148$ & $52.97268124 $ & & $2.697820118$ & $1$ & $1.348910059$\\
+    $12$ & $0.5$ & $56.4462477$ & $56.44846215$ & & $2.741025202 $ & $1$ & $1.370512601$\\
+    $13$ & $0.5$ & $59.347044$ & $59.34915022$ & & $2.775579213 $ & $1$ & $1.387789606$\\
+    $14$ & $0.5$ & $60.83177852$ & $60.83383334$ & & $2.792777236$ & $1$ & $1.396388618$\\
+    $15$ & $0.5$ & $65.11254405$ & $65.11446377$ & & $2.840660727 $ & $1$ & $1.420330364$\\
+    $16$ & $0.5$ & $67.07981053$ & $67.08167396$ & & $2.861877056 $ & $1$ & $1.430938528$\\
+    $17$ & $0.5$ & $69.54640171$ & $69.54819905$ & & $ 2.887828992$ & $1$ & $1.443914496$\\
+    $18$ & $0.5$ & $72.06715767$ & $72.06889215 $ & & $2.913647184 $ & $1$ & $1.456823592$\\
+    $19$ & $0.5$ & $75.7046907$ & $75.70634183$ & & $2.949735435$ & $1$ & $1.474867717$\\
+    $20$ & $0.5$ & $77.14484007$ & $77.14646038$ & & $2.963664248$ & $1$ & $1.481832124$\\
+    $21$ & $0.5$ & $79.33737502$ & $79.33895055$ & & $2.984500204$ & $1$ & $1.492250102$\\
+    \midrule
+    $22$ & $0.5$ & $82.91038085$ & $82.91188849 $ & & $3.017548102$ & $2$ & $1.005849367$\\
+    $23$ & $0.5$ & $84.73549298$ & $84.73696815 $ & & $3.03401854$ & $2$ & $1.011339513$\\
+    $24$ & $0.5$ & $87.42527461$ & $87.42670439$ & & $3.057813734$ & $2$ & $1.019271245$\\
+    $25$ & $0.5$ & $88.80911121$ & $88.81051871 $ & & $3.069842552$ & $2$ & $1.023280851$\\
+    \bottomrule
+    \end{tabular}	
+    \end{table}
+
+### Tale 7.04 Non trivial zeros - Levels
+
+![T7.04 Non trivial zeros-Levels](https://osf.io/t6uda/download =300x300)
+
+
+    \begin{table}
+    \centering
+    \caption{Tale 7.04 Non trivial zeros - Levels}
+    \label{tab:nontrivialzerolevels}
+    %reduce intercolumn spacing if needed
+    %\setlength{\tabcolsep}{4pt}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \toprule
+     & \multicolumn{3}{c|}{ $\zeta\,zero\,index$ } & $z_{max}\in T_{n}$  & \multicolumn{2}{c|}{ $z_{n}\propto chord$ }\\
+     & $Level$ & $z_{min}$ & $z_{max}$ & $\Delta z$ & $n\in\mathbb{N}$ & $z_{min}$ & $z_{max}$\\
+    \toprule
+    \toprule
+    $0$ & $0$ & $1$ & $1$ & $1$ & $0$ & $1.939276475$\\
+    $1$ & $1$ & $21$ & $20$ & $6$ & $1.070703984$ & $1.492250102$\\
+    $2$ & $22$ & $111$ & $90$ & $14.41$ & $1.005849367$ & $1.332429741$\\
+    $3$ & $112$ & $359$ & $258$ & $26.3$ & $1.000372059$ & $1.24963489$\\
+    $4$ & $360$ & $894$ & $535$ & $41.79$ & $1.000407544$ & $1.199853089$\\
+    $5$ & $895$ & $-$ & $-$ & $-$ & $1.000154518$ & $-$\\
+    \midrule
+    $\infty$ & $$ & $$ & $$ & $\mathbb{N}$ & $1$ & $1$\\
+    \bottomrule
+    \end{tabular}	
+    \end{table}
+
+### Table 7.05 Level 1 coordinate listing
+
+![T7.05 Level 1 coordinate listing](https://osf.io/67ej4/download =300x300)
+
+
+    \begin{table}
+    \centering
+    \caption{Table 7.05 Level 1 coordinate listing}
+    \label{tab:level1coordinatelisting}
+    %reduce intercolumn spacing if needed
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \toprule
+    \multirow{2}{*}{ $n$ } & $C_{unity}$ & $ngon$ & $chrd$ & $cos\left(\frac{idx}{ngon}2\pi\right)$ & $cl\times x$ & $sin\left(\frac{idx}{ngon}2\pi\right)$ & $cl\times y$\\
+     & $cl=\frac{\sqrt[4]{\left|a\right|}}{\left\lfloor \sqrt[4]{\left|a\right|}\right\rfloor }$ & $idx$ & $idx$ & $x$ & $x^{\,\prime}$ & $y$ & $y^{\,\prime}$\\
+    \toprule
+    \toprule
+    $2$ & $1.070703984$ & $2$ & $1$ & $-1$ & $-1.070703984$ & $0$ & $0$\\
+    $3$ & $1.11821121$ & $2$ & $2$ & $1$ & $1.11821121$ & $0$ & $0$\\
+    \midrule
+    $4$ & $1.174334631$ & $3$ & $1$ & $-0.5$ & $-0.5871673155$ & $\sqrt{\frac{3}{4}}$ & $1.017003632$\\
+    $5$ & $1.197835375$ & $3$ & $2$ & $-0.5$ & $-0.5989176875$ & $-\sqrt{\frac{3}{4}}$ & $-1.037355864$\\
+    $6$ & $1.238045632$ & $3$ & $3$ & $1$ & $1.238045632$ & $0$ & $0$\\
+    \midrule
+    $7$ & $1.264615838$ & $4$ & $1$ & $0$ & $0$ & $1$ & $1.264615838$\\
+    $8$ & $1.282823987$ & $4$ & $2$ & $-1$ & $-1.282823987$ & $0$ & $0$\\
+    $9$ & $1.316127165$ & $4$ & $3$ & $0$ & $0$ & $-1$ & $-1.316127165$\\
+    $10$ & $1.328084636$ & $4$ & $4$ & $1$ & $1.328084636$ & $0$ & $0$\\
+    \midrule
+    $11$ & $1.348910059$ & $5$ & $1$ & $0.3090169944$ & $0.4168361321$ & $0.9510565163$ & $1.282889702$\\
+    $12$ & $1.370512601$ & $5$ & $2$ & $-0.8090169944$ & $-1.108767985$ & $0.58778522523$ & $0.855670579$\\
+    $13$ & $1.387789606$ & $5$ & $3$ & $-0.8090169944$ & $-1.122745376$ & $-0.58778522523$ & $-0.8157222261$\\
+    $14$ & $1.396388618$ & $5$ & $4$ & $0.3090169944$ & $0.4315078137$ & $-0.9510565163$ & $-1.328044494$\\
+    $15$ & $1.420330364$ & $5$ & $5$ & $1$ & $1.420330364$ & $0$ & $0$\\
+    \midrule
+    $16$ & $1.430938528$ & $6$ & $1$ & $0.5$ & $0.715469264$ & $\sqrt{\frac{3}{4}}$ & $1.239229117$\\
+    $17$ & $1.443914496$ & $6$ & $2$ & $-0.5$ & $-0.721957248$ & $\sqrt{\frac{3}{4}}$ & $1.250466634$\\
+    $18$ & $1.456823592$ & $6$ & $3$ & $-1$ & $-1.456823592$ & $0$ & $0$\\
+    $19$ & $1.474867717$ & $6$ & $4$ & $-0.5$ & $-0.7374338585$ & $-\sqrt{\frac{3}{4}}$ & $-1.27727291$\\
+    $20$ & $1.481832124$ & $6$ & $5$ & $0.5$ & $0.740916062$ & $-\sqrt{\frac{3}{4}} $ & $-1.283304264$\\
+    $21$ & $1.492250102$ & $6$ & $6$ & $1$ & $1.492250102$ & $0$ & $0$\\
+    \bottomrule
+    \end{tabular}	
+    \end{table}
+
+Chapter 08
+----------
+
+### Table 8.01 Spectrum orthogonal diagonal full cycle
+
+![T8.01 Spectrum orthogonal diagonal full cycle](https://osf.io/tmzsf/download =300x300)
+
+    \begin{table}
+    \centering
+    \caption{Table 8.01 Spectrum orthogonal diagonal full cycle}
+    \label{tab:spectrumorthogonaldiagonalfullcycle}
+    %reduce intercolumn spacing if needed
+    %\setlength{\tabcolsep}{4pt}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+    \toprule
+    $$ & $U_{arc}=\angle7.2\text{°}$ & \multicolumn{7}{c|}{ $Spectrum\,50\, periods\,for\,q$ }\\
+    \midrule
+    $q$ & $q\left(n\angle7.2\text{°}\right)$ & $n$ & $1$ & $2$ & $3$ & $4$ & $5$ & $\dots,50$\\
+    \toprule
+    \toprule
+    $1$ & $7.2\text{°}$ & $1$ & $7.2\text{°}$ & $14.4\text{°}$ & $21.6\text{°}$ & $28.8\text{°}$ & $36\text{°}$ & $\dots$\\
+    $1$ & $14.4\text{°}$ & $2$ & $14.4\text{°}$ & $28.8\text{°}$ & $43.2\text{°}$ & $57.6\text{°}$ & $72\text{°}$ & $\dots$\\
+    $1$ & $21.6\text{°}$ & $3$ & $21.6\text{°}$ & $43.2\text{°}$ & $64.8\text{°}$ & $86.4\text{°}$ & $108\text{°}$ & $\dots$\\
+    $1$ & $28.8\text{°}$ & $4$ & $28.8\text{°}$ & $57.6\text{°}$ & $86.4\text{°}$ & $115.2\text{°}$ & $144\text{°}$ & $\dots$\\
+    $1$ & $36\text{°}$ & $5$ & $36\text{°}$ & $72\text{°}$ & $108\text{°}$ & $144\text{°}$ & $180\text{°}$ & $\dots$\\
+    $1$ & $43.2\text{°}$ & $6$ & $43.2\text{°}$ & $86.4\text{°}$ & $129.6\text{°}$ & $172.8\text{°}$ & $216\text{°}$ & $\dots$\\
+    $1$ & $50.4\text{°}$ & $7$ & $50.4\text{°}$ & $100.8\text{°}$ & $151.2\text{°}$ & $201.6\text{°}$ & $252\text{°}$ & $\dots$\\
+    $1$ & $57.6\text{°}$ & $8$ & $57.6\text{°}$ & $115.2\text{°}$ & $172.8\text{°}$ & $230.4\text{°}$ & $288\text{°}$ & $\dots$\\
+    $1$ & $64.8\text{°}$ & $9$ & $64.8\text{°}$ & $129.6\text{°}$ & $194.4\text{°}$ & $259.2\text{°}$ & $324\text{°}$ & $\dots$\\
+    $1$ & $72\text{°}$ & $10$ & $72\text{°}$ & $144\text{°}$ & $216\text{°}$ & $288\text{°}$ & $0\text{°}$ & $\dots$\\
+    \midrule
+    $\dots$ & $\dots$ & $\dots,50$ & $\dots$ & $\dots$ & $\dots$ & $\dots$ & $\dots$ & $\dots,50$\\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+### LaTex closing
+
+    \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

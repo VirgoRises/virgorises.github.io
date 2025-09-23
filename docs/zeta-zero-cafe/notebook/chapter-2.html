@@ -2,14 +2,377 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Chapter 2 — The spatial aspect of zeta</title>
+<meta name="description" content="Mirror page for Chapter 2 — The spatial aspect of zeta." />
 <link rel="stylesheet" href="/notebook/css/notebook.css" />
-<script>
-  MathJax = { tex: {inlineMath: [['$','$'],['\\(','\\)']]}, svg: {fontCache:'global'} };
-</script>
+<script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body><header><div class="wrap"><h1>Chapter 2 — The spatial aspect of zeta</h1>
-<nav><a href="index.html">Notebook Home</a></nav></div></header>
-<main class="wrap"><div class="card"><p>Content placeholder for The spatial aspect of zeta.</p></div></main>
+<nav><a href="/notebook/index.html">Notebook Home</a> <a href="/zeta-zero-cafe/">Zeta Zero Café</a></nav>
+</div></header>
+<main class="wrap">
+<div class="card"><p>Notice: The OSF will be undergoing scheduled system maintenance and unavailable on Friday
+September 19, from 0:00 to 4:00 UTC, [Thursday September 18, from 8:00pm - 12:00pm EDT]. We thank
+you for your patience.
+×
+Chapter 3: The primorial function
+NewDelete
+Project Wiki Pages
+Chapter 3: The primorial function View Wiki Version:(Current) J. Helenklaken: 2021-01-23 07:52:07+00:00 UTC
+Table of Contents
+Chapter 3: The primorial function
+Table 3.01 Primorial root 2 approach
+Prime grouping
+Table 3.02 Primorial lb/ub oscillation
+The quadrature constant
+Figure 3.01 Quadrature constant - leap
+Mapping the continuum
+Figure 3.02 Quadrature continuum
+Quadrature reference frame
+Figure 3.03 Quadrature reference frame
+Primorial 24 parts in 25 and hexagons
+Figure 3.04 Primorial hexagon
+The primorial function is similar to the factorial function for the natural numbers but involves the
+product over the primes.
+Table 3.01 Primorial root 2 approach
+Table 3.1 lists:
+1.  , the consecutive primes
+2.  , the primorials
+3.  , the inverse primorials
+4.  , the partial sum of  up til 
+5.  , the difference 
+6.  , upper and lower bound alternating odd/even n
+Tabel 3.01 Primorial root 2 approach
+n
+122 ub
+236 lb
+3530 ub
+47210 0.70476190481.00332719lb
+5112310 0.70519480521.002711274ub
+61330030 0.70522810521.002663927lb#= =2×3×5×7×⋯∈N Pn∏
+k=1n
+Pk (03.01)
+Pn
+#Pn
+(#) Pn−1
+Ps (#) Pn−1Pn
+ΔPs()2√−1
+Ps
+↑↓
+Pn #Pn (#) Pn-1=Ps∑∞
+n=1
+( ) ∏n−1
+k=1Pk-1
+()2–√-1Δ→Ps
+↑↓
+1
+21
+22–√
+1
+62
+32√ -1
+2
+3
+1
+307
+102√ -1
+7
+10
+1
+210
+1
+2310
+1
+30030
+n
+717510510 0.70523006411.002661142ub
+8199699690 0.70523016711.002660995lb
+923223092870 0.70523017161.002660989ub
+10296469693230 0.70523017181.002660989lb
+---
+The partial sum of the inverse primorials  approaches the inverse square root of 2,
+, but falls short by some factor. The primorial delta  is the discrepancy
+between  and the limit of  which has a closed form  :
+Prime grouping
+The grouping of the primes in an upper and lower bound, column , becomes apparent by analyzing
+the partial sum increment for each step with respect to the total increment so far. To apply the
+progressive sum, an additive function, over the primorial function, a multiplicative function, is inspired
+by the sum/product equality where a sum over the integers is equal to a product over the primes:
+Table 3.02 Primorial lb/ub oscillation
+Table 3.2 lists the partial sum increment for each row in table 3.1 in the column .
+1. , the consecutive primes
+2. , upper and lower bound alternating odd / even n
+3. , the step wise increment in  from previous to current row
+4. , the ratio between the  for grouped rows 
+5. , the ratio between the first row and current row 
+Table 3.02 Primorial lb/ub oscillation
+n
+12ub
+23lb 1Pn #Pn (#) Pn-1=Ps∑∞
+n=1
+( ) ∏n−1
+k=1Pk-1
+()2–√-1Δ→Ps
+↑↓
+1
+510510
+1
+9699690
+1
+223092870
+1
+6469693230
+∞∞ ∼()2–√ -1=↬−−√2π
+2.52−−−
+√
+Ps
+≃0.7071067812 ()2–√−1ΔPs
+()2–√−1Ps2π
+2.52−−−
+√
+lim
+n→∞Δ= = ≃1.00265131⋯∈R Ps()2–√−1
+Ps2π
+2.52−−−−
+√ (03.02)
+↑↓
+= ∑
+n∞
+n−s∏
+p∞
+(1− )p−s−1(03.03)
+increment Ps
+Pn
+↑↓
+increment Ps Ps
+lb
+ubincrement Ps(2n)
+(2n)−1
+Δlb
+ub(2n)
+(n=1)
+Pn↑↓ increment Pslb
+ubΔ = 3lbn→∞
+lbn=1lb
+ub
+1
+2
+1
+61
+3
+n
+35ub
+0.5333
+47lb0.17142857140.32142857140.964285714
+511ub0.5337662338
+613lb0.17146187150.32123027010.96369081
+717ub0.5337681926
+819lb0.17146197460.32122928440.963687853
+923ub0.5337681971
+1029lb0.17146197470.3212292820.963687846
+The partial sum increment, lb/ub oscillation, shows a peculiar alternating progression. The clear
+oscillation between a upper and lower bound follows from taking the current partial sum
+ minus the increment so far . The column 
+contains the ratio between lower and upper bound for each group. Column  contains
+the progressive ratio between the current  row pair with respect to the ratio of the first  row pair,
+.
+The quadrature constant
+The square of  is defined as the quadrature constant.
+The partial sum increment, , table 3.2, shows a peculiar alternating progression. The
+current partial sum  minus the increment so far, oscillates between a lower and a upper
+bound of approximately  and . The upper and lower bounds alternate row by row and
+group the primes like , etc. in some periodic fashion.
+For the first two terms  the ratio is exact, , the last two terms in the table 
+approach . The primorials, and thus the inverse and sum thereof, are
+rational values. The ratio lb/ub will, by the topological property of the real numbers, approach ,
+but must be a rational approximation. By application of the derived quadrature constant  the
+limit can be determined to be exactly . The quadrature constant  indicates that
+a one to one correspondence exist between the Rational numbers , and Real numbers  such that:
+which impliesPn↑↓ increment Pslb
+ubΔ = 3lbn→∞
+lbn=1lb
+ub
+=16
+3
+10…
+∞∞ ∼()2–√-10.32=1
+3.125PΔ=
+=0.9624
+25
+(forrown) Ps (incrementforrown−1) Pslb
+ub
+Δ =3lbn→∞
+lbn=1lb
+ub
+lb
+ublb
+ub
+= ()lb
+ubn=11
+3
+ΔPs
+↬= = ≃1.005309649⋯∈R (Δ)Ps22π
+2.52(03.04)
+increment Ps
+→n Ps
+ub=1
+2lb=1
+6
+{2,3},{5,7},{11,13},{17,19}
+{2,3} =lb
+ub1
+3{23,29}
+≃0.3212292821∼lb
+ub1
+π
+∼1
+π
+↬=2π
+2.52
+×↬=0.32∈Q1
+π↬
+Q R
+Q↬=R↔ =QR
+↬(03.05)
+The set of rational numbers  is countable infinite and can be paired with the natural numbers ,
+which implies that if the hypothesis is correct, the real numbers  are also countable infinite.
+Figure 3.01 Quadrature constant - leap
+Pairing, not by in the limit approaching arbitrarily close to a partner, but rather leap frogging over an
+infinity of real and rational numbers (see fig. 3.1) to a distinct value.
+Mapping the continuum
+Figure 3.02 Quadrature continuum
+Apparently the &#x27;width of a coordinate&#x27;, on a circumference encodes some property other than
+&#x27;gradient in spread of arc&#x27;.
+Picture 3.2 shows, not to scale, the outer circle  at radius , and the inner circle  at radius
+. Both circumferences represent the continuum  but both differ in length due to the
+difference in radius.
+For every arbitrary small change in angle the radius cuts each circle in exactly 1 distinct dimensionless
+coordinate . This is counter-intuitive, how can the coordinate be dimensionless if circumferences
+that differ in length are divided up in essentially the same number of coordinates?
+We see that at  radius 1 gives  and for radius  it is
+. Apparently the &#x27;width of a coordinate&#x27;, on a circumference encodes some
+property other than &#x27;gradient in spread of arc&#x27;.
+Because radii intersect concentric circles at , a dimensionless point, this leads to a intimate and
+unique connection between the sets  and . The circle is the continuum , and measures .
+The quadrature constant  provides a smooth mapping from  to  if we define  as a circle
+with radius , and  as a circle with radius . A rotation over  results for radius 1
+in  and for radius  to .
+Apparently the radius has a curvature distorting the observers view such that discrete rational number
+intervals seem to spread out and project as indeterminable (irrational) real number values.(∀x∈R)(∃!q∈Q)(x =q) (↬)−1(03.06)
+Q N
+R
+R x=1 Q
+x=(↬)−1R
+1
+R
+∠180∘c= =π2π×1
+2(↬)−1
+c= =3.1252π×(↬)−1
+2
+∈R1
+R
+Q R R =12π
+R
+↬=2π
+2.52 QR Q
+r=(↬)−1R r=1 180∘
+c=π∈R (↬)−1c=3.125∈Q
+As if a number-theoretical uncertainty principle exists with a horizon  projected at a factor
+ from any arbitrary point chosen in .
+There exist a observational limit at radius  which transforms any discrete interval in what seems to
+be a continuum of real numbers.
+If we choose position at , or  from the horizon at , we snap back on the grid of
+rational coordinates at . Both coordinates  and  map to the exact same coordinate but only
+differ by perspective.
+Apparently distinct rational inputs map to distinct irrational outputs because intrinsically . This
+is a bold statement that brings the validity of the continuum hypothesys into question, therefor needs
+to be justified.
+Quadrature reference frame
+Figure 3.03 Quadrature reference frame
+Figure 3.3 is a Cartesian construction with compass and (unmarked) straightedge. The construction
+simply begins with straight line &#x27;A&#x27;, a random point &#x27;B&#x27;, and a circle centered on &#x27;B&#x27; of as yet
+undetermined radius. Now define the radius to  and construct &#x27; &#x27; and &#x27; &#x27;.
+Proceed by constructing the square. This results in a square and circle of approximately the same
+area.
+Transcendental numbers are not constructible with a set of compasses and (unmarked) straight edge
+(Wikipedia: Constructible number), but in this reference frame we are able to construct an exact
+solution for .
+In a strict Cartesian sense, clearly , however, we did not simply declare , but rather
+defined a geometric context in which the equality exist. Assuming the hypothesis correct this is
+expressed byR
+Δ= =↬r
+rq2π
+2.52 Q
+2π
+r= =2π
+↬2.52 2π
+↬R
+Q π 3.125
+Q≡R
+r=5 E=2.5 F=2.52
+=A□A∘
+A□
+A∘= =78.125∈Q ( ) 2.522–√2
+=π=78.125↬∈R 52(03.07)
+≠A□A∘ =A□A∘
+Q↬=R↔ =QR
+↬(03.08)
+Primorial 24 parts in 25 and hexagons
+Each distinct dimensionless point (coordinate) addressed on area  maps to exact one, yet
+indeterminable fuzzy surface like, &#x27;distributed coordinate&#x27; on the area . This aspect of &#x27;fuzzy spread&#x27;
+is closely related to the distribution of the (non trivial) zeros of the Riemann zeta function for which
+later a model will be presented.
+The outline of that model starts with defining the geometry in which to place the quadrature constant
+. The placement is almost derived in figure Quadrature reference frame, point . In fact
+, which is in fact the horizon, or observational limit at radius .
+Point &#x27;F&#x27; functions as a pole at radius  and is the reference point from which all  are
+calculated. The primorial delta  (see table 3.2) defines the x-coordinate 
+in figure 3.4 Primorial hexagon.
+We find in fact that the x-axis can be subdivided in exactly 25 parts of , and that ,
+which makes the pole a  scale unit circle.
+The pole at  can therefore be unambiguously constructed starting from any inscribed hexagon
+which, enforced by , projects at  within this geometric framework. Lastly, observe that the
+inverse of the primorial delta, multiplied by the quadrature constant, gives an angle of . The
+hexagonal chord and the associated equilateral triangle will be a further crucial key element in this
+hypothesis.
+The pole at x=25/25 can therefore be unambiguously constructed starting from any inscribed hexagon
+which, enforced by the primorial delta, projects at x=25/25 within this geometric framework.
+Figure 3.04 Primorial hexagon
+A□
+A∘
+↬ F=2.52
+F↬=2π 2π
+x=2.52x∈Q
+PΔ=0.96 PΔ× =6 2.52
+PΔ= =0.9624
+25(03.09)
+1
+4× =624
+252.52
+25:1
+pole= ∝ ∝12.52
+2π(↬)−125
+25(03.10)
+25
+25
+PΔ x=24
+25
+=60∘ π
+3
+= ↬→ = P∗(P△)−1 π
+360∘(03.11)
+Copyright © 2011-2025 Center for Open Science (https://cos.io)| Terms of Use
+(https://osf.io/terms_of_use/)| Privacy Policy (https://osf.io/privacy_policy/)| Status (https://status.cos.io/)
+| API (https://developer.osf.io/)
+TOP Guidelines (http://cos.io/top/)| Reproducibility Project: Psychology (https://osf.io/ezcuj/wiki/home/)|
+Reproducibility Project: Cancer Biology (https://osf.io/collections/rpcb/discover)
+ (http://twitter.com/OSFramework) (https://www.facebook.com/CenterForOpenScience/)
+(https://groups.google.com/forum/#!forum/openscienceframework)
+(https://www.github.com/centerforopenscience)</p></div>
+<section class="card"><h2>Figures</h2><div class="gallery"><figure><img src="/notebook/figures/Figure 2.1 SA as a Volume.GIF" alt="Figure 2.1 SA as a Volume.GIF"><figcaption class="small">Figure 2.1 SA as a Volume.GIF</figcaption></figure></div></section>
+<section class="card"><h2>Tables</h2><div class="gallery"><figure><img src="/notebook/tables/Table 2.1 Zeta function values.GIF" alt="Table 2.1 Zeta function values.GIF"><figcaption class="small">Table 2.1 Zeta function values.GIF</figcaption></figure>
+<figure><img src="/notebook/tables/Table 2.2 Zeta as a scale invariant proportion.GIF" alt="Table 2.2 Zeta as a scale invariant proportion.GIF"><figcaption class="small">Table 2.2 Zeta as a scale invariant proportion.GIF</figcaption></figure></div></section>
+</main>
 <footer><div class="wrap">© <span id="y"></span> Virgorises</div></footer>
-<script>document.getElementById('y').textContent=new Date().getFullYear()</script></body></html>
+<script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body></html>

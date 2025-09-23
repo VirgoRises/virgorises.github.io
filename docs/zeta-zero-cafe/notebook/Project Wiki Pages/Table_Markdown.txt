@@ -1,0 +1,372 @@
+Markdown table source
+==================
+
+@[toc]
+
+Chapter 01
+----------
+
+T1.01@[osf]()
+
+Chapter 02
+----------
+
+### Table 2.01 Zeta function values
+
+T2.01@ [osf](sxqgv)
+
+|Table 2.01 Zeta function values|
+|---|
+
+s | Closed exact| Calculated value
+---|---|---
+1 | ${\small \text{no value}}$ | ${\small \text{no value}}$
+2 | $\frac{\pi^{2}}{6}$|${\small \text{1.644934067...}}$
+3 | ${\small \text{unknown}}$|${\small \text{1.202056903...}}$   
+4 | $\frac{\pi^{4}}{90}$|${\small \text{1.082323234...}}$
+5 | ${\small \text{unknown}}$|${\small \text{1.036927755...}}$
+6 | $\frac{\pi^{6}}{945}$| ${\small \text{1.017343062...}}$
+n|...|...
+
+### Table 2.02 Zeta as a scale invariant proportion
+
+T2.02@ [osf](ts6qk)
+
+|Table 2.02 Zeta as a scale invariant proportion|
+|---|
+
+$\rule{0.5pt}{10pt} \thinspace s$ | $\rule{0.5pt}{10pt}\quad {\small  value}$ |$\rule{0.5pt}{10pt}$|$\rule{0pt}{10pt}\hspace{-3em} {\small preserving\propto}$|$\rule{0.5pt}{10pt} \thinspace {\small ratio \propto 2\pi}$|$\rule{0.5pt}{10pt} \thinspace {\small ratio \propto\pi^2}$
+--- | --- | --- | --- | --- | --- 
+  ... |$\zeta\left(s\right)$               |$\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{\text{ -1}}}$  |$\frac{s!\pi}{x}$  | $\frac{2}{s!}\times\frac{s!\pi}{x}$ |$\frac{\pi^2}{\left(\pi^2\right)\left(\zeta\left(s\right)^{\text{ -1}}\right)}$
+1 | ${\small \text{no value yet}}$ | --- | --- | --- | ---
+2 |$\frac{\pi^{2}}{6}$|$\frac{2\pi}{\left(2\pi\right)\left(1.644934066848\right)^{\text{ -1}}}$|$\frac{2\pi}{3.819718634}$|$\frac{2\pi}{3.819718634}$|$\frac{\pi^{2}}{6}$ 
+3 |${\small 1.202056903159}$|$\frac{6\pi}{\left(6\pi\right)\left(1.202056903159\right)^{\text{ -1}}}$ |$\frac{6\pi}{15.68108454}$|$\frac{2\pi}{5.22702818}$  |$\frac{\pi^{2}}{8.210596}$
+4 | $\frac{\pi^{4}}{90}$|$\frac{24\pi}{\left(24\pi\right)\left(1.082323233711\right)^{\text{ -1}}}$|$\frac{24\pi}{69.66331438}$|$\frac{2\pi}{5.80276198}$|$\frac{\pi^{2}}{9.118906528}$
+5|${\small 1.036927755143}$|$\frac{120\pi}{\left(120\pi\right)\left(1.036927755143\right)^{\text{ -1}}}$|$\frac{120\pi}{363.5654621}$|$\frac{2\pi}{6.059424368}$|$\frac{\pi^{2}}{9.518121539}$  
+6|$\frac{\pi^{6}}{945}$|$\frac{720\pi}{\left(720\pi\right)\left(1.017343061984\right)^{\text{ -1}}}$|$\frac{720\pi}{2223.386383}$|$\frac{2\pi}{6.176073286}$|$\frac{\pi^{2}}{9.7013553231}$
+$\infty$|$\frac{\pi^{\infty}}{\infty}$|*---* | *---* |$\frac{2\pi}{2\pi}$|$\frac{\pi^{2}}{\pi^{2}}$
+
+
+Chapter 03
+----------
+
+### Tabel 3.01 Primorial root 2 approach
+
+T3.01@ [osf](rde8g)
+
+|Tabel 3.01 Primorial root 2 approach|
+|---|
+
+n|$P_n$|$P_{n}\\#$|$\left(P_{n}\\#\right)^{\text{-1}}$|${\small P_{s}=\sum_{n=1}^{\infty}}$<br>${\small \left(\prod_{k=1}^{n-1}P_{k}\right)^{\text{-1}}}$|${\small \overset{\Delta P_{s}\rightarrow}{\left(\sqrt{2}\right)^{\text{-1}}}}$|$\uparrow\downarrow$
+---|---|---|---|---|---|---
+1|2 | 2 | $\frac{1}{2}$ | $\frac{1}{2}$ | $\sqrt{2}$ | ub
+2|3 | 6 | $\frac{1}{6}$ | $\frac{2}{3}$ | $\frac{\sqrt{2}^{\text{ -1}}}{\frac{2}{3}}$ | lb
+3|5 | 30 | $\frac{1}{30}$|$\frac{7}{10}$|$\frac{\sqrt{2}^{\text{ -1}}}{\frac{7}{10}}$|ub 
+4|7 | 210 | $\frac{1}{210}$ | 0.7047619048 | 1.00332719 | lb 
+5 |11 | 2310 | $\frac{1}{2310}$ | 0.7051948052 | 1.002711274 | ub
+6 |13 | 30030 | $\frac{1}{30030}$ | 0.7052281052 | 1.002663927 | lb
+7 |17 | 510510 | $\frac{1}{510510}$ | 0.7052300641 | 1.002661142 | ub
+8 |19 | 9699690 | $\frac{1}{9699690}$ | 0.7052301671 | 1.002660995 | lb
+9 |23 | 223092870 | $\frac{1}{223092870}$ | 0.7052301716 | 1.002660989 | ub
+10 |29 | 6469693230 | $\frac{1}{6469693230}$ | 0.7052301718 | 1.002660989 | lb
+$\infty$ | $\infty$ |  | | ${\small \sim\left(\sqrt{2}\right)^{\text{ -1}}}$|${\small \sqrt{\looparrowright}=\sqrt{\frac{2\pi}{2.5^2}}}$ | --- 
+
+### Table 3.02 Primorial lb/ub oscillation
+
+T3.02@ [osf](xf83y)
+
+|Table 3.02 Primorial lb/ub oscillation|
+|---|
+
+n|${\small P_n}$|$\uparrow\downarrow$|${\small P_{s}\\, increment}$|$\frac{lb}{ub}$|${\small \Delta\frac{lb_{n\rightarrow\infty}}{lb_{n=1}}=\text{ 3}\frac{lb}{ub}}$
+---|---|---|---|---|---
+1|2 | ub | $\frac{1}{2}$ |  | 
+2|3 | lb | $\frac{1}{6}$ | $\frac{1}{3}$ | **1**
+3|5 | ub | $\frac{\frac{16}{3}}{10}=\\,$0.5333$\\,\dots$ |  | 
+4|7 | lb | 0.1714285714 | 0.3214285714 | 0.964285714
+5|11 | ub | 0.5337662338 |  | 
+6|13 | lb | 0.1714618715 | 0.3212302701 | 0.96369081
+7|17 | ub | 0.5337681926 |  | 
+8|19 | lb | 0.1714619746 | 0.3212292844 | 0.963687853
+9|23 | ub | 0.5337681971 |  | 
+10|29 | lb | 0.1714619747 | 0.321229282 | 0.963687846
+$\infty$|$\infty$ |  |  ${\small \sim\left(\sqrt{2}\right)^{\text{-1}}}$ | ${\small 0.32=\frac{1}{3.125}}$ | ${\small P\Delta=}$<br>${\small \frac{24}{25}\text{=0.96}}$
+
+
+Chapter 04
+----------
+
+### Table 4.01 Discrete triangular - Continues projection plane
+
+T4.01@ [osf](3gjmu)
+
+|Table 4.01 Discrete triangular - Continues projection plane|
+|---|
+
+$\rule{.5pt}{0pt}$ <br>$\rule{0pt}{10pt}\thinspace $ <br>$\rule{0pt}{10pt}\thinspace$ <br>$\rule{0pt}{10pt}\thinspace$ <br>$\rule{0pt}{15pt}\thinspace n$ <br>$\rule{.05pt}{18pt}\text{}$|$\rule{.5pt}{0pt}$ <br>$\rule{0.5pt}{10pt}\thinspace$ <br>$\rule{0.5pt}{10pt}\thinspace$ <br>$\rule{0.5pt}{10pt}\thinspace$ <br>$\rule{0.5pt}{15pt}\thinspace T_{n}$ <br>$\rule{.05pt}{18pt}\text{}$|$\rule{.5pt}{0pt}$ <br>$\rule{0pt}{10pt}\thinspace $ <br>$\rule{0pt}{10pt}\thinspace $ <br>$\rule{0pt}{10pt}\thinspace \hspace{-1em} {\small \propto A_{\Delta}}$ <br>$\rule{0.5pt}{15pt}\thinspace \frac{T_{n}}{n^{2}}$ <br>$\rule{.05pt}{15pt}\text{}$|$\rule{0.5pt}{0pt}$ <br>$\rule{0pt}{10pt}\thinspace $ <br>$\rule{0pt}{10pt}\thinspace $ <br>$\rule{0.5pt}{10pt}\thinspace $ <br>$\rule{.5pt}{15pt}\thinspace \frac{T_{n}}{4\cdot n^{2}}$ <br>$\rule{.05pt}{15pt}\text{}$|$\rule{.5pt}{0pt}$ <br>$\rule{0pt}{10pt}\thinspace $ <br>$\rule{0pt}{10pt}\thinspace \hspace{-4.5em} {\small \text{Discrete}} $ <br>$\rule{0pt}{10pt}\thinspace \hspace{-1em} {\small \propto A_{\Box}}$ <br>$\rule{.5pt}{15pt}\thinspace A$ <br>$\rule{.05pt}{18pt}\text{}$|$\rule{.5pt}{0pt}$ <br>$\rule{0pt}{10pt}\thinspace \hspace{-6em}  {\small A_{\Delta}\text{ Triangular plane}}$ <br>$\rule{.5pt}{10pt}\quad {\small \text{Continue}}$ <br>$\rule{.5pt}{10pt}\quad {\small \text{Sides ab}}$ <br>$\rule{.5pt}{15pt}\thinspace a=\sqrt{2\times A}$ <br>$\rule{.05pt}{18pt}\text{}$|$\rule{.5pt}{0pt}$ <br>$\rule{0.5pt}{10pt}\thinspace $ <br>$\rule{0.5pt}{10pt}\qquad {\small \underset{n\to\infty}{lim}a=\frac{1}{2}}$ <br>$\rule{0.5pt}{10pt}\quad {\small \text{Closed}}$ <br>$\rule{0.5pt}{15pt}\thinspace r_{q}=\sqrt{\frac{n}{n+1}}$ <br>$\rule{.05pt}{12pt}\text{}$|$\rule{.5pt}{0pt}$ <br>$\rule{0pt}{10pt}\thinspace \hspace{-4.5em} {\small A_{\Box}\text{ Projection plane}}$ <br>$\rule{0pt}{10pt}\thinspace \rightarrow r_{q}=\frac{0.5}{a}$ <br>$\rule{.5pt}{10pt}\thinspace {\small \text{Calculated}}$ <br>$\rule{.5pt}{15pt}\thinspace r_{q}=\frac{0.5}{a}$ <br>$\rule{.05pt}{15pt}\text{}$|$\rule{.5pt}{0pt}$ <br>$\rule{0.5pt}{10pt}\thinspace {\small \text{Proportional SA}}$ <br>$\rule{0.5pt}{10pt}\thinspace r_{q}\rightarrow r_{x}$ <br>$\rule{0.5pt}{10pt}\thinspace {\small \text{radius }r_{x}\propto SA}$ <br>$\rule{0.5pt}{15pt}\thinspace r_{x}=\frac{r_{q}}{\sqrt{P\Delta\left(\looparrowright^{\text{ -1}}\right)}}$ <br>$\rule{.05pt}{10pt}\text{}$
+---|---|---|---|---|---|---|---|---
+    $1$  | $\|\\;$1 | 1 | $\|\\;\frac{1}{4}$ | $\frac{1}{4}$ | $\|\\;\sqrt{2}^{\thinspace-1}$|$\|\\;\sqrt{\frac{1}{2}}$ | ${\small 0.7071067812}$|$\|\\;\propto SA=\frac{2}{3}\pi^2$
+    $2$ | $\|\\;$3 | $\frac{3}{4}$ | $\|\\;\frac{3}{16}$ | $\frac{3}{16}$ | $\|\\;\sqrt{\left(2\\frac{2}{3}\right)^{-1}}$|$\|\\;\sqrt{\frac{2}{3}}$ | ${\small 0.8164965809}$|$\|\\;\propto SA=\frac{8}{9}\pi^2$
+    $3$ | $\|\\;$6 | $\frac{6}{9}$ | $\|\\;\frac{6}{36}$ | $\frac{1}{6}$ | $\|\\;\sqrt{\frac{1}{3}}$|$\|\\;\sqrt{\frac{3}{4}}$ | ${\small 0.8660254038}$|$\|\\;\propto SA=\pi^2$
+    $4$ | $\|\\;$10 | $\frac{10}{16}$ | $\|\\;\frac{10}{64}$ | $\frac{5}{32}$ | $\|\\;\sqrt{\frac{10}{32}}$|$\|\\;\sqrt{\frac{4}{5}}$ | ${\small 0.894427191}$|$\|\\;\propto SA=\frac{16}{15}\pi^2$
+    $5$ | $\|\\;$15 | $\frac{15}{25}$ | $\|\\;\frac{15}{100}$ | $\frac{3}{20}$ | $\|\\;\sqrt{\frac{3}{10}}$|$\|\\;\sqrt{\frac{5}{6}}$ | ${\small 0.9128709292}$|$\|\\;\propto SA=\frac{10}{9}\pi^2$
+    $6$ | $\|\\;$21 | $\frac{21}{36}$ | $\|\\;\frac{21}{144}$ | $\frac{7}{48}$ | $\|\\;{\small 0.5400617249}$|$\|\\;\sqrt{\frac{6}{7}}$ | ${\small 0.9258200998}$|$\|\\;\propto SA=\frac{8}{7}\pi^2$
+    $7$ | $\|\\;$28 | $\frac{28}{49}$ | $\|\\;\frac{28}{196}$ | $\frac{1}{7}$ | $\|\\;{\small 0.5345224838}$|$\|\\;\sqrt{\frac{7}{8}}$ | ${\small 0.9354143467}$|$\|\\;\propto SA=\frac{7}{6}\pi^2$
+    $8$ | $\|\\;$36 | $\frac{36}{64}$ | $\|\\;\frac{36}{256}$ | $\frac{9}{64}$ | $\|\\;{\small 0.5303300859}$|$\|\\;\sqrt{\frac{8}{9}}$ | ${\small 0.9428090416}$|$\|\\;\propto SA=\frac{32}{27}\pi^2$
+    $\infty$ | $\|\\;\infty$ | | | $\frac{1}{8}$ | $\|\\;0.5$|$\|\\;1$ | $1$|$\|\\;\propto SA=\frac{4}{3}\pi^2$
+
+
+### Table 4.02 Projection plane range for all s
+
+T4.02@ [osf](hd9fk)
+
+|Table 4.02 Projection plane range for all s|
+| --- |
+
+$s$ | $value$ | $\frac{\pi^2}{\left(\pi^2\right)\left(\zeta\left(s\right)^{\text{-1}}\right)}$ | $a=\sqrt{2A}$ | $r_q=\frac{0.5}{a}$ | $r_{x}=\frac{r_{q}}{\sqrt{P\Delta\left(\looparrowright^{\text{ -1}}\right)}}$ | ${\small SA\propto\pi^2}$
+---|---|---|---|---|---|---
+$1$ | $\frac{\pi^{2}}{4}$ | $\frac{\pi^{2}}{4}$ | ${\small \sqrt{2\times\frac{1}{4}}}$<br>${\small =0.7071067812}$ | ${\small \sqrt{2}^{\text{-1}}}$ | ${\small \sqrt{\frac{2\pi\times\left(P\Delta\left(\looparrowright^{\text{-1}}\right)\right)^{\text{ -1}}}{4\pi}}}$<br>${\small =0.7236012546}$ | ${\small SA\propto\frac{6}{9}\pi^2}$
+$2$ | $\frac{\pi^{2}}{6}$ |  $\frac{\pi^{2}}{6}$ | ${\small \sqrt{2\times\frac{1}{6}}}$<br>${\small =0.5773502692}$ | ${\small \sqrt{\frac{3}{4}}}$ | ${\small \sqrt{\frac{\pi^{2}}{4\pi}}}$<br>${\small =0.8862269255}$ | ${\small SA\propto\pi^2}$ 
+$3$ | $\frac{\pi^{2}}{8.210596}$ | $\frac{\pi^{2}}{8.210596}$<br> | ${\small \sqrt{2\times\frac{1}{8.210596}}}$<br>${\small =0.4935460224}$ |${\small 1.013076749}$ | - | - 
+$4$|$\frac{\pi^{4}}{90}$|$\frac{\pi^{2}}{9.118906528}$|${\small \sqrt{2\times\frac{1}{9.118906528}}}$<br>${\small =0.4683209821}$|${\small 1.067643851}$||
+$5$|$\frac{\pi^{2}}{9.518121541}$ |$\frac{\pi^{2}}{9.518121541}$|${\small \sqrt{2\times\frac{1}{9.518121541}}}$<br>${\small =0.4583944753}$|${\small 1.090763582}$||
+$6$ |$\frac{\pi^{6}}{945}$|$\frac{\pi^{2}}{9.701359231}$|${\small \sqrt{2\times\frac{1}{9.701359231}}}$<br>${\small =0.4540447984}$|${\small 1.101212924}$||
+$\infty$|$\frac{\pi^{\infty}}{\infty}$|$\frac{\pi^2}{\pi^2}$|${\small \sqrt{2\times\frac{1}{\pi^{2}}}}$<br>${\small =\frac{1}{\pi}\sqrt{2}}$<br>${\small =0.4501581581}$|${\small \sqrt{\frac{\pi^2}{8}}}$<br>${\small =1.110720734}$|${\small \sqrt{\frac{\frac{\pi^{2}}{6}\times\pi^{2}}{4\pi}}}$<br>${\small =1.136630193}$|${\small SA\propto}$<br>${\small \frac{\pi^2}{6}\times\pi^2}$
+
+
+### Table 4.03 The base of Planck's constant
+
+T4.03@ [osf](ktxs2)
+
+|Table 4.03 The base of Planck's constant|
+|---|
+
+${\small SA}$ | ${\small V}$ | $ $
+--- | --- | ---
+$4r^2$ | $\frac{4}{3}r^3$ | $/ 4$
+$r^2$ | $\frac{1}{3}r^3$ | $/ r^2$
+$1$ | $\frac{1}{3}r^1$ | $x^2$
+${\small SA=1}$ | ${\small V=\frac{1}{9}}$ | ${\small SA\propto\left(\frac{1}{8}+\frac{1}{24}\right)\propto V}$
+
+
+### Table 4.04 Zeta, the SA/Volume equilibrium
+
+T4.04@ [osf](mvdcq)
+
+|Table 4.04 Zeta, the SA/Volume equilibrium|
+|---|
+
+$\rule{0pt}{15pt}$<br>$\rule{0pt}{15pt}$<br>$\rule{0pt}{15pt}\thinspace s$ | $\rule{0.5pt}{15pt}$<br>$\rule{0.5pt}{15pt}\thinspace {\small \\#\Box\thinspace cells}$<br>$\rule{0.5pt}{15pt} \thinspace \qquad {\small A\Box}$ | $\hspace{ -1.3em}{\small \frac{1}{4}\propto A\Box}$<br>$\rule{0.5pt}{15pt} \thinspace {\small \\#\blacksquare\thinspace cells}$<br>$\rule{0.5pt}{15pt}\qquad {\small A\blacksquare}$ | $\rule{0.5pt}{15pt}$<br>$\rule{0.5pt}{15pt}\thinspace {\small \\#\triangle\thinspace cells}$<br>$\rule{0.5pt}{15pt}\quad  {\small A\triangle}$ | $\rule{0pt}{15pt} \hspace{-1.5em}{\small \frac{6}{9}\propto A\triangle}$<br>$\rule{0.5pt}{15pt} \thinspace {\small \\#\blacktriangle\thinspace cells}$<br>$\rule{0.5pt}{15pt} \qquad {\small A\blacktriangle}$ | $\rule{0.5pt}{15pt} \thinspace {\small  ratio}$<br>$\rule{0.5pt}{15pt} \thinspace {\small \propto\zeta\left(2\right)}$<br>$\rule{0.5pt}{12pt} \thinspace {\small \frac{\\#\Box}{\\#\blacktriangle}\rightarrow\frac{SA}{V}}$
+---|---|---|---|---|---
+$0$ | ${\small 6^{0}=1}$ | ${\small \frac{3^{0}}{6^{0}}=1}$ | ${\small 3^{0}=1}$ | ${\small \frac{6}{9}\times3^{0}=\frac{6}{9}}$ | ${\small \frac{6^{0}}{\frac{6}{9}}=\frac{9}{6}}$
+$1$ | ${\small 6^{1}=6}$ | ${\small \frac{3^{1}}{6^{1}}=\frac{1}{2}}$ | ${\small 3^{1}=3}$ | ${\small \frac{6}{9}\times3^{1}=2}$ | ${\small \frac{6^{1}}{2}=3}$
+${\small 2^{\thinspace\bigstar}}$ | ${\small 6^{2}=36}$ | ${\small \frac{3^{2}}{6^{2}}=\frac{1}{4}}$ | ${\small 3^{2}=9}$ | ${\small \frac{6}{9}\times3^{2}=6^{\thinspace\bigstar}}$ | ${\small \frac{6^{2}}{6}=6^{\thinspace\bigstar}}$
+$3$ | ${\small 6^{3}=216}$ | ${\small \frac{3^{3}}{6^{3}}=\frac{1}{8}}$ | ${\small 3^{3}=27}$ | ${\small \frac{6}{9}\times3^{3}=18}$ | ${\small \frac{6^{3}}{18}=12}$
+$4$ | ${\small 6^{4}=1296}$ | ${\small \frac{3^{4}}{6^{4}}=\frac{1}{16}}$ | ${\small 3^{4}=81}$ | ${\small \frac{6}{9}\times3^{4}=54}$ | ${\small \frac{6^{4}}{54}=24}$
+$5$ | ${\small 6^{5}=7776}$ | ${\small \frac{3^{5}}{6^{5}}=\frac{1}{32}}$ | ${\small 3^{5}=243}$ | ${\small \frac{6}{9}\times3^{5}=162}$ | ${\small \frac{6^{5}}{162}=48}$
+
+Chapter 05
+----------
+
+### Table 5.01 Hexagonal equilibrium
+
+T5.01@ [osf](gwaz4)
+
+|Table 5.01 Hexagonal equilibrium|
+|---|
+
+$\rule{0.5pt}{10pt}$<br>$\rule{0.5pt}{18pt}$<br>$\rule{0.5pt}{18pt}$<br>$\rule{0.5pt}{10pt}\thinspace n$|$\rule{0.5pt}{10pt}$<br>$\rule{0.5pt}{18pt}$<br>$\rule{0.5pt}{18pt}\thinspace {\small \left(\sqrt{2}\right)^{\text{ -n}}}$<br>$\rule{0.5pt}{10pt}$|$\rule{0.5pt}{10pt}\qquad a$<br>$\rule{0.5pt}{18pt}\quad {\small \left(\sqrt{2}\right)^{\text{ -n}}}$<br>$\rule{0.5pt}{18pt}\thinspace{\small \rightarrow\sqrt{\frac{1}{2^{n}}}}$<br>$\rule{0.5pt}{10pt}$|$\rule{0.5pt}{10pt}\quad \left\|b\right\|$<br>$\rule{0.5pt}{18pt}$<br>$\rule{0.5pt}{18pt} \thinspace {\small \sqrt{\frac{3}{2^{\text{n}}}}}$<br>$\rule{0.5pt}{10pt}$|$\rule{0.5pt}{10pt}\qquad c$<br>$\rule{0.5pt}{18pt}\thinspace {\small \sqrt{a^2+b^2}}$<br>$\rule{0.5pt}{18pt}\thinspace {\small \sqrt{\frac{1}{2^n}+\frac{3}{2^n}}}$<br>$\rule{0.5pt}{10pt}\thinspace \rightarrow a_{n-2}$|$\rule{0.5pt}{10pt}\qquad c_{\hbar}$<br>$\rule{0.5pt}{18pt}\thinspace {\small \sqrt{a^2+b^2}}$<br>$\rule{0.5pt}{20pt}\thinspace {\small a\times\sqrt{5}}$<br>$\rule{0.5pt}{10pt}$|$\rule{0.5pt}{10pt}\quad {\small 360^{\circ}}$<br>$\rule{0.5pt}{18pt}$<br>$\rule{0.5pt}{18pt}\thinspace {\small \left(\frac{b_{n}}{b_{2}}\right)\cdot 60^{\circ}}$<br>$\rule{0.5pt}{10pt}$|$\rule{0.5pt}{10pt}\qquad \pi \thinspace\text{rad}$<br>$\rule{0.5pt}{18pt}$<br>$\rule{0.5pt}{18pt}\thinspace {\small \left(\frac{b_{n}}{b_{2}}\right)\cdot\left\|\sqrt{\frac{3}{4}}\right\|}$<br>$\rule{0.5pt}{10pt}$
+---|---|---|---|---|---|---|---
+$0$|${\small 1}$|${\small 1}$|${\small \sqrt{\frac{3}{1}}}$|${\small \sqrt{\frac{4}{1}}}$|${\small 1\cdot\sqrt{5}}$|${\small 120\text{°}}$|${\small \frac{2\pi}{3}}$
+$1$ | ${\small 0.70710...}$ | ${\small \sqrt{\frac{1}{2}}}$ | ${\small \sqrt{\frac{3}{2}}}$ | ${\small \sqrt{\frac{4}{2}}}$ | ${\small \sqrt{\frac{1}{2}}\cdot\sqrt{5}}$ | ${\small 84.8528\text{°}}$ | ${\small \frac{2\pi}{6\times\sqrt{\frac{1}{2}}}}$
+$2^{\thinspace\bigstar}$ | ${\small 0.5}$ | ${\small \sqrt{\frac{1}{4}}}$ | ${\small \sqrt{\frac{3}{4}}}$ | ${\small 1}$ | ${\small \sqrt{\frac{1}{4}}\cdot\sqrt{5}}$ | ${\small 60\text{°}}$ | ${\small \frac{2\pi}{6}}^{\thinspace\bigstar}$
+$3$ | ${\small 0.35355...}$ | ${\small \sqrt{\frac{1}{8}}}$ | ${\small \sqrt{\frac{3}{8}}}$ | ${\small \sqrt{\frac{1}{2}}}$ | ${\small \sqrt{\frac{1}{8}}\cdot\sqrt{5}}$ | ${\small 37.7612\text{°}}$ | ${\small \frac{2\pi}{12\times\sqrt{2}}}$
+$4$ | ${\small 0.25}$ | ${\small \sqrt{\frac{1}{16}}}$ | ${\small \sqrt{\frac{3}{16}}}$ | ${\small \sqrt{\frac{1}{4}}}$ | ${\small \sqrt{\frac{1}{16}}\cdot\sqrt{5}}$ | ${\small 30\text{°}}$ | ${\small \frac{2\pi}{12}}$ 
+$5$ | ${\small 0.17678...}$ | ${\small \sqrt{\frac{1}{32}}}$ | ${\small \sqrt{\frac{3}{32}}}$ | ${\small \sqrt{\frac{1}{8}}}$ | ${\small \sqrt{\frac{1}{32}}\cdot\sqrt{5}}$ | ${\small 21.2132\text{°}}$ | ${\small \frac{2\pi}{12\times\sqrt{2}}}$ 
+$6$ | ${\small 0.125}$ | ${\small \sqrt{\frac{1}{64}}}$ | ${\small \sqrt{\frac{3}{64}}}$ | ${\small \sqrt{\frac{1}{16}}}$ | ${\small \sqrt{\frac{1}{64}}\cdot\sqrt{5}}$ | ${\small 15\text{°}}$ | ${\small \frac{2\pi}{24}}$ 
+$7$ | ${\small 0.08839...}$ | ${\small \sqrt{\frac{1}{128}}}$ | ${\small \sqrt{\frac{3}{128}}}$ | ${\small \sqrt{\frac{1}{32}}}$ | ${\small \sqrt{\frac{1}{128}}\cdot\sqrt{5}}$ | ${\small 10.6066\text{°}}$ | ${\small \frac{2\pi}{24\times\sqrt{2}}}$ 
+$8$ | ${\small 0.0625}$ | ${\small \sqrt{\frac{1}{256}}}$ | ${\small \sqrt{\frac{3}{256}}}$ | ${\small \sqrt{\frac{1}{64}}}$ | ${\small \sqrt{\frac{1}{256}}\cdot\sqrt{5}}$ | ${\small 7.5\text{°}}$ | ${\small \frac{2\pi}{48}}$ 
+$9$ | ${\small 0.04419...}$ | ${\small \sqrt{\frac{1}{512}}}$ | ${\small \sqrt{\frac{3}{512}}}$ | ${\small \sqrt{\frac{1}{128}}}$ | ${\small \sqrt{\frac{1}{512}}\cdot\sqrt{5}}$ | ${\small 5.3033\text{°}}$ | ${\small \frac{2\pi}{48\times\sqrt{2}}}$ 
+$10$ | ${\small 0.03125}$ | ${\small \sqrt{\frac{1}{1024}}}$ | ${\small \sqrt{\frac{3}{1024}}}$ | ${\small \sqrt{\frac{1}{256}}}$ | ${\small \sqrt{\frac{1}{1024}}\cdot\sqrt{5}}$ | ${\small 3.75\text{°}}$ | ${\small \frac{2\pi}{96}}$ 
+$11$ | ${\small 0.0221...}$ | ${\small \sqrt{\frac{1}{2048}}}$ | ${\small \sqrt{\frac{3}{2048}}}$ | ${\small \sqrt{\frac{1}{512}}}$ | ${\small \sqrt{\frac{1}{2048}}\cdot\sqrt{5}}$ | ${\small 2.6517\text{°}}$ | ${\small \frac{2\pi}{96\times\sqrt{2}}}$ 
+$12$ | ${\small 0.015625}$ | ${\small \sqrt{\frac{1}{4096}}}$ | ${\small \sqrt{\frac{3}{4096}}}$ | ${\small \sqrt{\frac{1}{1024}}}$ | ${\small \sqrt{\frac{1}{4096}}\cdot\sqrt{5}}$ | ${\small 1.875\text{°}}$ | ${\small \frac{2\pi}{192}}$ 
+
+${\small \bigstar\rightarrow\left|b\right|=\sqrt{\frac{3}{4}}=\sin\left(\frac{\pi}{3}\right)\approx0.8660254038}\thinspace\|\thinspace{\small \bigstar\rightarrow\left(P\triangle\right)^{-1}\looparrowright}$
+
+Chapter 06
+----------
+
+### Table 6.01 4/5 proportion Spherical vs Cartesian projection (exc. $\looparrowright$)
+
+T6.01@ [osf](ehmbv)
+
+|Table 6.01 4/5 proportion Spherical vs Cartesian projection (exc. $\looparrowright$)|
+|---|
+
+$\rule{0.5pt}{10pt}\thinspace $<br>$\rule{0.5pt}{20pt}\thinspace $<br>$\rule{0.5pt}{15pt}\thinspace  n$|$\rule{0.5pt}{10pt}\thinspace $<br>$\rule{0.5pt}{20pt}\thinspace $<br>$\rule{0.5pt}{15pt}\thinspace {\small Calculated}$|$\rule{0pt}{10pt}\hspace{-2.5em}{\small Cartesian}$<br>$\rule{0pt}{15pt}\hspace{-1.5em}{\small \sqrt{2}^{\text{ -n}}}$<br>$\rule{0.5pt}{18pt}\thinspace {\small Closed}$|$\rule{0.5pt}{10pt}\thinspace $<br>$\rule{0.5pt}{20pt}\thinspace {\small \left(\frac{4}{5}\sqrt{2}^{\text{ -1}}\right)^{\thinspace n}\leftrightarrow}$<br>$\rule{0.5pt}{15pt}\thinspace {\small Calculated}$|$\rule{0pt}{10pt}\thinspace {\small Spherical}$<br>$\rule{0pt}{20pt}\thinspace {\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -n}}\leftrightarrow}$<br>$\rule{0.5pt}{15pt}\thinspace {\small Closed}$|$\rule{0pt}{10pt}\thinspace $<br>$\rule{0pt}{20pt}\thinspace {\small 2^{5\left(\frac{n}{2}\right)}\cdot10^{\text{ -n}}}$<br>$\rule{0.5pt}{15pt}\thinspace {\small Closed}$|$\rule{0.5pt}{10pt}\thinspace {\small \Delta\frac{Cartesian}{Spherical}} $<br>$\rule{0.5pt}{20pt}\thinspace  $<br>$\rule{0.5pt}{15pt}\thinspace $
+---|---|---|---|---|---|---
+$0$ | $\|\thinspace {\small 1}$ | ${\small \sqrt{2}^{\text{ 0}}}$ | $\|\thinspace {\small 1}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{-1}}^{\text{  0}}}$ | ${\small 2^{0}\cdot10^{0}}$ | $\|\thinspace {\small 1}$
+$1$ | $\|\thinspace {\small 0.70710...}$ | ${\small \sqrt{2}^{\text{ -1}}}$ | $\|\thinspace {\small 0.5656854249...}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -1}}}$ | ${\small 2^{2.5}\cdot10^{\text{ -1}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{1}}$ 
+$2^{\thinspace\bigstar}$ | $\|\thinspace {\small 0.5}$ | ${\small \sqrt{2}^{\text{ -2}}}$ | $\|\thinspace {\small 0.32}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -2}}}$ | ${\small 2^{5}\cdot10^{\text{ -2}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{2}}$ 
+$3$ | $\|\thinspace {\small 0.35355...}$ | ${\small \sqrt{2}^{\text{ -3}}}$ | $\|\thinspace {\small 0.181019336...}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -3}}}$ | ${\small 2^{7.5}\cdot10^{\text{ -3}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{3}}$ 
+$4$ | $\|\thinspace {\small 0.25}$ | ${\small \sqrt{2}^{\text{ -4}}}$ | $\|\thinspace {\small 0.1024}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -4}}}$ | ${\small 2^{10}\cdot10^{\text{ -4}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{4}}$ 
+$5$ | $\|\thinspace {\small 0.17678...}$ | ${\small \sqrt{2}^{\text{ -5}}}$ | $\|\thinspace {\small 0.057926187...}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -5}}}$ | ${\small 2^{12.5}\cdot10^{\text{ -5}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{5}}$ 
+$6$ | $\|\thinspace {\small 0.125}$ | ${\small \sqrt{2}^{\text{ -6}}}$ | $\|\thinspace {\small 0.032768}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -6}}}$ | ${\small 2^{15}\cdot10^{\text{ -6}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{6}}$ 
+$7$ | $\|\thinspace {\small 0.08839...}$ | ${\small \sqrt{2}^{\text{ -7}}}$ | $\|\thinspace {\small 0.01853638...}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -7}}}$ | ${\small 2^{17.5}\cdot10^{\text{ -7}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{7}}$ 
+$8$ | $\|\thinspace {\small 0.0625}$ | ${\small \sqrt{2}^{\text{ -8}}}$ | $\|\thinspace {\small 0.01048576}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -8}}}$ | ${\small 2^{20}\cdot10^{\text{ -8}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{8}}$ 
+$9$ | $\|\thinspace {\small 0.04419...}$ | ${\small \sqrt{2}^{\text{ -9}}}$ | $\|\thinspace {\small 0.0059316416...}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -9}}}$ | ${\small 2^{22.5}\cdot10^{\text{ -9}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{9}}$ 
+$10$ | $\|\thinspace {\small 0.03125}$ | ${\small \sqrt{2}^{\text{ -10}}}$ | $\|\thinspace {\small 0.0033554432}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -10}}}$ | ${\small 2^{25}\cdot10^{\text{ -10}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{10}}$ 
+
+
+
+Chapter 07
+----------
+
+### Table 7.01 QGF standard chord and deviation
+
+T7.01@ [osf](2dnmq)
+
+|Table 7.01 QGF standard chord and deviation|
+|---|
+
+$\rule{0pt}{10pt} \thinspace n$|$\rule{0.5pt}{10pt} \thinspace {\small c_{n}=\sin\left(\frac{2\pi}{2\times n}\right)}$|$\rule{0.5pt}{10pt} \thinspace {\small closed}$|$\rule{0.5pt}{10pt} \thinspace {\small cl_{n}=2n\times c_{n}}$|$\rule{0.5pt}{10pt} \thinspace {\small }$|$\rule{0pt}{10pt} \thinspace {\small }$|$\rule{0.5pt}{10pt} \thinspace {\small \hspace{-7em}\Delta\frac{cl_{n}}{cl_{6}}}$
+---|---|---|---|---|---|---
+	$1$ | ${\small 0}$ | ${\small 0}$ | ${\small 0}$ | $\rule{0.5pt}{10pt} \thinspace{\small 0}$ | ${\small 0}$ |$\rule{0.5pt}{10pt} \thinspace $
+$2$ | ${\small 1}$ | ${\small }$ | ${\small 4}$ | $\rule{0.5pt}{10pt} \thinspace{\small 0.666666\dots}$ | ${\small \frac{2}{3}}$ | $\rule{0.5pt}{10pt} \thinspace $  
+$3$ | ${\small 0.8660254038^{\\,\bigstar}}$ | ${\small \sqrt{\frac{3}{4}}}$ | ${\small 5.196152423^{ \\,\bigstar}}$ | $\rule{0.5pt}{10pt} \thinspace $ ${\small 0.8660254038^{\\,\bigstar}}$ | ${\small \propto\zeta\left(2\right)}$ | $\rule{0.5pt}{10pt} \thinspace $
+$4$ | ${\small 0.7071067812}$ | ${\small \sqrt{2}^{\text{ -1}}}$ | ${\small 5.656854249}$ | $\rule{0.5pt}{10pt} \thinspace {\small 0.9428090415}$ | ${\small \frac{2}{3}\sqrt{2}}$ | $\rule{0.5pt}{10pt} \thinspace $
+$5$ | ${\small 0.5877852532}$ | ${\small }$ | ${\small 5.877852523}$ | $\rule{0.5pt}{10pt} \thinspace {\small 0.9796429872}$ | ${\small }$ | $\rule{0.5pt}{10pt} \thinspace $
+$6$ | ${\small 0.5}$ | ${\small \frac{1}{2}}$ | ${\small 6^{\\,\bigstar}}$ | $\rule{0.5pt}{10pt} \thinspace{\small 1}$ | ${\small \sin\left(\frac{\pi}{2}\right)}$ | $\rule{0.5pt}{10pt} \thinspace $ 
+$7$ | ${\small 0.4338837391}$ | ${\small }$ | ${\small 6.074372348}$ | $\rule{0.5pt}{10pt} \thinspace{\small 1.012395391}$ | ${\small }$ | $\rule{0.5pt}{10pt} \thinspace $
+$8$ | ${\small 0.3826834324}$ | ${\small }$ | ${\small 6.122934918}$ | $\rule{0.5pt}{10pt} \thinspace{\small 1.040481718}$ | ${\small }$ | $\rule{0.5pt}{10pt} \thinspace $
+$16$ | ${\small 0.195090322}$ | ${\small }$ | ${\small 6.242890305}$ | $\rule{0.5pt}{10pt} \thinspace{\small 1.047197551}$ | ${\small }$ | $\rule{0.5pt}{10pt} \thinspace $ 
+$\infty$ | ${\small }$ | ${\small }$ | ${\small 2\pi}$ | $\rule{0.5pt}{10pt} \thinspace {\small \frac{\pi}{3}\rightarrow\left(\Delta\frac{2}{\pi}\right)\times\zeta\left(2\right)}$ | $\rule{0.5pt}{10pt} \thinspace{\small P_{\ast}}$ | $\rule{0.5pt}{10pt} \thinspace \Delta\frac{2}{\pi}$
+
+### Table 7.02 Chord length and relative density
+
+T7.02@ [osf](y2hxc)
+
+|Table 7.02 Chord length and relative density|
+|---|
+
+$n$ | ${\small x_{n}=}$<br>${\small 2n\times sin\left(\frac{2\pi}{2n}\right)}$|${\small \rho_{n}=\frac{x_{n}}{x_{6}}}$|${\small \frac{1}{6}n}$|${\small surplus}$
+---|---|---|---|---
+$6$ | ${\small 6}$ | ${\small 1=\frac{6}{6}=\frac{24}{24}}$ | ${\small 1=\frac{6}{6}}$ | ${\small 0}$
+$7$ | ${\small 6.0743723476}$ | ${\small 1.012395391}$ | ${\small 1\frac{1}{6}=\frac{7}{6}}$ | ${\small 1}$
+$8$ | ${\small 6.122934918}$ | ${\small 1.020489153}$ | ${\small 1\frac{2}{6}=\frac{8}{6}}$ | ${\small 2}$
+$9$ | ${\small 6.15636258}$ | ${\small 1.02606043}$ | ${\small 1\frac{3}{6}=\frac{9}{6}}$ | ${\small 3}$
+$10$ | ${\small 6.180339887}$ | ${\small 1.030056648}$ | ${\small 1\frac{4}{6}=\frac{10}{6}}$ | ${\small 4}$
+$11$ | ${\small 6.198116251}$ | ${\small 1.033019375}$ | ${\small 1\frac{5}{6}=\frac{11}{6}}$ | ${\small 5}$
+$12$ | ${\small 6.211657082}$ | ${\small 1.03527618}$ | ${\small 2=\frac{12}{6}}$ | ${\small 6}$
+$13$ | ${\small 6.2222072771}$ | ${\small 1.037034545}$ | ${\small 2\frac{1}{6}=\frac{13}{6}}$ | ${\small 7}$
+$14$ | ${\small 6.230586151}$ | ${\small 1.038431025}$ | ${\small 2\frac{2}{6}=\frac{14}{6}}$ | ${\small 8}$
+$15$ | ${\small 6.237350725}$ | ${\small 1.039558454}$ | ${\small 2\frac{3}{6}=\frac{15}{6}}$ | ${\small 9}$
+$16$ | ${\small 6.242890305}$ | ${\small 1.040481717}$ | ${\small 2\frac{4}{6}=\frac{16}{6}}$ | ${\small 10}$
+$\infty$ | ${\small 2\pi}$ | ${\small \frac{\pi}{3}}$ | ${\small \frac{1}{6}}$ | ${\small \mathbb{N}}$
+
+### Table 7.03 Non trivial zero to Unity chord
+
+T7.03@ [osf](x3dbk)
+
+|Table 7.03 Non trivial zero to Unity chord|
+|---|
+
+$\rule{0pt}{10pt}$<br>$\rule{0pt}{10pt}$<br>$\rule{0pt}{10pt} n$<br>$\rule{0pt}{15pt}$|$\rule{0.5pt}{10pt}$<br>$\rule{0.5pt}{15pt} \thinspace {\small Re=a}$<br>$\rule{0.5pt}{15pt} \thinspace {\small \left(real\right)}$<br>$\rule{0.5pt}{15pt}$|$\rule{0pt}{15pt}$<br>$\rule{0.5pt}{15pt} \thinspace {\small z=bi}$<br>$\rule{0.5pt}{15pt} \thinspace {\small \text{Zero (imaginary)}}$<br>$\rule{0.5pt}{15pt}$|$\rule{0pt}{15pt} \hspace{ -3em}{\small Complex}$<br>$\rule{0.5pt}{15pt} \thinspace {\small \text{c \(modulus\)}}$<br>$\rule{0.5pt}{15pt} \thinspace {\small \left\|z\right\|=\sqrt{a^{2}+bi^{2}}}$<br>$\rule{0.5pt}{15pt}$|$\rule{0.5pt}{10pt}$<br>$\rule{0.5pt}{15pt}\qquad {\small d}$<br>$\rule{0.5pt}{15pt}\quad \sqrt[4]{\left\|z\right\|}$<br>$\rule{0.5pt}{15pt}$|$\rule{0pt}{15pt} \thinspace$<br>$\rule{0.5pt}{15pt} \thinspace {\small Level}$<br>$\rule{0.5pt}{15pt} \thinspace$<br>$\rule{0.5pt}{15pt}$|$\rule{0pt}{15pt} \hspace{ -7.8em}{\small C_{unity} \text{ Hexagonal unity chords}}$<br>$\rule{0.5pt}{15pt} \thinspace C_{box}$<br>$\rule{0.5pt}{15pt} \thinspace {\small x=\frac{\sqrt[4]{\left\|z\right\|}}{\left\lfloor\sqrt[4]{\left\|z\right\|}\right\rfloor }}$<br>$\rule{0.5pt}{0pt}$
+---|---|---|---|---|---|---
+${\small \textit{1}}$|${\small 0.5}$|${\small 14.13472514}$|${\small 14.14356585}$|${\|\small 1.939276475}$|${\small 0}$|${\small 1.939276475}$
+$2$|${\small 0.5}$|${\small 21.02203964}$|${\small 21.02798494}$|$\|{\small 2.141407968}$|${\small 1}$|${\small 1.070703984}$
+$3$|${\small 0.5}$|${\small 25.01085758}$|${\small 25.01585491}$|$\|{\small 2.23642242}$|${\small 1}$|${\small 1.11821121}$
+$4$|${\small 0.5}$|${\small 30.42487613}$|${\small 30.42898433}$|$\|{\small 2.348669263}$|${\small 1}$|${\small 1.174334631}$
+$5$|${\small 0.5}$|${\small 32.93506159}$|${\small 32.93885672}$|$\|{\small 2.395670749}$|${\small 1}$|${\small 1.197835375}$
+$6$|${\small 0.5}$|${\small 37.58617816}$|${\small 37.5895037}$|$\|{\small 2.476091264}$|${\small 1}$|${\small 1.238045632}$
+$7$|${\small 0.5}$|${\small 40.91871901}$|${\small 40.92177373}$|$\|{\small 2.529231677}$|${\small 1}$|${\small 1.264615838}$
+$8$|${\small 0.5}$|${\small 43.32707328}$|${\small 43.32995822}$|$\|{\small 2.565647973}$|${\small 1}$|${\small 1.282823987}$
+$9$|${\small 0.5}$|${\small 48.00515088}$|${\small 48.0077547}$|$\|{\small 2.632254329}$|${\small 1}$|${\small 1.316127165}$
+$10$|${\small 0.5}$|${\small 49.77383248}$|${\small 49.77634377}$|$\|{\small 2.656169272}$|${\small 1}$|${\small 1.328084636}$
+$11$|${\small 0.5}$|${\small 52.97032148}$|${\small 52.97268124}$|$\|{\small 2.697820118}$|${\small 1}$|${\small 1.348910059}$
+$12$|${\small 0.5}$|${\small 56.4462477}$|${\small 56.44846215}$|$\|{\small 2.741025202}$|${\small 1}$|${\small 1.370512601}$
+$13$|${\small 0.5}$|${\small 59.347044}$|${\small 59.34915022}$|$\|{\small 2.775579213}$|${\small 1}$|${\small 1.387789606}$
+$14$|${\small 0.5}$|${\small 60.83177852}$|${\small 60.83383334}$|$\|{\small 2.792777236}$|${\small 1}$|${\small 1.396388618}$
+$15$|${\small 0.5}$|${\small 65.11254405}$|${\small 65.11446377}$|$\|{\small 2.840660727}$|${\small 1}$|${\small 1.420330364}$
+$16$|${\small 0.5}$|${\small 67.07981053}$|${\small 67.08167396}$|$\|{\small 2.861877056}$|${\small 1}$|${\small 1.430938528}$
+$17$|${\small 0.5}$|${\small 69.54640171}$|${\small 69.54819905}$|$\|{\small 2.887828992}$|${\small 1}$|${\small 1.443914496}$
+$18$|${\small 0.5}$|${\small 72.06715767}$|${\small 72.06889215}$|$\|{\small 2.913647184}$|${\small 1}$|${\small 1.456823592}$
+$19$|${\small 0.5}$|${\small 75.7046907}$|${\small 75.70634183}$|$\|{\small 2.949735435}$ |${\small 1}$|${\small 1.474867717}$
+$20$|${\small 0.5}$|${\small 77.14484007}$|${\small 77.14646038}$|$\|{\small 2.963664248}$|${\small 1}$|${\small 1.481832124}$
+$21$|${\small 0.5}$|${\small 79.33737502}$|${\small 79.33895055}$|$\|{\small 2.984500204}$|${\small 1}$|${\small 1.492250102}$
+${\small \textit{22}}$|${\small 0.5}$|${\small 82.91038085}$|${\small 82.91188849}$|$\|{\small 3.017548102}$|${\small 2}$|${\small 1.005849367}$
+${\small \textit{23}}$|${\small 0.5}$|${\small 84.73549298}$|${\small 84.73696815}$|$\|{\small 3.03401854}$|${\small 2}$|${\small 1.011339513}$
+${\small \textit{24}}$|${\small 0.5}$|${\small 87.42527461}$|${\small 87.42670439}$|$\|{\small 3.057813734}$|${\small 2}$|${\small 1.019271245}$
+${\small \textit{25}}$|${\small 0.5}$|${\small 88.80911121}$|${\small 88.81051871}$|$\|{\small 3.069842552}$|${\small 2}$|${\small 1.023280851}$
+
+### Table 7.04 Non trivial zeros - Levels
+
+T7.04@ [osf](t6uda)
+
+|Table 7.04 Non trivial zeros - Levels|
+|---|
+
+${\small Level}$ | $\rule{0.5pt}{15pt} $<br>$\rule{0.5pt}{15pt} \thinspace  {\small z_{min}}$ | $\rule{0pt}{15pt}$<br>$\rule{0.5pt}{15pt} \thinspace  {\small z_{max}}$ | $\rule{0pt}{15pt} \hspace{-4em}  \zeta \text{ zero index}$<br>$\rule{0.5pt}{15pt} \thinspace {\small \Delta z}$ | $\rule{0.5pt}{15pt} \thinspace\thinspace  z_{max}\in T_{n}$<br>$\rule{0.5pt}{15pt} \quad {\small n\in\mathbb{N}}$ | $\rule{0.5pt}{15pt}$<br>$\rule{0.5pt}{15pt} \quad {\small z_{min}}$ | $\rule{0pt}{15pt} \hspace{ -3em} z_{n}\propto chord $<br>$\rule{0.5pt}{15pt}\quad {\small z_{max}}$
+---|---|---|---|---|---|---
+$0$ | ${\small 0}$ | ${\small 1}$ | ${\small 1}$ | ${\small 1}$ | ${\small 0}$ | ${\small 1.939276475}$ 
+$1$ | ${\small 1}$ | ${\small 21}$ | ${\small 20}$ | ${\small 6}$ | ${\small 1.070703984}$ | ${\small 1.492250102}$
+$2$ | ${\small 22}$ | ${\small 111}$ | ${\small 90}$ | ${\small 14.41}$ | ${\small 1.005849367}$ | ${\small 1.332429741}$
+$3$ | ${\small 112}$ | ${\small 359}$| ${\small 258}$ | ${\small 26.3}$ | ${\small 1.000372059}$ | ${\small 1.24963489}$ 
+$4$ | ${\small 360}$ | ${\small 894}$ | ${\small 535}$ | ${\small 41.79}$ | ${\small 1.000407544}$ | ${\small 1.199853089}$
+$5$ | ${\small 895}$ | ${\small -}$ | ${\small -}$ | ${\small -}$ | ${\small 1.000154518}$ | ${\small -}$
+$\infty$ | $ $ | $ $ | $ $ | ${\small \mathbb{N}}$ | ${\small 1}$ | ${\small 1}$
+
+### Table 7.05 Level 1 coordinate listing
+
+T7.05@ [osf](67ej4)
+
+|Table 7.05 Level 1 coordinate listing|
+|---|
+
+$\rule{0pt}{15pt} \thinspace $<br>$\rule{0pt}{15pt} \thinspace $<br>$\rule{0pt}{15pt} \thinspace \thinspace n$|$\rule{0.5pt}{15pt} \thinspace {\small C_{unity}}$<br>$\rule{0.5pt}{15pt}\thinspace{\small cl=\frac{\sqrt[4]{\left\|a\right\|}}{\left\lfloor\sqrt[4]{\left\|a\right\|}\right\rfloor }}$<br>$\rule{0.5pt}{7pt} \thinspace$|$\rule{0.5pt}{15pt} \thinspace {\small ngon}$<br>$\rule{0.5pt}{15pt} \thinspace {\small idx}$<br>$\rule{0.5pt}{15pt} \thinspace $|$\rule{0.5pt}{15pt} \thinspace {\small chrd}$<br>$\rule{0.5pt}{15pt} \thinspace idx$<br>$\rule{0.5pt}{15pt} \thinspace $|$\rule{0.5pt}{15pt} \thinspace {\small cos\left(\frac{idx}{ngon}2\pi\right)}$<br>$\rule{0.5pt}{15pt} \quad\quad\quad {\small x}$<br>$\rule{0.5pt}{15pt} \thinspace $|$\rule{0.5pt}{15pt} \thinspace {\small cl\times x}$<br>$\rule{0.5pt}{15pt} \thinspace \quad{\small x^{\thinspace\prime}}$<br>$\rule{0.5pt}{15pt} \thinspace $|$\rule{0.5pt}{15pt} \thinspace {\small sin\left(\frac{idx}{ngon}2\pi\right)}$<br>$\rule{0.5pt}{15pt} \quad\quad\quad {\small y}$<br>$\rule{0.5pt}{15pt} \thinspace $<br>|$\rule{0.5pt}{15pt} \thinspace {\small cl\times y}$<br>$\rule{0.5pt}{15pt} \quad  y^{\thinspace\prime}$<br>$\rule{0.5pt}{15pt} \thinspace $
+---|---|---|---|---|---|---|---
+${2}$ | ${\small 1.070703984}$ | ${\small 2}$ | ${\small 1}$ | ${\small -1}$ | ${\small -1.070703984}$ | ${\small 0}$ | ${\small 0}$ 
+${3}$ | ${\small 1.11821121}$ | ${\small 2}$ | ${\small 2}$ | ${\small 1}$ | ${\small 1.11821121}$ | ${\small 0}$ | ${\small 0}$ 
+$4$ | ${\small 1.174334631}$ | ${\small 3}$ | ${\small 1}$ | ${\small -0.5}$ | ${\small -0.5871673155}$ | ${\small \sqrt{\frac{3}{4}}}$ | ${\small 1.017003632}$ 
+$5$ | ${\small 1.197835375}$ | ${\small 3}$ | ${\small 2}$ | ${\small -0.5}$ | ${\small -0.5989176875}$ | ${\small -\sqrt{\frac{3}{4}}}$ | ${\small -1.037355864}$ 
+$6$ | ${\small 1.238045632}$ | ${\small 3}$ | ${\small 3}$ | ${\small 1}$ | ${\small 1.238045632}$ | ${\small 0}$ | ${\small 0}$ 
+${7}$ | ${\small 1.264615838}$ | ${\small 4}$ | ${\small 1}$ | ${\small 0}$ | ${\small 0}$ | ${\small 1}$ | ${\small 1.264615838}$ 
+${8}$ | ${\small 1.282823987}$ | ${\small 4}$ | ${\small 2}$ | ${\small -1}$ | ${\small -1.282823987}$ | ${\small 0}$ | ${\small 0}$ 
+${9}$ | ${\small 1.316127165}$ | ${\small 4}$ | ${\small 3}$ | ${\small 0}$ | ${\small 0}$ | ${\small -1}$ | ${\small -1.316127165}$ 
+${10}$ | ${\small 1.328084636}$ | ${\small 4}$ | ${\small 4}$ | ${\small 1}$ | ${\small 1.328084636}$ | ${\small 0}$ | ${\small 0}$ 
+$11$ | ${\small 1.348910059}$ | ${\small 5}$ | ${\small 1}$ | ${\small 0.3090169944}$ | ${\small 0.4168361321}$ | ${\small 0.9510565163}$ | ${\small 1.282889702}$ 
+$12$ | ${\small 1.370512601}$ | ${\small 5}$ | ${\small 2}$ | ${\small -0.8090169944}$ | ${\small -1.108767985}$ | ${\small 0.58778522523}$ | ${\small 0.855670579}$ 
+$13$ | ${\small 1.387789606}$ | ${\small 5}$ | ${\small 3}$ | ${\small -0.8090169944}$ | ${\small -1.122745376}$ | ${\small -0.58778522523}$ | ${\small -0.8157222261}$ 
+$14$ | ${\small 1.396388618}$ | ${\small 5}$ | ${\small 4}$ | ${\small 0.3090169944}$ | ${\small 0.4315078137}$ | ${\small -0.9510565163}$ | ${\small -1.328044494}$ 
+$15$ | ${\small 1.420330364}$ | ${\small 5}$ | ${\small 5}$ | ${\small 1}$ | ${\small 1.420330364}$ | ${\small 0}$ | ${\small 0}$ 
+${16}$ | ${\small 1.430938528}$ | ${\small 6}$ | ${\small 1}$ | ${\small 0.5}$ | ${\small 0.715469264}$ | ${\small \sqrt{\frac{3}{4}}}$ | ${\small 1.239229117}$ 
+${17}$ | ${\small 1.443914496}$ | ${\small 6}$ | ${\small 2}$ | ${\small -0.5}$ | ${\small -0.721957248}$ | ${\small \sqrt{\frac{3}{4}}}$ | ${\small 1.250466634}$ 
+${18}$ | ${\small 1.456823592}$ | ${\small 6}$ | ${\small 3}$ | ${\small -1}$ | ${\small -1.456823592}$ | ${\small 0}$ | ${\small 0}$ 
+${19}$ | ${\small 1.474867717}$ | ${\small 6}$ | ${\small 4}$ | ${\small -0.5}$ | ${\small -0.7374338585}$ | ${\small -\sqrt{\frac{3}{4}}}$ | ${\small -1.27727291}$ 
+${20}$ | ${\small 1.481832124}$ | ${\small 6}$ | ${\small 5}$ | ${\small 0.5}$ | ${\small 0.740916062}$ | ${\small -\sqrt{\frac{3}{4}}} $ | ${\small -1.283304264}$ 
+${21}$ | ${\small 1.492250102}$ | ${\small 6}$ | ${\small 6}$ | ${\small 1}$ | ${\small 1.492250102}$ | ${\small 0}$ | ${\small 0}$
+
+Chapter 08
+----------
+
+### Table 8.01 Spectrum orthogonal diagonal full cycle
+
+T8.01@ [osf](tmzsf)
+
+|Table 8.01 Spectrum orthogonal diagonal full cycle|
+|---|
+
+$\rule{0pt}{15pt} \thinspace $<br>$\rule{0pt}{15pt} \thinspace q$|$\rule{0.5pt}{15pt} \thinspace {\small U_{arc}=\angle7.2\text{°}}$<br>$\rule{0.5pt}{15pt} \thinspace {\small q\left(n\angle7.2\text{°}\right)}$|$\rule{0.5pt}{15pt} \thinspace $<br>$\rule{0.5pt}{15pt} \thinspace {\small n}$|$\rule{0pt}{15pt} \thinspace $<br>$\rule{0.5pt}{15pt} \thinspace {\small 1}$|$\rule{0pt}{15pt} \thinspace$<br>$\rule{0.5pt}{15pt} \thinspace  {\small 2}$|$\rule{0pt}{15pt} \thinspace$<br>$\rule{0.5pt}{15pt} \thinspace  {\small 3}$|$\rule{0pt}{15pt} \thinspace$<br>$\rule{0.5pt}{15pt} \thinspace  {\small 4}$|$\rule{0pt}{15pt} \thinspace$<br>$\rule{0.5pt}{15pt} \thinspace  {\small 5}$|$\rule{0pt}{15pt} \thinspace \hspace{-12em}{\small \text{Spectrum 50 periods for q}}$<br>$\rule{0.5pt}{15pt} \thinspace  {\small \dots , 50}$
+---|---|---|---|---|---|---|---|---
+$1$ | ${\small 7.2\text{°}}$ | ${\small 1}$ | ${\small 7.2\text{°}}$ | ${\small 14.4\text{°}}$ | ${\small 21.6\text{°}}$ | ${\small 28.8\text{°}}$ | ${\small 36\text{°}}$ | ${\small \dots}$ 
+$1$ | ${\small 14.4\text{°}}$ | ${\small 2}$ | ${\small 14.4\text{°}}$ | ${\small 28.8\text{°}}$ | ${\small 43.2\text{°}}$ | ${\small 57.6\text{°}}$ | ${\small 72\text{°}}$ | ${\small \dots}$ 
+$1$ | ${\small 21.6\text{°}}$ | ${\small 3}$ | ${\small 21.6\text{°}}$ | ${\small 43.2\text{°}}$ | ${\small 64.8\text{°}}$ | ${\small 86.4\text{°}}$ | ${\small 108\text{°}}$ | ${\small \dots}$ 
+$1$ | ${\small 28.8\text{°}}$ | ${\small 4}$ | ${\small 28.8\text{°}}$ | ${\small 57.6\text{°}}$ | ${\small 86.4\text{°}}$ | ${\small 115.2\text{°}}$ | ${\small 144\text{°}}$ | ${\small \dots}$ 
+$1$ | ${\small 36\text{°}}$ | ${\small 5}$ | ${\small 36\text{°}}$ | ${\small 72\text{°}}$ | ${\small 108\text{°}}$ | ${\small 144\text{°}}$ | ${\small 180\text{°}}$ | ${\small \dots}$ 
+$1$ | ${\small 43.2\text{°}}$ | ${\small 6}$ | ${\small 43.2\text{°}}$ | ${\small 86.4\text{°}}$ | ${\small 129.6\text{°}}$ | ${\small 172.8\text{°}}$ | ${\small 216\text{°}}$ | ${\small \dots}$ 
+$1$ | ${\small 50.4\text{°}}$ | ${\small 7}$ | ${\small 50.4\text{°}}$ | ${\small 100.8\text{°}}$ | ${\small 151.2\text{°}}$ | ${\small 201.6\text{°}}$ | ${\small 252\text{°}}$ | ${\small \dots}$ 
+$1$ | ${\small 57.6\text{°}}$ | ${\small 8}$ | ${\small 57.6\text{°}}$ | ${\small 115.2\text{°}}$ | ${\small 172.8\text{°}}$ | ${\small 230.4\text{°}}$ | ${\small 288\text{°}}$ | ${\small \dots}$ 
+$1$ | ${\small 64.8\text{°}}$ | ${\small 9}$ | ${\small 64.8\text{°}}$ | ${\small 129.6\text{°}}$ | ${\small 194.4\text{°}}$ | ${\small 259.2\text{°}}$ | ${\small 324\text{°}}$ | ${\small \dots}$ 
+$1$ | ${\small 72\text{°}}$ | ${\small 10}$ | ${\small 72\text{°}}$ | ${\small 144\text{°}}$ | ${\small 216\text{°}}$ | ${\small 288\text{°}}$ | ${\small 0\text{°}}$ | ${\small \dots}$ 
+$\dots$ | ${\small \dots}$ | ${\small \dots,50}$ | ${\small \dots}$ | ${\small \dots}$ | ${\small \dots}$ | ${\small \dots}$ | ${\small \dots}$ | ${\small \dots,50}$
+

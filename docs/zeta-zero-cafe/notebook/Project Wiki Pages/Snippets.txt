@@ -1,0 +1,62 @@
+
+@[toc]
+
+
+
+
+    $$
+    \rule{.5pt}{20pt}\thinspace \begin{comment} 
+    \hspace{-1em} negative space -n em
+    \quad space
+    \qquad bigger space
+    \end{comment}
+    $$
+
+
+    $\scale1.425}{This is a test} $<br>
+    ${\tiny 0123456789}$<br>
+    ${\small 0123456789}$<br>
+    ${ 0123456789}$<br>
+    ${\huge  0123456789}$<br>
+
+
+
+
+#Markdown Table struct
+
+    |Table n Table titel|
+    |---|
+    
+    $01$|$02$|$03$|$04$|$05$|$06$|$07$
+    ---|---|---|---|---|---|---
+    
+    
+    $\rule{2pt}{12pt}col\thinspace01$<br>$\|r1\thinspace $<br>$\|r2$<br>$\|r3$
+    
+    $\|col\thinspace02$<br>$\|r1\thinspace $<br>$\|r2$<br>$\|r3$
+    
+    $\|col\thinspace03$<br>$\|r1\thinspace $<br>$\|r2$<br>$\|r3$
+    
+    $\|col\thinspace04$<br>$\|r1\thinspace $<br>$\|r2$<br>$\|r3$
+    
+    $\|col\thinspace05$<br>$\|r1\thinspace $<br>$\|r2$<br>$\|r3$
+    
+    $\|col\thinspace06$<br>$\|r1\thinspace $<br>$\|r2$<br>$\|r3$
+    
+    $\|col\thinspace07$<br>$\|r1\thinspace $<br>$\|r2$<br>$\|r3$
+    
+    
+
+|Table n Table titel|
+|---|
+
+$col\thinspace01\rule{50pt}{.5pt}$<br>$\rule{.5pt}{20pt}r1\thinspace $<br>$\rule{.5pt}{20pt}r2$<br>$\rule{.5pt}{25pt}r3$<br>$\rule{.5pt}{25pt}r3$|$02$|$03$|$04$|$05$|$06$|$07$
+---|---|---|---|---|---|---
+
+
+$col\thinspace01\rule{50pt}{.5pt}$
+<br>$\rule{.5pt}{20pt}r1\thinspace $
+<br>$\rule{.5pt}{20pt}r2$
+<br>$\rule{.5pt}{25pt}r3$
+<br>$\rule{.5pt}{25pt}r3$
+

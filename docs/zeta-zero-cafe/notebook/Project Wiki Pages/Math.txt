@@ -1,0 +1,494 @@
+Latex
+=====
+
+@[toc]
+
+Chapter 01
+----------
+\begin{equation}1+\frac{1}{2^{2}}+\frac{1}{3^{2}}+\frac{1}{4^{2}}+\frac{1}{5^{2}}+\dots \label{eq:01:01}\tag{01:01}\end{equation}
+
+\begin{equation}1+\frac{1}{2}+\frac{1}{3}+\frac{1}{4}+\frac{1}{5}+\dots=\infty\label{eq:01:02}\tag{01:02} \end{equation}
+
+factorial functon
+
+\begin{equation}\sum_{n}^{\infty}n^{-s}=1+\frac{1}{2^{2}}+\frac{1}{3^{2}}+\frac{1}{4^{2}}+\frac{1}{5^{2}}+\dots=\frac{\pi^{2}}{6}\label{eq:01:04}\tag{01:04} \end{equation}
+
+\begin{equation}\begin{split}\zeta\left(2\right)&=\prod_{p}^{\infty}\left(1-p^{-2}\right)^{-1}=\prod_{p}^{\infty}\frac{1}{1-\frac{1}{p^{2}}}\\\\&=1\times\frac{4}{3}\times\frac{9}{8}\times\frac{25}{24}\times\dots=\frac{\pi^{2}}{6}\end{split}\label{eq:01:05}\tag{01:05}\end{equation}
+
+\begin{equation}\sum_{n}^{\infty}n^{-s}=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}\label{eq:01:06}\tag{01:06}\end{equation}
+
+
+Chapter 02
+----------
+
+\begin{equation}\frac{\pi^{s}}{x}\label{eq:02.01}\tag{02.01}\end{equation}
+
+\begin{equation}\zeta\left(s\right)=\frac{n\pi^{s}}{x&lt;=n\pi^{s}}\label{eq:02.02}\tag{02.02}\end{equation}
+
+\begin{equation}\begin{split}Let\thinspace SA&=\pi^{2}\\\\
+r_{sa}&=\sqrt{\frac{SA}{4\pi}}=\sqrt{\frac{\pi^{2}}{4\pi}}=\frac{\sqrt{\pi}}{2}\cong0.8862269255\\\\
+V_{sa}&=\frac{4}{3}\pi\\;r_{sa}^{3}=\frac{4}{3}\pi\left(\frac{\sqrt{\pi}}{2}\right)^{3}\cong2.915569721\\\\
+\frac{V_{sa}}{\zeta\left(2\right)}&=2r_{sa}
+\end{split}\label{eq:02.03}\tag{02.03}\end{equation}
+
+\begin{equation}\frac{V_{sa}}{\frac{1}{6}SA}=2\times r_{sa}
+\label{eq:02.04}\tag{02.04}\end{equation}
+
+\begin{equation}V_{sa}=\frac{4}{3}\pi \left(r_{sa}\right)^{3}=\frac{4}{3}\pi\left(\frac{\sqrt{\pi}}{2}\right)^{3}\approx2.915569721
+\label{eq:02.05}\tag{02.05}\end{equation}
+
+\begin{equation}\begin{aligned}
+V_{init}&=1\rightarrow V_{end}=8\rightarrow V_{next}=64\\\\
+r_{init}&=1\rightarrow r_{end}=2\rightarrow r_{next}=4
+\end{aligned}\label{eq:02.06}\tag{02.06}\end{equation}
+
+\begin{equation}
+sa_{end}=\frac{V_{end}(=8)}{r_{end}(=2)}=4
+\label{eq:02.07}\tag{02.07}\end{equation}
+
+\begin{equation}
+sa_{init}=1\rightarrow sa_{end}=4\rightarrow sa_{next}=16
+\label{eq:02.08}\tag{02.08}\end{equation}
+
+
+\begin{equation}
+\frac{V_{init}}{\left(\frac{V_{end}}{r_{end}}\right)}=\frac{1}{4}
+\label{eq:02.09}\tag{02.09}\end{equation}
+
+\begin{equation}
+\frac{init\thinspace vol\thinspace\\#0=\frac{1}{2}}{\left(\frac{v=1}{0.25}\right)},\frac{volume\thinspace\\#1=1}{\left(\frac{v=8}{2}\right)},\frac{volume\thinspace\\#2=2}{\left(\frac{v=64}{16}\right)},\frac{volume\thinspace\\#3=4}{\left(\frac{v=512}{128}\right)}
+\label{eq:02.10}\tag{02.10}\end{equation}
+
+\begin{equation}
+\left\\{ (V_{0}=\frac{1}{2}),(V_{1}=1),(V_{2}=2),(V_{3}=4),...\right\\}
+\label{eq:02.11}\tag{02.11}\end{equation}
+
+\begin{equation}
+\frac{\frac{1}{2}}{\left(\frac{v=1}{0.25}=4\right)},\frac{1}{\left(\frac{v=8}{2}=4\right)},\frac{2}{\left(\frac{v=64}{16}=4\right)},\frac{4}{\left(\frac{v=512}{128}=4\right)}
+\label{eq:02.12}\tag{02.12}\end{equation}
+
+\begin{equation}
+S_{ratio}=\frac{V_{init}=1}{\left(\frac{V_{end}=8}{r_{end}3=2}\right)}=\frac{1}{4}
+\label{eq:02.13}\tag{02.13}\end{equation}
+
+\begin{equation}
+\frac{\left(\frac{1}{2}\right)}{4},\frac{1}{4},\frac{2}{4},\frac{4}{4},...\rightarrow\frac{1}{8},\frac{1}{4},\frac{1}{2},1,2,4,8,...
+\label{eq:02.14}\tag{02.14}\end{equation}
+
+\begin{equation}
+\left\\{ (V_{0}=\frac{1}{2}),(V_{1}=1),(V_{2}=2),(V_{3}=4)\right\\}
+\label{eq:02.15}\tag{02.15}\end{equation}
+
+\begin{equation}\begin{split}
+\left\\{ common\\,ratio=4\right\\} &\times\left\\{ \frac{1}{(8)},\frac{1}{(4)},\frac{1}{(2)},1,2,4,8,...\right\\}\\\\
+&=sequence\\,V_{init}\left\\{ \frac{1}{2},1,2,4,8,...\right\\}
+\end{split}\label{eq:02.16}\tag{02.16}\end{equation}
+
+\begin{equation}
+spatial\thinspace ratio\rightarrow\frac{(initial\thinspace volume)}{\frac{(end\thinspace volume}{end\thinspace radius)}}\rightarrow\frac{V_{init}=1}{\frac{(V_{end}=8)}{r_{end}=2}}\rightarrow\frac{1}{4}
+\label{eq:02.17}\tag{02.17}\end{equation}
+
+\begin{equation}\begin{split}
+\zeta(s)&=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}=\frac{1}{1-\frac{1}{2^{2}}}\times\frac{1}{1-\frac{1}{3^{2}}}\times\frac{1}{1-\frac{1}{5^{2}}}\times...\\\\
+&=\frac{4}{3}\times\frac{9}{8}\times\frac{25}{24}\times...=\frac{\pi^{2}}{6}\rightarrow\frac{surface\thinspace area}{some\thinspace value}
+\end{split}\label{eq:02.18}\tag{02.18}\end{equation}
+
+\begin{equation}
+\begin{split}
+V&=\frac{4}{3}\pi r^{3}\text{ yields the volume of a sphere}\\\\
+r&=\sqrt\[3\]{\frac{V}{(\frac{4}{3}\pi)}}\text{ yields the radius from a given volume}\\\\
+SA&=4\pi r^{2}\text{ yields the surface area of a sphere}\\\\
+r&=\sqrt{\frac{SA}{4\pi}}\text{ yields the radius from a given surface area}
+\end{split}\label{eq:02.19}\tag{02.19}\end{equation}
+
+\begin{equation}
+\zeta(2)=\frac{\pi^{2}}{6},\zeta\left(3\right)=\frac{\pi^{2}}{8.210596...},\zeta\left(4\right)=\frac{\pi^{2}}{9.118906528...}
+\label{eq:02.20}\tag{02.20}\end{equation}
+
+\begin{equation}\begin{split}
+\zeta^{\,\prime}\left(2\right)&=\frac{2\pi}{\left(2\pi\right)\left(\frac{\pi^{2}}{6}\right)^{-1}}=\frac{2\pi}{3.819718634}=\frac{2\pi}{\left(\frac{24}{2\pi}\right)}\\\\
+&\rightarrow\frac{circumference}{radius}
+\end{split}\label{eq:02.21}\tag{02.21}\end{equation}
+
+\begin{equation}\begin{split}
+\zeta^{\,\prime}\left(s\right)&=\frac{n\pi}{\left(n\pi\right)\left(\frac{\pi^{s}}{\pi^{s}-\varepsilon}\right)^{-1}}=\frac{n\pi}{\left(n\pi\right)-\varepsilon}&gt;=1\\\\
+&\rightarrow\frac{circumference\propto2\pi}{\left|radius\right|&lt;=2\pi}
+\end{split}\label{eq:02.22}\tag{02.22}\end{equation}
+
+\begin{equation}\begin{split}
+f^{\,\prime\prime\prime\prime\prime}\left(x^{5}\right)&=sx^{s-1}\rightarrow x^{5}\rightarrow5x^{4}\rightarrow20x^{3}\rightarrow60x^{2}\rightarrow120x^{1}\\\\
+f^{\,\prime\prime\prime\prime\prime}\left(\pi^{5}\right)&=5!\pi=5\times4\times3\times2\times1\pi=120\pi
+\end{split}\label{eq:02.23}\tag{02.23}\end{equation}
+
+\begin{equation}
+\frac{\pi^{s}}{\left(\pi^{s}\right)\left(\zeta\left(s\right)\right)^{-1}}\rightarrow\frac{1}{\left(1\right)\left(\zeta\left(s\right)\right)^{-1}}\rightarrow\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{-1}}
+\label{eq:02.24}\tag{02.24}\end{equation}
+
+\begin{equation}
+\frac{2}{\left(s!\right)}\times\frac{s!\pi}{x}=\frac{2\pi}{(s!)x}
+\label{eq:02.25}\tag{02.25}\end{equation}
+
+\begin{equation}
+\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{-1}}\rightarrow\frac{x}{x-\varepsilon}&gt;1
+\label{eq:02.26}\tag{02.26}\end{equation}
+
+
+Chapter 03
+----------
+
+\begin{equation}P_{n}\\#=\prod_{k=1}^{n}P_{k}=2\times3\times5\times7\times\dots\in\mathbb{N}
+\label{eq:03.01}\tag{03.01}\end{equation}
+
+\begin{equation}\begin{split}
+\underset{n\rightarrow\infty}{lim}&\\,\Delta P_{s}=\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}=\sqrt{\frac{2\pi}{2.5^{2}}}\simeq1.00265131\dots\in\mathbb{R}
+\end{split}\label{eq:03.02}\tag{03.02}\end{equation}
+
+\begin{equation}
+\sum_{n}^{\infty}n^{-s}=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}
+\label{eq:03.03}\tag{03.03}\end{equation}
+
+\begin{equation}
+\looparrowright=\left(\Delta P_{s}\right)^{2}=\frac{2\pi}{2.5^{2}}\simeq1.005309649\dots\in\mathbb{R}
+\label{eq:03.04}\tag{03.04}\end{equation}
+
+\begin{equation}
+\mathbb{Q}\looparrowright=\mathbb{R}\leftrightarrow\frac{\mathbb{R}}{\looparrowright}=\mathbb{Q}
+\label{eq:03.05} \tag{03.05} \end{equation}
+
+\begin{equation}
+\left(\forall x\in\mathbb{R}\right)\left(\exists!q\in\mathbb{Q}\right)\left(x\left(\looparrowright\right)^{-1}=q\right) \label{eq:03.06} \tag{03.06} \end{equation}
+
+\begin{equation}\begin{split}
+A_{\square}&=\left(2.5^2\sqrt{2}\right)^2=78.125\in\mathbb{Q}\\\\
+A_{\circ}&=\pi5^2=78.125\looparrowright\in\mathbb{R}
+\end{split}\label{eq:03.07} \tag{03.07} \end{equation}
+
+\begin{equation}
+\mathbb{Q}\looparrowright=\mathbb{R}\leftrightarrow\frac{\mathbb{R}}{\looparrowright}=\mathbb{Q}
+\label{eq:03.08}\tag{03.08}\end{equation}
+
+\begin{equation}
+P\Delta=\frac{24}{25}=0.96\label{eq:03.09} \tag{03.09}\end{equation}
+
+\begin{equation}
+pole=\frac{2.5^{2}}{2\pi\left(\looparrowright\right)^{-1}}\propto\frac{25}{25}\propto 1
+\label{eq:03.10} \tag{03.10}\end{equation}
+
+\begin{equation}
+P_{\ast}=\left(P\triangle\right)^{-1}\looparrowright\thinspace\rightarrow\frac{\pi}{3}=60^{\circ}
+\label{eq:03.11} \tag{03.11}\end{equation}
+
+Chapter 04
+----------
+
+\begin{equation}\begin{split}
+T_{n}&=\frac{n(n+1)}{2}=\\{0,1,3,6,10,15,21,28,36,\dots\\}\\\\
+n&=\frac{\sqrt{8x+1}-1}{2}\rightarrow n\in\mathbb{N}\rightarrow T_{n}=x
+\end{split}\label{eq:04.00}\tag{04.00}\end{equation}
+
+\begin{equation}
+T_{n=3}=\frac{1}{2}n\left(n+1\right)=1.5\times4=6
+\label{eq:04.01} \tag{04.01} \end{equation}
+
+\begin{equation}
+\zeta\left(1\right)=1+\frac{1}{2^{1}}+\frac{1}{3^{1}}+\text{…}=1+\frac{1}{2}+\frac{1}{3}+\text{…}=\frac{\pi^{2}}{4}
+\label{eq:04.02}\tag{04.02}\end{equation}
+
+\begin{equation}
+\underset{n\rightarrow\infty}{lim}\rightarrow a=\sqrt{2\left(\frac{T_{n}}{4n^{2}}\right)}=\sqrt{2\left(\frac{1}{8}\right)}=\frac{1}{2}\rightarrow r_{q}=\frac{0.5}{a}=1
+\label{eq:04.03}\tag{04.03}\end{equation}
+
+\begin{equation}\begin{split}
+T_{n=1}&\propto SA=\frac{2}{3}\pi^2={2\pi}\times P_\star\\\\
+\zeta\left(2\right)=\frac{\pi^2}{6}\rightarrow4\left(\frac{\pi^2}{6}\right)&\propto SA=\frac{4}{6}\pi^2={2\pi}\times P_\star\\\\
+\zeta\left(1\right)&\propto SA=\frac{6}{9}\pi^2={2\pi}\times P_\star
+\end{split}\label{eq:04.04}\tag{04.04}\end{equation}
+
+\begin{equation}\begin{split}
+\frac{6^{0}=1}{6}A_{\square}&\rightarrow\frac{6^{1}=6}{9}A_{\Delta}\\\\
+\frac{6^{1}=6}{6}A_{\square}&\rightarrow\frac{6^{2}=36}{9}A_{\Delta}
+\end{split}\label{eq:04.05}\tag{04.05}\end{equation}
+
+\begin{equation}
+T_{n=1}\rightarrow a=\sqrt{2\left(\frac{T_{n}}{4n^{2}}\right)}=\sqrt{2}^{\thinspace-1}
+\label{eq:04.06}\tag{04.06}\end{equation}
+
+\begin{equation}
+\zeta\left(2\right)\rightarrow a=\sqrt{2\times\frac{1}{6}}=0.57735026922\rightarrow\left\(\sqrt{2}^{\thinspace-1}>=a>=0.5\right\)
+\label{eq:04.07}\tag{04.07}\end{equation}
+
+\begin{equation}\begin{split}
+&\text{See table 4.2 projection plane range for all s}\\\\
+&\overset{\zeta\left(1\right)}{\left\\{\frac{\pi^2}{4}\times\frac{8}{3}=\frac{6}{9}\pi^2\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(2\right)}{\left\\{\frac{\pi^2}{6}\times 6=\pi^2\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(\infty\right)}{\left\\{\frac{\pi^2}{\pi^2}\times\frac{\pi^2}{6}\left(\pi^2\right)=\frac{\pi^2}{6}\left(\pi^2\right)\right\\}}\\\\
+%-------------------------------------
+\\\\
+&\text{Unit }\pi^2=1\\\\
+&\overset{\zeta\left(1\right)}{\left\\{\frac{1}{4}\times\frac{8}{3}=\frac{6}{9}\left(1\right)\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(2\right)}{\left\\{\frac{1}{6}\times 6=1\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(\infty\right)}{\left\\{\frac{1}{1}\times \frac{1}{6}\left(1\right)=\frac{1}{6}\left(1\right)\right\\}}\\\\
+%-------------------------------------
+\\\\
+&\text{Scale invariant: }4\times A_\Delta = A_\square\\\\
+&\overset{\zeta\left(1\right)}{\left\\{A_\square\times\frac{1}{6}=SA\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(2\right)}{\left\\{\frac{A_\square}{6}\times 6=SA\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(\infty\right)}{\left\\{A_\square\times\frac{1}{6}=SA\right\\}}\\\\
+%-------------------------------------
+\end{split}\label{eq:04.08}\tag{04.08}\end{equation}
+
+\begin{equation}\begin{split}
+V=\left(\sqrt{\frac{\pi^2}{4\pi}}\right)^3\times\frac{4}{3}\pi\approx 2.915569721&\rightarrow V=\left(\sqrt{\frac{1}{4}}\right)^3\times\frac{4}{3} =\frac{1}{6}\\\\
+\zeta\left(2\right)^2\approx 2.705808084 &\rightarrow V^2=\left(\frac{1}{6}\right)^2=\frac{9^{-1}}{4}=\frac{T_h}{40}\\\\
+\end{split}\label{eq:04.09}\tag{04.09}\end{equation}
+
+\begin{equation}\begin{split}
+\zeta\left(2\right)^{n}&\rightarrow SA=\frac{A_{\square}}{6^{n}}=\left(\frac{1}{6}\right)^{n}\\\\
+&=\left\\{ 1,\frac{1}{6},\frac{1}{36},\frac{1}{216},\frac{1}{1296},...\right\\}
+\end{split}\label{eq:04.10}\tag{04.10}\end{equation}
+
+\begin{equation}\begin{split}
+\zeta\left(2\right)^{n}&\rightarrow V=\frac{1}{4}\left(\frac{A_{\square}}{T_{h}}\right)=\frac{A_{\square}}{6^{n+1}}\\\\
+&=\left\\{ \frac{1}{6},\frac{1}{36},\frac{1}{216},\frac{1}{1296},..\right\\}
+\end{split}
+\label{eq:04.11}
+\tag{04.11}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+A_{\square n}=1\rightarrow A_{\square n+1}&=\frac{4}{9}=\frac{1}{10}\left(4T_{h}\right)=0.444\dots\\\\
+\Delta\underset{n\rightarrow\infty}{lim}\rightarrow\frac{\left(3^{n}\right)^{2}}{\left(3^{n}\right)^{2}-1}&=\left\\{ \frac{9}{8},\frac{81}{80},\frac{729}{728},\frac{6561}{6560},\frac{59049}{59048},\dots\right\\} =1\rightarrow\Delta-\frac{1}{8}
+\end{split}\label{eq:04.12}\tag{04.12}\end{equation}
+
+
+Chapter 05
+----------
+
+\begin{equation}
+r_{q}=\forall n\\,\sqrt{\frac{n}{n+1}}\rightarrow\left\\{\sqrt{\frac{1}{2}},\sqrt{\frac{2}{3}},\sqrt{\frac{3}{4}},\dots\right\\}
+\label{eq:05:01}\tag{05:01}\end{equation}
+
+\begin{equation}\begin{split}
+\overline{BC}^2+\overline{AB}^2\&=1\frac{1}{4} \rightarrow c_{\hbar}= \sqrt {\left({BC} \right)^2+\left({AB}\right)^2}\\\\
+n=4\rightarrow a&=\left[\sqrt{2}^{\text{ -1}},\frac{1}{2}\times\left(\sqrt{\frac{4}{5}}\right)^{-1}\right]\rightarrow\left[\sqrt{2}^{\text{ -1}},\sqrt{\frac{10}{32}}\right]\\\\
+n=3\rightarrow r_{q}&=\left[\sqrt{\frac{3}{4}},1\right]
+\end{split}\label{eq:05:02}\tag{05:02}\end{equation}
+
+\begin{equation}\begin{split}
+SA_{c=1}&=\left(\sqrt{2}^{\thinspace-1}\times1\right)^{2}\times4\pi=2\pi\\\\
+&\rightarrow\left(SA_{\propto\hbar}\right)^{-1}\times SA_{c=1}=10\looparrowright
+\end{split}\label{eq:05:03}\tag{05:03}\end{equation}
+
+
+Chapter 06
+----------
+
+Chapter 07
+----------
+
+\begin{equation}\begin{split}
+a&=2\left(\frac{\left|\sqrt{\frac{3}{4}}\right|}{1\frac{1}{4}}\right)-\left|\sqrt{\frac{3}{4}}\right|\\\\
+&\approx0.5196152423\\\\
+b&=\frac{0.5}{a}\approx0.9622504486
+\end{split}\label{eq:07.01}\tag{07.01}\end{equation}
+ 
+
+\begin{equation}\begin{split}
+a&=\sqrt{2A}\\\\
+A_{\square}&=\frac{T_{n}}{4\times n^{2}}\rightarrow\frac{a^{2}}{2}=\frac{0.27}{2}=\frac{27}{200}=\frac{54}{400}\\\\
+A_{\triangle}&=\frac{T_{n}}{n^{2}}=\frac{54}{100}=\frac{54}{10}=5.4\\\\
+T_{n}&=10\times5.4=54
+\end{split}
+\label{eq:07.02}\tag{07.02}\end{equation}
+ 
+\begin{equation}\begin{split}
+n&=\frac{\sqrt{\left(8x\right)+1}-1}{2}\\\\
+x&=T_{n}=54\\\\
+x&=\frac{\sqrt{\left(8\times54\right)+1}-1}{2}\\\\
+&\approx9.904326023\sim\pi^{2}
+\end{split} \label{eq:07.03}\tag{07.03}\end{equation}
+ 
+\begin{equation}\begin{split}
+T_{n=9}&=\left(\frac{9}{2}\right)\times\left(9+1\right)=45\\\\
+T_{n=10}&=\left(\frac{10}{2}\right)\times\left(10+1\right)=55\\\\
+\frac{T_{n=10}}{T_{n=9}}=\frac{55}{45}&=1\frac{1}{10}\times T_{h}=1.222222\dots\\\\
+\end{split} \label{eq:07.04}\tag{07.04}\end{equation}
+ 
+
+\begin{equation}
+\angle\theta A=\frac{10}{60}\rightarrow tan^{-1}\left(\frac{1}{3}\right)\approx18.43494882\text{°}0
+\label{eq:07.05}\tag{07.05}\end{equation}
+ 
+\begin{equation}\begin{split}
+\frac{60}{18.75}&=10\times0.32=3.2\\\\
+&h\sim2\pi\times\frac{\frac{1}{3}}{tan^{-1}\left(\frac{2\pi}{360\text{°}}\times18.75\text{°}\right)}\approx6.62228\dots
+\end{split}\label{eq:07.06}\tag{07.06}\end{equation}
+
+\begin{equation}\begin{split}
+h&\sim2.5^{2}\times\frac{\frac{1}{3}}{tan^{-1}\left(\frac{2\pi}{360\text{°}}\times\frac{18.75\text{°}}{\looparrowright}\right)}\approx6.620000375\dots\\\\
+&h\sim2\pi\times\frac{\frac{1}{3}}{tan^{-1}\left(\frac{2\pi}{360\text{°}}\times\frac{18.75\text{°}}{\looparrowright}\right)}\approx6.655156257\dots
+\end{split}\label{eq:07.07}\tag{07.07}\end{equation}
+  
+ \begin{equation}\begin{split}
+ T_{primor}&=18.75\text{°}\\\\
+ n_{primor}&=\frac{\sqrt{\left(8\times T_{primor}\right)+1}-1}{2}\\\\
+ n_{primor}&=\frac{\sqrt{\left(8\times18.75\right)+1}-1}{2}\\\\
+n_{primor}&=\frac{11.28820573}{2}\approx5.644102865\\\\
+\end{split} \label{eq:07.08}\tag{07.08}\end{equation}
+ 
+\begin{equation}\begin{split}
+T_{n=5}&=\left(\frac{5}{2}\right)\times\left(5+1\right)=15\\\\
+T_{primor}&=\left(\frac{n_{primor}}{2}\right)\times\left(n_{primor}+1\right)=18.75^\circ\\\\
+T_{n=6}&=\left(\frac{6}{2}\right)\times\left(6+1\right)=21
+\end{split}\label{eq:07.09}\tag{07.09}\end{equation}
+
+\begin{equation}\begin{split}
+T_{n}&\rightarrow\left[15&lt;18.75&lt;21\right]\\\\
+\frac{360\text{°}}{T_{n}}&\rightarrow\left[24&gt;19.2^{\,\bigstar}&gt;17\frac{1}{7}\right]\\\\
+\frac{T_{n}}{2.5^{2}}&\rightarrow\left[2.4&lt;3&lt;3.36\right]\\\\
+Ratio&\rightarrow\left[\frac{4}{5},1,1\frac{2}{5}\right]\\\\
+Inverse\thinspace ratio&\rightarrow\left[\left(1\frac{1}{4}\right)^{-1},1,\sim\left(\sqrt{2}\right)^{-1}\right]
+\end{split}\label{eq:07.10}\tag{07.10}\end{equation}
+ 
+\begin{equation}\begin{split}
+\left(\frac{\pi^{2}}{6}\right)^{-1}\times\left(\looparrowright^{2}\right)&=\left(\frac{3.125^{2}}{6}\right)^{-1}\\\\
+2\left(\frac{\pi^{2}}{6}\right)^{-1}\times\left(\looparrowright^{2}\right)&=2\left(\frac{3.125^{2}}{6}\right)^{-1}=\frac{4\times1.92^{\\,\\,\bigstar}}{2.5^{2}}
+\end{split}\label{eq:07.11}\tag{07.11}\end{equation}
+ 
+\begin{equation}
+\begin{bmatrix}x_{7}\\\\
+x_{6} & x_{7}\\\\
+x_{5} & x_{6} & x_{7}\\\\
+x_{4} & x_{5} & x_{6} & x_{7}\\\\
+x_{3} & x_{4} & x_{5} & x_{6} & x_{7}\\\\
+x_{2} & x_{3} & x_{4} & x_{5} & x_{6} & x_{7}\\\\
+x_{1} & x_{2} & x_{3} & x_{4} & x_{5} & x_{6} &
+x_{7}
+\end{bmatrix}
+\label{eq:07.12}\tag{07.12}\end{equation}
+
+\begin{equation}
+\begin{bmatrix}
+17\\\\
+13 & 17\\\\
+11 & 13 & 17\\\\
+7 & 11 & 13 & 17\\\\
+5 & 7 & 11 & 13 & 17\\\\
+3 & 5 & 7 & 11 & 13 & 17\\\\
+2 & 3 & 5 & 7 & 11 & 13 & 17
+\end{bmatrix}
+\label{eq:07.13}\tag{07.13}\end{equation}
+
+\begin{equation}\begin{split}
+a&=\sqrt{A}=0.5622117132\dots\\\\
+r_{q}&=\frac{0.5}{a}=0.8893446869\\\\
+r_{x}&=\frac{r_{q}}{\sqrt{0.96\times\left(\looparrowright\right)^{-1}}}=0.9100901707\\\\
+SA&=4\pi\left(r_{x}\right)^{2}=10.40827388\\\\
+\Delta\pi^{2}&=\frac{SA}{\pi^{2}}\approx1.054578629\\\\
+h&=2\pi\times\Delta\pi^{2}\approx6.62611295
+\end{split} \label{eq:07.14}\tag{07.14}\end{equation}
+
+\begin{equation}\begin{split}
+\rho_{\infty}&=\frac{\pi}{3}\\\\
+p_{cor}&=1-\left(\frac{sin\left(\rho_{\infty}\right)}{\rho_{\infty}}\right)^{2}=1-\left(\sqrt{\frac{3}{4}}\times
+P_{\ast}\right)^{2}\\\\
+p_{cor}&=1-\frac{1\frac{1}{8}}{\zeta\left(2\right)}\rightarrow1-\frac{V}{\zeta\left(2\right)}\\\\
+1\frac{1}{8}&\rightarrow\left(1\frac{1}{8}\right)\times T_{h}=\left(1\frac{1}{4}\right)
+\end{split}\label{eq:07.15}\tag{07.15}\end{equation}
+ 
+\begin{equation}
+\begin{bmatrix}
+z_{46}\\\\
+z_{37} & z_{47}\\\\
+\star z_{29} & z_{38} & z_{48}\\\\
+z_{22} & \star z_{30} & z_{39} & z_{49}\\\\
+z_{16} & z_{23} & \star z_{31} & z_{40} & z_{50}\\\\
+z_{11} & z_{17} & z_{24} & \star z_{32} & z_{41} &
+z_{51}\\\\
+z_{7} & z_{12} & z_{18} & z_{25} & \star z_{33} &
+z_{42} & z_{52}\\\\
+z_{4} & z_{8} & z_{13} & z_{19} & z_{26} & \star
+z_{34} & z_{43} & z_{53}\\\\
+z_{2} & z_{5} & z_{9} & z_{14} & z_{20} & z_{27} &
+\star z_{35} & z_{44} & z_{54}\\\\
+z_{1} & z_{3} & z_{6} & z_{10} & z_{15} & z_{21} &
+z_{28} & \star z_{36} & z_{45} & z_{55}
+\end{bmatrix}
+\label{eq:07.16}\tag{07.16}\end{equation}
+
+\begin{equation}
+\begin{bmatrix}60_{16}\\\\
+72_{11} & 60_{17}\\\\
+90_{7} & 72_{12} & 60_{18}\\\\
+120_{4} & 90_{8} & 72_{13} & 60_{19}\\\\
+180_{2} & 120_{5} & 90_{9} & 72_{14} & 60_{20}\\\\
+360_{1} & 180_{3} & 120_{6} & 90_{10} & 72_{15} & 60_{21}
+\end{bmatrix}
+\label{eq:07.17}\tag{07.17}\end{equation}
+
+\begin{equation}\begin{split}
+\phi\left(n=3\rightarrow T_{n}=6\right)\rightarrow&\left[\frac{1}{n}2\pi,\frac{n}{n}2\pi\right]=\left\\{\frac{1}{3}2\pi,\frac{2}{3}2\pi,\frac{3}{3}2\pi\right\\} \\\\
+Z_{n}\left(n=3\rightarrow T_{n}=6\right)&\rightarrow Z_{\left[T_{n}-\left(n-1\right),T_{n}\right]}=\left\\{Z_{4},Z_{5},Z_{6}\right\\} \\\\
+Z_{4}\left(x,y\right)&=\left(Z_{4}\times cos\left(\frac{1}{3}2\pi\right),Z_{4}\times sin\left(\frac{1}{3}2\pi\right)\right)\\\\
+&=\left(-0.5871673155,1.017003632\right)\\\\
+Z_{5}\left(x,y\right)&=\left(Z_{5}\times cos\left(\frac{2}{3}2\pi\right),Z_{5}\times sin\left(\frac{2}{3}2\pi\right)\right)\\\\
+&=\left(-0.5989176875,1.037355864\right)\\\\
+Z_{6}\left(x,y\right)&=\left(Z_{6}\times cos\left(\frac{3}{3}2\pi\right),Z_{6}\times sin\left(\frac{3}{3}2\pi\right)\right)\\\\
+&=\left(1.238045632,0\right)
+\end{split}\label{eq:07.18}\tag{07.18}\end{equation}
+
+\begin{equation}\begin{split}
+1\Delta5&=4\rightarrow2=5\Delta7\\\\
+7\Delta11&=4\rightarrow2=11\Delta13\\\\
+13\Delta17&=4\rightarrow2=17\Delta19\\\\
+19\Delta23&=4\rightarrow2=23\Delta\left(25\right)\rightarrow\left(5^{2}=25\right)\\\\
+\left(25\right)\Delta29&=4\rightarrow2=29\Delta31\\\\
+31\Delta\left(35\right)&=4\rightarrow2=\left(35\right)\Delta37\rightarrow\left(7\times5=35\right)
+\end{split}\label{eq:07.19}\tag{07.19}\end{equation}
+
+\begin{equation}\begin{split}
+\begin{Bmatrix}4\\\\
+2 & 5\\\\
+1 & 3 & 6
+\end{Bmatrix}&\rightarrow\begin{Bmatrix}2\\\\
+1 & \bigstar\\\\
+\bigstar & 1 & 2
+\end{Bmatrix}\rightarrow\begin{Bmatrix}2 &&nbsp; & 0\\\\
+\bigstar & 0\\\\
+0 & \bigstar & 2
+\end{Bmatrix}\rightarrow\begin{Bmatrix}\bigstar\\\\
+1 & 0\\\\
+0 & 1 & \bigstar
+\end{Bmatrix} \\\\
+\begin{Bmatrix}+3\\\\
++1 & +4\\\\
+1 & +2 & +5
+\end{Bmatrix}&\rightarrow\begin{Bmatrix}even\\\\
+even & odd\\\\
+odd & odd & even
+\end{Bmatrix}\rightarrow\begin{Bmatrix}\left(2\times e\right)\\\\
+\left(2\times e\right) & \left(o\times o\right)\\\\
+o & \left(3\times o\right) & \left(2\times o\right)
+\end{Bmatrix} \\\\
+\begin{Bmatrix}D_{2}\\\\
+D_{1} & D_{0}\\\\
+D_{0} & D_{1} & D_{2}
+\end{Bmatrix}&\rightarrow\begin{cases}
+p_{n}\left(&lt;5\right)\cap D_{0}=\emptyset &
+\rightarrow\{1+|4,2,4,2,\dots\}\\\\
+p_{n}\left(2\wedge3\right)\cap D_{1}=\emptyset &
+\rightarrow\{2+|1,5,1,5,\dots\}\\\\
+p_{n}\left(2\veebar3\right)\cap D_{2}=\emptyset &
+\rightarrow\{4+|2,4,2,4,\dots\}
+\end{cases}
+\end{split}\label{eq:07.20}\tag{07.20}\end{equation}
+
+Chapter 08
+----------
+\begin{equation}\begin{split}
+D_{2}\thinspace96&=\left\\{ 2\times2\times2\times2\times2\right\\} \times\left\\{ 3\right\\}\\\\
+D_{1}\thinspace99&=\left\\{ 3\times3\times3\right\\} \times11\\\\
+D_{1}\thinspace105&=\left\\{ 3\right\\} \times\left\\{ 5\right\\} \times\left\\{ 7\right\\} \\\\
+D_{2}\thinspace108&=\left\\{ 2\times2\times2\right\\} \times23
+\end{split}\label{eq:08.01}\tag{08.01}\end{equation}
+
+\begin{equation}\begin{split}
+\circ A_{5}&=\pi5^{2}=78.53981634\\\\
+\diamond A_{4}&=\left(2.5^{2}\sqrt{2}\right)^{2}=78.125\\\\
+\frac{\circ A_{5}}{\diamond A_{4}}&=\looparrowright^{2}
+\end{split}\label{eq:08.02}\tag{08.02}\end{equation}
