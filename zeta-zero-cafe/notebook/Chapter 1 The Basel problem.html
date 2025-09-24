@@ -9,20 +9,24 @@
   MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
-      packages: {'[+]': ['ams']},
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      packages: {'[+]': ['ams']},          // enable AMS environments (align, split, etc.)
+      processEnvironments: true,           // ensure \begin{...} ... \end{...} is processed
       processEscapes: true
     },
+    loader: { load: ['[tex]/ams'] },       // actually load the AMS component
     options: {
-      // By default MathJax skips <pre> and <code>. We override that.
-      skipHtmlTags: ['script', 'noscript', 'style', 'textarea']  // <pre>/<code> are now processed
-      // (Alternative: keep skipHtmlTags default and add processHtmlClass: 'osf',
-      // then put class="osf" on the wrappers you want scanned.)
+      // process math even inside <pre>/<code> if you’re still using verbatim blocks
+      skipHtmlTags: ['script','noscript','style','textarea']
+      // (if you want tighter control instead, keep default skip list and add:
+      // processHtmlClass: 'osf'  and put class="osf" on the wrappers you want scanned)
     },
     svg: { fontCache: 'global' }
   };
 </script>
 <script id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 
 </head>
 <body>
