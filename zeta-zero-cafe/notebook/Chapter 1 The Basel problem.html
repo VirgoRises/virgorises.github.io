@@ -1,117 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chapter 1 The Basel problem</title>
   <link rel="stylesheet" href="css/notebook.css" />
-  
-<!-- MathJax config (must come BEFORE MathJax itself) -->
-<script src="math/mathconfig.js"></script>
 
-<!-- MathJax core -->
-<script id="MathJax-script" defer
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- MathJax config (must come BEFORE MathJax itself) -->
+  <script src="math/mathconfig.js"></script>
+
+  <!-- MathJax core -->
+  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 </head>
+
 <body>
-<header class="wrap">
-  <h1>Chapter 1 The Basel problem</h1>
-  <nav>
-    <a href="index.html">Notebook Home</a>
-    <a href="../../index.html">Virgorises Home</a>
-    <a href="../index.html">Zeta Zero Café</a>
-  </nav>
-  <p class="small">Working notebook — speculative, unfinished, not peer-reviewed.</p>
-</header>
-<main class="wrap">
-  <div class="card">
-<pre class="osf">Chapter 1: The Basel problem</pre>
-<pre class="osf">============================</pre>
-<pre class="osf"></pre>
-<pre class="osf">@[toc]</pre>
-<pre class="osf"></pre>
-<pre class="osf">The focus in this document is not on the classic Riemann zeta function involving Complex Analysis. However, the results provide a solution to the distribution of the zeta zero&#x27;s and consequently an answer to the Riemann hypothesis.</pre>
-<pre class="osf"></pre>
-<pre class="osf">The problem that superseded the Riemann zeta function, ‘the Basel Problem’, is named after the Swiss city.</pre>
-<pre class="osf">At the university of Basel the Bernoulli brothers successively served as professor of mathematics (Jakob, 1687-1705, Johann, 1705-1748). Jakob Bernoulli stated the problem: Find a closed form for the infinite series:</pre>
-<pre class="osf"></pre>
-<pre class="osf">\begin{equation} 1+\frac{1}{2^{2}}+\frac{1}{3^{2}}+\frac{1}{4^{2}}+\frac{1}{5^{2}}+\dots</pre>
-<pre class="osf">\label{eq:01:01}\tag{01:01}\end{equation}</pre>
-<pre class="osf"></pre>
-<pre class="osf">This is the sum of the reciprocal squares of the natural numbers and is closely related to the harmonic series for which the Bernoulli brothers found proof for the divergence of the series.</pre>
-<pre class="osf"></pre>
-<pre class="osf">\begin{equation}1+\frac{1}{2}+\frac{1}{3}+\frac{1}{4}+\frac{1}{5}+\dots=\infty</pre>
-<pre class="osf">\label{eq:01:02}\tag{01:02}\end{equation}</pre>
-<pre class="osf"></pre>
-<pre class="osf">The Basel problem, as sum of the reciprocal squares of the natural numbers, is the foundation for what later became inquiry in the distribution of the prime numbers among the natural numbers. After 330 years there are still open questions to be answered.</pre>
-<pre class="osf"></pre>
-<pre class="osf">Why the Basel problem</pre>
-<pre class="osf">=====================</pre>
-<pre class="osf">In essence this paper starts in 1735, the year that Leonhard Euler in st. Petersburg found the answer to the Basel problem, he found the closed (exact) form surprisingly to add up to an irrational number $\frac{\pi^{2}}{6}$.</pre>
-<pre class="osf">  </pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">1+\frac{1}{2^{2}}+\frac{1}{3^{2}}+\frac{1}{4^{2}}+\frac{1}{5^{2}}+\dots=\frac{\pi^{2}}{6}</pre>
-<pre class="osf">\label{eq:01:03}\tag{01:03}</pre>
-<pre class="osf">\end{equation}</pre>
-<pre class="osf"></pre>
-<pre class="osf">The sum formula</pre>
-<pre class="osf">---------------</pre>
-<pre class="osf">The zeta function for s=2 is the infinite sum of reciprocal squares of the natural numbers :</pre>
-<pre class="osf"></pre>
-<pre class="osf">\begin{equation}    \sum_{n}^{\infty}n^{-s}=1+\frac{1}{2^{2}}+\frac{1}{3^{2}}+\frac{1}{4^{2}}+\frac{1}{5^{2}}+\dots=\frac{\pi^{2}}{6}</pre>
-<pre class="osf">\label{eq:01:04}\tag{01:04}\end{equation}</pre>
-<pre class="osf"></pre>
-<pre class="osf">#### Figure 1.01 The sum formula</pre>
-<pre class="osf"></pre>
-<pre class="osf">![Figure  1.01 ](https://osf.io/ef5j7/download =400x400)</pre>
-<pre class="osf"></pre>
-<pre class="osf">The infinite sum of the shaded squares adds up to $\frac{1}{6}$ of $\pi^{2}$. The closed form $\frac{\pi^{2}}{6}$ indicates that the rational squares add up to a fraction of an irrational surface with sides $\pi$.</pre>
-<pre class="osf"></pre>
-<pre class="osf">*It is in precisely this mapping that an alternative pathway for investigation presented itself.*</pre>
-<pre class="osf"></pre>
-<pre class="osf">The product formula</pre>
-<pre class="osf">-------------------</pre>
-<pre class="osf">The zeta function for s=2 can also be stated as product over the primes:</pre>
-<pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}</pre>
-<pre class="osf">\zeta\left(2\right)&amp;=\prod_{p}^{\infty}\left(1-p^{-2}\right)^{-1}=\prod_{p}^{\infty}\frac{1}{1-\frac{1}{p^{2}}}\\&amp;=1\times\frac{4}{3}\times\frac{9}{8}\times\frac{25}{24}\times\dots=\frac{\pi^{2}}{6}</pre>
-<pre class="osf">\end{split} \label{eq:01:05}\tag{01:05}</pre>
-<pre class="osf">\end{equation}</pre>
-<pre class="osf"></pre>
-<pre class="osf">*This can be represented as a product of square area ratios.*</pre>
-<pre class="osf"></pre>
-<pre class="osf">#### Figure 1.02 The product formula</pre>
-<pre class="osf"></pre>
-<pre class="osf">![Figure  1.02 ](https://osf.io/rxwsa/download =400x400)</pre>
-<pre class="osf"></pre>
-<pre class="osf">The infinite product of the factors equals $\frac{1}{6}\thinspace of\thinspace \pi^{2}$. E.g. The ratio $\frac{16}{15}$ between $\frac{9}{8}$ and $\frac{25}{24}$ does not appear because 4 is not a prime number. </pre>
-<pre class="osf"></pre>
-<pre class="osf">The rational quotients multiply out to an irrational square with sides $\pi$.</pre>
-<pre class="osf"></pre>
-<pre class="osf">The sum/product equality</pre>
-<pre class="osf">------------------------</pre>
-<pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\sum_{n}^{\infty}n^{-s}=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}</pre>
-<pre class="osf">\label{eq:01:06}\tag{01:06}\end{equation}</pre>
-<pre class="osf">The sum of the reciprocal squares of the natural numbers equals a infinite product of which the terms iterate over all prime numbers.</pre>
-<pre class="osf">The geometric projection of the sum and product formula shows the evolution of the formula to the result $\frac{\pi^{2}}{6}$ as a function of area.</pre>
-<pre class="osf"></pre>
-<pre class="osf">Rational and Real numbers</pre>
-<pre class="osf">-------------------------</pre>
-<pre class="osf">Wikipedia:</pre>
-<pre class="osf">  [Real numbers and topological properties][3]</pre>
-<pre class="osf">  </pre>
-<pre class="osf">The rationals are a dense subset of the real numbers: every real number has rational numbers arbitrarily close to it.</pre>
-<pre class="osf">A related property is that rational numbers are the only numbers with finite expansions as regular continued fractions.</pre>
-<pre class="osf"></pre>
-<pre class="osf">A sum or product of Rational quantities resulting in a Real number value. Is the result $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ a Real number or an infinitely close rational approximation?</pre>
-<pre class="osf"></pre>
-<pre class="osf">  [3]: https://en.wikipedia.org/wiki/Rational_number#Real_numbers_and_topological_properties</pre>
-  </div>
-  <nav class="pager"><span></span><a href="Chapter 2 The spatial aspect of zet.html">Next →</a></nav>
-</main>
-<footer class="wrap">© <span id="y"></span> Virgorises</footer>
-<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
-</body></html>
+  <header class="wrap">
+    <h1>Chapter 1 The Basel problem</h1>
+    <nav>
+      <a href="index.html">Notebook Home</a>
+      <a href="../../index.html">Virgorises Home</a>
+      <a href="../index.html">Zeta Zero Café</a>
+    </nav>
+    <p class="small">Working notebook — speculative, unfinished, not peer-reviewed.</p>
+  </header>
+  <main class="wrap">
+    <div class="card">
+      <pre class="osf">Chapter 1: The Basel problem</pre>
+      <pre class="osf">============================</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">@[toc]</pre>
+      <pre class="osf"></pre>
+      <pre
+        class="osf">The focus in this document is not on the classic Riemann zeta function involving Complex Analysis. However, the results provide a solution to the distribution of the zeta zero&#x27;s and consequently an answer to the Riemann hypothesis.</pre>
+      <pre class="osf"></pre>
+      <pre
+        class="osf">The problem that superseded the Riemann zeta function, ‘the Basel Problem’, is named after the Swiss city.</pre>
+      <pre
+        class="osf">At the university of Basel the Bernoulli brothers successively served as professor of mathematics (Jakob, 1687-1705, Johann, 1705-1748). Jakob Bernoulli stated the problem: Find a closed form for the infinite series:</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">\begin{equation} 1+\frac{1}{2^{2}}+\frac{1}{3^{2}}+\frac{1}{4^{2}}+\frac{1}{5^{2}}+\dots</pre>
+      <pre class="osf">\label{eq:01:01}\tag{01:01}\end{equation}</pre>
+      <pre class="osf"></pre>
+      <pre
+        class="osf">This is the sum of the reciprocal squares of the natural numbers and is closely related to the harmonic series for which the Bernoulli brothers found proof for the divergence of the series.</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">\begin{equation}1+\frac{1}{2}+\frac{1}{3}+\frac{1}{4}+\frac{1}{5}+\dots=\infty\label{eq:01:02}\tag{01:02}\end{equation}</pre>
+      <pre class="osf"></pre>
+      <pre
+        class="osf">The Basel problem, as sum of the reciprocal squares of the natural numbers, is the foundation for what later became inquiry in the distribution of the prime numbers among the natural numbers. After 330 years there are still open questions to be answered.</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">Why the Basel problem</pre>
+      <pre class="osf">=====================</pre>
+      <pre
+        class="osf">In essence this paper starts in 1735, the year that Leonhard Euler in st. Petersburg found the answer to the Basel problem, he found the closed (exact) form surprisingly to add up to an irrational number $\frac{\pi^{2}}{6}$.</pre>
+      <pre class="osf">  </pre>
+      <pre class="osf">\begin{equation}</pre>
+      <pre class="osf">1+\frac{1}{2^{2}}+\frac{1}{3^{2}}+\frac{1}{4^{2}}+\frac{1}{5^{2}}+\dots=\frac{\pi^{2}}{6}</pre>
+      <pre class="osf">\label{eq:01:03}\tag{01:03}</pre>
+      <pre class="osf">\end{equation}</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">The sum formula</pre>
+      <pre class="osf">---------------</pre>
+      <pre
+        class="osf">The zeta function for s=2 is the infinite sum of reciprocal squares of the natural numbers :</pre>
+      <pre class="osf"></pre>
+      <pre
+        class="osf">\begin{equation}    \sum_{n}^{\infty}n^{-s}=1+\frac{1}{2^{2}}+\frac{1}{3^{2}}+\frac{1}{4^{2}}+\frac{1}{5^{2}}+\dots=\frac{\pi^{2}}{6}</pre>
+      <pre class="osf">\label{eq:01:04}\tag{01:04}\end{equation}</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">#### Figure 1.01 The sum formula</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">![Figure  1.01 ](https://osf.io/ef5j7/download =400x400)</pre>
+      <pre class="osf"></pre>
+      <pre
+        class="osf">The infinite sum of the shaded squares adds up to $\frac{1}{6}$ of $\pi^{2}$. The closed form $\frac{\pi^{2}}{6}$ indicates that the rational squares add up to a fraction of an irrational surface with sides $\pi$.</pre>
+      <pre class="osf"></pre>
+      <pre
+        class="osf">*It is in precisely this mapping that an alternative pathway for investigation presented itself.*</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">The product formula</pre>
+      <pre class="osf">-------------------</pre>
+      <pre class="osf">The zeta function for s=2 can also be stated as product over the primes:</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">\begin{equation}\begin{split}</pre>
+      <pre
+        class="osf">\zeta\left(2\right)&amp;=\prod_{p}^{\infty}\left(1-p^{-2}\right)^{-1}=\prod_{p}^{\infty}\frac{1}{1-\frac{1}{p^{2}}}\\&amp;=1\times\frac{4}{3}\times\frac{9}{8}\times\frac{25}{24}\times\dots=\frac{\pi^{2}}{6}</pre>
+      <pre class="osf">\end{split} \label{eq:01:05}\tag{01:05}</pre>
+      <pre class="osf">\end{equation}</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">*This can be represented as a product of square area ratios.*</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">#### Figure 1.02 The product formula</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">![Figure  1.02 ](https://osf.io/rxwsa/download =400x400)</pre>
+      <pre class="osf"></pre>
+      <pre
+        class="osf">The infinite product of the factors equals $\frac{1}{6}\thinspace of\thinspace \pi^{2}$. E.g. The ratio $\frac{16}{15}$ between $\frac{9}{8}$ and $\frac{25}{24}$ does not appear because 4 is not a prime number. </pre>
+      <pre class="osf"></pre>
+      <pre class="osf">The rational quotients multiply out to an irrational square with sides $\pi$.</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">The sum/product equality</pre>
+      <pre class="osf">------------------------</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">\begin{equation}</pre>
+      <pre class="osf">\sum_{n}^{\infty}n^{-s}=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}</pre>
+      <pre class="osf">\label{eq:01:06}\tag{01:06}\end{equation}</pre>
+      <pre
+        class="osf">The sum of the reciprocal squares of the natural numbers equals a infinite product of which the terms iterate over all prime numbers.</pre>
+      <pre
+        class="osf">The geometric projection of the sum and product formula shows the evolution of the formula to the result $\frac{\pi^{2}}{6}$ as a function of area.</pre>
+      <pre class="osf"></pre>
+      <pre class="osf">Rational and Real numbers</pre>
+      <pre class="osf">-------------------------</pre>
+      <pre class="osf">Wikipedia:</pre>
+      <pre class="osf">  [Real numbers and topological properties][3]</pre>
+      <pre class="osf">  </pre>
+      <pre
+        class="osf">The rationals are a dense subset of the real numbers: every real number has rational numbers arbitrarily close to it.</pre>
+      <pre
+        class="osf">A related property is that rational numbers are the only numbers with finite expansions as regular continued fractions.</pre>
+      <pre class="osf"></pre>
+      <pre
+        class="osf">A sum or product of Rational quantities resulting in a Real number value. Is the result $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ a Real number or an infinitely close rational approximation?</pre>
+      <pre class="osf"></pre>
+      <pre
+        class="osf">  [3]: https://en.wikipedia.org/wiki/Rational_number#Real_numbers_and_topological_properties</pre>
+    </div>
+    <nav class="pager"><span></span><a href="Chapter 2 The spatial aspect of zet.html">Next →</a></nav>
+  </main>
+  <footer class="wrap">© <span id="y"></span> Virgorises</footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+
+</html>
