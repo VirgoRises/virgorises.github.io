@@ -37,62 +37,40 @@
 <pre class="osf">### Table 2.01 Zeta function values</pre>
 <pre class="osf"></pre>
 <pre class="osf">|Table 2.01 Zeta function values|</pre>
-<pre class="osf">|---|</pre>
-<pre class="osf"></pre>
-<pre class="osf">s | Closed exact| Calculated value</pre>
-<pre class="osf">---|---|---</pre>
-<pre class="osf">1 | ${\small \text{no value}}$ | ${\small \text{no value}}$</pre>
-<pre class="osf">2 | $\frac{\pi^{2}}{6}$|${\small \text{1.644934067...}}$</pre>
-<pre class="osf">3 | ${\small \text{unknown}}$|${\small \text{1.202056903...}}$   </pre>
-<pre class="osf">4 | $\frac{\pi^{4}}{90}$|${\small \text{1.082323234...}}$</pre>
-<pre class="osf">5 | ${\small \text{unknown}}$|${\small \text{1.036927755...}}$</pre>
-<pre class="osf">6 | $\frac{\pi^{6}}{945}$| ${\small \text{1.017343062...}}$</pre>
-<pre class="osf">n|...|...</pre>
+<pre class="osf">|---|
+  s | Closed exact| Calculated value
+  ---|---|---
+  1 | ${\small \text{no value}}$ | ${\small \text{no value}}$
+  2 | $\frac{\pi^{2}}{6}$|${\small \text{1.644934067...}}$
+  3 | ${\small \text{unknown}}$|${\small \text{1.202056903...}}$
+  4 | $\frac{\pi^{4}}{90}$|${\small \text{1.082323234...}}$
+  5 | ${\small \text{unknown}}$|${\small \text{1.036927755...}}$
+  6 | $\frac{\pi^{6}}{945}$| ${\small \text{1.017343062...}}$
+  n|...|...</pre>
 <pre class="osf"></pre>
 <pre class="osf">Table 2.1. shows some known closed forms for the even values of ‘s’, the closed forms for the odd values of ‘s’ are unknown. Those for the even values have the form</pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\frac{\pi^{s}}{x}</pre>
-<pre class="osf">\label{eq:02.01}\tag{02.01}\end{equation}</pre>
+<pre class="osf">\begin{equation}\frac{\pi^{s}}{x}\label{eq:02.01}\tag{02.01}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">With respect to symmetry naively one expects that the closed form for all ‘s’ will be of the form:</pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\zeta\left(s\right)=\frac{n\pi^{s}}{x&amp;lt;=n\pi^{s}}</pre>
-<pre class="osf">\label{eq:02.02}\tag{02.02}\end{equation}</pre>
+<pre class="osf">\begin{equation}\zeta\left(s\right)=\frac{n\pi^{s}}{x&amp;lt;=n\pi^{s}}\label{eq:02.02}\tag{02.02}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">[Wikipedia: The inverse square law][1]</pre>
 <pre class="osf"></pre>
 <pre class="osf">The inverse square law, in physics, is any physical law stating that a specified physical quantity or intensity is inversely proportional to the square of the distance from the source of that physical quantity. The fundamental cause for this can be understood as geometric dilution corresponding to point-source radiation into three-dimensional space.</pre>
 <pre class="osf">A similar proportional symmetry exists between the result $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ and the spherical volume enclosed by a surface area $SA=\pi^{2}$, expressed as twice the radius of such a volume.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\begin{split}</pre>
-<pre class="osf">Let\thinspace SA&amp;=\pi^{2}\\\\</pre>
-<pre class="osf">r_{sa}&amp;=\sqrt{\frac{SA}{4\pi}}=\sqrt{\frac{\pi^{2}}{4\pi}}=\frac{\sqrt{\pi}}{2}\cong0.8862269255\\\\</pre>
-<pre class="osf">V_{sa}&amp;=\frac{4}{3}\pi\\;r_{sa}^{3}=\frac{4}{3}\pi\left(\frac{\sqrt{\pi}}{2}\right)^{3}\cong2.915569721\\\\</pre>
-<pre class="osf">\frac{V_{sa}}{\zeta\left(2\right)}&amp;=2r_{sa}</pre>
-<pre class="osf">\end{split}</pre>
-<pre class="osf">\label{eq:02.03}</pre>
-<pre class="osf">\tag{02.03}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\begin{split}Let\thinspace SA&amp;=\pi^{2}\\\\r_{sa}&amp;=\sqrt{\frac{SA}{4\pi}}=\sqrt{\frac{\pi^{2}}{4\pi}}=\frac{\sqrt{\pi}}{2}\cong0.8862269255\\\\V_{sa}&amp;=\frac{4}{3}\pi\\;r_{sa}^{3}=\frac{4}{3}\pi\left(\frac{\sqrt{\pi}}{2}\right)^{3}\cong2.915569721\\\\\frac{V_{sa}}{\zeta\left(2\right)}&amp;=2r_{sa}\end{split}\label{eq:02.03}\tag{02.03}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">### The structure of Volume over zeta</pre>
 <pre class="osf"></pre>
 <pre class="osf">The value volume over zeta is exactly twice the radius calculated for a sphere with $SA=\pi^{2}$. The function value $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ represents a ratio which seems to sit in the middle of some dynamic process involving the expansion of a sphere. This becomes clear if we dissect the structure.</pre>
 <pre class="osf">The ratio $\frac{V_{sa}}{\zeta(2)}=2r_{sa}$ has the form</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\frac{V_{sa}}{\frac{1}{6}SA}=2\times r_{sa}</pre>
-<pre class="osf">\label{eq:02.04}</pre>
-<pre class="osf">\tag{02.04}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\frac{V_{sa}}{\frac{1}{6}SA}=2\times r_{sa}\label{eq:02.04}\tag{02.04}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">Assume that $2\times r_{sa}$ is proportional to the radius of some next volume, the infinite sum of $\zeta\left(2\right)$ can be interpreted as the process that completes the inflation (by doubling of radius) from $V_{sa}$ up to $V_{next}$. The assumed inflation has to start from some initial volume.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">V_{sa}=\frac{4}{3}\pi \left(r_{sa}\right)^{3}=\frac{4}{3}\pi\left(\frac{\sqrt{\pi}}{2}\right)^{3}\approx2.915569721</pre>
-<pre class="osf">\label{eq:02.05}</pre>
-<pre class="osf">\tag{02.05}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}V_{sa}=\frac{4}{3}\pi \left(r_{sa}\right)^{3}=\frac{4}{3}\pi\left(\frac{\sqrt{\pi}}{2}\right)^{3}\approx2.915569721\label{eq:02.05}\tag{02.05}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">This $V_{sa}$ is the volume after completion of $\zeta(2)$, therefore a division by 8 gives the initial volume: $V_{init}=$$\frac{V_{sa}}{8}\approx$$0.3644462151$ is the supposed start volume. This numerical result is not very informative, a better way is to use scale invariant ratios.</pre>
 <pre class="osf"></pre>
@@ -105,40 +83,21 @@
 <pre class="osf"></pre>
 <pre class="osf">The interpretation of volume over zeta in light of the scale invariant ratios indicates a (snapshot of a) dynamic structure of 3 consecutive stages of inflation. Stages $V_{end}$ and $r_{end}$ represent the value for the middle volume that is reached at completion of the zeta function.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\begin{aligned}</pre>
-<pre class="osf">V_{init}&amp;=1\rightarrow V_{end}=8\rightarrow V_{next}=64\\\\</pre>
-<pre class="osf">r_{init}&amp;=1\rightarrow r_{end}=2\rightarrow r_{next}=4</pre>
-<pre class="osf">\end{aligned}</pre>
-<pre class="osf">\label{eq:02.06}</pre>
-<pre class="osf">\tag{02.06}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\begin{aligned}V_{init}&amp;=1\rightarrow V_{end}=8\rightarrow V_{next}=64\\\\r_{init}&amp;=1\rightarrow r_{end}=2\rightarrow r_{next}=4\end{aligned}\label{eq:02.06}\tag{02.06}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">To emphasize: $r_{end}=2$, refers to twice the radius associated with $V_{end}$, *. </pre>
 <pre class="osf">This means that $V_{init}$ by method of completing the pattern must have a relative radius of $r_{init}=\frac{1}{2}$, because under this scheme volume over zeta returns twice the relative radius of the sphere. Now by logic of ratio,</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">sa_{end}=\frac{V_{end}(=8)}{r_{end}(=2)}=4</pre>
-<pre class="osf">\label{eq:02.07}</pre>
-<pre class="osf">\tag{02.07}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}sa_{end}=\frac{V_{end}(=8)}{r_{end}(=2)}=4\label{eq:02.07}\tag{02.07}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The surface area of a sphere grows with a factor 4 by doubling the radius. Thus the volume of the current iteration, $V_{end}$ divided by the radius of the consecutive volume $r_{end}$, which is in fact the double radius found with $V_{end}$, gives the proportional multiplication factor of surface area by doubling of radius.</pre>
 <pre class="osf">Observe that it simultaneously represents a *growth factor of 4*, ass well the scale invariant size of the current surface area.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">sa_{init}=1\rightarrow sa_{end}=4\rightarrow sa_{next}=16</pre>
-<pre class="osf">\label{eq:02.08}</pre>
-<pre class="osf">\tag{02.08}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}sa_{init}=1\rightarrow sa_{end}=4\rightarrow sa_{next}=16\label{eq:02.08}\tag{02.08}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">In equation \eqref{eq:02.08}, $sa_{end}=4$ does refer to the surface area of the second iteration., e.g. $\\{1,4,16,64\\}$, but in equation \eqref{eq:02.07}, $sa_{end}=4$, in context of the ratio where $2r_{sa}$ refers to the consecutive volume, *refers to the constant rate of growth of surface area between iterations*. This aspect of a common ratio is also present for volume and radius, however, equation \eqref{eq:02.07} as a ratio, will proof to be crucial. The ratio $\frac{V_{end}}{r_{end}}=4$ is a constant value by necessity in this scheme, as we will see shortly.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\frac{V_{init}}{\left(\frac{V_{end}}{r_{end}}\right)}=\frac{1}{4}</pre>
-<pre class="osf">\label{eq:02.09}</pre>
-<pre class="osf">\tag{02.09}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\frac{V_{init}}{\left(\frac{V_{end}}{r_{end}}\right)}=\frac{1}{4}\label{eq:02.09}\tag{02.09}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The intimate relation (eq. \eqref{eq:02.09}) between the numerator and denominator begs for an explanation. Taken in unison they both encode for spherical aspects, but do so following different sequences involving the presumed spatial properties.</pre>
 <pre class="osf">A seemingly three dimensional structure hovers just below the surface of the zeta function. However, it concerns an abstract object, abstract objects do not take up space in a physical sense. And although clear spatial aspects are identified, there are no spatial aspects discernible in the infinite sum/product of the zeta function itself, nor is there any connection with 3-dimensional attributes in the zeta algorithm.</pre>
@@ -158,35 +117,19 @@
 <pre class="osf"></pre>
 <pre class="osf">The numerator of the general pattern (see equation \eqref{eq:02.09}), is simply expressed starting at $init\thinspace vol\thinspace\\#0=\frac{1}{2}$ and then progresses with a common ratio of 2.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\frac{init\thinspace vol\thinspace\\#0=\frac{1}{2}}{\left(\frac{v=1}{0.25}\right)},\frac{volume\thinspace\\#1=1}{\left(\frac{v=8}{2}\right)},\frac{volume\thinspace\\#2=2}{\left(\frac{v=64}{16}\right)},\frac{volume\thinspace\\#3=4}{\left(\frac{v=512}{128}\right)}</pre>
-<pre class="osf">\label{eq:02.10}</pre>
-<pre class="osf">\tag{02.10}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\frac{init\thinspace vol\thinspace\\#0=\frac{1}{2}}{\left(\frac{v=1}{0.25}\right)},\frac{volume\thinspace\\#1=1}{\left(\frac{v=8}{2}\right)},\frac{volume\thinspace\\#2=2}{\left(\frac{v=64}{16}\right)},\frac{volume\thinspace\\#3=4}{\left(\frac{v=512}{128}\right)}\label{eq:02.10}\tag{02.10}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">Thus encoding an increasing volume as function of a doubling radius in a geometric progression with a common ratio 2,</pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\left\\{ (V_{0}=\frac{1}{2}),(V_{1}=1),(V_{2}=2),(V_{3}=4),...\right\\}</pre>
-<pre class="osf">\label{eq:02.11}</pre>
-<pre class="osf">\tag{02.11}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\left\\{ (V_{0}=\frac{1}{2}),(V_{1}=1),(V_{2}=2),(V_{3}=4),...\right\\}\label{eq:02.11}\tag{02.11}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">This, given the context, is indeed a sequence to encode for an expanding sphere, but void of proper context it is an arbitrary, unwarranted, choice and should just be interpreted as some linear sequence.</pre>
 <pre class="osf">The second part expressed in the denominator, is more specific and gives clues how to interpret the ratio as a whole. The value of the denominator is itself a ratio</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\frac{\frac{1}{2}}{\left(\frac{v=1}{0.25}=4\right)},\frac{1}{\left(\frac{v=8}{2}=4\right)},\frac{2}{\left(\frac{v=64}{16}=4\right)},\frac{4}{\left(\frac{v=512}{128}=4\right)}</pre>
-<pre class="osf">\label{eq:02.12}</pre>
-<pre class="osf">\tag{02.12}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\frac{\frac{1}{2}}{\left(\frac{v=1}{0.25}=4\right)},\frac{1}{\left(\frac{v=8}{2}=4\right)},\frac{2}{\left(\frac{v=64}{16}=4\right)},\frac{4}{\left(\frac{v=512}{128}=4\right)}\label{eq:02.12}\tag{02.12}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">Here the numerator starts at $v=1$ and progresses with a common ratio of 8, $\left\\{1,8,64,512,\dots\right\\}$. *Note that this sequence is encoded as an 8-fold increase of volume* proportional to a doubling of the radius. Yet another linear expression to encode for an expanding sphere given the context in which it is found. In the denominator the value represents $\frac{1}{4}$ of the volume in the numerator. This simple property makes that whole ratio of the denominator for each instance equal to 4, and thus encodes a static measure of surface area. And this is however simple, just as it should be, because found is a spatial ratio that encodes a ratio of volume over surface area at the completion of the infinite sum/product $\zeta\left(2\right)$,</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">S_{ratio}=\frac{V_{init}=1}{\left(\frac{V_{end}=8}{r_{end}3=2}\right)}=\frac{1}{4}</pre>
-<pre class="osf">\label{eq:02.13}</pre>
-<pre class="osf">\tag{02.13}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}S_{ratio}=\frac{V_{init}=1}{\left(\frac{V_{end}=8}{r_{end}3=2}\right)}=\frac{1}{4}\label{eq:02.13}\tag{02.13}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">### Inevitable self organisation</pre>
 <pre class="osf"></pre>
@@ -194,30 +137,15 @@
 <pre class="osf">The challenge is therefore to provide a natural mechanism which independent of the abstraction, can be shown to necessarily emerge from some identifiable first condition and must self organizes such that it reflects the abstraction.</pre>
 <pre class="osf">Equation \eqref{eq:02.12} becomes,</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\frac{\left(\frac{1}{2}\right)}{4},\frac{1}{4},\frac{2}{4},\frac{4}{4},...\rightarrow\frac{1}{8},\frac{1}{4},\frac{1}{2},1,2,4,8,...</pre>
-<pre class="osf">\label{eq:02.14}</pre>
-<pre class="osf">\tag{02.14}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\frac{\left(\frac{1}{2}\right)}{4},\frac{1}{4},\frac{2}{4},\frac{4}{4},...\rightarrow\frac{1}{8},\frac{1}{4},\frac{1}{2},1,2,4,8,...\label{eq:02.14}\tag{02.14}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The ratio as a whole reflects the same geometric sequence as the numerator $V_{init}$, it encodes an increasing volume as function of the radius being doubled in a geometric progression</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\left\\{ (V_{0}=\frac{1}{2}),(V_{1}=1),(V_{2}=2),(V_{3}=4)\right\\}</pre>
-<pre class="osf">\label{eq:02.15}</pre>
-<pre class="osf">\tag{02.15}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\left\\{ (V_{0}=\frac{1}{2}),(V_{1}=1),(V_{2}=2),(V_{3}=4)\right\\}\label{eq:02.15}\tag{02.15}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">the only difference is that the sequence lags two iterations behind. And in fact, both expressions (numerator and ratio overall) will proof to be sequences of increasing surface area:</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\begin{split}</pre>
-<pre class="osf">\left\\{ common\\,ratio=4\right\\} &amp;\times\left\\{ \frac{1}{(8)},\frac{1}{(4)},\frac{1}{(2)},1,2,4,8,...\right\\}\\\\</pre>
-<pre class="osf">&amp;=sequence\\,V_{init}\left\\{ \frac{1}{2},1,2,4,8,...\right\\}</pre>
-<pre class="osf">\end{split}</pre>
-<pre class="osf">\label{eq:02.16}</pre>
-<pre class="osf">\tag{02.16}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\begin{split}\left\\{ common\\,ratio=4\right\\} &amp;\times\left\\{ \frac{1}{(8)},\frac{1}{(4)},\frac{1}{(2)},1,2,4,8,...\right\\}\\\\&amp;=sequence\\,V_{init}\left\\{ \frac{1}{2},1,2,4,8,...\right\\}\end{split}\label{eq:02.16}\tag{02.16}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">Making sense of zeta</pre>
 <pre class="osf">--------------------</pre>
@@ -240,11 +168,7 @@
 <pre class="osf"></pre>
 <pre class="osf">### Contrasting discrete and continuous aspects</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">spatial\thinspace ratio\rightarrow\frac{(initial\thinspace volume)}{\frac{(end\thinspace volume}{end\thinspace radius)}}\rightarrow\frac{V_{init}=1}{\frac{(V_{end}=8)}{r_{end}=2}}\rightarrow\frac{1}{4}</pre>
-<pre class="osf">\label{eq:02.17}</pre>
-<pre class="osf">\tag{02.17}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}spatial\thinspace ratio\rightarrow\frac{(initial\thinspace volume)}{\frac{(end\thinspace volume}{end\thinspace radius)}}\rightarrow\frac{V_{init}=1}{\frac{(V_{end}=8)}{r_{end}=2}}\rightarrow\frac{1}{4}\label{eq:02.17}\tag{02.17}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The spatial ratio, (equation \eqref{eq:02.17}) is discrete, consists of rational values which describe scale invariant ratios. This structure of scale invariant ratios can be interpreted in terms of spherical geometry.</pre>
 <pre class="osf">The structure $\frac{V_{sa}}{\zeta(2)}\equiv 2r_{sa}$ as limit of the product $\zeta\left(2\right)=\frac{\pi^2}{6}$, indicates that $V_{sa}$ refers to an end volume, and that $\frac{\pi^{2}}{6}$ refers to $\frac{1}{6}$ the surface area of this volume $sa=\pi^{2}$. This leaves the impression that the infinite product of the zeta function represents a complete cycle during which some volume expands by doubling of its radius, from the first term of the infinite series to the last.</pre>
@@ -267,14 +191,7 @@
 <pre class="osf"></pre>
 <pre class="osf">### From &lt;em&gt;abstract spatial&lt;/em&gt; to &lt;em&gt;observed continuity&lt;/em&gt;</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\begin{split}</pre>
-<pre class="osf">\zeta(s)&amp;=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}=\frac{1}{1-\frac{1}{2^{2}}}\times\frac{1}{1-\frac{1}{3^{2}}}\times\frac{1}{1-\frac{1}{5^{2}}}\times...\\\\</pre>
-<pre class="osf">&amp;=\frac{4}{3}\times\frac{9}{8}\times\frac{25}{24}\times...=\frac{\pi^{2}}{6}\rightarrow\frac{surface\thinspace area}{some\thinspace value}</pre>
-<pre class="osf">\end{split}</pre>
-<pre class="osf">\label{eq:02.18}</pre>
-<pre class="osf">\tag{02.18}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\begin{split}\zeta(s)&amp;=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}=\frac{1}{1-\frac{1}{2^{2}}}\times\frac{1}{1-\frac{1}{3^{2}}}\times\frac{1}{1-\frac{1}{5^{2}}}\times...\\\\&amp;=\frac{4}{3}\times\frac{9}{8}\times\frac{25}{24}\times...=\frac{\pi^{2}}{6}\rightarrow\frac{surface\thinspace area}{some\thinspace value}\end{split}\label{eq:02.18}\tag{02.18}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The zeta function value seems to indicate the inflation of a volume with respect to an initial volume. It does so because it has in it the radius for the successive cycle of inflation.</pre>
 <pre class="osf">Clearly any numerical quantity derived from appropriate context can be interpreted to represent length, area, volume, time, any applicable dimensional quality. *Such a context is for the zeta function, an infinite product over the primes (all primes) or infinite sum over the natural numbers (all numbers) not obvious at all*.</pre>
@@ -285,16 +202,7 @@
 <pre class="osf"></pre>
 <pre class="osf">#### Consider the following formulas</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\begin{split}</pre>
-<pre class="osf">V&amp;=\frac{4}{3}\pi r^{3}\text{ yields the volume of a sphere}\\\\</pre>
-<pre class="osf">r&amp;=\sqrt\[3\]{\frac{V}{(\frac{4}{3}\pi)}}\text{ yields the radius from a given volume}\\\\</pre>
-<pre class="osf">SA&amp;=4\pi r^{2}\text{ yields the surface area of a sphere}\\\\</pre>
-<pre class="osf">r&amp;=\sqrt{\frac{SA}{4\pi}}\text{ yields the radius from a given surface area}</pre>
-<pre class="osf">\end{split}</pre>
-<pre class="osf">\label{eq:02.19}</pre>
-<pre class="osf">\tag{02.19}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\begin{split}V&amp;=\frac{4}{3}\pi r^{3}\text{ yields the volume of a sphere}\\\\r&amp;=\sqrt\[3\]{\frac{V}{(\frac{4}{3}\pi)}}\text{ yields the radius from a given volume}\\\\SA&amp;=4\pi r^{2}\text{ yields the surface area of a sphere}\\\\r&amp;=\sqrt{\frac{SA}{4\pi}}\text{ yields the radius from a given surface area}\end{split}\label{eq:02.19}\tag{02.19}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">In each case the spatial aspect is represented by either raising the radius to a power, or reversely, taking the $n_{th}root$ of the value $r^3=\frac{V}{(\frac{4}{3}\pi)}$ for volume or $r^2=\frac{SA}{4\pi}$ for surface area. The factors ($\frac{4}{3}\pi$) and $\left(4\pi\right)$ represent the curvature detached from spatial aspects.</pre>
 <pre class="osf">The subject of investigation is why the Real number value of $\zeta\left(2\right)=\frac{\pi^2}{6}$ follows from, in essence, a rational context. We do assume however that spatial attributes like volume,surface and length are illusory aspects of reality. So when contrasting the apparent spatial aspects of the sum of reciprocal squares we have to take care not to unwittingly introduce spatial aspects like $V=l\times h\times w$ when the assumption is there are no analogues to tangible spatial aspects represented in the sum of reciprocal squares.</pre>
@@ -323,57 +231,25 @@
 <pre class="osf"></pre>
 <pre class="osf">Scaling to $\zeta\left(2\right)=\frac{2\pi}{x}$ a circumference over a radius. Calculate the (s-1) derivative of the numerator and preserve proportionality with respect to that derivative in the denominator. e.g. for $\zeta\left(2\right)$ where s=2, it takes the first derivative to map $\pi^{2}$ to $2\pi^{1}$: $f\left(\pi\right)=\pi^{2}\rightarrow f^{\,\prime}\left(\pi\right)=2\pi$:</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\begin{split}</pre>
-<pre class="osf">\zeta^{\,\prime}\left(2\right)&amp;=\frac{2\pi}{\left(2\pi\right)\left(\frac{\pi^{2}}{6}\right)^{-1}}=\frac{2\pi}{3.819718634}=\frac{2\pi}{\left(\frac{24}{2\pi}\right)}\\\\</pre>
-<pre class="osf">&amp;\rightarrow\frac{circumference}{radius}</pre>
-<pre class="osf">\end{split}</pre>
-<pre class="osf">\label{eq:02.21}</pre>
-<pre class="osf">\tag{02.21}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\begin{split}\zeta^{\,\prime}\left(2\right)&amp;=\frac{2\pi}{\left(2\pi\right)\left(\frac{\pi^{2}}{6}\right)^{-1}}=\frac{2\pi}{3.819718634}=\frac{2\pi}{\left(\frac{24}{2\pi}\right)}\\\\&amp;\rightarrow\frac{circumference}{radius}\end{split}\label{eq:02.21}\tag{02.21}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">Obviously the function value for $\zeta\left(2\right)$ must be known in order to feed back in this formula, however, it is the mapping that will provide insight into the inner structure of the zeta function.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\begin{split}</pre>
-<pre class="osf">\zeta^{\,\prime}\left(s\right)&amp;=\frac{n\pi}{\left(n\pi\right)\left(\frac{\pi^{s}}{\pi^{s}-\varepsilon}\right)^{-1}}=\frac{n\pi}{\left(n\pi\right)-\varepsilon}&amp;gt;=1\\\\</pre>
-<pre class="osf">&amp;\rightarrow\frac{circumference\propto2\pi}{\left|radius\right|&amp;lt;=2\pi}</pre>
-<pre class="osf">\end{split}</pre>
-<pre class="osf">\label{eq:02.22}</pre>
-<pre class="osf">\tag{02.22}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\begin{split}\zeta^{\,\prime}\left(s\right)&amp;=\frac{n\pi}{\left(n\pi\right)\left(\frac{\pi^{s}}{\pi^{s}-\varepsilon}\right)^{-1}}=\frac{n\pi}{\left(n\pi\right)-\varepsilon}&amp;gt;=1\\\\&amp;\rightarrow\frac{circumference\propto2\pi}{\left|radius\right|&amp;lt;=2\pi}\end{split}\label{eq:02.22}\tag{02.22}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">This pattern will hold for all ‘s’. Because &#x27;s&#x27; is the exponent of the numerator, the algorithm can be generalized for all ‘s’ by application of the factorial function. For s=5,</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\begin{split}</pre>
-<pre class="osf">f^{\,\prime\prime\prime\prime\prime}\left(x^{5}\right)&amp;=sx^{s-1}\rightarrow x^{5}\rightarrow5x^{4}\rightarrow20x^{3}\rightarrow60x^{2}\rightarrow120x^{1}\\\\</pre>
-<pre class="osf">f^{\,\prime\prime\prime\prime\prime}\left(\pi^{5}\right)&amp;=5!\pi=5\times4\times3\times2\times1\pi=120\pi</pre>
-<pre class="osf">\end{split}</pre>
-<pre class="osf">\label{eq:02.23}</pre>
-<pre class="osf">\tag{02.23}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\begin{split}f^{\,\prime\prime\prime\prime\prime}\left(x^{5}\right)&amp;=sx^{s-1}\rightarrow x^{5}\rightarrow5x^{4}\rightarrow20x^{3}\rightarrow60x^{2}\rightarrow120x^{1}\\\\f^{\,\prime\prime\prime\prime\prime}\left(\pi^{5}\right)&amp;=5!\pi=5\times4\times3\times2\times1\pi=120\pi\end{split}\label{eq:02.23}\tag{02.23}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The (s-1) derivative of $\pi^{s}$ translates to $s!\pi$ and allows for the following closed formula for all s:</pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\frac{\pi^{s}}{\left(\pi^{s}\right)\left(\zeta\left(s\right)\right)^{-1}}\rightarrow\frac{1}{\left(1\right)\left(\zeta\left(s\right)\right)^{-1}}\rightarrow\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{-1}}</pre>
-<pre class="osf">\label{eq:02.24}\tag{02.24}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\frac{\pi^{s}}{\left(\pi^{s}\right)\left(\zeta\left(s\right)\right)^{-1}}\rightarrow\frac{1}{\left(1\right)\left(\zeta\left(s\right)\right)^{-1}}\rightarrow\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{-1}}\label{eq:02.24}\tag{02.24}\end{equation}</pre>
 <pre class="osf">And because this is a ratio, proceed by simplifying to the first derivative of $\zeta\left(s\right)$ by multiplying the ratio with 2 over ‘s’ factorial, and map all $\zeta\left(s\right)$ to the radius $r=2\pi$:</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\frac{2}{\left(s!\right)}\times\frac{s!\pi}{x}=\frac{2\pi}{(s!)x}</pre>
-<pre class="osf">\label{eq:02.25}</pre>
-<pre class="osf">\tag{02.25}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\frac{2}{\left(s!\right)}\times\frac{s!\pi}{x}=\frac{2\pi}{(s!)x}\label{eq:02.25}\tag{02.25}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The general pattern: the denominator for all &#x27;s&#x27; is smaller than the numerator, the quotient will approach 1 in the limit, i.e. the denominator will approach $2\pi$:</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}</pre>
-<pre class="osf">\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{-1}}\rightarrow\frac{x}{x-\varepsilon}&amp;gt;1</pre>
-<pre class="osf">\label{eq:02.26}</pre>
-<pre class="osf">\tag{02.26}</pre>
-<pre class="osf">\end{equation}</pre>
+<pre class="osf">\begin{equation}\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{-1}}\rightarrow\frac{x}{x-\varepsilon}&amp;gt;1\label{eq:02.26}\tag{02.26}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">### Mapping to a surface area</pre>
 <pre class="osf"></pre>
@@ -382,16 +258,16 @@
 <pre class="osf">|Table 2.02 Zeta as a scale invariant proportion|</pre>
 <pre class="osf">|---|</pre>
 <pre class="osf"></pre>
-<pre class="osf">$\rule{0.5pt}{10pt} \thinspace s$ | $\rule{0.5pt}{10pt}\quad {\small  value}$ |$\rule{0.5pt}{10pt}$|$\rule{0pt}{10pt}\hspace{-3em} {\small preserving\propto}$|$\rule{0.5pt}{10pt} \thinspace {\small ratio \propto 2\pi}$|$\rule{0.5pt}{10pt} \thinspace {\small ratio \propto\pi^2}$</pre>
-<pre class="osf">--- | --- | --- | --- | --- | --- </pre>
-<pre class="osf">  ... |$\zeta\left(s\right)$               |$\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{\text{ -1}}}$  |$\frac{s!\pi}{x}$  | $\frac{2}{s!}\times\frac{s!\pi}{x}$ |$\frac{\pi^2}{\left(\pi^2\right)\left(\zeta\left(s\right)^{\text{ -1}}\right)}$</pre>
-<pre class="osf">1 | ${\small \text{no value yet}}$ | --- | --- | --- | ---</pre>
-<pre class="osf">2 |$\frac{\pi^{2}}{6}$|$\frac{2\pi}{\left(2\pi\right)\left(1.644934066848\right)^{\text{ -1}}}$|$\frac{2\pi}{3.819718634}$|$\frac{2\pi}{3.819718634}$|$\frac{\pi^{2}}{6}$ </pre>
-<pre class="osf">3 |${\small 1.202056903159}$|$\frac{6\pi}{\left(6\pi\right)\left(1.202056903159\right)^{\text{ -1}}}$ |$\frac{6\pi}{15.68108454}$|$\frac{2\pi}{5.22702818}$  |$\frac{\pi^{2}}{8.210596}$</pre>
-<pre class="osf">4 | $\frac{\pi^{4}}{90}$|$\frac{24\pi}{\left(24\pi\right)\left(1.082323233711\right)^{\text{ -1}}}$|$\frac{24\pi}{69.66331438}$|$\frac{2\pi}{5.80276198}$|$\frac{\pi^{2}}{9.118906528}$</pre>
-<pre class="osf">5|${\small 1.036927755143}$|$\frac{120\pi}{\left(120\pi\right)\left(1.036927755143\right)^{\text{ -1}}}$|$\frac{120\pi}{363.5654621}$|$\frac{2\pi}{6.059424368}$|$\frac{\pi^{2}}{9.518121539}$  </pre>
-<pre class="osf">6|$\frac{\pi^{6}}{945}$|$\frac{720\pi}{\left(720\pi\right)\left(1.017343061984\right)^{\text{ -1}}}$|$\frac{720\pi}{2223.386383}$|$\frac{2\pi}{6.176073286}$|$\frac{\pi^{2}}{9.7013553231}$</pre>
-<pre class="osf">$\infty$|$\frac{\pi^{\infty}}{\infty}$|*---* | *---* |$\frac{2\pi}{2\pi}$|$\frac{\pi^{2}}{\pi^{2}}$</pre>
+<pre class="osf">$\rule{0.5pt}{10pt} \thinspace s$ | $\rule{0.5pt}{10pt}\quad {\small  value}$ |$\rule{0.5pt}{10pt}$|$\rule{0pt}{10pt}\hspace{-3em} {\small preserving\propto}$|$\rule{0.5pt}{10pt} \thinspace {\small ratio \propto 2\pi}$|$\rule{0.5pt}{10pt} \thinspace {\small ratio \propto\pi^2}$
+ --- | --- | --- | --- | --- | --- 
+ ... |$\zeta\left(s\right)$               |$\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{\text{ -1}}}$  |$\frac{s!\pi}{x}$  | $\frac{2}{s!}\times\frac{s!\pi}{x}$ |$\frac{\pi^2}{\left(\pi^2\right)\left(\zeta\left(s\right)^{\text{ -1}}\right)}$
+ 1 | ${\small \text{no value yet}}$ | --- | --- | --- | ---
+ 2 |$\frac{\pi^{2}}{6}$|$\frac{2\pi}{\left(2\pi\right)\left(1.644934066848\right)^{\text{ -1}}}$|$\frac{2\pi}{3.819718634}$|$\frac{2\pi}{3.819718634}$|$\frac{\pi^{2}}{6}$
+ 3 |${\small 1.202056903159}$|$\frac{6\pi}{\left(6\pi\right)\left(1.202056903159\right)^{\text{ -1}}}$ |$\frac{6\pi}{15.68108454}$|$\frac{2\pi}{5.22702818}$  |$\frac{\pi^{2}}{8.210596}$
+ 4 | $\frac{\pi^{4}}{90}$|$\frac{24\pi}{\left(24\pi\right)\left(1.082323233711\right)^{\text{ -1}}}$|$\frac{24\pi}{69.66331438}$|$\frac{2\pi}{5.80276198}$|$\frac{\pi^{2}}{9.118906528}$
+ 5|${\small 1.036927755143}$|$\frac{120\pi}{\left(120\pi\right)\left(1.036927755143\right)^{\text{ -1}}}$|$\frac{120\pi}{363.5654621}$|$\frac{2\pi}{6.059424368}$|$\frac{\pi^{2}}{9.518121539}$
+ 6|$\frac{\pi^{6}}{945}$|$\frac{720\pi}{\left(720\pi\right)\left(1.017343061984\right)^{\text{ -1}}}$|$\frac{720\pi}{2223.386383}$|$\frac{2\pi}{6.176073286}$|$\frac{\pi^{2}}{9.7013553231}$
+ $\infty$|$\frac{\pi^{\infty}}{\infty}$|*---* | *---* |$\frac{2\pi}{2\pi}$|$\frac{\pi^{2}}{\pi^{2}}$</pre>
 <pre class="osf"></pre>
 <pre class="osf">Table 2.Zeta as a scale invariant proportion lists the first 6 values for s showing the mapping to $2\pi$. The last column in this table shows the shorthand version for mapping the zeta function to $SA=\pi^{2}$, or to any $\pi^n$. For the purpose of this thesis we continue with the values proportional to $\pi^{2}$ as shown in the rightmost column, $ratio\propto\pi^{2}$.</pre>
 <pre class="osf"></pre>
