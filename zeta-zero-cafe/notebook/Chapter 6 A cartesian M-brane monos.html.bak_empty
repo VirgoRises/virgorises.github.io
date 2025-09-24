@@ -29,19 +29,19 @@
 <pre class="osf">Chapter 6 A cartesian M-brane monosurface</pre>
 <pre class="osf">&lt;br /&gt;</pre>
 <pre class="osf">Figure 6.1 shows 4 ways in which $\frac{\pi^{2}}{6}$ can be represented as a function of affected area. Configurations A and B are those of the projection and triangular plane. Configuration C is more straightforward, but configuration D will be the one to take center stage.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F6.01 Some affected area configurations](https://osf.io/mvjtx/download =350x350)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The hypotenuse $c_{D}=\sqrt{\left(\frac{1}{3}\right)^{2}+1^{2}}=\sqrt{T_{h}}\approx\hbar$, see table 4.3: The base of Planck&#x27;s constant, section 4 - Equilibrium at SA=V, Planck, and figure 4.9: Projection plane regression. The x-coordinate for the intersection with the arc $x_{D}=\cos\left(\tan^{-1}\left(\frac{1}{3}\right)\right)=\sqrt{\left(T_{H}\right)^{-1}}$ The affected area in all those configurations is delimited by exact the value found in the fractal argument for zeta, only here the relation between angle and radius is significant.</pre>
 <pre class="osf">In figure 6.2 the radius contracts according to table 5.1: Hexagonal equilibrium, column $\left(\sqrt{2}\right)^{-n}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F6.02 M-brane mono surface r2 contraction](https://osf.io/4bkzw/download =350x350)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Starting with the hypotenuse $\sqrt{2}$, depicted in the shaded square, representing the initial state of the mathematical universe operated on. One iteration of $\sqrt{2}^{\thinspace-1}$ further we find radius “1” representing the continuum $\mathbb{R}$ and therefor the shaded area stands model for $1=\mathbb{R}^{2}\propto\pi^{2}$.&lt;br /&gt;</pre>
 <pre class="osf">This is the starting point for $n=0\rightarrow\sqrt{\frac{1}{2^{n}}}\rightarrow a=1$. The radii stand in specific relation to each other, they are grouped in sequences of 3 radii , spanning a surface over $\pi\thinspace rad\rightarrow180{^\circ}$. This is depicted in figure 6.3.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F6.03 M-brane mono surface radii group III](https://osf.io/mht4k/download =350x350)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Line $\overline{AG}=\sqrt{2}$ is the longest line in our universe and the next iteration gives $\overline{AG}\times\sqrt{2}^{\thinspace-1}=\overline{AD}=1$. The triangular shapes are not just for illustrative purposes. Line $\overline{GF}&amp;gt;\overline{AG}$ and cannot exist in the universe therefor the first shape $\triangle AFG$ has to extend the universe bounds which would defy the meaning “universe”. The absolute size of the area $A=\angle AFG=\frac{1}{2}$, and as such does not violate the bounds, therefore the set of points exist in some continuous relation contained within the mathematical universe.</pre>
 <pre class="osf">In table 5.1: Hexagonal equilibrium we find the family of chords that represent sets of points that would appear to express spherical attributes, see column $c_{\hbar}$ containing values proportional to $\sqrt{5}$.</pre>
 <pre class="osf">&amp;nbsp;In figure 6.3 triangle $\triangle BCD$ consists of two triangles $\triangle ACD$ and $\triangle ABC$.</pre>
@@ -55,32 +55,32 @@
 <pre class="osf">&lt;h2&gt;The M-brane exposed area&lt;/h2&gt;</pre>
 <pre class="osf">In figure 6.4 the regression is depicted as successive squares of the radii. Each iterative step is depicted as a full triangular cycle of $45^\circ\rightarrow\sqrt{2}^{\thinspace-1}\times\sqrt{2}=\frac{1}{2}$. A partition of the area has no overlap with previous and subsequent areas, those are indicated A through E, measure $\frac{1}{4}$ of the current iteration and $\frac{1}{2}$ of the subsequent iteration.&lt;br /&gt;</pre>
 <pre class="osf">By symmetry it takes two iterations $\left(\overline{AC}\rightarrow\overline{AB}\right)\propto2\times45^\circ=90^\circ$ reach a 4-fold reduction in area.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F6.04 M-brane mono surface area contraction](https://osf.io/6pbjd/download =350x350)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Figure 6.5, by ratio of successive iteration $\left(A\rightarrow B\right)\propto45^\circ$, shows that Surface Area and Volume are in fact out of phase expressions of surface area. $A\frac{1}{4}:B\frac{1}{8}\rightarrow B\frac{1}{4}:C\frac{1}{8}\\, or\\, SA\frac{1}{4}:V\frac{1}{8}\rightarrow SA\frac{1}{4}:V\frac{1}{8}$.</pre>
 <pre class="osf">Volume is defined as wrapped surface area.</pre>
 <pre class="osf">The third iteration is associated with $T_{n=3}$. There if we project a intermediate iteration onto $\frac{5}{6}$ of the completed cycle, then we find ourselves at the point depicted in configuration D (Figure 6.1: Some $\frac{1}{6}$ affected area configurations). The hypotenuse of the remaining triangular area is $c_{tan}=\sqrt{1^{2}+\left(\frac{1}{3}\right)^{2}}=\sqrt{T_{h}}\approx\hbar$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F6.05 M-brane mono surface zeta equilibrium](https://osf.io/6bnmk/download =350x350)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">In figure 6.6 it is really more convenient to use the $360^\circ$ system. The base of each iteration by scale invariance is always proportional to 1, $\overline{AB}\rightarrow a=1, \overline{BC}\rightarrow b=\frac{1}{3}\\,\\, and\\,\\, \overline{AC}\rightarrow c=\sqrt{a^{2}+b^{2}}=\sqrt{T_{h}}\approx1.054092553...\rightarrow\sim\sqrt{c_{unity}}=\sqrt[4]{1\frac{1}{4}}\approx1.057371263\dots$.</pre>
 <pre class="osf">By design we know that the total area below the hypotenuse is $Area\thinspace\triangle ABC=\frac{1}{6}$. This we will express in fractions of 60, $Area\thinspace\triangle ABC=\frac{10}{60}$. $Area\thinspace\triangle AED=\frac{9}{60}$ and therefore remains $Area\thinspace\square EBCD=\frac{1}{60}$.</pre>
 <pre class="osf">The coordinates for point D are $D_{x}=cos\left(tan^{-1}\left(\frac{1}{3}\right)\right)=\left(\sqrt{T_{h}}\right)^{-1}$ and $D_{y}=sin\left(tan^{-1}\left(\frac{1}{3}\right)\right)=\left(\sqrt{10}\right)^{-1}$ yielding an area $Area\thinspace\triangle AED=\frac{9}{60}=0.15\rightarrow\frac{360}{24}=15$.</pre>
 <pre class="osf">The sum of areas $\triangle AED+\square EBCD=\triangle ABC=\frac{1}{6}$ is equivalent to $\frac{9}{60}\times T_{h}=\frac{1}{6}$.</pre>
 <pre class="osf">The radii grouping in cycles of $90{^\circ}$ (figure 6.3) has a point of equilibrium at the transfer from $\frac{9}{90}\thinspace to\thinspace\frac{10}{90}\rightarrow\frac{1}{10}\thinspace to\thinspace T_{h}$ as function of decreasing area. This final value $\frac{10}{90}=T_{h}$ is as found in figure 4.9: Projection plane regression where the value indicates the repetition of the projection plane.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F6.06 M-brane mono surface-detail 9 over 60](https://osf.io/7dshx/download =350x350)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The proportionality is convenient. In here we find $\left(60^\circ\\,is\\, to\\,360^\circ\\,as\\,\left(\frac{1}{6}\right)^\circ\\,is\\,to\\,1^\circ\right)$ and therefor $\left(0.15\\, is\\, to\\,0.9\\,as\\,15^\circ\\,is\\,to\\,90^\circ\right)$. For $1\\,\pi\\,\frac{360^\circ}{2\pi}\approx57.29577951\dots^\circ$ we can apply $1\\,\pi\\, rad=\frac{360^\circ}{2.5^{2}}\times\left(\looparrowright\right)^{-1}=57.6\times\left(\looparrowright\right)^{-1}\approx57.29577951\dots^\circ$&lt;br /&gt;</pre>
 <pre class="osf">The scale invariance obscures a beautiful aspect of $a=\overline{AB}$. In table 6.1 we find at $n=2\rightarrow Spherical\\,calculated=0.32\rightarrow0.32=\frac{1}{\pi\left(\looparrowright\right)^{-1}}$, this $0.32=\frac{1}{3.125}$ is the limit for $\frac{lb}{ub}$ from the primorial oscillation (table 6.1).&lt;br /&gt;</pre>
 <pre class="osf">The cycle starts of with A=1 and two iterations further we end up with $A=\left(\frac{1}{3.125}\right)^{2}$. Therefor the initial area must have been $A=\left(\left(0.32\right)^{2}\right)^{-1}=\left(0.1024\right)^{-1}=9.765625=\pi^{2}\times\left(\looparrowright\right)^{-2}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">T6.01@ [osf](ehmbv)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">|Table 6.01 4/5 proportion Spherical vs Cartesian projection (exc. $\looparrowright$)|</pre>
 <pre class="osf">|---|</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">$\rule{0.5pt}{10pt}\thinspace $&lt;br&gt;$\rule{0.5pt}{20pt}\thinspace $&lt;br&gt;$\rule{0.5pt}{15pt}\thinspace  n$|$\rule{0.5pt}{10pt}\thinspace $&lt;br&gt;$\rule{0.5pt}{20pt}\thinspace $&lt;br&gt;$\rule{0.5pt}{15pt}\thinspace {\small Calculated}$|$\rule{0pt}{10pt}\hspace{-2.5em}{\small Cartesian}$&lt;br&gt;$\rule{0pt}{15pt}\hspace{-1.5em}{\small \sqrt{2}^{\text{ -n}}}$&lt;br&gt;$\rule{0.5pt}{18pt}\thinspace {\small Closed}$|$\rule{0.5pt}{10pt}\thinspace $&lt;br&gt;$\rule{0.5pt}{20pt}\thinspace {\small \left(\frac{4}{5}\sqrt{2}^{\text{ -1}}\right)^{\thinspace n}\leftrightarrow}$&lt;br&gt;$\rule{0.5pt}{15pt}\thinspace {\small Calculated}$|$\rule{0pt}{10pt}\thinspace {\small Spherical}$&lt;br&gt;$\rule{0pt}{20pt}\thinspace {\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -n}}\leftrightarrow}$&lt;br&gt;$\rule{0.5pt}{15pt}\thinspace {\small Closed}$|$\rule{0pt}{10pt}\thinspace $&lt;br&gt;$\rule{0pt}{20pt}\thinspace {\small 2^{5\left(\frac{n}{2}\right)}\cdot10^{\text{ -n}}}$&lt;br&gt;$\rule{0.5pt}{15pt}\thinspace {\small Closed}$|$\rule{0.5pt}{10pt}\thinspace {\small \Delta\frac{Cartesian}{Spherical}} $&lt;br&gt;$\rule{0.5pt}{20pt}\thinspace  $&lt;br&gt;$\rule{0.5pt}{15pt}\thinspace $</pre>
 <pre class="osf">---|---|---|---|---|---|---</pre>
 <pre class="osf">$0$ | $\|\thinspace {\small 1}$ | ${\small \sqrt{2}^{\text{ 0}}}$ | $\|\thinspace {\small 1}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{-1}}^{\text{  0}}}$ | ${\small 2^{0}\cdot10^{0}}$ | $\|\thinspace {\small 1}$</pre>
@@ -94,10 +94,10 @@
 <pre class="osf">$8$ | $\|\thinspace {\small 0.0625}$ | ${\small \sqrt{2}^{\text{ -8}}}$ | $\|\thinspace {\small 0.01048576}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -8}}}$ | ${\small 2^{20}\cdot10^{\text{ -8}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{8}}$ </pre>
 <pre class="osf">$9$ | $\|\thinspace {\small 0.04419...}$ | ${\small \sqrt{2}^{\text{ -9}}}$ | $\|\thinspace {\small 0.0059316416...}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -9}}}$ | ${\small 2^{22.5}\cdot10^{\text{ -9}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{9}}$ </pre>
 <pre class="osf">$10$ | $\|\thinspace {\small 0.03125}$ | ${\small \sqrt{2}^{\text{ -10}}}$ | $\|\thinspace {\small 0.0033554432}$ | ${\small \sqrt{\pi\left(\looparrowright\right)^{\text{ -1}}}^{\text{ -10}}}$ | ${\small 2^{25}\cdot10^{\text{ -10}}}$ | $\|\thinspace {\small \left(1\frac{1}{4}\right)^{10}}$ </pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Slotting mechanism</pre>
 <pre class="osf">==================</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The scale invariance of geometric proportions such as $\sqrt{2}$ and $\pi$ means that without frame of reference the size of the object they are derived from is unknowable.&lt;br /&gt;</pre>
 <pre class="osf">To complicate matters further, knowing and following algorithms demand agency. There is no such thing as “agency” in an emergent system rooting in first principle.&lt;br /&gt;</pre>
 <pre class="osf">What mechanism would be capable of forcing a mathematical abstraction onto physical systems. How can any physical process take note of any mathematical abstract notion of oscillation and behave accordingly? Well, it can not, it only appears to stabilize each time while in reality, as we will show, the collapse is a ongoing process and quantized in discrete pulses. The mathematical structure is emerging from first principles from within the physical structure, it can be derived from observation.&lt;br /&gt;</pre>

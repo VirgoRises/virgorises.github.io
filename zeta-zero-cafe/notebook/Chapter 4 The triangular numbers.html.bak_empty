@@ -28,118 +28,118 @@
   <div class="card">
 <pre class="osf">The triangular numbers</pre>
 <pre class="osf">======================</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">A triangular number or triangle number counts objects arranged in an equilateral triangle, [...]. The nth triangular number is the number of dots in the triangular arrangement with n dots on a side and is equal the sum of the n natural numbers from 1 to n.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F4.01 The sum formula and first six triangular numbers](https://osf.io/wbhq8/download =400x400)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">\begin{equation}\begin{split}T_{n}&amp;=\frac{n(n+1)}{2}=\\{0,1,3,6,10,15,21,28,36,\dots\\}\\\\n&amp;=\frac{\sqrt{8x+1}-1}{2}\rightarrow n\in\mathbb{N}\rightarrow T_{n}=x\end{split}\label{eq:04.00}\tag{04.00}\end{equation}</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Mapping the sum formula</pre>
 <pre class="osf">-----------------------</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The sum formula mapped as in figure 4.1 is a rather naive graphical representation of the zeta function value for $\zeta\left(2\right)$.</pre>
 <pre class="osf">Is the infinite sum of reciprocal squares connected to the triangular numbers? The final result after adding the whole infinity of reciprocal squares can be represented as such, but does it offer any explanatory powers to do so?</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Mathematical universe</pre>
 <pre class="osf">---------------------</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The triangular numbers and the zeta function are mathematical abstractions that can not in them selves exhibit dynamical behavior, nonetheless, we find that the under laying numerical sequence does reflect some tangible dynamical process. The conclusion therefor must be that numerical abstraction necessarily depends on, derives from, what is considered to be the physical nature of the world we observe. Overall we find that it seems as if observing a dynamic structure in a continues state of collapse. In fact this notion of mathematics emerging from physical reality and state of collapse is exactly what needs to be modeled for the hypothesis to be correct.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Figure &#x27;The sum formula and first six triangular numbers&#x27; showing the area $A=\pi^{2}$ divided in 4 quadrants represents the mathematical universe, a complete convex set, Wikipedia:A complete convex set. The figure does not have explanatory power for the dynamic behavior, that will be handled in chapter 7. In this chapter the apparent fractal property of self-similarity and dynamic fingerprint will be identified, the lower left ($3_{th}$) quadrant will be shown to represent the end state of the area as a whole.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The Planes</pre>
 <pre class="osf">==========</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Projection Plane</pre>
 <pre class="osf">----------------</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F4.02 The projection plane](https://osf.io/be3s2/download =300x300)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The projection plane $A_{\square}$ (fig. 4.2) measures $1\times1\thinspace unit$, subdivided into 4 quadrants, numbered from the top right, anticlockwise I, II, III and IV. This plane is assigned a scale with sides of length $1:\pi$ and thus defines the projection plane to $A_{\square}=\pi^{2}$, i.e. the continuum $\mathbb{R}^{2}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The marker $T_{n=3}$ on the x-axis, (also projects on the y-axis), marks the extend of an isosceles right angle triangle measuring $\frac{1}{6}A_{\square}=\frac{\pi^{2}}{6}$. Similarly the two arcs at $x=0.5$ and $x=\sqrt{2}^{\thinspace-1}$ define the two hypotenuses, $T_{n=0}$ as upper bound and $T_{n=\infty}$ as lower bound, below which the triangular numbers project as area of the continuum $\mathbb{R}^{2}$, also as isosceles right angle triangles.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Triangular Plane</pre>
 <pre class="osf">----------------</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F4.03 The triangular plane](https://osf.io/g9te2/download =250x250)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The rational projection of the triangular numbers is contained within the limits of quadrant III, the triangular plane $A_{\Delta}$ (see fig. 4.3).</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The set of numbers $n&lt;=T_{n}$, triangular number $T_{n}=\frac{1}{2}n(n+1)$, projects on a $n\times n$ grit from the lower left corner up to and over the diagonal running from upper left to lower right, e.g., the $3\times3$ projection of $T_{n=3}$ results in a grit of 9 squares of which 6 are occupied.</pre>
 <pre class="osf">\begin{equation}\begin{split}T_{n=3}&amp;=\frac{1}{2}n\left(n+1\right)\\\\&amp;=1.5\times4=6\end{split}\label{eq:04.01} \tag{04.01} \end{equation}</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Affected area for n is 3</pre>
 <pre class="osf">------------------------</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">See table 4.1 discrete triangular continues projection plane. Each triangular number can be expressed as a set of discrete areas, e.g. the 6 filled squares in the $3\times3$ grid contained in quadrant III for n=3. </pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The total affected area can be expressed in relation to:</pre>
-
+<pre class="osf"></pre>
 <pre class="osf"> - The projection plane: $T_{n=3}\rightarrow</pre>
 <pre class="osf">   A_{\square}=\frac{6}{4\times9}=\frac{6}{36}=\frac{1}{6}$</pre>
 <pre class="osf"> - The triangular plane: $T_{n=3}\rightarrow A_{\Delta}=\frac{6}{9}$</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">**Proportion above hypotenuse**</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Except for the limiting case $\underset{n\rightarrow\infty}{lim}\thinspace T_{n}$, there is a portion of the affected area that projects above the hypotenuse of quadrant III. The sum of the triangles projected above the hypotenuse also add up to an area, for $n=3$ this adds up to:</pre>
-
+<pre class="osf"></pre>
 <pre class="osf"> - Proportional to the projection plane: $T_{n=3}\rightarrow</pre>
 <pre class="osf">   A_{\square}=\frac{n}{2}\left(2n\right)^{-2}=\frac{1}{24}$</pre>
-
+<pre class="osf"></pre>
 <pre class="osf"> - Proportional to the triangular plane: $T_{n=3}\rightarrow</pre>
 <pre class="osf">   A_{\Delta}=\frac{n}{2}\left(n\right)^{-2}=\frac{1}{6}$</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">**Affected area in the limit**</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">At $\underset{n\rightarrow\infty}{lim}T_{n}\rightarrow T_{n}=\infty$ the affected area is infinite dense, solely consisting of dimensionless points. In the limit there is no affected area remaining above the hypotenuse, and the affected area is $A_{\Delta}=\frac{1}{2}\text{→}A_{\square}=\frac{A_{\Delta}}{A_{\square}}=\frac{1}{8}$. In this configuration the hypotenuse of the affected area will be $c=\frac{1}{2}\sqrt{2}\propto\frac{\pi}{2}\sqrt{2}$. </pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Triangular projection to Surface Area</pre>
 <pre class="osf">-------------------------------------</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F4.04 Triangular to projection plane](https://osf.io/fs93a/download =250x250)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The area projected by square area units in the triangular plane $A_{\Delta}$, can also be represented by a continuous triangular section of the projection plane $A_{\square}$ as a whole *with right angle sides* (note the emphasis) $a=b=\sqrt{2A_{\Delta}}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Such a projection for the triangular numbers will exceed the bounds of quadrant III for all triangular numbers with exception for the limiting case which projects on the diagonal of quadrant III, see fig. F4.04 triangular to projection plane.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The hypotenuse of $Area\rightarrow T_{n=3}=6$ has length: $c_{n=3}=$$\sqrt{2\times Area}\times$$\sqrt{2}=\sqrt{24}$.</pre>
 <pre class="osf">The hypotenuse at $T_{n=3}$ sections off exactly the affected area as shown in the triangular projection $\frac{1}{6}=\frac{1}{8}+\frac{1}{24}$. In essence providing a continuous representation of the discrete triangular projection.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">By this procedure both $T_{n=3}$ and $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ are mapped to the projection plane.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The emphasis on &#x27;*with right angled sides*&#x27; has a purpose, a triangle number counts objects arranged in an equilateral triangle and not in a right sided triangle.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Hybrid right and equilateral triangle</pre>
 <pre class="osf">-------------------------------------</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">There is one aspect that makes the right angled projection a model for a equilateral triangle and that is the arrangement of the triangular numbers. Note that $T_{n=3}$ projects 3 unit squares along the x and y axis, *but also 3 units along the diagonal*. The projection is equilateral when expressed in numbers of units.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F4.05 Exceeding the bounds of the Triangular plane](https://osf.io/49hca/download =250x250)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Figure 4.5 shows the maximum area which any triangular number grid can possibly occupy when projected as continuous area.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">In the the total area below the hypotenuse for $T_{n=3}$ is $\frac{1}{8}+\frac{1}{24}=\frac{1}{6}$. The remainder of the shaded area between $T_{n=3}$ and the limit at $T_{n=0}=\left(\sqrt{2}\right)^{-1}$ measures $\frac{1}{2}\left(\sqrt{2}^{\thinspace-1}\right)^{2}-\frac{1}{6}=\frac{1}{12}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The process starts with $Area=\frac{1}{2}\left(\sqrt{2}^{\thinspace-1}\right)^{2}-\frac{1}{6}=\frac{1}{12}$ and this area reduces as the cycle approaches $lim_{n\rightarrow\infty}\rightarrow A_{\Delta}=\frac{1}{2}\text{→}\frac{A_{\Delta}}{A_{\square}}=\frac{1}{8}$, a difference of $\frac{1}{8}-\frac{1}{12}=\frac{1}{24}$, which in the triangular projection for $T_{n=3}$ is the part of the affected area exceeding the hypotenuse of the triangular plane, e.g., $A=\frac{3\times 0.5}{6\times 6}=\frac{1.5}{36}=\frac{1}{24}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Area accounting in the plane</pre>
 <pre class="osf">============================</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The Bernoulli brothers found proof for the divergence of the harmonic series, $1+\frac{1}{2}+\frac{1}{3}+\frac{1}{4}+\dots=\infty$. Consider that the triangular number $T_{n=1}$ projects in a $1\times1$ grid in the triangular plane and has $a=\sqrt{2\times\frac{1}{4}}=\sqrt{2}^{\thinspace -1}$, and furthermore that the harmonic series is equivalent to $\zeta\left(1\right)=1+\frac{1}{2^1}+\frac{1}{3^1}+\frac{1}{4^1}+\dots$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">In table 4.1 discrete triangular continues projection plane, we find that the maximum affected area is $A_{\square}=\frac{1}{4}$.</pre>
 <pre class="osf">Table 2.1 zeta function values, lists “no value” for $\zeta\left(1\right)$, the harmonic series.  However, in this particular reference frame a definite closed value can be assigned to the harmonic series by completing the pattern:</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">\begin{equation}\begin{split}\zeta\left(1\right)&amp;=1+\frac{1}{2^{1}}+\frac{1}{3^{1}}+\text{…}\\\\&amp;=1+\frac{1}{2}+\frac{1}{3}+\text{…}=\frac{\pi^{2}}{4}\end{split}\label{eq:04.02}\tag{04.02}\end{equation}</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">This needs to be justified for $\zeta\left(1\right)$. Considering that the mathematical universe is $A_{\square}$, where do the function values $\zeta\left(s\right)\forall s\neq 2$ project on the projection/triangular plane? The answer is intriguing, first the context for $\zeta\left(2\right)$ should be clear.</pre>
 <pre class="osf">Table 4.1 discrete triangular continues projection plane, shows three sections, connecting Cartesian triangular projection and associated spherical geometry.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">|Table 4.01 Discrete triangular - Continues projection plane|</pre>
 <pre class="osf">|---|</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">$\rule{.5pt}{0pt}$ &lt;br&gt;$\rule{0pt}{10pt}\thinspace $ &lt;br&gt;$\rule{0pt}{10pt}\thinspace$ &lt;br&gt;$\rule{0pt}{10pt}\thinspace$ &lt;br&gt;$\rule{0pt}{15pt}\thinspace n$ &lt;br&gt;$\rule{.05pt}{18pt}\text{}$|$\rule{.5pt}{0pt}$ &lt;br&gt;$\rule{0.5pt}{10pt}\thinspace$ &lt;br&gt;$\rule{0.5pt}{10pt}\thinspace$ &lt;br&gt;$\rule{0.5pt}{10pt}\thinspace$ &lt;br&gt;$\rule{0.5pt}{15pt}\thinspace T_{n}$ &lt;br&gt;$\rule{.05pt}{18pt}\text{}$|$\rule{.5pt}{0pt}$ &lt;br&gt;$\rule{0pt}{10pt}\thinspace $ &lt;br&gt;$\rule{0pt}{10pt}\thinspace $ &lt;br&gt;$\rule{0pt}{10pt}\thinspace \hspace{-1em} {\small \propto A_{\Delta}}$ &lt;br&gt;$\rule{0.5pt}{15pt}\thinspace \frac{T_{n}}{n^{2}}$ &lt;br&gt;$\rule{.05pt}{15pt}\text{}$|$\rule{0.5pt}{0pt}$ &lt;br&gt;$\rule{0pt}{10pt}\thinspace $ &lt;br&gt;$\rule{0pt}{10pt}\thinspace $ &lt;br&gt;$\rule{0.5pt}{10pt}\thinspace $ &lt;br&gt;$\rule{.5pt}{15pt}\thinspace \frac{T_{n}}{4\cdot n^{2}}$ &lt;br&gt;$\rule{.05pt}{15pt}\text{}$|$\rule{.5pt}{0pt}$ &lt;br&gt;$\rule{0pt}{10pt}\thinspace $ &lt;br&gt;$\rule{0pt}{10pt}\thinspace \hspace{-4.5em} {\small \text{Discrete}} $ &lt;br&gt;$\rule{0pt}{10pt}\thinspace \hspace{-1em} {\small \propto A_{\Box}}$ &lt;br&gt;$\rule{.5pt}{15pt}\thinspace A$ &lt;br&gt;$\rule{.05pt}{18pt}\text{}$|$\rule{.5pt}{0pt}$ &lt;br&gt;$\rule{0pt}{10pt}\thinspace \hspace{-6em}  {\small A_{\Delta}\text{ Triangular plane}}$ &lt;br&gt;$\rule{.5pt}{10pt}\quad {\small \text{Continue}}$ &lt;br&gt;$\rule{.5pt}{10pt}\quad {\small \text{Sides ab}}$ &lt;br&gt;$\rule{.5pt}{15pt}\thinspace a=\sqrt{2\times A}$ &lt;br&gt;$\rule{.05pt}{18pt}\text{}$|$\rule{.5pt}{0pt}$ &lt;br&gt;$\rule{0.5pt}{10pt}\thinspace $ &lt;br&gt;$\rule{0.5pt}{10pt}\qquad {\small \underset{n\to\infty}{lim}a=\frac{1}{2}}$ &lt;br&gt;$\rule{0.5pt}{10pt}\quad {\small \text{Closed}}$ &lt;br&gt;$\rule{0.5pt}{15pt}\thinspace r_{q}=\sqrt{\frac{n}{n+1}}$ &lt;br&gt;$\rule{.05pt}{12pt}\text{}$|$\rule{.5pt}{0pt}$ &lt;br&gt;$\rule{0pt}{10pt}\thinspace \hspace{-4.5em} {\small A_{\Box}\text{ Projection plane}}$ &lt;br&gt;$\rule{0pt}{10pt}\thinspace \rightarrow r_{q}=\frac{0.5}{a}$ &lt;br&gt;$\rule{.5pt}{10pt}\thinspace {\small \text{Calculated}}$ &lt;br&gt;$\rule{.5pt}{15pt}\thinspace r_{q}=\frac{0.5}{a}$ &lt;br&gt;$\rule{.05pt}{15pt}\text{}$|$\rule{.5pt}{0pt}$ &lt;br&gt;$\rule{0.5pt}{10pt}\thinspace {\small \text{Proportional SA}}$ &lt;br&gt;$\rule{0.5pt}{10pt}\thinspace r_{q}\rightarrow r_{x}$ &lt;br&gt;$\rule{0.5pt}{10pt}\thinspace {\small \text{radius }r_{x}\propto SA}$ &lt;br&gt;$\rule{0.5pt}{15pt}\thinspace r_{x}=\frac{r_{q}}{\sqrt{P\Delta\left(\looparrowright^{\text{ -1}}\right)}}$ &lt;br&gt;$\rule{.05pt}{10pt}\text{}$</pre>
 <pre class="osf">---|---|---|---|---|---|---|---|---</pre>
 <pre class="osf">    $1$  | $\|\\;$1 | 1 | $\|\\;\frac{1}{4}$ | $\frac{1}{4}$ | $\|\\;\sqrt{2}^{\thinspace-1}$|$\|\\;\sqrt{\frac{1}{2}}$ | ${\small 0.7071067812}$|$\|\\;\propto SA=\frac{2}{3}\pi^2$</pre>
@@ -151,29 +151,29 @@
 <pre class="osf">    $7$ | $\|\\;$28 | $\frac{28}{49}$ | $\|\\;\frac{28}{196}$ | $\frac{1}{7}$ | $\|\\;{\small 0.5345224838}$|$\|\\;\sqrt{\frac{7}{8}}$ | ${\small 0.9354143467}$|$\|\\;\propto SA=\frac{7}{6}\pi^2$</pre>
 <pre class="osf">    $8$ | $\|\\;$36 | $\frac{36}{64}$ | $\|\\;\frac{36}{256}$ | $\frac{9}{64}$ | $\|\\;{\small 0.5303300859}$|$\|\\;\sqrt{\frac{8}{9}}$ | ${\small 0.9428090416}$|$\|\\;\propto SA=\frac{32}{27}\pi^2$</pre>
 <pre class="osf">    $\infty$ | $\|\\;\infty$ | | | $\frac{1}{8}$ | $\|\\;0.5$|$\|\\;1$ | $1$|$\|\\;\propto SA=\frac{4}{3}\pi^2$</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Section $A_{\Delta}Triangular\\,plane$: “Discrete” lists the area affected, “Continue” lists the associated right angle sides $a=b$ for the projection (fig. 4.04 triangular to projection plane), onto the projection plane.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">section $A_{\square}Projection\\,plane$: “Closed” lists the from “n” derived “intermediate radius” as the closed formula $r_{q}=\sqrt{\frac{n}{n+1}}$, the “Calculated” value for $r_{q}=\sqrt{\frac{n}{n+1}}$ is derived from the ratio to which the limit is approached, $r_{q}=\frac{0.5}{\sqrt{2\times A}}$. </pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Then finally section $Proportional\\,SA$: the conversion of the “intermediate radius” using the primorial structure. </pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Listed is the proportional surface area associated with the radius   $r_{x}=\frac{r_{q}}{\sqrt{P\Delta\left(\looparrowright^{-1}\right)}}$. By ratio $SA\propto\frac{4\pi\left(r_{x}\right)^{2}}{\pi^{2}}$ we find that the mapping for $T_{n=3}$ relates to $SA=\pi^{2}$ by application of the primorial ratios $P\Delta$ and $\looparrowright$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">\begin{equation}\begin{split}\underset{n\rightarrow\infty}{lim}\rightarrow a&amp;=\sqrt{2\left(\frac{T_{n}}{4n^{2}}\right)}=\sqrt{2\left(\frac{1}{8}\right)}\\\\&amp;=\frac{1}{2}\rightarrow r_{q}=\frac{0.5}{a}=1\end{split}\label{eq:04.03}\tag{04.03}\end{equation}</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The progression from $a=\sqrt{2}^{\thinspace-1}$ to the limit a=0.5 can be, evidently, expressed as a ratio $r_{q}=\frac{0.5}{a}$, which has as closed form $r_{q}=\sqrt{\frac{n}{n+1}}$.</pre>
 <pre class="osf">Table 4.1, shows that the primorial ratios reflect some intimate connection between two distinct worlds, the flat Cartesian triangular projection and the curved surface area of spherical geometry.</pre>
 <pre class="osf">At $n=3$, table 4.1, we find that the affected triangular area amounts to $A=\frac{A_{\square}}{6}$, and that the proportional surface area is $\pi^2$. Assumed spatial aspect of $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ is closely related to $T_{n=3}$ by $P\Delta$ and $\looparrowright$, which follow from the primorial function, and therefor from the prime numbers.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Is this merely a mathematical coincidence for $\zeta\left(2\right)$?</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Zeta for s other then 2</pre>
 <pre class="osf">-----------------------</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">|Table 4.02 Projection plane range for all s|</pre>
 <pre class="osf">| --- |</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">$s$ | $value$ | $\frac{\pi^2}{\left(\pi^2\right)\left(\zeta\left(s\right)^{\text{-1}}\right)}$ | $a=\sqrt{2A}$ | $r_q=\frac{0.5}{a}$ | $r_{x}=\frac{r_{q}}{\sqrt{P\Delta\left(\looparrowright^{\text{ -1}}\right)}}$ | ${\small SA\propto\pi^2}$</pre>
 <pre class="osf">---|---|---|---|---|---|---</pre>
 <pre class="osf">$1$ | $\frac{\pi^{2}}{4}$ | $\frac{\pi^{2}}{4}$ | ${\small \sqrt{2\times\frac{1}{4}}}$&lt;br&gt;${\small =0.7071067812}$ | ${\small \sqrt{2}^{\text{-1}}}$ | ${\small \sqrt{\frac{2\pi\times\left(P\Delta\left(\looparrowright^{\text{-1}}\right)\right)^{\text{ -1}}}{4\pi}}}$&lt;br&gt;${\small =0.7236012546}$ | ${\small SA\propto\frac{6}{9}\pi^2}$</pre>
@@ -183,194 +183,194 @@
 <pre class="osf">$5$|$\frac{\pi^{2}}{9.518121541}$ |$\frac{\pi^{2}}{9.518121541}$|${\small \sqrt{2\times\frac{1}{9.518121541}}}$&lt;br&gt;${\small =0.4583944753}$|${\small 1.090763582}$||</pre>
 <pre class="osf">$6$ |$\frac{\pi^{6}}{945}$|$\frac{\pi^{2}}{9.701359231}$|${\small \sqrt{2\times\frac{1}{9.701359231}}}$&lt;br&gt;${\small =0.4540447984}$|${\small 1.101212924}$||</pre>
 <pre class="osf">$\infty$|$\frac{\pi^{\infty}}{\infty}$|$\frac{\pi^2}{\pi^2}$|${\small \sqrt{2\times\frac{1}{\pi^{2}}}}$&lt;br&gt;${\small =\frac{1}{\pi}\sqrt{2}}$&lt;br&gt;${\small =0.4501581581}$|${\small \sqrt{\frac{\pi^2}{8}}}$&lt;br&gt;${\small =1.110720734}$|${\small \sqrt{\frac{\frac{\pi^{2}}{6}\times\pi^{2}}{4\pi}}}$&lt;br&gt;${\small =1.136630193}$|${\small SA\propto}$&lt;br&gt;${\small \frac{\pi^2}{6}\times\pi^2}$</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Table 4.2 projection plane range for all s, tabulates the values for $s=\{1,\dots,6,\infty\}$, where for $s=1$ the proposed value $\frac{\pi^2}{4}$ is used.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The values for $\zeta\left(s&gt;2\right)$ in column $a=\sqrt{2A}$ all result in values $\sqrt{2A}&lt;0.5$.</pre>
 <pre class="osf">This means (see figure 4.6) that none of the $\zeta\left(s&gt;2\right)$ will be expressed in the infinite range of triangular numbers $T_n \left(a\right)=\left[\sqrt{2}^{-1},0.5\right]$, as if they do not exist at all. they do, however, have a limit at $\frac{1}{\pi}\sqrt{2}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F4.06 Projection plane extended zeta](https://osf.io/ct8py/download =225x225)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The value for $\zeta\left(s=1\right)$ in column $SA\propto\pi^2$ lists $SA\propto\frac{6}{9}\pi^{2}$, this result hints at a fractal property if interpreted as a result of dynamic behavior, but does not confirm conclusively that $\zeta\left(1\right)=\frac{\pi^2}{4}$ is valid.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The interpretation of $A_{\square}=\frac{6}{9}\pi^{2}$ is that it indicates a previous cycle of $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ when the ratio affected cells for the triangular plane reached $A_{\Delta}=\frac{6}{9}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The fraction $\frac{6}{9}$ is associated with the affected area of the triangular plane $A_{\Delta}$ in the third quadrant of the projection plane $A_{\square}$ resulting from $\zeta\left(2\right)=\frac{\pi^2}{6}$, and here we find this configuration superimposed on the projection plane $A_{\square}=\frac{6}{9}\pi^{2}$ as if it is the triangular plane.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">At $\zeta\left(1\right)$ the affected area of the projection plane $A_{\square}$ is $\frac{6}{9}$, mirroring the triangular plane $A_{\Delta}$ at $\zeta\left(2\right)$.</pre>
 <pre class="osf">The value $\zeta\left(2\right)=\frac{\pi^{2}}{6}$, indicates that both projection plane and triangular plane are projections of the same area $\pi^2$ at two distinct moments of some recursive process.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The configuration/function value $\zeta\left(2\right)=\frac{\pi^2}{6}$ seems to represent some equilibrium.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">\begin{equation}\begin{split}T_{n=1}&amp;\propto SA=\frac{2}{3}\pi^2={2\pi}\times P_\star\\\\\zeta\left(2\right)=\frac{\pi^2}{6}\rightarrow4\left(\frac{\pi^2}{6}\right)&amp;\propto SA=\frac{4}{6}\pi^2={2\pi}\times P_\star\\\\\zeta\left(1\right)&amp;\propto SA=\frac{6}{9}\pi^2={2\pi}\times P_\star\end{split}\label{eq:04.04}\tag{04.04}\end{equation}</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Changes in Surface Area</pre>
 <pre class="osf">=======================</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The triangular cycle $T_{n\{1,\dots,\infty\}}$ only holds $\zeta\left(s\right)$ for $s\in\\{1,2\\}$, values for $\zeta\left(s&gt;2\right)$ are not represented within the triangular cycle. Those values cannot be mapped as triangular number grid in quadrant III, however, the values can be mapped as affected area in the mathematical universe of $A_{\square}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">In table 4.1 discrete triangular continues projection plane, we find that the value for $\zeta\left(2\right)$ coincides with $n=3\rightarrow a=\sqrt{2\times\frac{1}{6}}$ and a proportional $SA=\pi^2$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">At the start of the triangular cycle we find $T_{n=1}\rightarrow$$ r_{x}\propto SA=$$\frac{6}{9}\pi^{2}$, the total increment in the range $\zeta\left(1\right)\rightarrow\zeta\left(2\right)$ is therefor $\left(\frac{A_{\square}}{A_{\Delta}}\right)\times\left(\frac{\pi^{2}}{\frac{6}{9}\pi^{2}}\right)=4\times\frac{3}{2}=6$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The projection for $\zeta\left(\infty\right)$ (see table 4.2 projection plane range for all s) yields the radius for a sphere with $SA\propto\left(\frac{\pi^{2}}{6}\times\pi^{2}\right)$ which is an increment in surface area by a factor $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ in the range $\zeta\left(2\right)\rightarrow\zeta\left(\infty\right)$. </pre>
-
+<pre class="osf"></pre>
 <pre class="osf">However, because the values for $\zeta\left(s&gt;2\right)$ fall outside the bounds of the triangular projection, we established that the mapping to $A_\Delta$ does not apply. </pre>
-
+<pre class="osf"></pre>
 <pre class="osf">In stead, those values indicate the projection to some future state in a continuous </pre>
 <pre class="osf">collapse of surface area.</pre>
 <pre class="osf">The values for $s&gt;2$ for the Projection plane/Triangular plane assembly can be interpreted as reflecting a relative position/distance removed from the current equilibrium at value $\zeta\left(2\right)$. In this sense the triangular numbers projected onto the projection plane $A_{\square}$ can be interpreted as a scale invariant snapshot of any stage in hypothesized state of continuous collapse. Which, of course, implies that for this to be true, also the natural numbers $n\in\mathbb{N}$ must be interpreted as a set of labels attached to relative positions on a gliding scale.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">For now we assume this dynamical aspect as a given, and proceed under the assumption that this geometric model represents a phase shift in the mathematical universe that, during hypothesized collapse, geometrically fixates the relative positions of those labels.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Bounds of the phase shift</pre>
 <pre class="osf">-------------------------</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The phase shift projects within static bounds on the projection plane $A_{\square}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">We  find values for $SA\propto\frac{6}{9}\times$$ \pi^2,SA=1\times$$\pi^2,\\,and\\,SA\propto$$\frac{\pi^2}{6}\times\pi^2$ (see table 4.2 projection plane range for all s). As found previously, the scale factor $\left(\frac{A_{\square}}{A_{\Delta}}\right)=4$ is key because the triangular plane, or rather quadrant III it projects in, is clearly the scale invariant continuation of the projection plane $A_\square$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">We see that with respect to scale, $\left(\frac{A_{\square}}{A_{\Delta}}\right)\times\frac{\pi^2}{6}\propto\frac{6}{9}\pi^2$. The apparent increment in surface area from $\pi^2$ to $\frac{\pi^{2}}{6}\times\pi^2$ between $s=2$ and $s=\infty$ is, however, a dynamical interpretation imposed on what essentially is a mathematical abstraction, so there must be some real world context in which proposed phase shift can be identified as part of some dynamical process in space/time reality.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">In chapter 8 a proposal to explain the nature of this phase shift will be formulated, and a relation will be identified between the conservation laws, the nature of vacuum energy and the cosmological constant $\Lambda$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">First identify the static numerical pattern that seems to occurs at the point of equilibrium for the ratio affected area:</pre>
 <pre class="osf">For the projection plane $A_{\square}$, numerator and denominator are $A_{\square}\rightarrow\frac{6^{n}}{6}$</pre>
 <pre class="osf">For the triangular plane $A_{\Delta}$, numerator and denominator are $A_{\Delta}\rightarrow\frac{6^{n+1}}{9}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Thus the increase of the affected area progresses in a $1:4$ ratio (see eq. 2.17 spatial ratio).</pre>
 <pre class="osf">\begin{equation}\begin{split}\frac{6^{0}=1}{6}A_{\square}&amp;\rightarrow\frac{6^{1}=6}{9}A_{\Delta}\\\\\frac{6^{1}=6}{6}A_{\square}&amp;\rightarrow\frac{6^{2}=36}{9}A_{\Delta}\end{split}\label{eq:04.05}\tag{04.05}\end{equation}</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">which indicates the total affected area of $A_{\Delta}$ must be $\frac{6}{6}A_{\square}=1A_{\square}$, or corrected for scale in-variance, $\frac{A_{\Delta}}{A_{\square}}A_{\square}=$$\frac{1}{4}A_{\square}=$$A_{\Delta}$ for each iteration. </pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The total affected area of $A_{\Delta}$ is therefore $A_{\Delta}=$$\frac{A_{\square}}{4}=100\\%$ and therefor justifies $\zeta\left(1\right)=\frac{\pi^2}{4}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Longest root of a square area</pre>
 <pre class="osf">-----------------------------</pre>
 <pre class="osf">The affected area $A_{\Delta}=100\%$ gives the maximum value for the right angled side of the projection plane $A_{\square}$; $a=\sqrt{2\left(\frac{1}{4}\right)}=$$\sqrt{\frac{1}{2}}=$$\sqrt{2}^{\thinspace-1}$.</pre>
 <pre class="osf">The hypotenuse from $a=\sqrt{2}^{\thinspace-1}$ to $b=\sqrt{2}^{\thinspace-1}$ is off course $c=a\sqrt{2}=1$, the hypotenuse of the mathematical universe $A_{\square}=\pi^2$, *Longer lines that represent the root of a square area, do not exist in our mathematical universe*.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Further in this chapter a connection is made between this longest line and Planck&#x27;s constant, $\hbar\approx$$\sqrt{\frac{\sqrt{\pi^2}\sqrt{2}}{4}}2\pi\approx$$6.621895274$.</pre>
 <pre class="osf">Longer lines representing the root of a square area would imply that the count of elements $\underset{n\rightarrow\infty}{lim}\, T_{n}\rightarrow$$ \\#n\in\mathbb{N}&gt;\infty$, which is nonsensical.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The maximum right angled side value for the affected area projection is $\underset{n\rightarrow\infty}{lim}T_n\rightarrow\\,$$ A_{\Delta}=\frac{1}{2}\rightarrow$$ a=\sqrt{2A_{\Delta}}\sqrt{2}=$$\sqrt{2}^{-1}\approx0.707$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Continuing the cycle brings us at ratio $\frac{6^{2}=36}{6}A_{\square}\rightarrow$$\frac{6^{3}=216}{9}A_{\Delta}$ or $6A_{\square}\rightarrow$$24A_{\Delta}$ for a total affected area of $\frac{A_{\Delta}}{A_{\square}}=\frac{6}{24}=\frac{1}{4}A_{\square}$, the ratio stays the same $\frac{1}{4}$ ad infinitum.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">\begin{equation}T_{n=1}\rightarrow a=\sqrt{2\left(\frac{T_{n}}{4n^{2}}\right)}=\sqrt{2}^{\thinspace-1}\label{eq:04.06}\tag{04.06}\end{equation}</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">This seems to confine us to an infinite cycle during which only $\zeta\left(2\right)$, and by completing the pattern $\zeta\left(1\right)$, play a roll within the bounds of the infinite series of $\underset{n\rightarrow\infty}{lim}\rightarrow$$ T_{n}\rightarrow$$\\#n\in\mathbb{N}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Volume independent of number</pre>
 <pre class="osf">============================</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The maximum size of the right angled side is $a=\sqrt{2}^{\thinspace-1}$. In the limit $\underset{n\rightarrow\infty}{lim}\rightarrow T_{n}\rightarrow\\#n\in\mathbb{N}$ the right angled sides contain each $\\#n\in\mathbb{N}$, but also the hypotenuse $c=\\#n\in\mathbb{N}$ (see subsection  Triangular_projection_to_Surface_Area).</pre>
 <pre class="osf">All 3 sides count $\\#n\in\mathbb{N}$ elements of equal area. Application of the multiplication factor $\sqrt{2}$ to account for “absolute size” measured over the $45^\circ$ hypotenuse makes no sense, this because in the limit both the straight angled sides and the hypotenuse consist of an equal number of dimensionless points and therefor represent lines of equal length, i.e. forming a distorted equilateral triangle.</pre>
 <pre class="osf">There is a limit beyond $\underset{n\rightarrow\infty}{lim}\rightarrow T_{n}$, out of reach for the window provided by $T_{n}$, see table \ref{tab:projectionplanerangeforalls} - &#x27;Projection plane range for all s&#x27;. There for s=2 we find that $\sqrt{2\times\frac{1}{6}}=$$\sqrt{\frac{2}{3}}=$$0.5773502692$ and we know that the limit for the triangular projection is: $a=\sqrt{2\times\frac{1}{8}}=0.5$ i.e. the length of triangular plane $A_{\Delta}$ sides a and b, effectively the lower limit reached by the triangular projection.</pre>
 <pre class="osf">For all $\zeta\left(s&gt;2\right)$ the values for $a=\sqrt{2A}$ overshoot the lower limit $\underset{n\rightarrow\infty}{lim}\,T_{n}\rightarrow a=0.5\rightarrow A_{\square}=\frac{1}{8}$ e.g. $\zeta\left(3\right)\rightarrow\sqrt{2\times\frac{1}{8.210596}}=0.4935460224\rightarrow\frac{A_{\Delta}}{A_{\square}}=\frac{1}{8.210596}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">This can be understood as a function of volume, $\frac{1}{8}$ affected area as limit implies the reduction of a volume by cutting its radius in half, $V_{1}\times\frac{1}{8}=V_{0}$. To find values in the range $\frac{\pi^{2}}{8.210596}\rightarrow\frac{1}{8.210596}&lt;\frac{1}{8}$ must, by completing the pattern, imply this fraction is addressing a volume that is part of a secondary cycle, one that further reduces to $V_{0}\times\frac{1}{8}=V_{-1}=\left(\frac{1}{8}\right)^{2}=\frac{1}{64}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">However, in the limit the current cycle resets numerically back to the start of infinity, see eq.\ref{eq:back-to-start-of-infinity}. This occurs because, as hypothesized, the frame of reference presented by the zeta function consists of a static numerical pattern of affected surface area at the point of equilibrium $\zeta\left(2\right)=\frac{\pi^2}{6}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Outside the limit</pre>
 <pre class="osf">=================</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Not all hypotenuses are created equal. Al values $\zeta\left(s\right)\,\forall s\left(1&lt;s&lt;=2\right)$ result in $a=\sqrt{2A}&gt;=0.5$, i.e. the resulting hypotenuse is $\left(\sqrt{2}^{\thinspace-1}&lt;= a\sqrt{2} &lt;=1\right)$. These values represent the complete range of the triangular projection cycle (fig. projection plane extended zeta).</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The limit for the triangular projection in $A_{\Delta}$, $c&gt;=\sqrt{2}^{\thinspace-1}$, is geometrically hard coded by the premise that the triangular projection has to be a grid of $n^{2}$ overlay-ed on $A_{\Delta}$, such that it completely fills quadrant III of the projection plane $A_{\square}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Figure projection plane extended zeta depicts a shaded area between the hypotenuse at $\zeta\left(\mathbb{N}\right)$ and the hypotenuse at $T_{n=3}\rightarrow a=0.5$, this is the projection domain for $\zeta\left(s&gt;2\right)$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The first value that projects outside the cycle is $\zeta\left(3\right)\rightarrow\sqrt{2\times\frac{1}{8.210596}}=0.4935460224$ and the last $\zeta\left(\infty\right)\rightarrow\sqrt{2\times\frac{1}{\pi^{2}}}=\frac{1}{\pi}\sqrt{2}=0.45015815814$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">For values of $a=\sqrt{2A}&lt;0.5\rightarrow a^{2}&lt;\frac{A_{\square}}{4}$ the resulting affected surface area consists of insufficient dimensionless points to generate a triangular grid of $\frac{\mathbb{N}}{2}\left(\mathbb{N}+1\right)$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">For all function values $\zeta\left(s\right)$ an associated surface area exists, each of those have right angled sides $a=\sqrt{2A}$ in the projection plane. However, lacking a reference frame like the projection/triangular plane assembly would make it impossible to say if this surface area is defined by a mapping to $T_{n}$, or falls outside the static bounds of the phase shift. In such case all hypotenuses do seem to be created equal.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">This is not a trivial observation, because it brings us to the Riemann hypothesis, can it simply be that a proof for the Riemann hypothesis, ‘All non trivial zeros have real part one half’, is unobtainable because the tool of complex analysis simply lacks the proper reference frame to distinguish between classes of non trivial zeros? In chapter 7 a proposition to answer this question will be formulated.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Zeta at the limit, the surface asymptote</pre>
 <pre class="osf">----------------------------------------</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The range for the triangular numbers is $a=\left[\sqrt{2}^{\thinspace-1},0.5\right]$, in this range only the values for $\zeta\left(1\right)$ and $\zeta\left(2\right)$ occur as discrete projection of $\underset{n\rightarrow\infty}{lim}\\,T_{n}$:</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">\begin{equation}\begin{split}\zeta\left(2\right)&amp;\rightarrow a=\sqrt{2\times\frac{1}{6}}=0.57735026922\\\\&amp;\rightarrow\left\(\sqrt{2}^{\thinspace-1}&gt;=a&gt;=0.5\right\)\end{split}\label{eq:04.07}\tag{04.07}\end{equation}</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The values for $\zeta\left(s&gt;2\right)$ project to quadrant III of the projection plane $A_\square$, but not in its triangular plane $A_\Delta$ identity because the value is out of bounds for $a=\left[\sqrt{2}^{\thinspace-1},0.5\right]$. However, the argument for scale invariance still applies, quadrant III scales to $A_{\square}=\pi^{2}$.</pre>
 <pre class="osf">the shaded area $\zeta\left(\infty\right)_+$, lays beyond  s at infinity.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F4.07 Projection plane bulk](https://osf.io/nxcy4/download =225x225)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Figure 4.7 depicts the shaded triangle $\zeta\left(\infty\right)_{+}$. By $\underset{s\rightarrow\infty}{lim}\,a=\sqrt{2A}&gt;=\frac{\sqrt{2}}{\pi}$ the shaded area $\zeta\left(\infty\right)_{+}$ lays beyond  $\underset{s\rightarrow\infty}{lim}\,\zeta\left(s\right)$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Completing the pattern analogues to $\zeta\left(2\right)\rightarrow a=\sqrt{2A}=\sqrt{2\times\left(\frac{\pi^{2}}{6}\right)}\rightarrow\sqrt{2\times\left(\frac{1}{6}\right)}$ gives $\zeta\left(\infty\right)\rightarrow a=\sqrt{2\times\left(\frac{\left[\pi^{2}\right]}{\pi^{2}}\right)}\rightarrow a=\sqrt{2\times\left(\frac{1}{\pi^{2}}\right)}=\frac{1}{\pi}\sqrt{2}=0.4501581581$. Then follows $r_{q}=\frac{0.5}{a}=\left(0.900316316\right)^{-1}$.</pre>
 <pre class="osf">The associated radius for the sphere is $r_{x}=\frac{r_{q}}{\sqrt{p\Delta\left(\looparrowright\right)^{-1}}}=1.136630193$ and yields a surface area of $SA=4\pi\left(r_{x}\right)^{2}=\pi^{2}\left(\frac{\pi^{2}}{6}\right)$ (see table 4.2 projection plane range for all s).</pre>
 <pre class="osf">A factor $\frac{\pi^{2}}{6}$ bigger than our universe, the projection plane.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Because some collapsing surface area is assumed, the scale factor $\frac{A_\Delta}{A_\square}=\frac{1}{4}$ needs to be observed.</pre>
 <pre class="osf">The algorithm produces for s=1,</pre>
 <pre class="osf">$\zeta\left(1\right)=\frac{\pi^{2}}{4}\rightarrow SA=\frac{6}{9}\pi^{2}=4\times\frac{\pi^2}{6}$. </pre>
-
+<pre class="osf"></pre>
 <pre class="osf">For s=2, </pre>
 <pre class="osf">$\zeta\left(2\right)=\frac{\pi^{2}}{6}\rightarrow SA=\pi^{2}=4\times\frac{\pi^2}{4}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">This means that the initial configuration of $\zeta\left(1\right)$ is also the final configuration of $\zeta\left(2\right)$, this is sufficient to describe the recursion in terms of the phase shift with exclusion of the values for $s&gt;2$.</pre>
 <pre class="osf">Likewise the result for $\zeta\left(\infty\right)\rightarrow SA=\frac{\pi^{2}}{6}\left(\pi^2\right)$ is a factor 4 to big. Therefore $SA=\frac{1}{4}\left(\pi^{2}\left(\frac{\pi^{2}}{6}\right)\right)$ scales to the universe.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Plugging in this value produces a surface area $SA=\frac{1}{4}\times\frac{\left(\pi^{2}\left(\frac{\pi^{2}}{6}\right)\right)}{\pi^2}=\frac{\pi^{2}}{24}$. This is a significant result because $3\times\frac{1}{72}=\frac{1}{24}$ is exact the area that exceeds the hypotenuse of the triangular plane for $\zeta\left(2\right)$, see figure 4.8 triangular plane bulk.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F4.08 The triangular plane bulk](https://osf.io/yjctm/download =250x250)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The hypotenuse of the triangular plane is off course the limit $\underset{n\rightarrow\infty}{lim}\,T_{n}$. The value $SA=\frac{\pi^{2}}{24}$ remaining after $\underset{s\rightarrow\infty}{lim}\,\zeta\left(S\right)$ is exact the value $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ that correlates with a 4-fold reduction in surface area by recursive application of $\zeta\left(2\right)$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Herein is the proof that $\underset{s\rightarrow\infty}{lim}\,\zeta\left(s\right)$ is fully contained within the limits of $\underset{n\rightarrow\infty}{lim}\,T_{n}$, al be it that $\zeta\left(s\right) \forall s \left&lt;2,\infty\right&gt;\ni T_n$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The Spatial ratio $S_{ratio}=\frac{1}{4}$, see equation 2.17 spatial ratio, only holds for the infinite sum/product $\zeta\left(2\right)=\frac{\pi^{2}}{6}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Equilibrium at SA=V, Planck</pre>
 <pre class="osf">---------------------------</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The value $\zeta\left(1\right)=\sum_{n}n^{-1}=\frac{\pi^{2}}{4}$ completes the pattern for $\zeta\left(s\right)\forall s\in\mathbb{N}$ and seems sufficiently justified.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Crucial is that only $\zeta\left(2\right)$ maps to a discrete solution in $T_n$. Also does $\zeta\left(1\right)$ but this is by completing the pattern.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">What is special about $\zeta\left(2\right)=\frac{\pi^2}{6}$ operating on a unit surface area $\pi^{2}$ is the ratio $\left(\frac{1}{8}+\frac{1}{24}=\frac{1}{6}\right)$. Herein we find a profound key to the solution, one that is of significance in connecting the dots between $\zeta\left(2\right)$ and physics.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The transition $\pi^{2}\rightarrow\frac{\pi^{2}}{8}$ can be interpreted as a function of volume but $\zeta\left(2\right)$ is expressed as a function of (surface) area. At the function value of $\zeta\left(2\right)$ a unique point of equilibrium occurs that sits at the source of the emergence of Planck’s constant $h=6.62607015\times10^{-34}J.s.$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The projection plane exposes a point of equilibrium between volume and surface area, $\zeta\left(2\right)$, at which Surface Area and Volume can be recognized as expressions of one underlying principle. Table 4.3 the base of Planck&#x27;s constant, gives a break down for the formulas of surface area and volume.</pre>
 <pre class="osf">A break down for the formulas of surface area and volume.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">|Table 4.03 The base of Planck&#x27;s constant|</pre>
 <pre class="osf">|---|</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">${\small SA}$ | ${\small V}$ | $ $</pre>
 <pre class="osf">--- | --- | ---</pre>
 <pre class="osf">$4r^2$ | $\frac{4}{3}r^3$ | $/ 4$</pre>
 <pre class="osf">$r^2$ | $\frac{1}{3}r^3$ | $/ r^2$</pre>
 <pre class="osf">$1$ | $\frac{1}{3}r^1$ | $x^2$</pre>
 <pre class="osf">${\small SA=1}$ | ${\small V=\frac{1}{9}}$ | ${\small SA\propto\left(\frac{1}{8}+\frac{1}{24}\right)\propto V}$</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">For every unit surface area $SA=1$, there is $V=\frac{1}{9}$ unit of volume. The ratio is defined as $T_{h}\overset{def}{=}1+\frac{1}{9}=0.9^{-1}=1.111111\dots$ from which Planck’s constant $h=6.62607015\times10^{-34}J.s.$,is approached by $h_{*}=\sqrt{T_{h}}\times2\pi\sim h\rightarrow\Delta h\approx\frac{2201}{2200}$. The equilibrium follows from the fractal argument for zeta.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The fractal argument for zeta</pre>
 <pre class="osf">=============================</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F4.09 Projection plane regression](https://osf.io/m9ja4/download =250x250)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">A recursive regression of the triangular plane, quadrant III</pre>
 <pre class="osf">Figure 4.9 depicts a recursive regression of the triangular plane, quadrant III, as found in the configuration for $\zeta(1)\rightarrow SA\propto\frac{6}{9}\pi^2$.</pre>
 <pre class="osf">The fractal iteration in the lower left cell of quadrant III occupies $\frac{1}{6}$ of the affected area of quadrant III. If we assume the recursive product $\prod_{n}\zeta\left(2\right)^{n}=\left\\{1,\frac{1}{6},\frac{1}{36},\frac{1}{216},\frac{1}{1296},\dots\right\\}$ then for each iteration we find that the ratio affected area $\zeta\left(2\right)=\frac{\pi^2}{6}$ must have the scale invariant ratio $SA=\pi^2$, i.e. represent the universe of the projection plane $A_{\square}$ as a whole.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">At the same time we find that a relation exist between $\zeta\left(s\right)\forall s\left\\{1,2,\infty\right\\}$. There is an equivalence between the calculated SA value of $\zeta\left(s\right)$ and the function value of $\zeta\left(s+1\right)$, see eq. \ref{eq:projectionplanescaling}.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">\begin{equation}\begin{split}&amp;\text{See table 4.2 projection plane range for all s}\\\\&amp;\overset{\zeta\left(1\right)}{\left\\{\frac{\pi^2}{4}\times\frac{8}{3}=\frac{6}{9}\pi^2\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(2\right)}{\left\\{\frac{\pi^2}{6}\times 6=\pi^2\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(\infty\right)}{\left\\{\frac{\pi^2}{\pi^2}\times\frac{\pi^2}{6}\left(\pi^2\right)=\frac{\pi^2}{6}\left(\pi^2\right)\right\\}}\\\\%-------------------------------------\\\\&amp;\text{Unit }\pi^2=1\\\\&amp;\overset{\zeta\left(1\right)}{\left\\{\frac{1}{4}\times\frac{8}{3}=\frac{6}{9}\left(1\right)\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(2\right)}{\left\\{\frac{1}{6}\times 6=1\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(\infty\right)}{\left\\{\frac{1}{1}\times \frac{1}{6}\left(1\right)=\frac{1}{6}\left(1\right)\right\\}}\\\\%-------------------------------------\\\\&amp;\text{Scale invariant: }4\times A_\Delta = A_\square\\\\&amp;\overset{\zeta\left(1\right)}{\left\\{A_\square\times\frac{1}{6}=SA\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(2\right)}{\left\\{\frac{A_\square}{6}\times 6=SA\right\\}}\underset{SA=A}{\rightarrow}\overset{\zeta\left(\infty\right)}{\left\\{A_\square\times\frac{1}{6}=SA\right\\}}\\\\%-------------------------------------\end{split}\label{eq:04.08}\tag{04.08}\end{equation}</pre>
 <pre class="osf">This results in a regression pattern where the values appear to project in a region $\frac{A_\Delta}{9}$ of the universe measuring $\frac{9}{9}=1\frac{1}{8}$. This proportion can be interpreted as a volume wrapped by a (continuously reducing) surface area.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">|Table 4.04 Zeta, the SA/Volume equilibrium|</pre>
 <pre class="osf">|---|</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">$\rule{0pt}{15pt}$&lt;br&gt;$\rule{0pt}{15pt}$&lt;br&gt;$\rule{0pt}{15pt}\thinspace s$ | $\rule{0.5pt}{15pt}$&lt;br&gt;$\rule{0.5pt}{15pt}\thinspace {\small \\#\Box\thinspace cells}$&lt;br&gt;$\rule{0.5pt}{15pt} \thinspace \qquad {\small A\Box}$ | $\hspace{ -1.3em}{\small \frac{1}{4}\propto A\Box}$&lt;br&gt;$\rule{0.5pt}{15pt} \thinspace {\small \\#\blacksquare\thinspace cells}$&lt;br&gt;$\rule{0.5pt}{15pt}\qquad {\small A\blacksquare}$ | $\rule{0.5pt}{15pt}$&lt;br&gt;$\rule{0.5pt}{15pt}\thinspace {\small \\#\triangle\thinspace cells}$&lt;br&gt;$\rule{0.5pt}{15pt}\quad  {\small A\triangle}$ | $\rule{0pt}{15pt} \hspace{-1.5em}{\small \frac{6}{9}\propto A\triangle}$&lt;br&gt;$\rule{0.5pt}{15pt} \thinspace {\small \\#\blacktriangle\thinspace cells}$&lt;br&gt;$\rule{0.5pt}{15pt} \qquad {\small A\blacktriangle}$ | $\rule{0.5pt}{15pt} \thinspace {\small  ratio}$&lt;br&gt;$\rule{0.5pt}{15pt} \thinspace {\small \propto\zeta\left(2\right)}$&lt;br&gt;$\rule{0.5pt}{12pt} \thinspace {\small \frac{\\#\Box}{\\#\blacktriangle}\rightarrow\frac{SA}{V}}$</pre>
 <pre class="osf">---|---|---|---|---|---</pre>
 <pre class="osf">$0$ | ${\small 6^{0}=1}$ | ${\small \frac{3^{0}}{6^{0}}=1}$ | ${\small 3^{0}=1}$ | ${\small \frac{6}{9}\times3^{0}=\frac{6}{9}}$ | ${\small \frac{6^{0}}{\frac{6}{9}}=\frac{9}{6}}$</pre>
@@ -379,31 +379,31 @@
 <pre class="osf">$3$ | ${\small 6^{3}=216}$ | ${\small \frac{3^{3}}{6^{3}}=\frac{1}{8}}$ | ${\small 3^{3}=27}$ | ${\small \frac{6}{9}\times3^{3}=18}$ | ${\small \frac{6^{3}}{18}=12}$</pre>
 <pre class="osf">$4$ | ${\small 6^{4}=1296}$ | ${\small \frac{3^{4}}{6^{4}}=\frac{1}{16}}$ | ${\small 3^{4}=81}$ | ${\small \frac{6}{9}\times3^{4}=54}$ | ${\small \frac{6^{4}}{54}=24}$</pre>
 <pre class="osf">$5$ | ${\small 6^{5}=7776}$ | ${\small \frac{3^{5}}{6^{5}}=\frac{1}{32}}$ | ${\small 3^{5}=243}$ | ${\small \frac{6}{9}\times3^{5}=162}$ | ${\small \frac{6^{5}}{162}=48}$</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The function $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ represents the scale invariant ratio of affected surface area and/or volume, where volume is defined by $V=\frac{1}{6}\zeta\left(2\right)$. Realizing that each second iteration results in $SA=\frac{1}{9}$ of the initial $SA=\pi^2$ it is of course not discernible whether there exist such thing as an even or odd cycle, for all intends and purposes $SA=V$. </pre>
-
+<pre class="osf"></pre>
 <pre class="osf">What must be true is that each iterative step results in a scale invariant projection of the universe that is expressed by $\zeta\left(2\right)=\frac{\pi^2}{6}$ as fraction of surface area. If $\pi^2=1$ then we find that volume and surface area are interchangeable, see table 4.3 the base of Planck&#x27;s constant, $T_{h}=0.9^{-1}=1+\frac{1}{9}$ and table 4.4 zeta, the sa/volume equilibrium for $s=2$:</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">\begin{equation}\begin{split}V&amp;=\left(\sqrt{\frac{\pi^2}{4\pi}}\right)^3\times\frac{4}{3}\pi\approx 2.915569721\\\\\rightarrow V&amp;=\left(\sqrt{\frac{1}{4}}\right)^3\times\frac{4}{3} =\frac{1}{6}\\\\\zeta\left(2\right)^2&amp;\approx 2.705808084\\\\\rightarrow V^2&amp;=\left(\frac{1}{6}\right)^2=\frac{9^{-1}}{4}=\frac{T_h}{40}\end{split}\label{eq:04.09}\tag{04.09}\end{equation}</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">This is a fractal, $A_{\square}\thinspace is\thinspace to\thinspace\zeta\left(2\right)\thinspace as\thinspace\zeta\left(2\right)\thinspace is\thinspace to\thinspace\frac{1}{9}A_{\triangle}$ (fig. projection plane regression), at which point a equilibrium exists between surface area and volume.</pre>
 <pre class="osf">Surface area is expressed as</pre>
 <pre class="osf">\begin{equation}\begin{split}\zeta\left(2\right)^{n}&amp;\rightarrow SA=\frac{A_{\square}}{6^{n}}=\left(\frac{1}{6}\right)^{n}\\\\&amp;=\left\\{ 1,\frac{1}{6},\frac{1}{36},\frac{1}{216},\frac{1}{1296},...\right\\}\end{split}\label{eq:04.10}\tag{04.10}\end{equation}</pre>
 <pre class="osf">and volume as</pre>
 <pre class="osf">\begin{equation}\begin{split}\zeta\left(2\right)^{n}&amp;\rightarrow V=\frac{1}{4}\left(\frac{A_{\square}}{T_{h}}\right)=\frac{A_{\square}}{6^{n+1}}\\\\&amp;=\left\\{ \frac{1}{6},\frac{1}{36},\frac{1}{216},\frac{1}{1296},..\right\\}\end{split}\label{eq:04.11}\tag{04.11}\end{equation}</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">Here the scale invariance is preserved where each regressive step is proportionally equal to the former and the overlap is 1/9 of the completed square.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">![F4.10 Fractal stack](https://osf.io/926q3/download =200x200)</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The pattern is self-similar in regression (fig. projection plane regression) where each iteration is the application of $\zeta\left(2\right)^{n+1}$ on the area representing the scale invariant universe $A_{\square}$.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">In figure 4.10 the same regression is depicted, only this time the scale invariance is preserved where each regressive step is proportionally equal to the former and the overlap is $\frac{1}{9}$ for the completed square. This stacking will lead to exposing the connection between the zeta zero&#x27;s and prime numbers.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">The base of Planck&#x27;s constant $h=6.62607015\times10^{-34}J.s.$, (table 4.3 the base of plancks constant) $T_{h}=0.9^{-1}=1+\frac{1}{9}$ is the ratio between the start of the cycle $\frac{9}{9}=1$, and the end of the cycle $\frac{1}{9}$ expressing the depletion of volume as function of reduced surface area.</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">In fig. projection plane regression we observe that with each successive iteration the projection plane $A_{\square}$ repeats with $\frac{\pi^{2}}{9}\rightarrow 4\,cells$ of which the bottom left cell projects $A_{\Delta}$ , the proportional size regresses as</pre>
-
+<pre class="osf"></pre>
 <pre class="osf">\begin{equation}\begin{split}A_{\square n}=1\rightarrow A_{\square n+1}&amp;=\frac{4}{9}=\frac{1}{10}\left(4T_{h}\right)=0.444\dots\\\\\Delta\underset{n\rightarrow\infty}{lim}\rightarrow\frac{\left(3^{n}\right)^{2}}{\left(3^{n}\right)^{2}-1}&amp;=\left\\{ \frac{9}{8},\frac{81}{80},\frac{729}{728},\frac{6561}{6560},\frac{59049}{59048},\dots\right\\} =1\rightarrow\Delta-\frac{1}{8}\end{split}\label{eq:04.12} \tag{04.12} \end{equation}</pre>
   </div>
   <nav class="pager"><a href="Chapter 3 The primorial function.html">← Prev</a><a href="Chapter 5 Chords.html">Next →</a></nav>
