@@ -498,4 +498,9 @@
 </main>
 <footer class="wrap">© <span id="y"></span> Virgorises</footer>
 <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+<script>
+  document.querySelectorAll('pre.osf').forEach(el => {
+    if (!el.textContent.trim()) el.remove();
+  });
+</script>
 </body></html>

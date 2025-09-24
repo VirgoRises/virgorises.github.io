@@ -120,6 +120,11 @@
     <nav class="pager"><span></span><a href="Chapter 2 The spatial aspect of zet.html">Next →</a></nav>
   </main>
   <footer class="wrap">© <span id="y"></span> Virgorises</footer>
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script><script>
+  document.querySelectorAll('pre.osf').forEach(el => {
+    if (!el.textContent.trim()) el.remove();
+  });
+</script>
+
 </body>
 </html>
