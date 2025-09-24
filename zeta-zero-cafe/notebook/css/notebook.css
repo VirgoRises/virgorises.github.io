@@ -89,9 +89,28 @@ footer {
   color: var(--muted);
   font-size: .9rem;
 }
-/*
-mjx-container[jax="CHTML"][display="true"] {
-  overflow-x: auto;
-  text-align: left;
+/* Figures */
+figure { margin: 1rem 0; }
+figure img {
+  display:block;
+  width: 100%;
+  height: auto;
+  max-width: 860px;           /* cap actual pixel width on large screens */
+  margin-inline: auto;        /* center when smaller than card width */
+  border-radius: 6px;
+  border: 1px solid var(--line);
 }
-*/
+figcaption.small { margin-top: .5rem; color: var(--muted); font-size: .92rem; }
+
+/* Tables (images or HTML tables) */
+.table-wrap { overflow-x: auto; }
+.table-wrap > table { width: 100%; border-collapse: collapse; }
+.table-wrap th, .table-wrap td { border:1px solid var(--line); padding:.5rem; vertical-align: middle; }
+.table-wrap thead th { background:#0f1216; font-weight:600; }
+
+/* Math on small screens */
+@media (max-width: 700px) {
+  mjx-container[display="true"] { overflow-x: auto; } /* let wide equations scroll */
+  mjx-container { font-size: 95%; }                  /* slight shrink helps readability */
+}
+
