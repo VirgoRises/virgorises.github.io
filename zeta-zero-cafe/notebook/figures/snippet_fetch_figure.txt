@@ -1,0 +1,8 @@
+<figure>
+  <img loading="lazy"
+       src="tables/Table_2.2_Zeta_as_a_scale_invariant_proportion.GIF"
+       alt="Table 2.02 — Zeta as a scale invariant proportion" />
+  <figcaption class="small">
+    Table 2.02 — Zeta as a scale invariant proportion
+  </figcaption>
+</figure>
