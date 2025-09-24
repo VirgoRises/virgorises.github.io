@@ -61,7 +61,10 @@
 <pre class="osf">### Hidden sqare root of 2</pre>
 <pre class="osf"></pre>
 <pre class="osf">The primorial function is similar to the factorial function for the natural numbers but involves the product over the primes.</pre>
-<pre class="osf">\begin{equation}P_{n}\\#=\prod_{k=1}^{n}P_{k}=2\times3\times5\times7\times\dots\in\mathbb{N}\label{eq:03.01}\tag{03.01}\end{equation}</pre>
+<pre class="osf">\begin{equation}P_{n}\\#=\prod_{k=1}^{n}P_{k}=2\times3\times5\times7\times\dots\in\mathbb{N}</pre>
+<pre class="osf">\label{eq:03.01}</pre>
+<pre class="osf">\tag{03.01}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">#### Table 3.01 Primorial root 2 approach</pre>
 <pre class="osf"></pre>
@@ -69,7 +72,11 @@
 <pre class="osf">Column 5, $P_{s}$, is the progressing sum of primorials that seems to approach, but falls short of $\sqrt\[2\]{2}^{\text{ -1}}\approx 0.7071067812\dots$.</pre>
 <pre class="osf">This column hints at a deeper structure underlaying the sum/product equality, where a sum over the natural numbers equates a product over the primes.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\sum_{n}^{\infty}n^{-s}=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}\label{eq:03.03}\tag{03.03}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\sum_{n}^{\infty}n^{-s}=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}</pre>
+<pre class="osf">\label{eq:03.03}</pre>
+<pre class="osf">\tag{03.03}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">Column 6, ${\small \Delta P_{s}\rightarrow\left\(\sqrt{2}\right\)^{\text{-1}}}$ shows the discrepancy between column 5, the progressive sum, and $\sqrt\[2\]{2}^{\text{ -1}}$. The limit of this column states a closed formula, ${\small \sqrt{\looparrowright}=\sqrt{\frac{2\pi}{2.5^2}}}$, a.k.a. the square root of the quadrature constant $qc=\looparrowright=\frac{2\pi}{2.5^2}$. Column 5, $P_{s}$, will have a limit of $\frac{\sqrt\[2\]{2}^{\text{ -1}}}{\sqrt\[2\]{\looparrowright}}\approx0.705236979\dots$  </pre>
 <pre class="osf">Finally column 7 identifies the row as upper- or lower-bound (ub or lb), which will become clear in &#x27;Table 3.02 Primorial lb/ub oscillation&#x27; </pre>

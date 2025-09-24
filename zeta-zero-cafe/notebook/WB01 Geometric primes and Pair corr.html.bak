@@ -80,7 +80,25 @@
 <pre class="osf"></pre>
 <pre class="osf"></pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{bmatrix}z_{46}\\\\z_{37} &amp; z_{47}\\\\\star z_{29} &amp; z_{38} &amp; z_{48}\\\\z_{22} &amp; \star z_{30} &amp; z_{39} &amp; z_{49}\\\\z_{16} &amp; z_{23} &amp; \star z_{31} &amp; z_{40} &amp; z_{50}\\\\z_{11} &amp; z_{17} &amp; z_{24} &amp; \star z_{32} &amp; z_{41} &amp;z_{51}\\\\z_{7} &amp; z_{12} &amp; z_{18} &amp; z_{25} &amp; \star z_{33} &amp;z_{42} &amp; z_{52}\\\\z_{4} &amp; z_{8} &amp; z_{13} &amp; z_{19} &amp; z_{26} &amp; \starz_{34} &amp; z_{43} &amp; z_{53}\\\\z_{2} &amp; z_{5} &amp; z_{9} &amp; z_{14} &amp; z_{20} &amp; z_{27} &amp;\star z_{35} &amp; z_{44} &amp; z_{54}\\\\z_{1} &amp; z_{3} &amp; z_{6} &amp; z_{10} &amp; z_{15} &amp; z_{21} &amp;z_{28} &amp; \star z_{36} &amp; z_{45} &amp; z_{55}\end{bmatrix}\label{eq:07.16}\tag{07.16}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{bmatrix}</pre>
+<pre class="osf">z_{46}\\\\</pre>
+<pre class="osf">z_{37} &amp; z_{47}\\\\</pre>
+<pre class="osf">\star z_{29} &amp; z_{38} &amp; z_{48}\\\\</pre>
+<pre class="osf">z_{22} &amp; \star z_{30} &amp; z_{39} &amp; z_{49}\\\\</pre>
+<pre class="osf">z_{16} &amp; z_{23} &amp; \star z_{31} &amp; z_{40} &amp; z_{50}\\\\</pre>
+<pre class="osf">z_{11} &amp; z_{17} &amp; z_{24} &amp; \star z_{32} &amp; z_{41} &amp;</pre>
+<pre class="osf">z_{51}\\\\</pre>
+<pre class="osf">z_{7} &amp; z_{12} &amp; z_{18} &amp; z_{25} &amp; \star z_{33} &amp;</pre>
+<pre class="osf">z_{42} &amp; z_{52}\\\\</pre>
+<pre class="osf">z_{4} &amp; z_{8} &amp; z_{13} &amp; z_{19} &amp; z_{26} &amp; \star</pre>
+<pre class="osf">z_{34} &amp; z_{43} &amp; z_{53}\\\\</pre>
+<pre class="osf">z_{2} &amp; z_{5} &amp; z_{9} &amp; z_{14} &amp; z_{20} &amp; z_{27} &amp;</pre>
+<pre class="osf">\star z_{35} &amp; z_{44} &amp; z_{54}\\\\</pre>
+<pre class="osf">z_{1} &amp; z_{3} &amp; z_{6} &amp; z_{10} &amp; z_{15} &amp; z_{21} &amp;</pre>
+<pre class="osf">z_{28} &amp; \star z_{36} &amp; z_{45} &amp; z_{55}</pre>
+<pre class="osf">\end{bmatrix}</pre>
+<pre class="osf">\label{eq:07.16}\tag{07.16}\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">This triangular order is the basis of the geometric model, the projection plane - triangular plane, with which in chapter 4 the solution to the Riemann conjecture &#x27;All non trivial zeros have real part one half&#x27; will be presented.</pre>
 <pre class="osf"></pre>
@@ -123,20 +141,28 @@
 <pre class="osf">### Core formulae</pre>
 <pre class="osf">#### Pair correlation formula</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}1-\left\(\frac{sin\thinspace \pi x}{\pi x}\right\)^{2}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">1-\left\(\frac{sin\thinspace \pi x}{\pi x}\right\)^{2}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf"></pre>
 <pre class="osf">#### Chord length</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}2n\cdot sin\left\(\frac{2\pi}{2n}\right\)\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">2n\cdot sin\left\(\frac{2\pi}{2n}\right\)</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">#### Modulus</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\left\|z\right\|=\sqrt{Re\left\(z\right\)^{2}+Im\left\(z\right\)^{2}}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\left\|z\right\|=\sqrt{Re\left\(z\right\)^{2}+Im\left\(z\right\)^{2}}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">#### Normalized modulus</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}y= \frac{\sqrt[4]{\sqrt{a^2+bi^2}}}{\left\lfloor\sqrt[4]{\sqrt{a^2+bi^2}}\right\rfloor}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">y= \frac{\sqrt[4]{\sqrt{a^2+bi^2}}}{\left\lfloor\sqrt[4]{\sqrt{a^2+bi^2}}\right\rfloor}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf"></pre>
 <pre class="osf">  [1]: https://www.ias.edu/ideas/2013/primes-random-matrices</pre>

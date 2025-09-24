@@ -105,7 +105,16 @@
 <pre class="osf">Note for instance $SP95\in[^{H45},P95,X145]$ and $SP113\in[C13,^{K63},S113]$.&lt;br /&gt;</pre>
 <pre class="osf">Resp. $3\times3\times5=45$ and $3\times3\times7=63$, both on diagonal $D_{1}$. Some other examples,</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}D_{2}\thinspace96&amp;=\left\\{ 2\times2\times2\times2\times2\right\\} \times\left\\{ 3\right\\}\\\\D_{1}\thinspace99&amp;=\left\\{ 3\times3\right\\} \times11\\\\D_{1}\thinspace105&amp;=\left\\{ 3\right\\} \times\left\\{ 5\right\\} \times\left\\{ 7\right\\} \\\\D_{2}\thinspace108&amp;=\left\\{ 2\times2\times2\right\\} \times23\end{split}\label{eq:08.01}\tag{08.01}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">D_{2}\thinspace96&amp;=\left\\{ 2\times2\times2\times2\times2\right\\} \times\left\\{ 3\right\\}\\\\</pre>
+<pre class="osf">D_{1}\thinspace99&amp;=\left\\{ 3\times3\right\\} \times11\\\\</pre>
+<pre class="osf">D_{1}\thinspace105&amp;=\left\\{ 3\right\\} \times\left\\{ 5\right\\} \times\left\\{ 7\right\\} \\\\</pre>
+<pre class="osf">D_{2}\thinspace108&amp;=\left\\{ 2\times2\times2\right\\} \times23</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:08.01}</pre>
+<pre class="osf">\tag{08.01}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The connection with 40 units, see section 7.- The forties, re-emerges by $\frac{288}{U_{arc}}=40$ .</pre>
 <pre class="osf">The model can be projected on $\frac{12.5}{40}=\frac{1.25}{4}\propto\frac{\pi}{10\looparrowright}$ which makes sense by a repetitive scale invariant projection of $pole\thinspace AD=180\text{°}$. A sub sequential repetition will result arithmetically in $\frac{\pi}{100}$, but in a physical implementation taken from a view of scale invariance, the observer will just measure two cycles $2\times180\text{°}=360\text{°}$.</pre>
@@ -197,7 +206,15 @@
 <pre class="osf"></pre>
 <pre class="osf">Taken the sum of primes as line $\overline{AG}=\sqrt{2}$, the we find $A_{universe}=\left(\frac{100}{\sqrt{2}}\right)^{2}=5000$, and this provides us with a universal unit of area $A_{1}=\frac{1}{64}5000=78.125$, this all is a bit nondescript until we unlock some beautiful relation and take some time to ponder on the following.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}\circ A_{5}&amp;=\pi5^{2}=78.53981634\\\\\diamond A_{4}&amp;=\left(2.5^{2}\sqrt{2}\right)^{2}=78.125\\\\\frac{\circ A_{5}}{\diamond A_{4}}&amp;=\looparrowright^{2}\end{split}\label{eq:08.02}\tag{08.02}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">\circ A_{5}&amp;=\pi5^{2}=78.53981634\\\\</pre>
+<pre class="osf">\diamond A_{4}&amp;=\left(2.5^{2}\sqrt{2}\right)^{2}=78.125\\\\</pre>
+<pre class="osf">\frac{\circ A_{5}}{\diamond A_{4}}&amp;=\looparrowright^{2}</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:08.02}</pre>
+<pre class="osf">\tag{08.02}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">![F8.08 QGF solution](https://osf.io/g7yv2/download =350x350)</pre>
 <pre class="osf"></pre>

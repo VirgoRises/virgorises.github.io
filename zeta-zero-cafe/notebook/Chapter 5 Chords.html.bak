@@ -31,7 +31,11 @@
 <pre class="osf">===========================</pre>
 <pre class="osf">A hexagonal chord has the same dimensions as the radius for the circle it inscribes, $a=cos\left(\frac{\pi}{3}\right)=\frac{1}{2},$$b=\sin\left(\frac{\pi}{3}\right)$$\rightarrow c=\sqrt{a^{2}+b^{2}}=$$1$ (Figure 3.4: Primorial hexagon). In table 4.1: Discrete triangular - Continues projection plane, we find $x\rightarrow a$ and $y\rightarrow r_{q}$, where $y\rightarrow r_{q}$ by the closed formula:</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}r_{q}=\forall n\\,\sqrt{\frac{n}{n+1}}\rightarrow\left\\{\sqrt{\frac{1}{2}},\sqrt{\frac{2}{3}},\sqrt{\frac{3}{4}},\dots\right\\}\label{eq:05:01}\tag{05:01}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">r_{q}=\forall n\\,\sqrt{\frac{n}{n+1}}\rightarrow\left\\{\sqrt{\frac{1}{2}},\sqrt{\frac{2}{3}},\sqrt{\frac{3}{4}},\dots\right\\}</pre>
+<pre class="osf">\label{eq:05:01}</pre>
+<pre class="osf">\tag{05:01}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">![F5.01 Hexagonal chord versus h](https://osf.io/5pf3g/download =350x350)</pre>
 <pre class="osf"></pre>
@@ -50,7 +54,15 @@
 <pre class="osf">Observe that if we counter intuitively apply the Pythagoras theorem by assuming $\overline{BC}$ as if $\overline{AC}$, then any $\angle ABC=\frac{\pi}{3}=60^{\circ}$ right angled triangle has a ratio $\sqrt{1\frac{1}{4}}=\frac{\sqrt{5}}{2}$ derived by $c_{\hbar}=$$\sqrt{\left(BC\right)^{2}+\left(AB\right)^{2}}=$$\sqrt{1^{2}+0.5^{2}}=$$\sqrt{1\frac{1}{4}}=$$\frac{\sqrt{5}}{2}$.</pre>
 <pre class="osf">We find Planck’s constant by: $h=\frac{\sqrt{c_{\hbar}}\times2\pi}{\sqrt{\looparrowright}}\approx6.626091764...\rightarrow\Delta h\sim2.1728\times10^{-5}$. This is not just a mathematical coincidence and can be placed in a rigid meaningful context labeled &#x27;Unity chords&#x27; which justifies the abuse of the Pythagorean theorem. Equation 2 gives the associated values as found in table 4.1: Discrete triangular - Continues projection plane.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}\overline{BC}^2+\overline{AB}^2\&amp;=1\frac{1}{4} \rightarrow c_{\hbar}= \sqrt {\left({BC} \right)^2+\left({AB}\right)^2}\\\\n=4\rightarrow a&amp;=\left[\sqrt{2}^{\text{ -1}},\frac{1}{2}\times\left(\sqrt{\frac{4}{5}}\right)^{-1}\right]\rightarrow\left[\sqrt{2}^{\text{ -1}},\sqrt{\frac{10}{32}}\right]\\\\n=3\rightarrow r_{q}&amp;=\left[\sqrt{\frac{3}{4}},1\right]\end{split}\label{eq:05:02}\tag{05:02}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">\overline{BC}^2+\overline{AB}^2\&amp;=1\frac{1}{4} \rightarrow c_{\hbar}= \sqrt {\left({BC} \right)^2+\left({AB}\right)^2}\\\\</pre>
+<pre class="osf">n=4\rightarrow a&amp;=\left[\sqrt{2}^{\text{ -1}},\frac{1}{2}\times\left(\sqrt{\frac{4}{5}}\right)^{-1}\right]\rightarrow\left[\sqrt{2}^{\text{ -1}},\sqrt{\frac{10}{32}}\right]\\\\</pre>
+<pre class="osf">n=3\rightarrow r_{q}&amp;=\left[\sqrt{\frac{3}{4}},1\right]</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:05:02}</pre>
+<pre class="osf">\tag{05:02}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">In figure 5.2, this principle “Unity chord” is shown as a function of area for $T_{n}\\,$ where $n\in\left\\{3,\infty\right\\}$. The extended part of side b, $\overline{CD}=\Delta\zeta\left(2\right)$ starts at $n=3\rightarrow r_{q=}\sqrt{\frac{3}{4}}$.</pre>
 <pre class="osf"></pre>
@@ -133,7 +145,14 @@
 <pre class="osf"></pre>
 <pre class="osf">And the surface area of the final state confronts us with a beautiful factor 10,</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}SA_{c=1}&amp;=\left(\sqrt{2}^{\thinspace-1}\times1\right)^{2}\times4\pi=2\pi\\\\&amp;\rightarrow\left(SA_{\propto\hbar}\right)^{-1}\times SA_{c=1}=10\looparrowright\end{split}\label{eq:05:03}\tag{05:03}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">SA_{c=1}&amp;=\left(\sqrt{2}^{\thinspace-1}\times1\right)^{2}\times4\pi=2\pi\\\\</pre>
+<pre class="osf">&amp;\rightarrow\left(SA_{\propto\hbar}\right)^{-1}\times SA_{c=1}=10\looparrowright</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:05:03}</pre>
+<pre class="osf">\tag{05:03}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">![F5.06 Root 2 equilibrium](https://osf.io/8nzgt/download =350x350)</pre>
 <pre class="osf"></pre>

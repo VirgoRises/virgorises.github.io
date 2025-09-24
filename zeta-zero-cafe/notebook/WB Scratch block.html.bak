@@ -118,11 +118,22 @@
 <pre class="osf">$$\zeta\left\(s\right\)\forall\thinspace s,\frac{\pi^{s}}{q\in\mathbb{Q}}\rightarrow\underset{s\rightarrow\infty}{lim}\thinspace \zeta\left\(s\right\)\sim\frac{\pi^{s}}{q\propto s}=1$$</pre>
 <pre class="osf"></pre>
 <pre class="osf">To scale the denominator with the numerator we apply the factorial function *as if the exponent of the numerator &amp;pi;&lt;sup&gt; s&lt;/sup&gt; is the counting number* $\forall\zeta\left\(s\right\),s\in\mathbb{N}$:</pre>
-<pre class="osf">\begin{equation}\begin{split}f^{\thinspace\prime\prime\prime\prime\prime}\left(x^{5}\right)&amp;=sx^{s-1}\rightarrow x^{5}\rightarrow5x^{4}\rightarrow20x^{3}\rightarrow60x^{2}\rightarrow120x^{1}\\\\f^{\thinspace\prime\prime\prime\prime\prime}\left(\pi^{5}\right)&amp;=5!\pi=5\times4\times3\times2\times1\pi=120\pi\end{split}\label{eq:02.23}\tag{02.23}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">f^{\thinspace\prime\prime\prime\prime\prime}\left(x^{5}\right)&amp;=sx^{s-1}\rightarrow x^{5}\rightarrow5x^{4}\rightarrow20x^{3}\rightarrow60x^{2}\rightarrow120x^{1}\\\\</pre>
+<pre class="osf">f^{\thinspace\prime\prime\prime\prime\prime}\left(\pi^{5}\right)&amp;=5!\pi=5\times4\times3\times2\times1\pi=120\pi</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:02.23}</pre>
+<pre class="osf">\tag{02.23}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">This results in a simple scaling methodology where the denominator approaches the value of the chosen numerator, i.e., &amp;pi;, &amp;pi;&lt;sup&gt;2&lt;/sup&gt;, &amp;pi;&lt;sup&gt;n&lt;/sup&gt;,...:</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{-1}}\rightarrow\frac{x}{x-\varepsilon}&gt;1\label{eq:02.26}\tag{02.26}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\frac{s!\pi}{\left(s!\pi\right)\left(\zeta\left(s\right)\right)^{-1}}\rightarrow\frac{x}{x-\varepsilon}&gt;1</pre>
+<pre class="osf">\label{eq:02.26}</pre>
+<pre class="osf">\tag{02.26}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">![T2.02 Zeta as scale invariant proportion](https://osf.io/xh3md/download =500x500)</pre>
 <pre class="osf"></pre>

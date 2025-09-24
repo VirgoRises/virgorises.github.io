@@ -32,7 +32,10 @@
 <pre class="osf">@[toc]</pre>
 <pre class="osf"></pre>
 <pre class="osf">The primorial function is similar to the factorial function for the natural numbers but involves the product over the primes.</pre>
-<pre class="osf">\begin{equation}P_{n}\\#=\prod_{k=1}^{n}P_{k}=2\times3\times5\times7\times\dots\in\mathbb{N}\label{eq:03.01}\tag{03.01}\end{equation}</pre>
+<pre class="osf">\begin{equation}P_{n}\\#=\prod_{k=1}^{n}P_{k}=2\times3\times5\times7\times\dots\in\mathbb{N}</pre>
+<pre class="osf">\label{eq:03.01}</pre>
+<pre class="osf">\tag{03.01}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">#### Table 3.01 Primorial root 2 approach</pre>
 <pre class="osf"></pre>
@@ -64,13 +67,23 @@
 <pre class="osf"></pre>
 <pre class="osf">The partial sum of the inverse primorials $P_{s}$ approaches the inverse square root of 2, $\left(\sqrt{2}\right)^{-1}\simeq0.7071067812$, but falls short by some factor.</pre>
 <pre class="osf">The primorial delta $\Delta P_{s}$ is the discrepancy between $\left(\sqrt{2}\right)^{-1}$ and the limit of $P_{s}$ which has a closed form $\sqrt{\frac{2\pi}{2.5^{2}}}$ :</pre>
-<pre class="osf">\begin{equation}\begin{split}\underset{n\rightarrow\infty}{lim}&amp;\\,\Delta P_{s}=\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}=\sqrt{\frac{2\pi}{2.5^{2}}}\simeq1.00265131\dots\in\mathbb{R}\end{split}\label{eq:03.02}\tag{03.02}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">\underset{n\rightarrow\infty}{lim}&amp;\\,\Delta P_{s}=\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}=\sqrt{\frac{2\pi}{2.5^{2}}}\simeq1.00265131\dots\in\mathbb{R}</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:03.02}</pre>
+<pre class="osf">\tag{03.02}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">### Prime grouping</pre>
 <pre class="osf"></pre>
 <pre class="osf">The grouping of the primes in an upper and lower bound, column $\uparrow\downarrow$, becomes apparent by analyzing the partial sum increment for each step with respect to the total increment so far.</pre>
 <pre class="osf">To apply the progressive sum, an additive function, over the primorial function, a multiplicative function, is inspired by the sum/product equality where a sum over the integers is equal to a product over the primes:</pre>
-<pre class="osf">\begin{equation}\sum_{n}^{\infty}n^{-s}=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}\label{eq:03.03}\tag{03.03}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\sum_{n}^{\infty}n^{-s}=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}</pre>
+<pre class="osf">\label{eq:03.03}</pre>
+<pre class="osf">\tag{03.03}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">#### Table 3.02 Primorial lb/ub oscillation</pre>
 <pre class="osf"></pre>
@@ -107,15 +120,22 @@
 <pre class="osf">-----------------------</pre>
 <pre class="osf"></pre>
 <pre class="osf">The square of $\Delta P_{s}$ is defined as the quadrature constant.</pre>
-<pre class="osf">\begin{equation}\looparrowright=\left(\Delta P_{s}\right)^{2}=\frac{2\pi}{2.5^{2}}\simeq1.005309649\dots\in\mathbb{R}\label{eq:03.04}\tag{03.04}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\looparrowright=\left(\Delta P_{s}\right)^{2}=\frac{2\pi}{2.5^{2}}\simeq1.005309649\dots\in\mathbb{R}</pre>
+<pre class="osf">\label{eq:03.04}</pre>
+<pre class="osf">\tag{03.04}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The partial sum increment, $P_{s}\\:increment$, table 3.2, shows a peculiar alternating progression. The current partial sum $P_{s}\rightarrow n$ minus the increment so far, oscillates between a lower and a upper bound of approximately $ub=\frac{1}{2}$ and $lb=\frac{1}{6}$. The upper and lower bounds alternate row by row and group the primes like $\left\\{ 2,3\right\\} ,$$\left\\{ 5,7\right\\} ,$$\left\\{ 11,13\right\\} ,$$\left\\{ 17,19\right\\}$, etc. in some periodic fashion.</pre>
 <pre class="osf"></pre>
 <pre class="osf">For the first two terms $\left\\{ 2,3\right\\}$  the ratio is exact, $\frac{lb}{ub}=\frac{1}{3}$, the last two terms in the table $\left\\{ 23,29\right\\}$  approach $\frac{lb}{ub}\simeq0.3212292821\sim\frac{1}{\pi}$. The primorials, and thus the inverse and sum thereof, are rational values. The ratio lb/ub will, by the topological property of the real numbers, approach $\sim\frac{1}{\pi}$, but must be a rational approximation. By application of the derived quadrature constant $\looparrowright=\frac{2\pi}{2.5^2}$ the limit can be determined to be exactly $\frac{1}{\pi}\times\looparrowright=0.32\in\mathbb{Q}$.</pre>
 <pre class="osf">The quadrature constant $\looparrowright$ indicates that a one to one correspondence exist between the Rational numbers $\mathbb{Q}$, and Real numbers $\mathbb{R}$ such that:</pre>
-<pre class="osf">\begin{equation}\mathbb{Q}\looparrowright=\mathbb{R}\leftrightarrow\frac{\mathbb{R}}{\looparrowright}=\mathbb{Q} \label{eq:03.05} \tag{03.05} \end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\mathbb{Q}\looparrowright=\mathbb{R}\leftrightarrow\frac{\mathbb{R}}{\looparrowright}=\mathbb{Q}</pre>
+<pre class="osf"> \label{eq:03.05} \tag{03.05} \end{equation}</pre>
 <pre class="osf">which implies</pre>
-<pre class="osf">\begin{equation}\left(\forall x\in\mathbb{R}\right)\left(\exists!q\in\mathbb{Q}\right)\left(x\left(\looparrowright\right)^{-1}=q\right) \label{eq:03.06} \tag{03.06} \end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\left(\forall x\in\mathbb{R}\right)\left(\exists!q\in\mathbb{Q}\right)\left(x\left(\looparrowright\right)^{-1}=q\right) \label{eq:03.06} \tag{03.06} \end{equation}</pre>
 <pre class="osf">The set of rational numbers $\mathbb{Q}$ is countable infinite and can be paired with the natural numbers  $\mathbb{N}$, which implies that if the hypothesis is correct, the real numbers $\mathbb{R}$ are also countable infinite.</pre>
 <pre class="osf"></pre>
 <pre class="osf">#### Figure 3.01 Quadrature constant - leap</pre>
@@ -170,10 +190,18 @@
 <pre class="osf"></pre>
 <pre class="osf">Transcendental numbers are not constructible with a set of compasses and (unmarked) straight edge (Wikipedia: Constructible number), but in this reference frame we are able to construct an exact solution for $A_{\square}=A_{ \circ}$.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}A_{\square}&amp;=\left(2.5^2\sqrt{2}\right)^2=78.125\in\mathbb{Q}\\\\A_{\circ}&amp;=\pi5^2=78.125\looparrowright\in\mathbb{R}\end{split}\label{eq:03.07} \tag{03.07} \end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">A_{\square}&amp;=\left(2.5^2\sqrt{2}\right)^2=78.125\in\mathbb{Q}\\\\</pre>
+<pre class="osf">A_{\circ}&amp;=\pi5^2=78.125\looparrowright\in\mathbb{R}</pre>
+<pre class="osf">\end{split}\label{eq:03.07} \tag{03.07} \end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">In a strict Cartesian sense, clearly $A_{\square}\neq A_{\circ}$, however, we did not simply declare $A_{\square}=A_{\circ}$, but rather defined a geometric context in which the equality exist. Assuming the hypothesis correct this is expressed by</pre>
-<pre class="osf">\begin{equation}\mathbb{Q}\looparrowright=\mathbb{R}\leftrightarrow\frac{\mathbb{R}}{\looparrowright}=\mathbb{Q}\label{eq:03.08}\tag{03.08}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\mathbb{Q}\looparrowright=\mathbb{R}\leftrightarrow\frac{\mathbb{R}}{\looparrowright}=\mathbb{Q}</pre>
+<pre class="osf">\label{eq:03.08}</pre>
+<pre class="osf">\tag{03.08}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">Primorial 24 parts in 25 and hexagons</pre>
 <pre class="osf">-------------------------------------</pre>
@@ -185,10 +213,14 @@
 <pre class="osf">Point &#x27;F&#x27; functions as a pole at radius $x=2.5^2$ and is the reference point from which all $x\in\mathbb{Q}$ are calculated. The primorial delta $P\Delta=0.96$ (see table 3.2) defines the x-coordinate $P\Delta\times2.5^2=6$ in figure 3.4 Primorial hexagon.</pre>
 <pre class="osf">\begin{equation}P\Delta=\frac{24}{25}=0.96\label{eq:03.09} \tag{03.09}\end{equation}</pre>
 <pre class="osf">We find in fact that the x-axis can be subdivided in exactly 25 parts of $\frac{1}{4}$, and that $\frac{24}{25}\times 2.5^2=6$, which makes the pole a $25:1$ scale unit circle.</pre>
-<pre class="osf">\begin{equation}pole=\frac{2.5^{2}}{2\pi\left(\looparrowright\right)^{-1}}\propto\frac{25}{25}\propto 1\label{eq:03.10} \tag{03.10} \end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">pole=\frac{2.5^{2}}{2\pi\left(\looparrowright\right)^{-1}}\propto\frac{25}{25}\propto 1</pre>
+<pre class="osf">\label{eq:03.10} \tag{03.10} \end{equation}</pre>
 <pre class="osf">The pole at $\frac{25}{25}$ can therefore be unambiguously constructed starting from any inscribed hexagon which, enforced by $P\Delta$, projects at $x=\frac{24}{25}$ within this geometric framework.</pre>
 <pre class="osf">Lastly, observe that the inverse of the primorial delta, multiplied by the quadrature constant, gives an angle of $60^{\circ}=\frac{\pi}{3}$. The hexagonal chord and the associated equilateral triangle will be a further crucial key element in this hypothesis.</pre>
-<pre class="osf">\begin{equation}P_{\ast}=\left(P\triangle\right)^{-1}\looparrowright\thinspace\rightarrow\frac{\pi}{3}=60^{\circ}\label{eq:03.11} \tag{03.11} \end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">P_{\ast}=\left(P\triangle\right)^{-1}\looparrowright\thinspace\rightarrow\frac{\pi}{3}=60^{\circ}</pre>
+<pre class="osf">\label{eq:03.11} \tag{03.11} \end{equation}</pre>
 <pre class="osf">The pole at x=25/25 can therefore be unambiguously constructed starting from any inscribed hexagon which, enforced by the primorial delta, projects at x=25/25 within this geometric framework.</pre>
 <pre class="osf"></pre>
 <pre class="osf">#### Figure 3.04 Primorial hexagon</pre>

@@ -89,19 +89,48 @@
 <pre class="osf">===============================</pre>
 <pre class="osf">The right angled sides associated with a unity chord are derived from the chord (hypotenuse) by $=2\left(\frac{cl}{1\frac{1}{4}}\right)-cl$ and $b=\frac{0.5}{a}$. From b derive the value a for the associated $A_{\square}$ projection.</pre>
 <pre class="osf"> </pre>
-<pre class="osf">\begin{equation}\begin{split}a&amp;=2\left(\frac{\left|\sqrt{\frac{3}{4}}\right|}{1\frac{1}{4}}\right)-\left|\sqrt{\frac{3}{4}}\right|\\\\&amp;\approx0.5196152423\\\\b&amp;=\frac{0.5}{a}\approx0.9622504486\end{split}\label{eq:07.01}\tag{07.01}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">a&amp;=2\left(\frac{\left|\sqrt{\frac{3}{4}}\right|}{1\frac{1}{4}}\right)-\left|\sqrt{\frac{3}{4}}\right|\\\\</pre>
+<pre class="osf">&amp;\approx0.5196152423\\\\</pre>
+<pre class="osf">b&amp;=\frac{0.5}{a}\approx0.9622504486</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:07.01}</pre>
+<pre class="osf">\tag{07.01}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">Derive the associated area A for both planes.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}a&amp;=\sqrt{2A}\\\\A_{\square}&amp;=\frac{T_{n}}{4\times n^{2}}\rightarrow\frac{a^{2}}{2}=\frac{0.27}{2}=\frac{27}{200}=\frac{54}{400}\\\\A_{\triangle}&amp;=\frac{T_{n}}{n^{2}}=\frac{54}{100}=\frac{54}{10}=5.4\\\\T_{n}&amp;=10\times5.4=54\end{split}\label{eq:07.02}\tag{07.02}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">a&amp;=\sqrt{2A}\\\\</pre>
+<pre class="osf">A_{\square}&amp;=\frac{T_{n}}{4\times n^{2}}\rightarrow\frac{a^{2}}{2}=\frac{0.27}{2}=\frac{27}{200}=\frac{54}{400}\\\\</pre>
+<pre class="osf">A_{\triangle}&amp;=\frac{T_{n}}{n^{2}}=\frac{54}{100}=\frac{54}{10}=5.4\\\\</pre>
+<pre class="osf">T_{n}&amp;=10\times5.4=54</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:07.02}\tag{07.02}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">Pinpoint n in the triangular cycle (inverse triangular formula).</pre>
 <pre class="osf"> </pre>
-<pre class="osf">\begin{equation}\begin{split}n&amp;=\frac{\sqrt{\left(8x\right)+1}-1}{2}\\\\x&amp;=T_{n}=54\\\\x&amp;=\frac{\sqrt{\left(8\times54\right)+1}-1}{2}\\\\&amp;\approx9.904326023\sim\pi^{2}\end{split} \label{eq:07.03}\tag{07.03}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">n&amp;=\frac{\sqrt{\left(8x\right)+1}-1}{2}\\\\</pre>
+<pre class="osf">x&amp;=T_{n}=54\\\\</pre>
+<pre class="osf">x&amp;=\frac{\sqrt{\left(8\times54\right)+1}-1}{2}\\\\</pre>
+<pre class="osf">&amp;\approx9.904326023\sim\pi^{2}</pre>
+<pre class="osf">\end{split} \label{eq:07.03}\tag{07.03}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">Contrast with the enclosing $T_{n}$ for integer n=9 and n=10.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}T_{n=9}&amp;=\left(\frac{9}{2}\right)\times\left(9+1\right)=45\\\\T_{n=10}&amp;=\left(\frac{10}{2}\right)\times\left(10+1\right)=55\\\\\frac{T_{n=10}}{T_{n=9}}=\frac{55}{45}&amp;=1\frac{1}{10}\times T_{h}=1.222222\dots\\\\\end{split} \label{eq:07.04}\tag{07.04}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">T_{n=9}&amp;=\left(\frac{9}{2}\right)\times\left(9+1\right)=45\\\\</pre>
+<pre class="osf">T_{n=10}&amp;=\left(\frac{10}{2}\right)\times\left(10+1\right)=55\\\\</pre>
+<pre class="osf">\frac{T_{n=10}}{T_{n=9}}=\frac{55}{45}&amp;=1\frac{1}{10}\times T_{h}=1.222222\dots\\\\</pre>
+<pre class="osf">\end{split} \label{eq:07.04}\tag{07.04}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">The ratio is the same as encountered in figure 6.6: M-brane mono surface detail 9 over 60, where for each cycle the affected area is divided in $\triangle AED=\frac{9}{60}$ and $\square EBCD=\frac{1}{60}$ , a function ofar ea dependent on the angle and “calibrated” to exact $\frac{A}{60}$.</pre>
 <pre class="osf">The interpretation is that in physical systems this margin translates to apparent spatial aspects, but abstract geometry can not, does not enforce spatial aspects, a method for independent emergent behavior that underlays the QGF must exist.</pre>
@@ -109,32 +138,82 @@
 <pre class="osf">The primorial connection</pre>
 <pre class="osf">------------------------</pre>
 <pre class="osf">The ratio is related to the primorial function by the following observation:</pre>
-<pre class="osf">\begin{equation}\angle\theta A=\frac{10}{60}\rightarrow tan^{-1}\left(\frac{1}{3}\right)\approx18.43494882\text{°}0\label{eq:07.05}\tag{07.05}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\angle\theta A=\frac{10}{60}\rightarrow tan^{-1}\left(\frac{1}{3}\right)\approx18.43494882\text{°}0</pre>
+<pre class="osf">\label{eq:07.05}</pre>
+<pre class="osf">\tag{07.05}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">The primorial oscillation, table 3.2: Primorial lb/ub oscillation, column $\frac{lb}{ub}\rightarrow P_{n=\infty}=0.32$ gives</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}\frac{60}{18.75}&amp;=10\times0.32=3.2\\\\&amp;h\sim2\pi\times\frac{\frac{1}{3}}{tan^{-1}\left(\frac{2\pi}{360\text{°}}\times18.75\text{°}\right)}\approx6.62228\dots\end{split}\label{eq:07.06}\tag{07.06}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">\frac{60}{18.75}&amp;=10\times0.32=3.2\\\\</pre>
+<pre class="osf">&amp;h\sim2\pi\times\frac{\frac{1}{3}}{tan^{-1}\left(\frac{2\pi}{360\text{°}}\times18.75\text{°}\right)}\approx6.62228\dots</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:07.06}</pre>
+<pre class="osf">\tag{07.06}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">Application of the quadrature constant gives a lower and upper bound for the occurrence of Planck&#x27;s constant in this range.</pre>
-<pre class="osf">\begin{equation}\begin{split}h&amp;\sim2.5^{2}\times\frac{\frac{1}{3}}{tan^{-1}\left(\frac{2\pi}{360\text{°}}\times\frac{18.75\text{°}}{\looparrowright}\right)}\approx6.620000375\dots\\\\&amp;h\sim2\pi\times\frac{\frac{1}{3}}{tan^{-1}\left(\frac{2\pi}{360\text{°}}\times\frac{18.75\text{°}}{\looparrowright}\right)}\approx6.655156257\dots\end{split}\label{eq:07.07}\tag{07.07}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">h&amp;\sim2.5^{2}\times\frac{\frac{1}{3}}{tan^{-1}\left(\frac{2\pi}{360\text{°}}\times\frac{18.75\text{°}}{\looparrowright}\right)}\approx6.620000375\dots\\\\</pre>
+<pre class="osf">&amp;h\sim2\pi\times\frac{\frac{1}{3}}{tan^{-1}\left(\frac{2\pi}{360\text{°}}\times\frac{18.75\text{°}}{\looparrowright}\right)}\approx6.655156257\dots</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:07.07}</pre>
+<pre class="osf">\tag{07.07}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf"> The rational fraction $18.75=3\times2.5^{2}=\frac{6\pi}{\looparrowright}$</pre>
 <pre class="osf"> indicates 6 chords of length $\pi\\, or\\,\frac{1}{0.32}=3.125$, therefor we</pre>
 <pre class="osf"> assume 18.75 correct.</pre>
 <pre class="osf"> </pre>
-<pre class="osf"> \begin{equation} \begin{split} T_{primor}&amp;=18.75\text{°}\\\\ n_{primor}&amp;=\frac{\sqrt{\left(8\times T_{primor}\right)+1}-1}{2}\\\\ n_{primor}&amp;=\frac{\sqrt{\left(8\times18.75\right)+1}-1}{2}\\\\ n_{primor}&amp;=\frac{11.28820573}{2}\approx5.644102865\\\\ \end{split} \label{eq:07.08}\tag{07.08} \end{equation}</pre>
+<pre class="osf"> \begin{equation}</pre>
+<pre class="osf"> \begin{split}</pre>
+<pre class="osf"> T_{primor}&amp;=18.75\text{°}\\\\</pre>
+<pre class="osf"> n_{primor}&amp;=\frac{\sqrt{\left(8\times T_{primor}\right)+1}-1}{2}\\\\</pre>
+<pre class="osf"> n_{primor}&amp;=\frac{\sqrt{\left(8\times18.75\right)+1}-1}{2}\\\\</pre>
+<pre class="osf"> n_{primor}&amp;=\frac{11.28820573}{2}\approx5.644102865\\\\</pre>
+<pre class="osf"> \end{split} \label{eq:07.08}\tag{07.08}</pre>
+<pre class="osf"> \end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf"> Wedged between the nearest integer neighbors indicates that area is proportional to angle.</pre>
 <pre class="osf"> </pre>
-<pre class="osf"> \begin{equation} \begin{split} T_{n=5}&amp;=\left(\frac{5}{2}\right)\times\left(5+1\right)=15\\\\ T_{primor}&amp;=\left(\frac{n_{primor}}{2}\right)\times\left(n_{primor}+1\right)=18.75^\circ\\\\ T_{n=6}&amp;=\left(\frac{6}{2}\right)\times\left(6+1\right)=21 \end{split} \label{eq:07.09} \tag{07.09} \end{equation}</pre>
+<pre class="osf"> \begin{equation}</pre>
+<pre class="osf"> \begin{split}</pre>
+<pre class="osf"> T_{n=5}&amp;=\left(\frac{5}{2}\right)\times\left(5+1\right)=15\\\\</pre>
+<pre class="osf"> T_{primor}&amp;=\left(\frac{n_{primor}}{2}\right)\times\left(n_{primor}+1\right)=18.75^\circ\\\\</pre>
+<pre class="osf"> T_{n=6}&amp;=\left(\frac{6}{2}\right)\times\left(6+1\right)=21</pre>
+<pre class="osf"> \end{split}</pre>
+<pre class="osf"> \label{eq:07.09}</pre>
+<pre class="osf"> \tag{07.09}</pre>
+<pre class="osf"> \end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">*Some relations*</pre>
 <pre class="osf">--------------</pre>
-<pre class="osf">\begin{equation}\begin{split}T_{n}&amp;\rightarrow\left[15&amp;lt;18.75&amp;lt;21\right]\\\\\frac{360\text{°}}{T_{n}}&amp;\rightarrow\left[24&amp;gt;19.2^{\,\bigstar}&amp;gt;17\frac{1}{7}\right]\\\\\frac{T_{n}}{2.5^{2}}&amp;\rightarrow\left[2.4&amp;lt;3&amp;lt;3.36\right]\\\\Ratio&amp;\rightarrow\left[\frac{4}{5},1,1\frac{2}{5}\right]\\\\Inverse\thinspace ratio&amp;\rightarrow\left[\left(1\frac{1}{4}\right)^{-1},1,\sim\left(\sqrt{2}\right)^{-1}\right]\end{split}\label{eq:07.10}\tag{07.10}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">T_{n}&amp;\rightarrow\left[15&amp;lt;18.75&amp;lt;21\right]\\\\</pre>
+<pre class="osf">\frac{360\text{°}}{T_{n}}&amp;\rightarrow\left[24&amp;gt;19.2^{\,\bigstar}&amp;gt;17\frac{1}{7}\right]\\\\</pre>
+<pre class="osf">\frac{T_{n}}{2.5^{2}}&amp;\rightarrow\left[2.4&amp;lt;3&amp;lt;3.36\right]\\\\</pre>
+<pre class="osf">Ratio&amp;\rightarrow\left[\frac{4}{5},1,1\frac{2}{5}\right]\\\\</pre>
+<pre class="osf">Inverse\thinspace ratio&amp;\rightarrow\left[\left(1\frac{1}{4}\right)^{-1},1,\sim\left(\sqrt{2}\right)^{-1}\right]</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:07.10}</pre>
+<pre class="osf">\tag{07.10}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">Example interchange between $\mathbb{R}\mathbb{\leftrightarrow Q}$ :</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}\left(\frac{\pi^{2}}{6}\right)^{-1}\times\left(\looparrowright^{2}\right)&amp;=\left(\frac{3.125^{2}}{6}\right)^{-1}\\\\2\left(\frac{\pi^{2}}{6}\right)^{-1}\times\left(\looparrowright^{2}\right)&amp;=2\left(\frac{3.125^{2}}{6}\right)^{-1}=\frac{4\times1.92^{\\,\\,\bigstar}}{2.5^{2}}\end{split}\label{eq:07.11}\tag{07.11}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">\left(\frac{\pi^{2}}{6}\right)^{-1}\times\left(\looparrowright^{2}\right)&amp;=\left(\frac{3.125^{2}}{6}\right)^{-1}\\\\</pre>
+<pre class="osf">2\left(\frac{\pi^{2}}{6}\right)^{-1}\times\left(\looparrowright^{2}\right)&amp;=2\left(\frac{3.125^{2}}{6}\right)^{-1}=\frac{4\times1.92^{\\,\\,\bigstar}}{2.5^{2}}</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:07.11}</pre>
+<pre class="osf">\tag{07.11}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">The forties</pre>
 <pre class="osf">-----------</pre>
@@ -223,12 +302,36 @@
 <pre class="osf">==================</pre>
 <pre class="osf">The surplus as listed in table 7.2: Chord length and relative density, is at first glance represented by the set of Natural numbers $\mathbb{N}$, but column $x_{n}$ tells a different story. In fact it is not even a triangular number set because each diagonal has n copies of column $x_{n}$, as it should because the diagonals represent all the chords of the associated n-gon.</pre>
 <pre class="osf"> </pre>
-<pre class="osf">\begin{equation}\begin{bmatrix}x_{7}\\\\x_{6} &amp; x_{7}\\\\x_{5} &amp; x_{6} &amp; x_{7}\\\\x_{4} &amp; x_{5} &amp; x_{6} &amp; x_{7}\\\\x_{3} &amp; x_{4} &amp; x_{5} &amp; x_{6} &amp; x_{7}\\\\x_{2} &amp; x_{3} &amp; x_{4} &amp; x_{5} &amp; x_{6} &amp; x_{7}\\\\x_{1} &amp; x_{2} &amp; x_{3} &amp; x_{4} &amp; x_{5} &amp; x_{6} &amp;x_{7}\end{bmatrix}\label{eq:07.12}\tag{07.12}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{bmatrix}x_{7}\\\\</pre>
+<pre class="osf">x_{6} &amp; x_{7}\\\\</pre>
+<pre class="osf">x_{5} &amp; x_{6} &amp; x_{7}\\\\</pre>
+<pre class="osf">x_{4} &amp; x_{5} &amp; x_{6} &amp; x_{7}\\\\</pre>
+<pre class="osf">x_{3} &amp; x_{4} &amp; x_{5} &amp; x_{6} &amp; x_{7}\\\\</pre>
+<pre class="osf">x_{2} &amp; x_{3} &amp; x_{4} &amp; x_{5} &amp; x_{6} &amp; x_{7}\\\\</pre>
+<pre class="osf">x_{1} &amp; x_{2} &amp; x_{3} &amp; x_{4} &amp; x_{5} &amp; x_{6} &amp;</pre>
+<pre class="osf">x_{7}</pre>
+<pre class="osf">\end{bmatrix}</pre>
+<pre class="osf">\label{eq:07.12}</pre>
+<pre class="osf">\tag{07.12}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">Using the analogy of a De Broglie wave we can envision each diagonal to represent a string of specific density “surplus”. Like tuning a snare on an instrument the “surplus” can be envisioned as a measure of tension on the string. Note that in abstract geometric sense there is no such thing as a $C_{box}$, all n-gons occupy there natural coordinate, “fit snugly” and have no “surplus” chords.</pre>
 <pre class="osf">The relative density is given by the quotient $\rho_{n}=\frac{x_{n}}{x_{6}}$ and of vital importance. Unlike $n\in\mathbb{N}$ the surplus consists of values that are not unit values but are more prime-like. It is as if putting the primes in one to one correspondence with the natural numbers, but not by assigning a number, in stead grouping those primes in n copies, as in matrix 7.13.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{bmatrix}17\\\\13 &amp; 17\\\\11 &amp; 13 &amp; 17\\\\7 &amp; 11 &amp; 13 &amp; 17\\\\5 &amp; 7 &amp; 11 &amp; 13 &amp; 17\\\\3 &amp; 5 &amp; 7 &amp; 11 &amp; 13 &amp; 17\\\\2 &amp; 3 &amp; 5 &amp; 7 &amp; 11 &amp; 13 &amp; 17\end{bmatrix}\label{eq:07.13}\tag{07.13}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{bmatrix}</pre>
+<pre class="osf">17\\\\</pre>
+<pre class="osf">13 &amp; 17\\\\</pre>
+<pre class="osf">11 &amp; 13 &amp; 17\\\\</pre>
+<pre class="osf">7 &amp; 11 &amp; 13 &amp; 17\\\\</pre>
+<pre class="osf">5 &amp; 7 &amp; 11 &amp; 13 &amp; 17\\\\</pre>
+<pre class="osf">3 &amp; 5 &amp; 7 &amp; 11 &amp; 13 &amp; 17\\\\</pre>
+<pre class="osf">2 &amp; 3 &amp; 5 &amp; 7 &amp; 11 &amp; 13 &amp; 17</pre>
+<pre class="osf">\end{bmatrix}</pre>
+<pre class="osf">\label{eq:07.13}</pre>
+<pre class="osf">\tag{07.13}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">This does not seem very useful, but matrix 7.12 is in fact analogues to this arrangement. The set of chords within a n-gon are equivalent but differ from all other chords in the QGF. The hexagonal structure splits those n-chords per diagonal over 6 chords and gives the relative density $\rho_{n}$ for each diagonal, forming a string with a specific density.</pre>
 <pre class="osf">This specific density in physical sense is of vital importance, the resonance frequencies of such ‘strings’ can be equated to the set of prime numbers among the Natural numbers , each chord acts like a snare uniquely tuned for the n-gon.</pre>
@@ -258,7 +361,16 @@
 <pre class="osf"></pre>
 <pre class="osf">If we assume x equivalent to area $A\approx0.3160820104\dots$ then we can derive the associated context of the projection plane $A_{\square}$:</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}a&amp;=\sqrt{A}=0.5622117132\dots\\\\r_{q}&amp;=\frac{0.5}{a}=0.8893446869\\\\r_{x}&amp;=\frac{r_{q}}{\sqrt{0.96\times\left(\looparrowright\right)^{-1}}}=0.9100901707\\\\SA&amp;=4\pi\left(r_{x}\right)^{2}=10.40827388\\\\\Delta\pi^{2}&amp;=\frac{SA}{\pi^{2}}\approx1.054578629\\\\h&amp;=2\pi\times\Delta\pi^{2}\approx6.62611295\end{split} \label{eq:07.14}\tag{07.14}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">a&amp;=\sqrt{A}=0.5622117132\dots\\\\</pre>
+<pre class="osf">r_{q}&amp;=\frac{0.5}{a}=0.8893446869\\\\</pre>
+<pre class="osf">r_{x}&amp;=\frac{r_{q}}{\sqrt{0.96\times\left(\looparrowright\right)^{-1}}}=0.9100901707\\\\</pre>
+<pre class="osf">SA&amp;=4\pi\left(r_{x}\right)^{2}=10.40827388\\\\</pre>
+<pre class="osf">\Delta\pi^{2}&amp;=\frac{SA}{\pi^{2}}\approx1.054578629\\\\</pre>
+<pre class="osf">h&amp;=2\pi\times\Delta\pi^{2}\approx6.62611295</pre>
+<pre class="osf">\end{split} \label{eq:07.14}\tag{07.14}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">Planck&#x27;s constant as discrepancy in surface area seems significant, we found for the fractal argument for zeta (section 4 - The fractal argument for zeta) $T_{h}=0.9^{-1}$ as the equilibrium for volume and surface area, a value $c_{\hbar}=\sqrt{1\frac{1}{4}}$ for the hexagonal chords and here a rather precise value without using a fudge factor.</pre>
 <pre class="osf"> </pre>
@@ -274,7 +386,15 @@
 <pre class="osf">The Montgomery/Dyson pair-correlation formula $1-\left(\frac{sin\left(\pi x\right)}{\pi x}\right)^{2}$ and the geometric primes are in intimate relation (see Figure 7.7: Geometric Primes and Pair correlation).</pre>
 <pre class="osf">How intimate becomes clear if we observe the following:</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}\rho_{\infty}&amp;=\frac{\pi}{3}\\\\p_{cor}&amp;=1-\left(\frac{sin\left(\rho_{\infty}\right)}{\rho_{\infty}}\right)^{2}=1-\left(\sqrt{\frac{3}{4}}\timesP_{\ast}\right)^{2}\\\\p_{cor}&amp;=1-\frac{1\frac{1}{8}}{\zeta\left(2\right)}\rightarrow1-\frac{V}{\zeta\left(2\right)}\\\\1\frac{1}{8}&amp;\rightarrow\left(1\frac{1}{8}\right)\times T_{h}=\left(1\frac{1}{4}\right)\end{split} \label{eq:07.15}\tag{07.15}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">\rho_{\infty}&amp;=\frac{\pi}{3}\\\\</pre>
+<pre class="osf">p_{cor}&amp;=1-\left(\frac{sin\left(\rho_{\infty}\right)}{\rho_{\infty}}\right)^{2}=1-\left(\sqrt{\frac{3}{4}}\times</pre>
+<pre class="osf">P_{\ast}\right)^{2}\\\\</pre>
+<pre class="osf">p_{cor}&amp;=1-\frac{1\frac{1}{8}}{\zeta\left(2\right)}\rightarrow1-\frac{V}{\zeta\left(2\right)}\\\\</pre>
+<pre class="osf">1\frac{1}{8}&amp;\rightarrow\left(1\frac{1}{8}\right)\times T_{h}=\left(1\frac{1}{4}\right)</pre>
+<pre class="osf">\end{split} \label{eq:07.15}\tag{07.15}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"> </pre>
 <pre class="osf">We are right back at volume over zeta, equation 2.3: volume over zeta, but now on the other side of a primorial cycle indicated by $P_{\ast}$. Here we truly look back from infinity, $1\frac{1}{8}=\frac{9}{8}$ is in fact $V_{1}+V_{0}=\frac{8}{9}\times\frac{9}{1}=V_{current}$, or simply the scale invariant state of volume. This must be true because $\left(1\frac{1}{4}=\left(1\frac{1}{8}\right)\times  T_{h}\right)\equiv\left(c_{n=1}=c_{\hbar}\right)$, see figure 5.6: Root 2 equilibrium.</pre>
 <pre class="osf">This indicates the QGF correctly models a universal first principle for both abstract number sets and physical implementation thereof.</pre>
@@ -376,7 +496,25 @@
 <pre class="osf">&lt;/ul&gt;</pre>
 <pre class="osf">All between $n=8\rightarrow Z_{29}$ to $Z_{36}$, see the diagonal indicated by $\star$ in matrix [eq:n-in-pieces].</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{bmatrix}z_{46}\\\\z_{37} &amp; z_{47}\\\\\star z_{29} &amp; z_{38} &amp; z_{48}\\\\z_{22} &amp; \star z_{30} &amp; z_{39} &amp; z_{49}\\\\z_{16} &amp; z_{23} &amp; \star z_{31} &amp; z_{40} &amp; z_{50}\\\\z_{11} &amp; z_{17} &amp; z_{24} &amp; \star z_{32} &amp; z_{41} &amp;z_{51}\\\\z_{7} &amp; z_{12} &amp; z_{18} &amp; z_{25} &amp; \star z_{33} &amp;z_{42} &amp; z_{52}\\\\z_{4} &amp; z_{8} &amp; z_{13} &amp; z_{19} &amp; z_{26} &amp; \starz_{34} &amp; z_{43} &amp; z_{53}\\\\z_{2} &amp; z_{5} &amp; z_{9} &amp; z_{14} &amp; z_{20} &amp; z_{27} &amp;\star z_{35} &amp; z_{44} &amp; z_{54}\\\\z_{1} &amp; z_{3} &amp; z_{6} &amp; z_{10} &amp; z_{15} &amp; z_{21} &amp;z_{28} &amp; \star z_{36} &amp; z_{45} &amp; z_{55}\end{bmatrix}\label{eq:07.16}\tag{07.16}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{bmatrix}z_{46}\\\\</pre>
+<pre class="osf">z_{37} &amp; z_{47}\\\\</pre>
+<pre class="osf">\star z_{29} &amp; z_{38} &amp; z_{48}\\\\</pre>
+<pre class="osf">z_{22} &amp; \star z_{30} &amp; z_{39} &amp; z_{49}\\\\</pre>
+<pre class="osf">z_{16} &amp; z_{23} &amp; \star z_{31} &amp; z_{40} &amp; z_{50}\\\\</pre>
+<pre class="osf">z_{11} &amp; z_{17} &amp; z_{24} &amp; \star z_{32} &amp; z_{41} &amp;</pre>
+<pre class="osf">z_{51}\\\\</pre>
+<pre class="osf">z_{7} &amp; z_{12} &amp; z_{18} &amp; z_{25} &amp; \star z_{33} &amp;</pre>
+<pre class="osf">z_{42} &amp; z_{52}\\\\</pre>
+<pre class="osf">z_{4} &amp; z_{8} &amp; z_{13} &amp; z_{19} &amp; z_{26} &amp; \star</pre>
+<pre class="osf">z_{34} &amp; z_{43} &amp; z_{53}\\\\</pre>
+<pre class="osf">z_{2} &amp; z_{5} &amp; z_{9} &amp; z_{14} &amp; z_{20} &amp; z_{27} &amp;</pre>
+<pre class="osf">\star z_{35} &amp; z_{44} &amp; z_{54}\\\\</pre>
+<pre class="osf">z_{1} &amp; z_{3} &amp; z_{6} &amp; z_{10} &amp; z_{15} &amp; z_{21} &amp;</pre>
+<pre class="osf">z_{28} &amp; \star z_{36} &amp; z_{45} &amp; z_{55}</pre>
+<pre class="osf">\end{bmatrix}</pre>
+<pre class="osf">\label{eq:07.16}\tag{07.16}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">This does not mean that the distribution is solved by the depiction of levels in matrix [eq:n-in-pieces] because as seen $n_{2}gon\rightarrow Z_{2}$ wedges between $n_{8}gon\rightarrow Z_{32}&amp;lt;Z_{2}&amp;lt;Z_{33}$ and the second zero of $n_{2}gon\rightarrow Z_{3}$ does not. The diagonals must depict a unique sequence of area that can be equated to a natural number, but as seen that area gets stretched out, fragmented beyond recognition. But seemingly not ad infinitum so, it is like a shifting panel of affected area (figure 7.11: Interlaced zeta zero).</pre>
 <pre class="osf">What happens is that when a larger range is selected, observed granularity increases proportionally. In fact we know of such a property occurring in the physical realm and we alluded to it before, it is the expansion of space itself. It seems that with the expansion of space the energy content does not get diluted, local conditions remain stable while space expands into oblivion.</pre>
@@ -415,12 +553,34 @@
 <pre class="osf"></pre>
 <pre class="osf">The zeta zeros follow some intermediate path that seem to describe chords of a spiral that for each set add up to 360 degrees, see matrix 7.17: zeta angle progression.</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{bmatrix}60_{16}\\\\72_{11} &amp; 60_{17}\\\\90_{7} &amp; 72_{12} &amp; 60_{18}\\\\120_{4} &amp; 90_{8} &amp; 72_{13} &amp; 60_{19}\\\\180_{2} &amp; 120_{5} &amp; 90_{9} &amp; 72_{14} &amp; 60_{20}\\\\360_{1} &amp; 180_{3} &amp; 120_{6} &amp; 90_{10} &amp; 72_{15} &amp; 60_{21}\end{bmatrix}\label{eq:07.17}\tag{07.17}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{bmatrix}60_{16}\\\\</pre>
+<pre class="osf">72_{11} &amp; 60_{17}\\\\</pre>
+<pre class="osf">90_{7} &amp; 72_{12} &amp; 60_{18}\\\\</pre>
+<pre class="osf">120_{4} &amp; 90_{8} &amp; 72_{13} &amp; 60_{19}\\\\</pre>
+<pre class="osf">180_{2} &amp; 120_{5} &amp; 90_{9} &amp; 72_{14} &amp; 60_{20}\\\\</pre>
+<pre class="osf">360_{1} &amp; 180_{3} &amp; 120_{6} &amp; 90_{10} &amp; 72_{15} &amp; 60_{21}</pre>
+<pre class="osf">\end{bmatrix}</pre>
+<pre class="osf">\label{eq:07.17}\tag{07.17}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The construction of figure 7.15: zeta zeros walk about, is straight forward. Project the x-value, rotate anti clockwise over the associated accumulative angle and connect to the end of the previous chord. The interval between $z_{n}$ progressing on the x-axis follow the harmonic series if the interval is defined to full $360\text{°}\thinspace or\thinspace2\pi$ periods, $1+1+1+1+1+\dots$ The $z_{n}$ along the x-axis follow the triangular numbers $Z_{n}\rightarrow n=T_{index}=\frac{index}{2}\left(index+1\right)=\left\\{ 1+\frac{1}{2}+\frac{1}{3}+\frac{1}{4}+\frac{1}{5}+\dots\right\\}$.</pre>
 <pre class="osf">The angle for each $z_{n}$ is deterministic because the zeta zero lives on a known n-gon. The last chord always lands on $\left(x=z_{n}, y=0\right)$ where the x-coordinate is simply the proportional chord $C_{unity}$ (see Table 7.3: Non trivial zero to Unity chord). The coordinates of the vertices for $n=3\rightarrow T_{n}=6$ are</pre>
 <pre class="osf"></pre>
-<pre class="osf">\begin{equation}\begin{split}\phi\left(n=3\rightarrow T_{n}=6\right)\rightarrow&amp;\left[\frac{1}{n}2\pi,\frac{n}{n}2\pi\right]=\left\\{\frac{1}{3}2\pi,\frac{2}{3}2\pi,\frac{3}{3}2\pi\right\\} \\\\Z_{n}\left(n=3\rightarrow T_{n}=6\right)&amp;\rightarrow Z_{\left[T_{n}-\left(n-1\right),T_{n}\right]}=\left\\{Z_{4},Z_{5},Z_{6}\right\\} \\\\Z_{4}\left(x,y\right)&amp;=\left(Z_{4}\times cos\left(\frac{1}{3}2\pi\right),Z_{4}\times sin\left(\frac{1}{3}2\pi\right)\right)\\\\&amp;=\left(-0.5871673155,1.017003632\right)\\\\Z_{5}\left(x,y\right)&amp;=\left(Z_{5}\times cos\left(\frac{2}{3}2\pi\right),Z_{5}\times sin\left(\frac{2}{3}2\pi\right)\right)\\\\&amp;=\left(-0.5989176875,1.037355864\right)\\\\Z_{6}\left(x,y\right)&amp;=\left(Z_{6}\times cos\left(\frac{3}{3}2\pi\right),Z_{6}\times sin\left(\frac{3}{3}2\pi\right)\right)\\\\&amp;=\left(1.238045632,0\right)\end{split}\label{eq:07.18}\tag{07.18}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">\phi\left(n=3\rightarrow T_{n}=6\right)\rightarrow&amp;\left[\frac{1}{n}2\pi,\frac{n}{n}2\pi\right]=\left\\{\frac{1}{3}2\pi,\frac{2}{3}2\pi,\frac{3}{3}2\pi\right\\} \\\\</pre>
+<pre class="osf">Z_{n}\left(n=3\rightarrow T_{n}=6\right)&amp;\rightarrow Z_{\left[T_{n}-\left(n-1\right),T_{n}\right]}=\left\\{Z_{4},Z_{5},Z_{6}\right\\} \\\\</pre>
+<pre class="osf">Z_{4}\left(x,y\right)&amp;=\left(Z_{4}\times cos\left(\frac{1}{3}2\pi\right),Z_{4}\times sin\left(\frac{1}{3}2\pi\right)\right)\\\\</pre>
+<pre class="osf">&amp;=\left(-0.5871673155,1.017003632\right)\\\\</pre>
+<pre class="osf">Z_{5}\left(x,y\right)&amp;=\left(Z_{5}\times cos\left(\frac{2}{3}2\pi\right),Z_{5}\times sin\left(\frac{2}{3}2\pi\right)\right)\\\\</pre>
+<pre class="osf">&amp;=\left(-0.5989176875,1.037355864\right)\\\\</pre>
+<pre class="osf">Z_{6}\left(x,y\right)&amp;=\left(Z_{6}\times cos\left(\frac{3}{3}2\pi\right),Z_{6}\times sin\left(\frac{3}{3}2\pi\right)\right)\\\\</pre>
+<pre class="osf">&amp;=\left(1.238045632,0\right)</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:07.18}</pre>
+<pre class="osf">\tag{07.18}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The chord $\overline{z_{4}z_{5}}=2\sqrt{\hbar}\approx2.0543531002$, is the first and largest orthogonal chord in the sequence. Planck&#x27;s constant seems to define the point of equilibrium as pivoting point where the chord at infinity starts to morph into a orthogonal x-axis.</pre>
 <pre class="osf"></pre>
@@ -497,14 +657,62 @@
 <pre class="osf">![F7.19 Orthogonal fractal stack](https://osf.io/86eam/download =300x300)</pre>
 <pre class="osf"> </pre>
 <pre class="osf">The consequence of the stacking is a numerical additive sequence visiting primes and composites on the diagonal $1+4+2+4+2+4+2,\dots,\left\\{ 1,5,7,11,13,17,19,23,\left(25\right)\dots\right\\}$, indicated are the composites $\left(n\right)$ and how they break down.</pre>
-<pre class="osf">\begin{equation}\begin{split}1\Delta5&amp;=4\rightarrow2=5\Delta7\\\\7\Delta11&amp;=4\rightarrow2=11\Delta13\\\\13\Delta17&amp;=4\rightarrow2=17\Delta19\\\\19\Delta23&amp;=4\rightarrow2=23\Delta\left(25\right)\rightarrow\left(5^{2}=25\right)\\\\\left(25\right)\Delta29&amp;=4\rightarrow2=29\Delta31\\\\31\Delta\left(35\right)&amp;=4\rightarrow2=\left(35\right)\Delta37\rightarrow\left(7\times5=35\right)\end{split} \label{eq:07.19}\tag{07.19}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">1\Delta5&amp;=4\rightarrow2=5\Delta7\\\\</pre>
+<pre class="osf">7\Delta11&amp;=4\rightarrow2=11\Delta13\\\\</pre>
+<pre class="osf">13\Delta17&amp;=4\rightarrow2=17\Delta19\\\\</pre>
+<pre class="osf">19\Delta23&amp;=4\rightarrow2=23\Delta\left(25\right)\rightarrow\left(5^{2}=25\right)\\\\</pre>
+<pre class="osf">\left(25\right)\Delta29&amp;=4\rightarrow2=29\Delta31\\\\</pre>
+<pre class="osf">31\Delta\left(35\right)&amp;=4\rightarrow2=\left(35\right)\Delta37\rightarrow\left(7\times5=35\right)</pre>
+<pre class="osf">\end{split} \label{eq:07.19}\tag{07.19}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">The initial $\frac{6}{9}block=A\begin{Bmatrix}4\\\\</pre>
 <pre class="osf">2 &amp; 5\\\\</pre>
 <pre class="osf">1 &amp; 3 &amp; 6</pre>
 <pre class="osf">\end{Bmatrix}$ structure is replicated with each iteration, giving the</pre>
 <pre class="osf">pattern of (combinations of) numbers each cell can hold.</pre>
-<pre class="osf">\begin{equation}\begin{split}\begin{Bmatrix}4\\\\2 &amp; 5\\\\1 &amp; 3 &amp; 6\end{Bmatrix}&amp;\rightarrow\begin{Bmatrix}2\\\\1 &amp; \bigstar\\\\\bigstar &amp; 1 &amp; 2\end{Bmatrix}\rightarrow\begin{Bmatrix}2 &amp;&amp;nbsp; &amp; 0\\\\\bigstar &amp; 0\\\\0 &amp; \bigstar &amp; 2\end{Bmatrix}\rightarrow\begin{Bmatrix}\bigstar\\\\1 &amp; 0\\\\0 &amp; 1 &amp; \bigstar\end{Bmatrix} \\\\\begin{Bmatrix}+3\\\\+1 &amp; +4\\\\1 &amp; +2 &amp; +5\end{Bmatrix}&amp;\rightarrow\begin{Bmatrix}even\\\\even &amp; odd\\\\odd &amp; odd &amp; even\end{Bmatrix}\rightarrow\begin{Bmatrix}\left(2\times e\right)\\\\\left(2\times e\right) &amp; \left(o\times o\right)\\\\o &amp; \left(3\times o\right) &amp; \left(2\times o\right)\end{Bmatrix} \\\\\begin{Bmatrix}D_{2}\\\\D_{1} &amp; D_{0}\\\\D_{0} &amp; D_{1} &amp; D_{2}\end{Bmatrix}&amp;\rightarrow\begin{cases}p_{n}\left(&amp;lt;5\right)\cap D_{0}=\emptyset &amp;\rightarrow\{1+|4,2,4,2,\dots\}\\\\p_{n}\left(2\wedge3\right)\cap D_{1}=\emptyset &amp;\rightarrow\{2+|1,5,1,5,\dots\}\\\\p_{n}\left(2\veebar3\right)\cap D_{2}=\emptyset &amp;\rightarrow\{4+|2,4,2,4,\dots\}\end{cases}\end{split}\label{eq:07.20}\tag{07.20}\end{equation}</pre>
+<pre class="osf">\begin{equation}</pre>
+<pre class="osf">\begin{split}</pre>
+<pre class="osf">\begin{Bmatrix}4\\\\</pre>
+<pre class="osf">2 &amp; 5\\\\</pre>
+<pre class="osf">1 &amp; 3 &amp; 6</pre>
+<pre class="osf">\end{Bmatrix}&amp;\rightarrow\begin{Bmatrix}2\\\\</pre>
+<pre class="osf">1 &amp; \bigstar\\\\</pre>
+<pre class="osf">\bigstar &amp; 1 &amp; 2</pre>
+<pre class="osf">\end{Bmatrix}\rightarrow\begin{Bmatrix}2 &amp;&amp;nbsp; &amp; 0\\\\</pre>
+<pre class="osf">\bigstar &amp; 0\\\\</pre>
+<pre class="osf">0 &amp; \bigstar &amp; 2</pre>
+<pre class="osf">\end{Bmatrix}\rightarrow\begin{Bmatrix}\bigstar\\\\</pre>
+<pre class="osf">1 &amp; 0\\\\</pre>
+<pre class="osf">0 &amp; 1 &amp; \bigstar</pre>
+<pre class="osf">\end{Bmatrix} \\\\</pre>
+<pre class="osf">\begin{Bmatrix}+3\\\\</pre>
+<pre class="osf">+1 &amp; +4\\\\</pre>
+<pre class="osf">1 &amp; +2 &amp; +5</pre>
+<pre class="osf">\end{Bmatrix}&amp;\rightarrow\begin{Bmatrix}even\\\\</pre>
+<pre class="osf">even &amp; odd\\\\</pre>
+<pre class="osf">odd &amp; odd &amp; even</pre>
+<pre class="osf">\end{Bmatrix}\rightarrow\begin{Bmatrix}\left(2\times e\right)\\\\</pre>
+<pre class="osf">\left(2\times e\right) &amp; \left(o\times o\right)\\\\</pre>
+<pre class="osf">o &amp; \left(3\times o\right) &amp; \left(2\times o\right)</pre>
+<pre class="osf">\end{Bmatrix} \\\\</pre>
+<pre class="osf">\begin{Bmatrix}D_{2}\\\\</pre>
+<pre class="osf">D_{1} &amp; D_{0}\\\\</pre>
+<pre class="osf">D_{0} &amp; D_{1} &amp; D_{2}</pre>
+<pre class="osf">\end{Bmatrix}&amp;\rightarrow\begin{cases}</pre>
+<pre class="osf">p_{n}\left(&amp;lt;5\right)\cap D_{0}=\emptyset &amp;</pre>
+<pre class="osf">\rightarrow\{1+|4,2,4,2,\dots\}\\\\</pre>
+<pre class="osf">p_{n}\left(2\wedge3\right)\cap D_{1}=\emptyset &amp;</pre>
+<pre class="osf">\rightarrow\{2+|1,5,1,5,\dots\}\\\\</pre>
+<pre class="osf">p_{n}\left(2\veebar3\right)\cap D_{2}=\emptyset &amp;</pre>
+<pre class="osf">\rightarrow\{4+|2,4,2,4,\dots\}</pre>
+<pre class="osf">\end{cases}</pre>
+<pre class="osf">\end{split}</pre>
+<pre class="osf">\label{eq:07.20}</pre>
+<pre class="osf">\tag{07.20}</pre>
+<pre class="osf">\end{equation}</pre>
 <pre class="osf"></pre>
 <pre class="osf">All $n\in\mathbb{N}$ are represented in the stack therefore the clear areas in figure 7.19: Orthogonal fractal stack zeta are either compressed into the diagonal stack, or irrelevant.</pre>
 <pre class="osf"> </pre>
