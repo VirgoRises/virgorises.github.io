@@ -5,11 +5,25 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chapter 5 Chords</title>
   <link rel="stylesheet" href="css/notebook.css" />
-  <script>
-    MathJax = { tex: { inlineMath: [['$','$'], ['\\(','\\)']] }, svg: { fontCache: 'global' } };
-  </script>
-  <script id="MathJax-script" async
-          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+ <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      packages: {'[+]': ['ams']},
+      processEscapes: true
+    },
+    options: {
+      // By default MathJax skips <pre> and <code>. We override that.
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea']  // <pre>/<code> are now processed
+      // (Alternative: keep skipHtmlTags default and add processHtmlClass: 'osf',
+      // then put class="osf" on the wrappers you want scanned.)
+    },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 </head>
 <body>
 <header class="wrap">
