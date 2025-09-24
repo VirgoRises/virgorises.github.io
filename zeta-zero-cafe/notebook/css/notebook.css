@@ -89,8 +89,9 @@ footer {
   color: var(--muted);
   font-size: .9rem;
 }
-
+/*
 mjx-container[jax="CHTML"][display="true"] {
   overflow-x: auto;
   text-align: left;
 }
+*/

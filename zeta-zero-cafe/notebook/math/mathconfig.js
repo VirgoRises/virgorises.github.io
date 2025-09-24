@@ -15,6 +15,5 @@ window.MathJax = {
     // If you prefer to target specific blocks instead, keep default skip list
     // and add:  processHtmlClass: 'osf'   then put class="osf" on containers to scan.
   },
-  
   svg: { fontCache: 'global' }
 };
