@@ -1,19 +1,96 @@
-
 :root {
-  --bg: #0b0c10; --ink: #e5e7eb; --muted: #a7b0be;
-  --line: #1a1d24; --card: #111418; --accent: #7dd3fc;
+  --bg: #0b0c10;
+  --ink: #e5e7eb;
+  --muted: #a7b0be;
+  --line: #1a1d24;
+  --card: #111418;
+  --accent: #7dd3fc;
 }
-html,body { margin:0; padding:0; background:var(--bg); color:var(--ink);
-  font: 16px/1.65 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
-.wrap { max-width: 980px; margin: 0 auto; padding: 22px; }
-header { border-bottom: 1px solid var(--line); padding: 12px 0 16px; }
-h1 { margin: .3em 0; font-size: clamp(26px, 4vw, 40px); }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-  padding: 16px; margin: 16px 0; }
-nav a { color: var(--accent); text-decoration: none; margin-right: 10px; }
-figure { margin: 14px 0; }
-figure img { display:block; width:100%; max-width:100%; height:auto; border-radius:6px; border:1px solid var(--line); }
-figcaption { margin-top:6px; font-size:.92rem; color: var(--muted); }
-pre.osf { white-space: pre-wrap; word-wrap: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; background: #0f1216; border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
-.pager { display:flex; justify-content: space-between; gap: 8px; margin-top: 12px; }
-footer { border-top: 1px solid var(--line); margin-top: 24px; padding: 14px 0; color: var(--muted); font-size: .9rem; }
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.65 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 22px;
+}
+
+header {
+  border-bottom: 1px solid var(--line);
+  padding: 12px 0 16px;
+}
+
+h1 {
+  margin: .3em 0;
+  font-size: clamp(26px, 4vw, 40px);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+nav a {
+  color: var(--accent);
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+figure {
+  margin: 14px 0;
+}
+
+figure img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+
+figcaption {
+  margin-top: 6px;
+  font-size: .92rem;
+  color: var(--muted);
+}
+
+pre.osf {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  background: #0f1216;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+  padding: 14px 0;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+mjx-container[jax="CHTML"][display="true"] {
+  overflow-x: auto;
+  text-align: left;
+}
