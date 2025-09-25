@@ -114,3 +114,9 @@ figcaption.small { margin-top: .5rem; color: var(--muted); font-size: .92rem; }
   mjx-container { font-size: 95%; }                  /* slight shrink helps readability */
 }
 
+@media (max-width: 700px){
+  mjx-container[display="true"]{overflow-x:auto}
+  mjx-container{font-size:95%}
+}
+
+figure img{width:100%;height:auto;max-width:860px;margin-inline:auto}
