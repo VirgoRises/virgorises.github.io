@@ -1,152 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Virgorises — Unexpected Connective Tissue Central</title>
-  <meta name="description" content="Virgorises is a clean, public square for science-curious puzzles and notebooks. Read the weekly digest, visit the Zeta Zero Café, and explore the archive." />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Virgorises — Unexpected Connective Tissue Central</title>
+<meta name="description" content="Zeta Zero Café: a working notebook about zeta, primes, geometry — and the unexpected connective tissue between math and physics." />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<style>
+  :root{
+    --bg:#0b0c10; --card:#111418; --ink:#e5e7eb; --muted:#a7b0be; --line:#1a1d24; --hi:#7dd3fc; --accent:#9ae6b4;
+  }
+  html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px}
+  a{color:var(--hi);text-decoration:none}
+  header.hero{padding:42px 0 28px;border-bottom:1px solid var(--line)}
+  .tag{display:inline-block;background:#0e1319;border:1px solid var(--line);color:var(--muted);padding:4px 10px;border-radius:999px;font-size:.9rem}
+  h1{font-size:clamp(28px,5vw,48px);margin:.2em 0 .3em}
+  h2{font-size:clamp(20px,3.2vw,28px);margin:1.4em 0 .5em}
+  p.lead{font-size:1.1rem;color:var(--muted);max-width:70ch}
+  .grid{display:grid;gap:18px}
+  @media(min-width:900px){ .grid-3{grid-template-columns:repeat(3,1fr)} .grid-2{grid-template-columns:repeat(2,1fr)} }
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .card h3{margin:.2em 0 .4em;font-size:1.15rem}
+  .card p{margin:.4em 0}
+  .kicker{color:var(--accent);font-weight:600;letter-spacing:.02em}
+  .note{background:#0e1217;border:1px dashed var(--line);border-radius:12px;padding:14px;color:var(--muted)}
+  .banner{background:#121722;border:1px solid #1a2130;border-radius:12px;padding:12px 14px;margin:14px 0;color:#cfe7ff}
+  footer{border-top:1px solid var(--line);margin-top:32px;padding:18px 0;color:var(--muted);font-size:.95rem}
+  mjx-container[display="true"]{overflow-x:auto}
+  .btn{display:inline-block;background:#0f1622;border:1px solid var(--line);padding:10px 14px;border-radius:10px}
+  .btn:hover{border-color:#2a3342}
+  .row{display:flex;flex-wrap:wrap;gap:10px}
+</style>
 
-  <!-- Main stylesheet -->
-  <link rel="stylesheet" href="css/virgorises.css" />
-
-  <!-- Optional extra stylesheet (example navbar, remove if unused) -->
-  <link rel="stylesheet" href="css/w3schoolsnavbar.css" />
-
-  <!-- MathJax for LaTeX-style math rendering -->
-  <script>
-    MathJax = {
-      tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
-      svg: {fontCache: 'global'}
-    };
-  </script>
-  <script id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>
+<!-- MathJax (needed for the teaser formulas on the page) -->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$'], ['\\[','\\]']], packages: {'[+]':['ams']}, processEnvironments:true, processEscapes:true },
+    loader: { load: ['[tex]/ams'] },
+    chtml: { linebreaks:{automatic:true,width:'container'} },
+    svg:   { fontCache:'global' }
+  };
+</script>
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-
 <body>
-  <header>
-    <div class="wrap masthead" role="banner" aria-label="Site header">
-      <div class="brand">
-        <!-- simple connective glyph -->
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="6" cy="6" r="3" stroke="currentColor" opacity=".7"/>
-          <circle cx="18" cy="6" r="3" stroke="currentColor" opacity=".7"/>
-          <circle cx="12" cy="18" r="3" stroke="currentColor" opacity=".7"/>
-          <path d="M9 6h6M7.5 8.5l3 7M16.5 8.5l-3 7" stroke="currentColor" opacity=".5"/>
-        </svg>
-        <div>
-          <div class="title">Virgorises</div>
-          <div class="tag">Unexpected Connective Tissue Central</div>
-        </div>
-      </div>
 
-      <div class="hero">
-        <h1>The Connective Issue</h1>
-        <p class="subtitle">A clean, public square for science-curious puzzles and notebooks. Cafés host the conversations. A weekly digest reports the highlights. The archive keeps the record.</p>
+<header class="hero wrap">
+  <span class="tag">Unexpected Connective Tissue Central</span>
+  <h1>Virgorises</h1>
+  <p class="lead">
+    Zeta. Triangular numbers. Chords. Primorial gears. This is a <em>working notebook</em> about the strange seams that seem to stitch math and physics together.
+    OSF holds the archive. The Café hosts the live puzzle table.
+  </p>
 
-        <div class="ribbon" aria-label="Quick facts">
-          <span class="chip">Open notebook culture</span>
-          <span class="chip">Skeptics welcome</span>
-          <span class="chip">Weekly digest</span>
-          <span class="chip">OSF archive</span>
-        </div>
-      </div>
-    </div>
-  </header>
+  <div class="banner"><strong>🧭 Notebook mode</strong> — scratchwork, stumbles, and sparks. You can just listen. You can play with small puzzles. You can weigh in if something grabs you.</div>
 
-  <main class="wrap" role="main">
-    <section class="section">
-      <h3>MathJax Test</h3>
-      <p>If MathJax is working, the following will render as proper math:</p>
-      <ul>
-        <li>Inline math: \( a^2 + b^2 = c^2 \)</li>
-        <li>Inline math with dollar signs: $ \zeta(2) = \frac{\pi^2}{6} $</li>
-      </ul>
-      <p>And a display equation:</p>
-      <p>
-        $$ \int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi} $$
-      </p>
-    </section>
-    <section class="grid">
-      <!-- Left column: Zeta Zero Café feature -->
-      <article class="card" aria-labelledby="cafe-title">
-        <h2 id="cafe-title">☕ Zeta Zero Café</h2>
-        <p>Exploring zeta, primes, and triangular patterns — the first establishment on the square.</p>
-        <p class="kicker">Read the weekly <span class="accent">Connective Issue</span>, follow the puzzles, and join the debate.</p>
-        <div class="btnrow" role="group" aria-label="Café links">
-          <!-- TODO: replace # with your actual links -->
-          <a class="btn primary" href="/zeta-zero-cafe" aria-label="Visit the Zeta Zero Café page">Visit Café</a>
-          <a class="btn" href="https://discord.gg/your-invite" aria-label="Join the Discord">Join Discord</a>
-          <a class="btn" href="https://osf.io/8nhuj/" aria-label="Open the OSF archival project">OSF Archive</a>
-        </div>
+  <div class="row" style="margin-top:8px">
+    <a class="btn" href="zeta-zero-cafe/notebook/">📓 Notebook Mirror</a>
+    <a class="btn" href="https://osf.io/" target="_blank" rel="noopener">📁 OSF Archive</a>
+    <a class="btn" href="https://discord.gg/your-invite" target="_blank" rel="noopener">💬 Discord (Zeta Zero Café)</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Hot Puzzles Board -->
+  <section>
+    <h2>🔥 Hot Puzzles Board</h2>
+    <div class="grid grid-3">
+      <!-- Planck chord -->
+      <article class="card">
+        <div class="kicker">Chapter 5 — Unity Chords</div>
+        <h3>Planck’s Constant in the Chords?</h3>
+        <p>From the chord normalization pops out a number:</p>
+        <p>$$ \frac{5\pi}{2}\sqrt{\frac{\sqrt{5}}{\pi}} \;\approx\; 6.626091764\ldots $$</p>
+        <p>That’s numerically on top of Planck’s constant \(h\). Coincidence — or a quantization rule hiding in prime geometry?</p>
+        <p><a href="https://discord.gg/your-invite" target="_blank" rel="noopener">Discuss in #planck-chord →</a></p>
       </article>
 
-      <!-- Right column: How it works -->
-      <aside class="card" aria-labelledby="how-title">
-        <h2 id="how-title">How it Works</h2>
-        <ol class="small" style="margin: 0 0 10px 20px;">
-          <li><strong>Notebook</strong> — OSF preserves citable snapshots and releases.</li>
-          <li><strong>Café</strong> — Discord hosts live puzzles, critiques, and experiments.</li>
-          <li><strong>Newspaper</strong> — Weekly digest summarizes the best threads.</li>
-        </ol>
-        <p class="small">Low-energy for the founder; community-driven heat.</p>
-      </aside>
-    </section>
+      <!-- Level repulsion -->
+      <article class="card">
+        <div class="kicker">Chapter 7 — QGF</div>
+        <h3>Level Repulsion: Forced, not random?</h3>
+        <p>Random matrices predict \(P(s)\sim s^2 e^{-c s^2}\). Do the unity-chord levels <em>force</em> the same law deterministically?</p>
+        <p>👉 If yes, the GUE match would be a <em>mechanical</em> signature, not just a statistical echo.</p>
+        <p><a href="https://discord.gg/your-invite" target="_blank" rel="noopener">Discuss in #level-repulsion →</a></p>
+      </article>
 
-    <!-- Quick navigation section -->
-    <section class="section" aria-labelledby="nav-title">
-      <h3 id="nav-title">On the Square</h3>
-      <div class="list" role="list">
-        <div class="item" role="listitem">
-          <div>
-            <strong>Zeta Zero Café</strong>
-            <div class="meta">Weekly digest · Puzzles · Archive links</div>
-          </div>
-          <a class="go" href="/zeta-zero-cafe" aria-label="Go to Zeta Zero Café">Enter →</a>
-        </div>
-
-        <!-- Future establishments (placeholder) -->
-        <div class="item" role="listitem" aria-live="polite">
-          <div>
-            <strong>Seedcode Café</strong>
-            <div class="meta">Statistics, scaling, and real-world data (coming soon)</div>
-          </div>
-          <span class="go" aria-hidden="true">Soon</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Calls to action -->
-    <section class="section" aria-labelledby="join-title">
-      <h3 id="join-title">Join the Conversation</h3>
-      <div class="btnrow">
-        <a class="btn primary" href="https://discord.gg/your-invite">Join the Agora on Discord</a>
-        <a class="btn" href="/digest">Read the Weekly Digest</a>
-        <a class="btn" href="https://osf.io/8nhuj/">Open the OSF Archive</a>
-      </div>
-    </section>
-
-    <!-- Disclaimers (short, visible) -->
-    <section class="section" aria-labelledby="disc-title">
-      <h3 id="disc-title">Disclaimers</h3>
-      <p class="small"><strong>Formal:</strong> This space curates open notebooks and digests. Content can be speculative, unfinished, and not peer-reviewed; archives are provided for the record, not as formal proofs.</p>
-      <p class="small"><strong>Friendly:</strong> A science café vibe — ideas in public, gaps and all. Enjoy the journey even if the destination is uncertain.</p>
-    </section>
-  </main>
-
-  <footer>
-    <div class="wrap">
-      <div>© <span id="y"></span> Virgorises · <span class="sep">•</span> The Connective Issue</div>
-      <div class="small">Built to keep the archive stable (OSF) and the conversation lively (Discord). When SEEDCODE arrives, the square is ready.</div>
+      <!-- Form factor -->
+      <article class="card">
+        <div class="kicker">Chapter 7 — QGF</div>
+        <h3>Form Factors: Echo in Fourier Space</h3>
+        <p>Compute \(S(\tau)=\big|\sum_j e^{2\pi i\tau u_j}\big|^2\). Do we see the classic dip-and-ramp of chaotic spectra — without randomness?</p>
+        <p><a href="https://discord.gg/your-invite" target="_blank" rel="noopener">Discuss in #form-factors →</a></p>
+      </article>
     </div>
-  </footer>
+    <p class="note">OSF is the stable, citable record; the Notebook is the living mirror. These puzzles pull you into the Discord where ideas can collide.</p>
+  </section>
 
-  <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
+  <!-- Chapter on-ramps -->
+  <section>
+    <h2>Chapter On-Ramps</h2>
+    <div class="grid grid-2">
+      <article class="card">
+        <div class="kicker">Chapter 1</div>
+        <h3>The Basel Problem</h3>
+        <p>Why does \(1+1/4+1/9+…=\pi^2/6\)? A messy sum landing on a perfect circle constant — a first clue that sums ↔ shapes.</p>
+        <p><a href="zeta-zero-cafe/notebook/Chapter%201%20The%20Basel%20problem.html">Read the notebook →</a> · <a href="https://discord.gg/your-invite" target="_blank" rel="noopener">#basel-problem</a></p>
+      </article>
 
+      <article class="card">
+        <div class="kicker">Chapter 2</div>
+        <h3>Zeta as Spatial Ratio</h3>
+        <p>\(\zeta(2)=\pi^2/6\) reads like surface/volume scaling. Is zeta a geometry engine in disguise?</p>
+        <p><a href="zeta-zero-cafe/notebook/Chapter%202%20The%20spatial%20aspect%20of%20zet.html">Read the notebook →</a> · <a href="https://discord.gg/your-invite" target="_blank" rel="noopener">#spatial-zeta</a></p>
+      </article>
+
+      <article class="card">
+        <div class="kicker">Chapter 3</div>
+        <h3>Primorial Gears</h3>
+        <p>Products of primes act like natural gear ratios. Are they the scaffolding behind zeta’s structure?</p>
+        <p><a href="zeta-zero-cafe/notebook/Chapter%203%20The%20primorial%20function.html">Read the notebook →</a> · <a href="https://discord.gg/your-invite" target="_blank" rel="noopener">#primorials</a></p>
+      </article>
+
+      <article class="card">
+        <div class="kicker">Chapter 4</div>
+        <h3>Triangular Numbers</h3>
+        <p>Simple figurate numbers that keep showing up in zeta-land. Coincidence or connective tissue?</p>
+        <p><a href="zeta-zero-cafe/notebook/Chapter%204%20The%20triangular%20numbers.html">Read the notebook →</a> · <a href="https://discord.gg/your-invite" target="_blank" rel="noopener">#triangular-numbers</a></p>
+      </article>
+
+      <article class="card">
+        <div class="kicker">Chapter 5</div>
+        <h3>Unity Chords</h3>
+        <p>Normalize zeros into chords on a circle; a “scale” emerges — and so do suspicious constants.</p>
+        <p><a href="zeta-zero-cafe/notebook/Chapter%205%20Unity%20chords.html">Read the notebook →</a> · <a href="https://discord.gg/your-invite" target="_blank" rel="noopener">#unity-chords</a></p>
+      </article>
+
+      <article class="card">
+        <div class="kicker">Chapter 6</div>
+        <h3>Cartesian M-brane Monosurface</h3>
+        <p>Surfaces stretched across coordinates, brane-like without the baggage. A toy model — or more?</p>
+        <p><a href="zeta-zero-cafe/notebook/Chapter%206%20A%20Cartesian%20M-brane%20monosurface.html">Read the notebook →</a> · <a href="https://discord.gg/your-invite" target="_blank" rel="noopener">#m-brane-surface</a></p>
+      </article>
+
+      <article class="card">
+        <div class="kicker">Chapter 7</div>
+        <h3>QGF — Mechanics Behind the Music</h3>
+        <p>Are “random” spacing laws actually enforced by geometry? Test repulsion, correlation, form factors.</p>
+        <p><a href="zeta-zero-cafe/notebook/Chapter%207%20A%20quadrature%20geometrical%20framework.html">Read the notebook →</a> · <a href="https://discord.gg/your-invite" target="_blank" rel="noopener">#qgf-framework</a></p>
+      </article>
+
+      <article class="card">
+        <div class="kicker">Chapter 8</div>
+        <h3>Spectrum of Volume</h3>
+        <p>Volumes that scale like energy levels. If zeta is an operator, what are its eigen-shapes?</p>
+        <p><a href="zeta-zero-cafe/notebook/Chapter%208%20The%20spectrum%20of%20volume.html">Read the notebook →</a> · <a href="https://discord.gg/your-invite" target="_blank" rel="noopener">#spectrum-of-volume</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>What this place is</h2>
+    <div class="card">
+      <p><strong>Not a classroom.</strong> A notebook in public. You can just listen. You can ask one question. You can take a puzzle to Discord and see who shows up.</p>
+      <p><strong>Two rails.</strong> OSF is the citable archive; the Notebook is the living mirror. No shifting goalposts.</p>
+      <p><strong>Tone.</strong> Proud layperson energy. Rough edges welcome. If the machine doesn’t run, at least we’ll know which cogwheels matter.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  © <span id="y"></span> Virgorises · <a href="zeta-zero-cafe/notebook/">Notebook</a> · <a href="https://osf.io/" target="_blank" rel="noopener">OSF</a> · <a href="https://discord.gg/your-invite" target="_blank" rel="noopener">Discord</a>
+</footer>
+<script>document.getElementById('y').textContent=new Date().getFullYear()</script>
 </body>
 </html>
