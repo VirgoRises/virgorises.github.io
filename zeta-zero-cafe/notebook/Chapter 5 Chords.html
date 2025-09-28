@@ -1,255 +1,529 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chapter 5 Chords</title>
   <link rel="stylesheet" href="css/notebook.css" />
 
-<!-- MathJax config (must come BEFORE MathJax itself) -->
-<script src="math/mathconfig.js"></script>
+  <!-- MathJax config (must come BEFORE MathJax itself) -->
+  <script src="math/mathconfig.js"></script>
 
-<!-- MathJax core -->
-<script id="MathJax-script" defer
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- MathJax core -->
+  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 
 </head>
+
 <body>
-<header class="wrap">
-  <h1>Chapter 5 Chords</h1>
-  <nav>
-    <a href="index.html">Notebook Home</a>
-    <a href="../../index.html">Virgorises Home</a>
-    <a href="../index.html">Zeta Zero Café</a>
-  </nav>
-  <p class="small">Working notebook — speculative, unfinished, not peer-reviewed.</p>
-</header>
-<main class="wrap">
-  <div class="card">
-<pre class="osf">Hexagonal chords and Planck</pre>
+  <header class="wrap">
+    <h1>Chapter 5 Chords</h1>
+    <nav>
+      <a href="index.html">Notebook Home</a>
+      <a href="../../index.html">Virgorises Home</a>
+      <a href="../index.html">Zeta Zero Café</a>
+    </nav>
+    <p class="small">Working notebook — speculative, unfinished, not peer-reviewed.</p>
+  </header>
+  <main class="wrap">
+    <div class="card">
+      <!--
+    <pre class="osf">Hexagonal chords and Planck</pre>
 <pre class="osf">===========================</pre>
-<pre class="osf">A hexagonal chord has the same dimensions as the radius for the circle it inscribes, $a=cos\left(\frac{\pi}{3}\right)=\frac{1}{2},$$b=\sin\left(\frac{\pi}{3}\right)$$\rightarrow c=\sqrt{a^{2}+b^{2}}=$$1$ (Figure 3.4: Primorial hexagon). In table 4.1: Discrete triangular - Continues projection plane, we find $x\rightarrow a$ and $y\rightarrow r_{q}$, where $y\rightarrow r_{q}$ by the closed formula:</pre>
+  -->
+      <h2>Hexagonal chords and Planck</h2>
+      <pre
+        class="osf">A hexagonal chord has the same dimensions as the radius for the circle it inscribes, $a=cos\left(\frac{\pi}{3}\right)=\frac{1}{2},$$b=\sin\left(\frac{\pi}{3}\right)$$\rightarrow c=\sqrt{a^{2}+b^{2}}=$$1$ (Figure 3.4: Primorial hexagon). In table 4.1: Discrete triangular - Continues projection plane, we find $x\rightarrow a$ and $y\rightarrow r_{q}$, where $y\rightarrow r_{q}$ by the closed formula:</pre>
 
-<pre class="osf">\begin{equation}r_{q}=\forall n\\,\sqrt{\frac{n}{n+1}}\rightarrow\left\\{\sqrt{\frac{1}{2}},\sqrt{\frac{2}{3}},\sqrt{\frac{3}{4}},\dots\right\\}\label{eq:05:01}\tag{05:01}\end{equation}</pre>
+      <pre
+        class="osf">\begin{equation}r_{q}=\forall n\,\sqrt{\frac{n}{n+1}}\rightarrow\left\{\sqrt{\frac{1}{2}},\sqrt{\frac{2}{3}},\sqrt{\frac{3}{4}},\dots\right\}\label{eq:05:01}\tag{05:01}\end{equation}</pre>
 
-<pre class="osf">![F5.01 Hexagonal chord versus h](https://osf.io/5pf3g/download =350x350)</pre>
+      <!--
+        <pre class="osf">![F5.01 Hexagonal chord versus h](https://osf.io/5pf3g/download =350x350)</pre>
+    -->
+      <figure>
+        <img loading="lazy" src="figures/Figure_5.1_Hexagonal_chord_versus_h.PNG"
+          alt="F5.01 Hexagonal chord versus h]" />
+        <figcaption class="small">
+          F5.01 Hexagonal chord versus h]
+        </figcaption>
+      </figure>
+      <pre class="osf">Figure 5.1 shows two chords</pre>
+      <!--
+      <pre class="osf">&lt;ol&gt;</pre>
+      <pre
+        class="osf">&lt;li&gt;Chord $c_{vesica}$ is a hexagonal chord and related to the triangular projection by the proportion of side b. In table 4.1: Discrete triangular - Continues projection plane we find $n=3\rightarrow r_{q}=\left|\sqrt{\frac{3}{4}}\right|$. However, because here we find $a\ne\frac{1}{2}\rightarrow a=0.5773502692$, the tuple for $n=3$ does not represent $\triangle ABC$. Calculating $\overline{BC}$ with this value produces $\sqrt{\left(a\right)^{2}+\left(r_{q}\right)^{2}}=1.040833\ne1$. Side b is interesting because the absolute value $r_{q=}\left|\sqrt{\frac{3}{4}}\right|$ conforms to the scale invariant value $b=sin\left(\frac{\pi}{3}\right)$ present in $90^{\circ}\,60^{\circ}\,30^{\circ}$ hexagonal triangles.&lt;/li&gt;</pre>
+      <pre
+        class="osf">&lt;li&gt;$\triangle ABD$, with chord $c_{\hbar}$, has side b extended to $b=1$. This triangle matches the last tuple in the table, but $\triangle ABD$ does not conform to a $90^{\circ}\,60^{\circ}\,30^{\circ}$ triangle. See table 4.1: Discrete triangular - Continues projection plane, where we find $n=\infty\rightarrow r_{q}=1$ and $a=0.5\rightarrow cos\left(\frac{\pi}{3}\right)=0.5$.&lt;/li&gt;</pre>
+      <pre class="osf">&lt;/ol&gt;</pre>
+    -->
+      <ol>
+        <li>Chord $c_{vesica}$ is a hexagonal chord and related to the triangular projection by the proportion of side
+          b. In table 4.1: Discrete triangular - Continues projection plane we find $n=3\rightarrow
+          r_{q}=\left|\sqrt{\frac{3}{4}}\right|$. However, because here we find $a\ne\frac{1}{2}\rightarrow
+          a=0.5773502692$, the tuple for $n=3$ does not represent $\triangle ABC$. Calculating $\overline{BC}$ with this
+          value produces $\sqrt{\left(a\right)^{2}+\left(r_{q}\right)^{2}}=1.040833\ne1$. Side b is interesting because
+          the absolute value $r_{q=}\left|\sqrt{\frac{3}{4}}\right|$ conforms to the scale invariant value
+          $b=sin\left(\frac{\pi}{3}\right)$ present in $90^{\circ}\,60^{\circ}\,30^{\circ}$ hexagonal triangles.</li>
+        <li>$\triangle ABD$, with chord $c_{\hbar}$, has side b extended to $b=1$. This triangle matches the last tuple
+          in the table, but $\triangle ABD$ does not conform to a $90^{\circ}\,60^{\circ}\,30^{\circ}$ triangle. See
+          table 4.1: Discrete triangular - Continues projection plane, where we find $n=\infty\rightarrow r_{q}=1$ and
+          $a=0.5\rightarrow cos\left(\frac{\pi}{3}\right)=0.5$.</li>
+      </ol>
 
-<pre class="osf">Figure 5.1 shows two chords</pre>
-<pre class="osf">&lt;ol&gt;</pre>
-<pre class="osf">&lt;li&gt;Chord $c_{vesica}$ is a hexagonal chord and related to the triangular projection by the proportion of side b. In table 4.1: Discrete triangular - Continues projection plane we find $n=3\rightarrow r_{q}=\left|\sqrt{\frac{3}{4}}\right|$. However, because here we find $a\ne\frac{1}{2}\rightarrow a=0.5773502692$, the tuple for $n=3$ does not represent $\triangle ABC$. Calculating $\overline{BC}$ with this value produces $\sqrt{\left(a\right)^{2}+\left(r_{q}\right)^{2}}=1.040833\ne1$. Side b is interesting because the absolute value $r_{q=}\left|\sqrt{\frac{3}{4}}\right|$ conforms to the scale invariant value $b=sin\left(\frac{\pi}{3}\right)$ present in $90^{\circ}\,60^{\circ}\,30^{\circ}$ hexagonal triangles.&lt;/li&gt;</pre>
-<pre class="osf">&lt;li&gt;$\triangle ABD$, with chord $c_{\hbar}$, has side b extended to $b=1$. This triangle matches the last tuple in the table, but $\triangle ABD$ does not conform to a $90^{\circ}\,60^{\circ}\,30^{\circ}$ triangle. See table 4.1: Discrete triangular - Continues projection plane, where we find $n=\infty\rightarrow r_{q}=1$ and $a=0.5\rightarrow cos\left(\frac{\pi}{3}\right)=0.5$.&lt;/li&gt;</pre>
-<pre class="osf">&lt;/ol&gt;</pre>
+      <!--
+      <pre class="osf">Unity chords</pre>
+      <pre class="osf">============</pre>
+    -->
+      <h2>Unity chords</h2>
+      <pre
+        class="osf">In the following we will abuse the Pythagorean theorem to suite our needs. The experimentally deduced value of Planck’s constant is $h=6.62607015\times10^{-34}J.s.$.</pre>
 
-<pre class="osf">Unity chords</pre>
-<pre class="osf">============</pre>
-<pre class="osf">In the following we will abuse the Pythagorean theorem to suite our needs. The experimentally deduced value of Planck’s constant is $h=6.62607015\times10^{-34}J.s.$.</pre>
+      <!--
+        <pre class="osf">![F5.02 Planck base-Unity chord](https://osf.io/d9nw5/download =350x350)</pre>
+    -->
+      <figure>
+        <img loading="lazy" src="figures/Figure_5.2_Planck_base_-_Unity_chord.PNG"
+          alt="F5.02 Planck base-Unity chord]" />
+        <figcaption class="small">
+          F5.02 Planck base-Unity chord]
+        </figcaption>
+      </figure>
+      <pre
+        class="osf">Observe that if we counter intuitively apply the Pythagoras theorem by assuming $\overline{BC}$ as if $\overline{AC}$, then any $\angle ABC=\frac{\pi}{3}=60^{\circ}$ right angled triangle has a ratio $\sqrt{1\frac{1}{4}}=\frac{\sqrt{5}}{2}$ derived by $c_{\hbar}=$$\sqrt{\left(BC\right)^{2}+\left(AB\right)^{2}}=$$\sqrt{1^{2}+0.5^{2}}=$$\sqrt{1\frac{1}{4}}=$$\frac{\sqrt{5}}{2}$.</pre>
+      <pre
+        class="osf">We find Planck’s constant by: $h=\frac{\sqrt{c_{\hbar}}\times2\pi}{\sqrt{\looparrowright}}\approx6.626091764...\rightarrow\Delta h\sim2.1728\times10^{-5}$. This is not just a mathematical coincidence and can be placed in a rigid meaningful context labeled &#x27;Unity chords&#x27; which justifies the abuse of the Pythagorean theorem. Equation 2 gives the associated values as found in table 4.1: Discrete triangular - Continues projection plane.</pre>
 
-<pre class="osf">![F5.02 Planck base-Unity chord](https://osf.io/d9nw5/download =350x350)</pre>
+      <pre class="osf">\begin{equation}
+\begin{split}
+\overline{BC}^2+\overline{AB}^2&=1\frac{1}{4} \rightarrow c_{\hbar}= \sqrt {\left({BC} \right)^2+\left({AB}\right)^2}\\
+n=4\rightarrow a&=\left[\sqrt{2}^{\text{ -1}},\frac{1}{2}\times\left(\sqrt{\frac{4}{5}}\right)^{-1}\right]\rightarrow\left[\sqrt{2}^{\text{ -1}},\sqrt{\frac{10}{32}}\right]\\
+n=3\rightarrow r_{q}&=\left[\sqrt{\frac{3}{4}},1\right]
+\end{split}
+\label{eq:05:02}
+\tag{05:02}
+\end{equation}</pre>
 
-<pre class="osf">Observe that if we counter intuitively apply the Pythagoras theorem by assuming $\overline{BC}$ as if $\overline{AC}$, then any $\angle ABC=\frac{\pi}{3}=60^{\circ}$ right angled triangle has a ratio $\sqrt{1\frac{1}{4}}=\frac{\sqrt{5}}{2}$ derived by $c_{\hbar}=$$\sqrt{\left(BC\right)^{2}+\left(AB\right)^{2}}=$$\sqrt{1^{2}+0.5^{2}}=$$\sqrt{1\frac{1}{4}}=$$\frac{\sqrt{5}}{2}$.</pre>
-<pre class="osf">We find Planck’s constant by: $h=\frac{\sqrt{c_{\hbar}}\times2\pi}{\sqrt{\looparrowright}}\approx6.626091764...\rightarrow\Delta h\sim2.1728\times10^{-5}$. This is not just a mathematical coincidence and can be placed in a rigid meaningful context labeled &#x27;Unity chords&#x27; which justifies the abuse of the Pythagorean theorem. Equation 2 gives the associated values as found in table 4.1: Discrete triangular - Continues projection plane.</pre>
+      <pre
+        class="osf">In figure 5.2, this principle “Unity chord” is shown as a function of area for $T_{n}\,$ where $n\in\left\{3,\infty\right\}$. The extended part of side b, $\overline{CD}=\Delta\zeta\left(2\right)$ starts at $n=3\rightarrow r_{q=}\sqrt{\frac{3}{4}}$.</pre>
 
-<pre class="osf">\begin{equation}\begin{split}\overline{BC}^2+\overline{AB}^2\&amp;=1\frac{1}{4} \rightarrow c_{\hbar}= \sqrt {\left({BC} \right)^2+\left({AB}\right)^2}\\\\n=4\rightarrow a&amp;=\left[\sqrt{2}^{\text{ -1}},\frac{1}{2}\times\left(\sqrt{\frac{4}{5}}\right)^{-1}\right]\rightarrow\left[\sqrt{2}^{\text{ -1}},\sqrt{\frac{10}{32}}\right]\\\\n=3\rightarrow r_{q}&amp;=\left[\sqrt{\frac{3}{4}},1\right]\end{split}\label{eq:05:02}\tag{05:02}\end{equation}</pre>
+      <pre
+        class="osf">**Before the extension the area** $A_{\overline{AC}}=$$\overline{AC}^{2}=$$\sqrt{\frac{3}{4}}^{2}=$$\sin\left(\frac{\pi}{3}\right)^{2}$$=\frac{3}{4}$.</pre>
 
-<pre class="osf">In figure 5.2, this principle “Unity chord” is shown as a function of area for $T_{n}\\,$ where $n\in\left\\{3,\infty\right\\}$. The extended part of side b, $\overline{CD}=\Delta\zeta\left(2\right)$ starts at $n=3\rightarrow r_{q=}\sqrt{\frac{3}{4}}$.</pre>
+      <pre
+        class="osf">**Then after extension** $A_{\overline{AD}}=$$\overline{AD}^{2}=$$1^{2}=$$\frac{4}{4}$. The square area in figure 5.2 defined by $A_{\overline{AD}}=\frac{4}{5}$ of the square area defined by $A_{\overline{BD}}$.</pre>
 
-<pre class="osf">**Before the extension the area** $A_{\overline{AC}}=$$\overline{AC}^{2}=$$\sqrt{\frac{3}{4}}^{2}=$$\sin\left(\frac{\pi}{3}\right)^{2}$$=\frac{3}{4}$.</pre>
+      <pre
+        class="osf">Extending side b from $\overline{AC}=$$\sqrt{\frac{3}{4}}\rightarrow$$ \overline{AD}=1$ has the net effect $Area\, \frac{3}{4}:1$, a growth factor of $1\frac{1}{3}$.</pre>
+      <pre
+        class="osf">That same extension for side c from $\overline{BC}=1\rightarrow \overline{BD}=\sqrt{1^2+\left(\frac{1}{2}\right)^2}$ has the net effect $Area\, \frac{3}{4}:1$, a growth factor of $1\frac{1}{4}$.</pre>
 
-<pre class="osf">**Then after extension** $A_{\overline{AD}}=$$\overline{AD}^{2}=$$1^{2}=$$\frac{4}{4}$. The square area in figure 5.2 defined by $A_{\overline{AD}}=\frac{4}{5}$ of the square area defined by $A_{\overline{BD}}$.</pre>
+      <pre
+        class="osf">The unity chords are defined by the hypotenuses in a specific range and the associated right angled triangles are *all assumed to represent a distorted representation of a hexagonal triangle*, $\angle 60^{\circ}30^{\circ}90^{\circ}$. In figure 5.2 the projection of $T_{n}\rightarrow a$ for $n\in\{1,2,3\}$ (the three dots to the right of coordinate &#x27;B&#x27;) seem not to fit the schema. This figure 5.2 is not the whole picture. The chords on the x-axis project in the range $a\rightarrow\left[\sqrt{2}^{\text{ -1}},\frac{1}{2}\right]$ while in figure 5.2 they all radiate from $\angle ABC$. This is however not the case in the triangular projection, see table 4.1: Discrete triangular - Continues projection plane, the values for the y-axis slide down to up, and the values for the x-axis slide right to left.</pre>
+      <pre
+        class="osf">This results, plugging in the values $a$ and $r_q$ for each tuple $\angle\theta=tan\left(\frac{r_q}{a}\right)$, in chords angled between $45^{\circ}$ and $63.43^{\circ}$ varying in length between $\sqrt{0.5 + 0.5}=1\\,$$to\\,\sqrt{1 + 0.25}$$\approx\hbar^2$.</pre>
 
-<pre class="osf">Extending side b from $\overline{AC}=$$\sqrt{\frac{3}{4}}\rightarrow$$ \overline{AD}=1$ has the net effect $Area\, \frac{3}{4}:1$, a growth factor of $1\frac{1}{3}$.</pre>
-<pre class="osf">That same extension for side c from $\overline{BC}=1\rightarrow \overline{BD}=\sqrt{1^2+\left(\frac{1}{2}\right)^2}$ has the net effect $Area\, \frac{3}{4}:1$, a growth factor of $1\frac{1}{4}$.</pre>
-
-<pre class="osf">The unity chords are defined by the hypotenuses in a specific range and the associated right angled triangles are *all assumed to represent a distorted representation of a hexagonal triangle*, $\angle 60^{\circ}30^{\circ}90^{\circ}$. In figure 5.2 the projection of $T_{n}\rightarrow a$ for $n\in\{1,2,3\}$ (the three dots to the right of coordinate &#x27;B&#x27;) seem not to fit the schema. This figure 5.2 is not the whole picture. The chords on the x-axis project in the range $a\rightarrow\left[\sqrt{2}^{\text{ -1}},\frac{1}{2}\right]$ while in figure 5.2 they all radiate from $\angle ABC$. This is however not the case in the triangular projection, see table 4.1: Discrete triangular - Continues projection plane, the values for the y-axis slide down to up, and the values for the x-axis slide right to left.</pre>
-<pre class="osf">This results, plugging in the values $a$ and $r_q$ for each tuple $\angle\theta=tan\left(\frac{r_q}{a}\right)$, in chords angled between $45^{\circ}$ and $63.43^{\circ}$ varying in length between $\sqrt{0.5 + 0.5}=1\\,$$to\\,\sqrt{1 + 0.25}$$\approx\hbar^2$.</pre>
-
+      <!--
 <pre class="osf">Like a ladder up the wall</pre>
 <pre class="osf">-------------------------</pre>
-<pre class="osf">The triangular projection (table 4.1: Discrete triangular - Continues projection plane) for $n=\infty$ lists the values $a=\sqrt{2A}=0.5$ and $r_{q}=\frac{0.5}{a}=1$. In figure 5.4: Plot Triangular Tn=1 and Tn=2, two ranges are projected.</pre>
+  -->
+      <h3>Like a ladder up the wall</h3>
 
-<pre class="osf">&lt;ol&gt;</pre>
-<pre class="osf">&lt;li&gt;Range x-axis $a\rightarrow\left[\sqrt{2}^{\thinspace-1},0.5\right]$&lt;/li&gt;</pre>
-<pre class="osf">&lt;li&gt;Range y-axis $r_{q}\rightarrow\left[\sqrt{2}^{\thinspace-1},1\right]$&lt;/li&gt;</pre>
-<pre class="osf">&lt;/ol&gt;</pre>
+      <pre
+        class="osf">The triangular projection (table 4.1: Discrete triangular - Continues projection plane) for $n=\infty$ lists the values $a=\sqrt{2A}=0.5$ and $r_{q}=\frac{0.5}{a}=1$. In figure 5.4: Plot Triangular Tn=1 and Tn=2, two ranges are projected.</pre>
 
-<pre class="osf">This sliding ratio defines a range for modeling the triangular projection as a succession of chord&#x27;s ranging between length $\sqrt{\left(\sqrt{2}^{-1}\right)^{2}+\left(\sqrt{2}^{-1}\right)^{2}}=1$ and $\sqrt{\left(\frac{1}{2}\right)^{2}+1^{2}}=\frac{\sqrt{5}}{2}$. Figure 5.3: Triangular numbers - (a;Rq) chord density shows both extremes and their intersection at $\sim54.74^{\circ}$. The gradient shows the chord density for $n\rightarrow[1,...,80]$ and the migration of the intersection point along the arc, which in the limit, approaches $90^{\circ}$.</pre>
+      <!--
+        <pre class="osf">&lt;ol&gt;</pre>
+      <pre class="osf">&lt;li&gt;Range x-axis $a\rightarrow\left[\sqrt{2}^{\thinspace-1},0.5\right]$&lt;/li&gt;</pre>
+      <pre class="osf">&lt;li&gt;Range y-axis $r_{q}\rightarrow\left[\sqrt{2}^{\thinspace-1},1\right]$&lt;/li&gt;</pre>
+      <pre class="osf">&lt;/ol&gt;</pre>
+    -->
+      <ol>
+        <li>Range x-axis $a\rightarrow\left[\sqrt{2}^{\thinspace-1},0.5\right]$</li>
+        <li>Range y-axis $r_{q}\rightarrow\left[\sqrt{2}^{\thinspace-1},1\right]$</li>
+      </ol>
 
-<pre class="osf">![F5.03 Triangular numbers-chord density](https://osf.io/tnez4/download =350x350)</pre>
+      <pre
+        class="osf">This sliding ratio defines a range for modeling the triangular projection as a succession of chord&#x27;s ranging between length $\sqrt{\left(\sqrt{2}^{-1}\right)^{2}+\left(\sqrt{2}^{-1}\right)^{2}}=1$ and $\sqrt{\left(\frac{1}{2}\right)^{2}+1^{2}}=\frac{\sqrt{5}}{2}$. Figure 5.3: Triangular numbers - (a;Rq) chord density shows both extremes and their intersection at $\sim54.74^{\circ}$. The gradient shows the chord density for $n\rightarrow[1,...,80]$ and the migration of the intersection point along the arc, which in the limit, approaches $90^{\circ}$.</pre>
 
-<pre class="osf">![F5.04 Plot triangular Tn=1 and Tn=2](https://osf.io/d52v7/download =350x350)</pre>
+      <!--
+        <pre class="osf">![F5.03 Triangular numbers-chord density](https://osf.io/tnez4/download =350x350)</pre>
+    -->
+      <figure>
+        <img loading="lazy" src="figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
+          alt="F5.03 Triangular numbers-chord density" />
+        <figcaption class="small">
+          F5.03 Triangular numbers-chord density
+        </figcaption>
+      </figure>
 
-<pre class="osf">Because we assume a distorted representation of a hexagonal triangle in each case, geometrically the unity chords must have $\angle ABC=\frac{\pi}{3}=60^{\circ}$ and be part of right angled triangles with a hypotenuse $\sqrt{1\frac{1}{4}}=\frac{\sqrt{5}}{2}$, by counter intuitively application of the Pythagoras theorem by treating $\overline{BC}$ as if $\overline{AC}$ of course. The range in which the unity chords project is wedged between $\left(a=\sqrt{2}^{\thinspace-1}, r_{q}=\sqrt{2}^{\thinspace-1}\right)\rightarrow\, T_n=1$ and $\left(a=\frac{1}{2},r_{q}=1\right)\rightarrow T_{n=\infty}$. Observe that the only natural occurring hexagonal chord wedged between $a=0.5$ and $r_q=\sqrt{\frac{3}{4}}$ does not occur in the triangular projection as discrete interval, see table 4.1: Discrete triangular - Continues projection plane.</pre>
-<pre class="osf">Note that the area enclosed for all tuples in table 4.1 comes to $\forall n\rightarrow \frac{a\times r_q}{2}=\frac{1}{4}$.</pre>
 
-<pre class="osf">An infinite set of coordinates in between can accommodate such a chord, and therefore unity chords must exist such that; $\forall x\in\\,$$\mathbb{R}\\,$$\exists\\,$$U_{chord}\rightarrow $$ y=\sqrt{\frac{3}{4}}\leq r_{q}\leq1\\,and\\,x=\frac{0.5}{y}$</pre>
+      <!--
+      <pre class="osf">![F5.04 Plot triangular Tn=1 and Tn=2](https://osf.io/d52v7/download =350x350)</pre>
+    -->
+      <figure>
+        <img loading="lazy" src="figures/Figure_5.4_Plot_Triangular_Tn=1_and_Tn=2.PNG"
+          alt="F5.04 Plot triangular Tn=1 and Tn=2" />
+        <figcaption class="small">
+          F5.04 Plot triangular Tn=1 and Tn=2
+        </figcaption>
+      </figure>
+      <pre
+        class="osf">Because we assume a distorted representation of a hexagonal triangle in each case, geometrically the unity chords must have $\angle ABC=\frac{\pi}{3}=60^{\circ}$ and be part of right angled triangles with a hypotenuse $\sqrt{1\frac{1}{4}}=\frac{\sqrt{5}}{2}$, by counter intuitively application of the Pythagoras theorem by treating $\overline{BC}$ as if $\overline{AC}$ of course. The range in which the unity chords project is wedged between $\left(a=\sqrt{2}^{\thinspace-1}, r_{q}=\sqrt{2}^{\thinspace-1}\right)\rightarrow\, T_n=1$ and $\left(a=\frac{1}{2},r_{q}=1\right)\rightarrow T_{n=\infty}$. Observe that the only natural occurring hexagonal chord wedged between $a=0.5$ and $r_q=\sqrt{\frac{3}{4}}$ does not occur in the triangular projection as discrete interval, see table 4.1: Discrete triangular - Continues projection plane.</pre>
+      <pre
+        class="osf">Note that the area enclosed for all tuples in table 4.1 comes to $\forall n\rightarrow \frac{a\times r_q}{2}=\frac{1}{4}$.</pre>
+
+      <pre
+        class="osf">An infinite set of coordinates in between can accommodate such a chord, and therefore unity chords must exist such that; $\forall x\in\\,$$\mathbb{R}\\,$$\exists\\,$$U_{chord}\rightarrow $$ y=\sqrt{\frac{3}{4}}\leq r_{q}\leq1\\,and\\,x=\frac{0.5}{y}$</pre>
 
 
-<pre class="osf">![F5.05 Planck base-Transition Tn=3 to Tn=4](https://osf.io/ebyzm/download =350x350)</pre>
+      <!--
+        <pre class="osf">![F5.05 Planck base-Transition Tn=3 to Tn=4](https://osf.io/ebyzm/download =350x350)</pre>
+    -->
+      <figure>
+        <img loading="lazy" src="figures/Figure_5.5_Planck_base_-_Transition_Tn=3_to_Tn=4.PNG"
+          alt="F5.05 Planck base-Transition Tn=3 to Tn=4]" />
+        <figcaption class="small">
+          F5.05 Planck base-Transition Tn=3 to Tn=4]
+        </figcaption>
+      </figure>
+      <pre
+        class="osf">For any pair of coordinates $\left(a,r_{q}\right)$ a hypotenuse exists, but only those that occur in the triangular projection, see table 4.1: Discrete triangular - Continues projection plane conform to the spatial ratio $S_{ratio}=\frac{V_{init}}{\left(\frac{V_{end}}{r_{end}}\right)}=\frac{1}{4}$, see equation 2.7 Spatial ratio.</pre>
+      <pre
+        class="osf">The triangular projection defines a discrete point of equilibrium between Cartesian area and spherical surface where $A=\frac{T_n}{4n^2}\rightarrow\frac{a}{b}\pi^2$ and $A=\frac{a\times r_q}{2}=\frac{1}{4}$.</pre>
+      <pre
+        class="osf">One observation is the area of the 1 by 2 rectangle and its diagonal $\sqrt{5}$. Let $c=\frac{\sqrt{5}}{2}\approx\hbar^2$ be the circumference of a sphere. Then the surface area of that sphere is $r=\frac{c}{2\pi}\rightarrow$$ SA=4\pi r^2=$$\frac{4}{10\looparrowright}=$$\left(2.5\looparrowright\right)^{\neg1}$.</pre>
+      <pre
+        class="osf">In this reference frame we have an infinite series of chords $c\propto\sqrt{1\frac{1}{4}}=\frac{\sqrt{5}}{2}$, each marking an iterative step in a cycle projecting the triangular numbers, of which the third iteration marks of the conclusion of $\zeta\left(2\right)=\frac{\pi^2}{6}$ , see figure 4.1: The sum formula.</pre>
 
-<pre class="osf">For any pair of coordinates $\left(a,r_{q}\right)$ a hypotenuse exists, but only those that occur in the triangular projection, see table 4.1: Discrete triangular - Continues projection plane conform to the spatial ratio $S_{ratio}=\frac{V_{init}}{\left(\frac{V_{end}}{r_{end}}\right)}=\frac{1}{4}$, see equation 2.7 Spatial ratio.</pre>
-<pre class="osf">The triangular projection defines a discrete point of equilibrium between Cartesian area and spherical surface where $A=\frac{T_n}{4n^2}\rightarrow\frac{a}{b}\pi^2$ and $A=\frac{a\times r_q}{2}=\frac{1}{4}$.</pre>
-<pre class="osf">One observation is the area of the 1 by 2 rectangle and its diagonal $\sqrt{5}$. Let $c=\frac{\sqrt{5}}{2}\approx\hbar^2$ be the circumference of a sphere. Then the surface area of that sphere is $r=\frac{c}{2\pi}\rightarrow$$ SA=4\pi r^2=$$\frac{4}{10\looparrowright}=$$\left(2.5\looparrowright\right)^{\neg1}$.</pre>
-<pre class="osf">In this reference frame we have an infinite series of chords $c\propto\sqrt{1\frac{1}{4}}=\frac{\sqrt{5}}{2}$, each marking an iterative step in a cycle projecting the triangular numbers, of which the third iteration marks of the conclusion of $\zeta\left(2\right)=\frac{\pi^2}{6}$ , see figure 4.1: The sum formula.</pre>
-
+      <!--
 <pre class="osf">Root 2 equilibrium</pre>
 <pre class="osf">==================</pre>
-<pre class="osf">The ratio $\sqrt{1\frac{1}{4}}=\frac{\sqrt{5}}{2}$ means that for every hexagonal chord the proportionality to Planck’s constant holds. Which makes this occurrence of Planck’s constant kind of a banality.</pre>
-<pre class="osf">This will be proven a feature, not a bug. In context of a $\sqrt{2}^{\thinspace-1}$ power series we find quite a unique occurrence for the unity chord. In figure 5.6: Root 2 equilibrium the tuple for n=2 in table 5.1: Hexagonal equilibrium, is depicted.</pre>
-<pre class="osf">From the triangles $\triangle ABC$ and $\triangle DBE$, the triangle $\triangle ABC$ does not occur in table 4.1: Discrete triangular - Continues projection plane, as a triangular projection, but we used it in figure 5.1: Hexagonal chord versus $\hbar$ and figure 5.2: Planck base - Unity chord.</pre>
-<pre class="osf">Now in figure 5.6: Root 2 equilibrium the “Unity” aspect that integrates triangle $\triangle ABC$ in the set of periodic chords as depicted in figure 5.2 comes to light by the association with triangle $\triangle DBE$.</pre>
-<pre class="osf">Here the first thing to take note of, is that both triangles in this configuration are indeed hexagonal. The angles $\angle CAB\\,\\,\\,\\,\angle EDB$ are both $90^{\circ}$ and $\angle ABC\\,\\,and\\,\\,\angle EBD$ are both $60^{\circ}$. Further, the point of origin for both triangles is B.</pre>
-<pre class="osf">It is easy to see that by decreasing segment $\overline{CE}$, labeled $\Delta\zeta\left(2\right)$, will map both triangles in one to one correspondence.</pre>
-<pre class="osf">We recognize the chord $\overline{BC}$ in a somewhat peculiar place for a hexagonal chord in figure 5.2, namely it is the chord $h_{init}$ between $r_{q}=\sqrt{2}^{\thinspace-1}$ and $a=\sqrt{2}^{\thinspace-1}$ that corresponds with the hypotenuse in figure 4.6: Projection plane extended zeta, at the extend of $\zeta\left(1\right)$. This indicates that triangle $\angle ABC$ is the end phase of a cycle, in this model the hypotenuse at $\zeta\left(1\right)$ indicates a 4-fold decrement in surface area.</pre>
-<!-- Table 5.1 -->
-<figure id="tbl-5-1" class="card">
-  <figcaption><strong>Table 5.1 — Hexagonal equilibrium</strong></figcaption>
-  <table>
-    <thead>
-      <tr>
-        <th rowspan="4">\(n\)</th>
-        <th rowspan="4">\((\sqrt{2})^{-n}\)</th>
-        <th>a</th>
-        <th>\(|b|\)</th>
-        <th>c</th>
-        <th>\(c_{\hbar}\)</th>
-        <th>360°</th>
-        <th>\(\pi \, rad\)</th>
-      </tr>
-      <tr>
-        <td>\((\sqrt{2})^{-n}\)</td>
-        <td rowspan="3">\(\sqrt{\tfrac{3}{2^{n}}}\)</td>
-        <td>\(\sqrt{a^{2}+b^{2}}\)</td>
-        <td>\(\sqrt{a^{2}+c^{2}}\)</td>
-        <td rowspan="3">\(\bigl(\tfrac{b_{n}}{b_{2}}\bigr)\cdot 60°\)</td>
-        <td rowspan="3">\(\bigl(\tfrac{b_{n}}{b_{2}}\bigr)\cdot \bigl|\sqrt{\tfrac{3}{4}}\bigr|\)</td>
-      </tr>
-      <tr>
-        <td>\(\to \sqrt{\tfrac{1}{2^{n}}}\)</td>
-        <td>\(\sqrt{\tfrac{1}{2^{n}}+\tfrac{3}{2^{n}}}\)</td>
-        <td>\(a\times \sqrt{5}\)</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>\(\to a_{n-2}\)</td>
-        <td></td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>0</td><td>1</td><td>1</td><td>\(\sqrt{\tfrac{3}{1}}\)</td><td>\(\sqrt{\tfrac{4}{1}}\)</td><td>\(1\cdot\sqrt{5}\)</td><td>120°</td><td>\(\tfrac{2\pi}{3}\)</td>
-      </tr>
-      <tr>
-        <td>1</td><td>0.70710…</td><td>\(\sqrt{\tfrac{1}{2}}\)</td><td>\(\sqrt{\tfrac{3}{2}}\)</td><td>\(\sqrt{\tfrac{4}{2}}\)</td><td>\(\sqrt{\tfrac{1}{2}}\cdot\sqrt{5}\)</td><td>84.8528°</td><td>\(\tfrac{2\pi}{6\sqrt{1/2}}\)</td>
-      </tr>
-      <tr>
-        <td>\(2^{\bigstar}\)</td><td>0.5</td><td>\(\sqrt{\tfrac{1}{4}}\)</td><td>\(\sqrt{\tfrac{3}{4}}\)</td><td>1</td><td>\(\sqrt{\tfrac{1}{4}}\cdot\sqrt{5}\)</td><td>60°</td><td>\((\tfrac{2\pi}{6})^{\bigstar}\)</td>
-      </tr>
-      <tr>
-        <td>3</td><td>0.35355…</td><td>\(\sqrt{\tfrac{1}{8}}\)</td><td>\(\sqrt{\tfrac{3}{8}}\)</td><td>\(\sqrt{\tfrac{1}{2}}\)</td><td>\(\sqrt{\tfrac{1}{8}}\cdot\sqrt{5}\)</td><td>37.7612°</td><td>\(\tfrac{2\pi}{12\sqrt{2}}\)</td>
-      </tr>
-      <tr>
-        <td>4</td><td>0.25</td><td>\(\sqrt{\tfrac{1}{16}}\)</td><td>\(\sqrt{\tfrac{3}{16}}\)</td><td>\(\sqrt{\tfrac{1}{4}}\)</td><td>\(\sqrt{\tfrac{1}{16}}\cdot\sqrt{5}\)</td><td>30°</td><td>\(\tfrac{2\pi}{12}\)</td>
-      </tr>
-      <tr>
-        <td>5</td><td>0.17678…</td><td>\(\sqrt{\tfrac{1}{32}}\)</td><td>\(\sqrt{\tfrac{3}{32}}\)</td><td>\(\sqrt{\tfrac{1}{8}}\)</td><td>\(\sqrt{\tfrac{1}{32}}\cdot\sqrt{5}\)</td><td>21.2132°</td><td>\(\tfrac{2\pi}{12\sqrt{2}}\)</td>
-      </tr>
-      <tr>
-        <td>6</td><td>0.125</td><td>\(\sqrt{\tfrac{1}{64}}\)</td><td>\(\sqrt{\tfrac{3}{64}}\)</td><td>\(\sqrt{\tfrac{1}{16}}\)</td><td>\(\sqrt{\tfrac{1}{64}}\cdot\sqrt{5}\)</td><td>15°</td><td>\(\tfrac{2\pi}{24}\)</td>
-      </tr>
-      <tr>
-        <td>7</td><td>0.08839…</td><td>\(\sqrt{\tfrac{1}{128}}\)</td><td>\(\sqrt{\tfrac{3}{128}}\)</td><td>\(\sqrt{\tfrac{1}{32}}\)</td><td>\(\sqrt{\tfrac{1}{128}}\cdot\sqrt{5}\)</td><td>10.6066°</td><td>\(\tfrac{2\pi}{24\sqrt{2}}\)</td>
-      </tr>
-      <tr>
-        <td>8</td><td>0.0625</td><td>\(\sqrt{\tfrac{1}{256}}\)</td><td>\(\sqrt{\tfrac{3}{256}}\)</td><td>\(\sqrt{\tfrac{1}{64}}\)</td><td>\(\sqrt{\tfrac{1}{256}}\cdot\sqrt{5}\)</td><td>7.5°</td><td>\(\tfrac{2\pi}{48}\)</td>
-      </tr>
-      <tr>
-        <td>9</td><td>0.04419…</td><td>\(\sqrt{\tfrac{1}{512}}\)</td><td>\(\sqrt{\tfrac{3}{512}}\)</td><td>\(\sqrt{\tfrac{1}{128}}\)</td><td>\(\sqrt{\tfrac{1}{512}}\cdot\sqrt{5}\)</td><td>5.3033°</td><td>\(\tfrac{2\pi}{48\sqrt{2}}\)</td>
-      </tr>
-      <tr>
-        <td>10</td><td>0.03125</td><td>\(\sqrt{\tfrac{1}{1024}}\)</td><td>\(\sqrt{\tfrac{3}{1024}}\)</td><td>\(\sqrt{\tfrac{1}{256}}\)</td><td>\(\sqrt{\tfrac{1}{1024}}\cdot\sqrt{5}\)</td><td>3.75°</td><td>\(\tfrac{2\pi}{96}\)</td>
-      </tr>
-      <tr>
-        <td>11</td><td>0.0221…</td><td>\(\sqrt{\tfrac{1}{2048}}\)</td><td>\(\sqrt{\tfrac{3}{2048}}\)</td><td>\(\sqrt{\tfrac{1}{512}}\)</td><td>\(\sqrt{\tfrac{1}{2048}}\cdot\sqrt{5}\)</td><td>2.6517°</td><td>\(\tfrac{2\pi}{96\sqrt{2}}\)</td>
-      </tr>
-      <tr>
-        <td>12</td><td>0.015625</td><td>\(\sqrt{\tfrac{1}{4096}}\)</td><td>\(\sqrt{\tfrac{3}{4096}}\)</td><td>\(\sqrt{\tfrac{1}{1024}}\)</td><td>\(\sqrt{\tfrac{1}{4096}}\cdot\sqrt{5}\)</td><td>1.875°</td><td>\(\tfrac{2\pi}{192}\)</td>
-      </tr>
-      <tr>
-        <td colspan="6">\(\bigstar \to |b| = \sqrt{\tfrac{3}{4}} = \sin\left(\tfrac{\pi}{3}\right) \approx 0.8660254038\)</td>
-        <td colspan="2">\(\bigstar \to (P\triangle)^{-1}\looparrowright\)</td>
-      </tr>
-    </tbody>
-  </table>
-</figure>
+  -->
+      <h2>Root 2 equilibrium</h2>
+
+      <pre
+        class="osf">The ratio $\sqrt{1\frac{1}{4}}=\frac{\sqrt{5}}{2}$ means that for every hexagonal chord the proportionality to Planck’s constant holds. Which makes this occurrence of Planck’s constant kind of a banality.</pre>
+      <pre
+        class="osf">This will be proven a feature, not a bug. In context of a $\sqrt{2}^{\thinspace-1}$ power series we find quite a unique occurrence for the unity chord. In figure 5.6: Root 2 equilibrium the tuple for n=2 in table 5.1: Hexagonal equilibrium, is depicted.</pre>
+      <pre
+        class="osf">From the triangles $\triangle ABC$ and $\triangle DBE$, the triangle $\triangle ABC$ does not occur in table 4.1: Discrete triangular - Continues projection plane, as a triangular projection, but we used it in figure 5.1: Hexagonal chord versus $\hbar$ and figure 5.2: Planck base - Unity chord.</pre>
+      <pre
+        class="osf">Now in figure 5.6: Root 2 equilibrium the “Unity” aspect that integrates triangle $\triangle ABC$ in the set of periodic chords as depicted in figure 5.2 comes to light by the association with triangle $\triangle DBE$.</pre>
+      <pre
+        class="osf">Here the first thing to take note of, is that both triangles in this configuration are indeed hexagonal. The angles $\angle CAB\\,\\,\\,\\,\angle EDB$ are both $90^{\circ}$ and $\angle ABC\\,\\,and\\,\\,\angle EBD$ are both $60^{\circ}$. Further, the point of origin for both triangles is B.</pre>
+      <pre
+        class="osf">It is easy to see that by decreasing segment $\overline{CE}$, labeled $\Delta\zeta\left(2\right)$, will map both triangles in one to one correspondence.</pre>
+      <pre
+        class="osf">We recognize the chord $\overline{BC}$ in a somewhat peculiar place for a hexagonal chord in figure 5.2, namely it is the chord $h_{init}$ between $r_{q}=\sqrt{2}^{\thinspace-1}$ and $a=\sqrt{2}^{\thinspace-1}$ that corresponds with the hypotenuse in figure 4.6: Projection plane extended zeta, at the extend of $\zeta\left(1\right)$. This indicates that triangle $\angle ABC$ is the end phase of a cycle, in this model the hypotenuse at $\zeta\left(1\right)$ indicates a 4-fold decrement in surface area.</pre>
+      <!-- Table 5.1 -->
+      <figure id="tbl-5-1" class="card">
+        <figcaption><strong>Table 5.1 — Hexagonal equilibrium</strong></figcaption>
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="4">\(n\)</th>
+              <th rowspan="4">\((\sqrt{2})^{-n}\)</th>
+              <th>a</th>
+              <th>\(|b|\)</th>
+              <th>c</th>
+              <th>\(c_{\hbar}\)</th>
+              <th>360°</th>
+              <th>\(\pi \, rad\)</th>
+            </tr>
+            <tr>
+              <td>\((\sqrt{2})^{-n}\)</td>
+              <td rowspan="3">\(\sqrt{\tfrac{3}{2^{n}}}\)</td>
+              <td>\(\sqrt{a^{2}+b^{2}}\)</td>
+              <td>\(\sqrt{a^{2}+c^{2}}\)</td>
+              <td rowspan="3">\(\bigl(\tfrac{b_{n}}{b_{2}}\bigr)\cdot 60°\)</td>
+              <td rowspan="3">\(\bigl(\tfrac{b_{n}}{b_{2}}\bigr)\cdot \bigl|\sqrt{\tfrac{3}{4}}\bigr|\)</td>
+            </tr>
+            <tr>
+              <td>\(\to \sqrt{\tfrac{1}{2^{n}}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{2^{n}}+\tfrac{3}{2^{n}}}\)</td>
+              <td>\(a\times \sqrt{5}\)</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>\(\to a_{n-2}\)</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0</td>
+              <td>1</td>
+              <td>1</td>
+              <td>\(\sqrt{\tfrac{3}{1}}\)</td>
+              <td>\(\sqrt{\tfrac{4}{1}}\)</td>
+              <td>\(1\cdot\sqrt{5}\)</td>
+              <td>120°</td>
+              <td>\(\tfrac{2\pi}{3}\)</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>0.70710…</td>
+              <td>\(\sqrt{\tfrac{1}{2}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{2}}\)</td>
+              <td>\(\sqrt{\tfrac{4}{2}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{2}}\cdot\sqrt{5}\)</td>
+              <td>84.8528°</td>
+              <td>\(\tfrac{2\pi}{6\sqrt{1/2}}\)</td>
+            </tr>
+            <tr>
+              <td>\(2^{\bigstar}\)</td>
+              <td>0.5</td>
+              <td>\(\sqrt{\tfrac{1}{4}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{4}}\)</td>
+              <td>1</td>
+              <td>\(\sqrt{\tfrac{1}{4}}\cdot\sqrt{5}\)</td>
+              <td>60°</td>
+              <td>\((\tfrac{2\pi}{6})^{\bigstar}\)</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>0.35355…</td>
+              <td>\(\sqrt{\tfrac{1}{8}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{8}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{2}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{8}}\cdot\sqrt{5}\)</td>
+              <td>37.7612°</td>
+              <td>\(\tfrac{2\pi}{12\sqrt{2}}\)</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>0.25</td>
+              <td>\(\sqrt{\tfrac{1}{16}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{16}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{4}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{16}}\cdot\sqrt{5}\)</td>
+              <td>30°</td>
+              <td>\(\tfrac{2\pi}{12}\)</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>0.17678…</td>
+              <td>\(\sqrt{\tfrac{1}{32}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{32}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{8}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{32}}\cdot\sqrt{5}\)</td>
+              <td>21.2132°</td>
+              <td>\(\tfrac{2\pi}{12\sqrt{2}}\)</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>0.125</td>
+              <td>\(\sqrt{\tfrac{1}{64}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{64}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{16}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{64}}\cdot\sqrt{5}\)</td>
+              <td>15°</td>
+              <td>\(\tfrac{2\pi}{24}\)</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>0.08839…</td>
+              <td>\(\sqrt{\tfrac{1}{128}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{128}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{32}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{128}}\cdot\sqrt{5}\)</td>
+              <td>10.6066°</td>
+              <td>\(\tfrac{2\pi}{24\sqrt{2}}\)</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>0.0625</td>
+              <td>\(\sqrt{\tfrac{1}{256}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{256}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{64}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{256}}\cdot\sqrt{5}\)</td>
+              <td>7.5°</td>
+              <td>\(\tfrac{2\pi}{48}\)</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>0.04419…</td>
+              <td>\(\sqrt{\tfrac{1}{512}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{512}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{128}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{512}}\cdot\sqrt{5}\)</td>
+              <td>5.3033°</td>
+              <td>\(\tfrac{2\pi}{48\sqrt{2}}\)</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>0.03125</td>
+              <td>\(\sqrt{\tfrac{1}{1024}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{1024}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{256}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{1024}}\cdot\sqrt{5}\)</td>
+              <td>3.75°</td>
+              <td>\(\tfrac{2\pi}{96}\)</td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td>0.0221…</td>
+              <td>\(\sqrt{\tfrac{1}{2048}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{2048}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{512}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{2048}}\cdot\sqrt{5}\)</td>
+              <td>2.6517°</td>
+              <td>\(\tfrac{2\pi}{96\sqrt{2}}\)</td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td>0.015625</td>
+              <td>\(\sqrt{\tfrac{1}{4096}}\)</td>
+              <td>\(\sqrt{\tfrac{3}{4096}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{1024}}\)</td>
+              <td>\(\sqrt{\tfrac{1}{4096}}\cdot\sqrt{5}\)</td>
+              <td>1.875°</td>
+              <td>\(\tfrac{2\pi}{192}\)</td>
+            </tr>
+            <tr>
+              <td colspan="6">\(\bigstar \to |b| = \sqrt{\tfrac{3}{4}} = \sin\left(\tfrac{\pi}{3}\right) \approx
+                0.8660254038\)</td>
+              <td colspan="2">\(\bigstar \to (P\triangle)^{-1}\looparrowright\)</td>
+            </tr>
+          </tbody>
+        </table>
+      </figure>
 
 
-<pre class="osf">${\small \bigstar\rightarrow\left|b\right|=\sqrt{\frac{3}{4}}=\sin\left(\frac{\pi}{3}\right)\approx0.8660254038}\thinspace\|\thinspace{\small \bigstar\rightarrow\left(P\triangle\right)^{-1}\looparrowright}$</pre>
+      <pre
+        class="osf">${\small \bigstar\rightarrow\left|b\right|=\sqrt{\frac{3}{4}}=\sin\left(\frac{\pi}{3}\right)\approx0.8660254038}\thinspace\|\thinspace{\small \bigstar\rightarrow\left(P\triangle\right)^{-1}\looparrowright}$</pre>
 
-<pre class="osf">The chord $\overline{BE}$ on the other hand does also associate with the end of a cycle, it is the limit of the triangular cycle. See $n=\infty$ in table 4.1: Discrete triangular - Continues projection plane. The conclusion must be that both $\overline{BC}$ and $\overline{BE}$ are in fact one and the same, they stand back to back, occupy the same space, are merely separated by choice of perspective.</pre>
-<pre class="osf">One way of looking at it is to assume that both triangles $\triangle ABC$ and $\triangle DBC$ are conjoined along their chords and model a spherical triangle as depicted in figure figure 5.7: Spherical triangle.</pre>
-<pre class="osf">Together they can be envisioned to form $\triangle A^{\prime}B^{\prime}C^{\prime}$, but will encompass in fact the entire surface area because of the scale invariant property of volume.</pre>
-<pre class="osf">This in turn will clarify again the surface area vs volume equilibrium as shown in figure 4.9: Projection plane regression. The associated surface area ratio is $SA_{\propto\hbar}=$$\left(\sqrt{2}^{\thinspace-1}\times\frac{\sqrt{5}}{2}\right)^{2}=$$\left(1.6\right)^{-1}\rightarrow$$\Delta\frac{1+\sqrt{5}}{2}\sim\looparrowright^{2}$</pre>
+      <pre
+        class="osf">The chord $\overline{BE}$ on the other hand does also associate with the end of a cycle, it is the limit of the triangular cycle. See $n=\infty$ in table 4.1: Discrete triangular - Continues projection plane. The conclusion must be that both $\overline{BC}$ and $\overline{BE}$ are in fact one and the same, they stand back to back, occupy the same space, are merely separated by choice of perspective.</pre>
+      <pre
+        class="osf">One way of looking at it is to assume that both triangles $\triangle ABC$ and $\triangle DBC$ are conjoined along their chords and model a spherical triangle as depicted in figure figure 5.7: Spherical triangle.</pre>
+      <pre
+        class="osf">Together they can be envisioned to form $\triangle A^{\prime}B^{\prime}C^{\prime}$, but will encompass in fact the entire surface area because of the scale invariant property of volume.</pre>
+      <pre
+        class="osf">This in turn will clarify again the surface area vs volume equilibrium as shown in figure 4.9: Projection plane regression. The associated surface area ratio is $SA_{\propto\hbar}=$$\left(\sqrt{2}^{\thinspace-1}\times\frac{\sqrt{5}}{2}\right)^{2}=$$\left(1.6\right)^{-1}\rightarrow$$\Delta\frac{1+\sqrt{5}}{2}\sim\looparrowright^{2}$</pre>
 
-<pre class="osf">And the surface area of the final state confronts us with a beautiful factor 10,</pre>
+      <pre class="osf">And the surface area of the final state confronts us with a beautiful factor 10,</pre>
 
-<pre class="osf">\begin{equation}\begin{split}SA_{c=1}&amp;=\left(\sqrt{2}^{\thinspace-1}\times1\right)^{2}\times4\pi=2\pi\\\\&amp;\rightarrow\left(SA_{\propto\hbar}\right)^{-1}\times SA_{c=1}=10\looparrowright\end{split}\label{eq:05:03}\tag{05:03}\end{equation}</pre>
+      <pre
+        class="osf">\begin{equation}\begin{split}SA_{c=1}&amp;=\left(\sqrt{2}^{\thinspace-1}\times1\right)^{2}\times4\pi=2\pi\\\\&amp;\rightarrow\left(SA_{\propto\hbar}\right)^{-1}\times SA_{c=1}=10\looparrowright\end{split}\label{eq:05:03}\tag{05:03}\end{equation}</pre>
 
-<pre class="osf">![F5.06 Root 2 equilibrium](https://osf.io/8nzgt/download =350x350)</pre>
-
+      <!--
+        <pre class="osf">![F5.06 Root 2 equilibrium](https://osf.io/8nzgt/download =350x350)</pre>
+    -->
+      <figure>
+        <img loading="lazy" src="figures/Figure_5.6_Root_2_equilibrium.PNG" alt="F5.06 Root 2 equilibrium" />
+        <figcaption class="small">
+          F5.06 Root 2 equilibrium
+        </figcaption>
+      </figure>
+      <!--
 <pre class="osf">Curvature and the plane</pre>
 <pre class="osf">=======================</pre>
-<pre class="osf">The ordening of triangular numbers in the triangular plane raises the question what a number precisely entails.</pre>
-<pre class="osf">In the limit $\underset{n\rightarrow\infty}{lim}T_{n}\rightarrow a=\sqrt{2A}$ consists of all natural numbers counting of all triangular numbers. This is also the case for the hypotenuse c which has exactly as many members as the sides a and b by nature of their arrangement. This makes all sides of the triangle in count of represented numbers equally sized.</pre>
-<pre class="osf">We identified chords $\overline{BC}$ and $\overline{BE}$ as two expressions of one and the same chord (Figure 5.6: Root 2 equilibrium) and the process in which segment $\overline{CE}$ decreases until in the limit both triangles are in a one to one correspondence.</pre>
-<pre class="osf">The moment that the chords $\overline{BC}$ and $\overline{BE}$ merge into 1, numerically a equilateral triangle $\triangle ADE$ is realized where $\overline{AE}=$$\overline{DE}=$$\overline{AD}\rightarrow$$\overline{AD}=$$\left(\overline{AB}+\overline{BD}=1\right)$.</pre>
+-->
+      <h2>Curvature and the plane</h2>
+      <pre
+        class="osf">The ordening of triangular numbers in the triangular plane raises the question what a number precisely entails.</pre>
+      <pre
+        class="osf">In the limit $\underset{n\rightarrow\infty}{lim}T_{n}\rightarrow a=\sqrt{2A}$ consists of all natural numbers counting of all triangular numbers. This is also the case for the hypotenuse c which has exactly as many members as the sides a and b by nature of their arrangement. This makes all sides of the triangle in count of represented numbers equally sized.</pre>
+      <pre
+        class="osf">We identified chords $\overline{BC}$ and $\overline{BE}$ as two expressions of one and the same chord (Figure 5.6: Root 2 equilibrium) and the process in which segment $\overline{CE}$ decreases until in the limit both triangles are in a one to one correspondence.</pre>
+      <pre
+        class="osf">The moment that the chords $\overline{BC}$ and $\overline{BE}$ merge into 1, numerically a equilateral triangle $\triangle ADE$ is realized where $\overline{AE}=$$\overline{DE}=$$\overline{AD}\rightarrow$$\overline{AD}=$$\left(\overline{AB}+\overline{BD}=1\right)$.</pre>
 
-<pre class="osf">In numerical sense this configuration resembles a $90^{\circ}$ right angled polar triangle on a spherical surface (fig. 5.7), three angles that is, total $3\times90^{\circ}=270^{\circ}$ where the area itself represents the complete count of Natural numbers.</pre>
+      <pre
+        class="osf">In numerical sense this configuration resembles a $90^{\circ}$ right angled polar triangle on a spherical surface (fig. 5.7), three angles that is, total $3\times90^{\circ}=270^{\circ}$ where the area itself represents the complete count of Natural numbers.</pre>
 
-<pre class="osf">![F5.07 Spherical triangle](https://osf.io/vyfus/download =150x150)</pre>
+      <!--
+        <pre class="osf">![F5.07 Spherical triangle](https://osf.io/vyfus/download =150x150)</pre>
+    -->
 
-<pre class="osf">Such a triangle fits 8 times on the surface of a sphere and this must mean that the Surface area is a scale invariant model of volume. This clearly is the point of equilibrium, the surface area is at the point of $V_{0}\rightarrow\frac{1}{8}V_{1}$ and in the configuration as depicted in figure 4.9: Projection plane regression.</pre>
-<pre class="osf">This configuration can only be depicted as a square surface area $A=\pi^{2}$ because the moment this configuration is reached, the only measure in this new state of our mathematical universe is the size of the chords spanning the surface as great circles. And already established was that “The hypotenuse from $x=\sqrt{2}^{\thinspace-1}$ to $y=\sqrt{2}^{\thinspace-1}$ is off course $c=a\sqrt{2}=1$ and longer lines, that represent the root of a square area, do not exist in our universe.” (see subsection root-of-a-square-area).</pre>
+      <figure>
+        <img loading="lazy" src="figures/Figure_5.7_Spherical_triangle.PNG" alt="F5.07 Spherical triangle" />
+        <figcaption class="small">
+          F5.07 Spherical triangle
+        </figcaption>
+      </figure>
+      <pre
+        class="osf">Such a triangle fits 8 times on the surface of a sphere and this must mean that the Surface area is a scale invariant model of volume. This clearly is the point of equilibrium, the surface area is at the point of $V_{0}\rightarrow\frac{1}{8}V_{1}$ and in the configuration as depicted in figure 4.9: Projection plane regression.</pre>
+      <pre
+        class="osf">This configuration can only be depicted as a square surface area $A=\pi^{2}$ because the moment this configuration is reached, the only measure in this new state of our mathematical universe is the size of the chords spanning the surface as great circles. And already established was that “The hypotenuse from $x=\sqrt{2}^{\thinspace-1}$ to $y=\sqrt{2}^{\thinspace-1}$ is off course $c=a\sqrt{2}=1$ and longer lines, that represent the root of a square area, do not exist in our universe.” (see subsection root-of-a-square-area).</pre>
 
+      <!--
 <pre class="osf">The root of curvature</pre>
 <pre class="osf">=====================</pre>
-<pre class="osf">The root of curvature, or at least the sense there is such a thing as curvature, is illustrated in figure 5.6: Root 2 equilibrium. At any given moment the universe is in a state where the chords $c_{1}$ and $c_{\hbar}$ are simultaneously observable, measurable, but can only be recognized in there distinct identity as either Cartesian or part of spherical geometry. In this figure the spherical identity must be from chord $c_{\hbar}=\frac{\sqrt{5}}{2}$ because the length exceeds the maximum length feasible in our mathematical universe.</pre>
-<pre class="osf">Conjoining both chords leaves us with two possible configurations to represent those chords, 1) as hypotenuse $c=\pi\sqrt{2}$ dividing the cartesian area in two, or 2) as great circle c=2pi dividing the surface area of two hemispheres. </pre>
+-->
+      <h2>The root of curvature</h2>
 
-<pre class="osf">The scale invariant ratios “square root of two” and the “circumference of a circle” are one and the same entity.</pre>
+      <pre
+        class="osf">The root of curvature, or at least the sense there is such a thing as curvature, is illustrated in figure 5.6: Root 2 equilibrium. At any given moment the universe is in a state where the chords $c_{1}$ and $c_{\hbar}$ are simultaneously observable, measurable, but can only be recognized in there distinct identity as either Cartesian or part of spherical geometry. In this figure the spherical identity must be from chord $c_{\hbar}=\frac{\sqrt{5}}{2}$ because the length exceeds the maximum length feasible in our mathematical universe.</pre>
+      <pre
+        class="osf">Conjoining both chords leaves us with two possible configurations to represent those chords, 1) as hypotenuse $c=\pi\sqrt{2}$ dividing the cartesian area in two, or 2) as great circle c=2pi dividing the surface area of two hemispheres. </pre>
 
-<pre class="osf">The projection plane measures $A_{\square}=\pi^{2}$ with a hypotenuse $c_{h}=\pi\sqrt{2}$. </pre>
+      <pre
+        class="osf">The scale invariant ratios “square root of two” and the “circumference of a circle” are one and the same entity.</pre>
 
-<pre class="osf">The unit surface area is $SA=\pi^{2}$ with an associated circumference of $c_{sa}=2\pi\sqrt{\frac{\pi^{2}}{4\pi}}=\sqrt{\pi^{3}}$, and yields a ratio $\Delta_{\propto}\overset{def}{=}c_{ratio}=$$\frac{c_{sa}}{c_{h}}=$$\frac{\sqrt{2\pi}}{2}=$$1\frac{1}{4}\times\sqrt{\looparrowright}$$\Delta_{\propto}\rightarrow$$\frac{2.5}{0.8}=\frac{\pi}{\looparrowright}\rightarrow\pi=\frac{2.5}{0.8}\looparrowright$</pre>
+      <pre class="osf">The projection plane measures $A_{\square}=\pi^{2}$ with a hypotenuse $c_{h}=\pi\sqrt{2}$. </pre>
 
-<pre class="osf">Because a surface area is defined by $SA=4\pi r^{2}$ and this area is subdivided in 8 polar triangles the relative radius for a surface area $SA=8\pi^{2}$ is $r_{T\infty}=\sqrt{\frac{8\pi^{2}}{4\pi}}=\sqrt{2\pi}=2.5\times\sqrt{\looparrowright}$ , or with $\pi=1\rightarrow r_{T\infty}\sqrt{\frac{8}{4}}=\sqrt{2}^{\thinspace-1}$</pre>
-<pre class="osf">In table 5.1: Hexagonal equilibrium the schema is based on a root 2 power series $r_{x}\left\\{\dots\times\sqrt{2}^{\thinspace-1}\times\sqrt{2}^{\thinspace-1}\times\dots\right\\}$ and it is the triangular number cycle irrespective of coordinate system, reference frame, that iterates in continuous perpetuity through that cycle.</pre>
-<pre class="osf">In table 4.1: Discrete triangular - Continues projection plane the cycle starts with $a=\sqrt{2}^{\thinspace-1}$ and ends with $a=\frac{1}{2}$, in what seems a infinity of iterative steps reducing the radius.</pre>
+      <pre
+        class="osf">The unit surface area is $SA=\pi^{2}$ with an associated circumference of $c_{sa}=2\pi\sqrt{\frac{\pi^{2}}{4\pi}}=\sqrt{\pi^{3}}$, and yields a ratio $\Delta_{\propto}\overset{def}{=}c_{ratio}=$$\frac{c_{sa}}{c_{h}}=$$\frac{\sqrt{2\pi}}{2}=$$1\frac{1}{4}\times\sqrt{\looparrowright}$$\Delta_{\propto}\rightarrow$$\frac{2.5}{0.8}=\frac{\pi}{\looparrowright}\rightarrow\pi=\frac{2.5}{0.8}\looparrowright$</pre>
 
-<pre class="osf">A perpetual reducing radius produces a surface area that has a unique radial length for each separate surface coordinate it intersects. For regular spherical surfaces this will mean a stack of identical x and y coordinates at each unique radial distance.</pre>
-<pre class="osf">It is in the continuous regression of surface area that lays a clue hinting at a 2 dimensional surface structure that wraps around a singularity, the surface asymptote found earlier.</pre>
-<pre class="osf">Figure 5.8 is a model of one hemisphere of such a surface. A Cartesian flat version will be presented. The 2D surface itself stands model for a 3D space spiraling in on itself, any radius intersecting this spiral stands orthogonal on 3D space.</pre>
+      <pre
+        class="osf">Because a surface area is defined by $SA=4\pi r^{2}$ and this area is subdivided in 8 polar triangles the relative radius for a surface area $SA=8\pi^{2}$ is $r_{T\infty}=\sqrt{\frac{8\pi^{2}}{4\pi}}=\sqrt{2\pi}=2.5\times\sqrt{\looparrowright}$ , or with $\pi=1\rightarrow r_{T\infty}\sqrt{\frac{8}{4}}=\sqrt{2}^{\thinspace-1}$</pre>
+      <pre
+        class="osf">In table 5.1: Hexagonal equilibrium the schema is based on a root 2 power series $r_{x}\left\{\dots\times\sqrt{2}^{\thinspace-1}\times\sqrt{2}^{\thinspace-1}\times\dots\right\}$ and it is the triangular number cycle irrespective of coordinate system, reference frame, that iterates in continuous perpetuity through that cycle.</pre>
+      <pre
+        class="osf">In table 4.1: Discrete triangular - Continues projection plane the cycle starts with $a=\sqrt{2}^{\thinspace-1}$ and ends with $a=\frac{1}{2}$, in what seems a infinity of iterative steps reducing the radius.</pre>
 
-<pre class="osf">![F5.08 M-brane hemisphere mono surface](https://osf.io/ka9wx/download =200x200)</pre>
+      <pre
+        class="osf">A perpetual reducing radius produces a surface area that has a unique radial length for each separate surface coordinate it intersects. For regular spherical surfaces this will mean a stack of identical x and y coordinates at each unique radial distance.</pre>
+      <pre
+        class="osf">It is in the continuous regression of surface area that lays a clue hinting at a 2 dimensional surface structure that wraps around a singularity, the surface asymptote found earlier.</pre>
+      <pre
+        class="osf">Figure 5.8 is a model of one hemisphere of such a surface. A Cartesian flat version will be presented. The 2D surface itself stands model for a 3D space spiraling in on itself, any radius intersecting this spiral stands orthogonal on 3D space.</pre>
 
-<pre class="osf">This is a M-brane mono surface with a bulk (void) separating the surface layers wrapping over and over. The shape of the surface area of this (two hemisphere) structure, given the bulk infinitely thin and ignoring the subsurface spiral, is approaching that of a sphere.</pre>
-<pre class="osf">With the singularity as center of this structure, any perfect sphere with fixed radius will cut as a ghost through this surface and only have two (2) coordinates in common with that surface, those are the conjoined surface coordinate(s) $\left\\{ C,E\right\\}$ and the coordinate at the absolute center B, see figure 5.6: Root 2 equilibrium.</pre>
+      <!--
+        <pre class="osf">![F5.08 M-brane hemisphere mono surface](https://osf.io/ka9wx/download =200x200)</pre>
+    -->
+      <figure>
+        <img loading="lazy" src="figures/Figure_5.8_M-brane_hemisphere_mono_surface.PNG"
+          alt="F5.08 M-brane hemisphere mono surface" />
+        <figcaption class="small">
+          F5.08 M-brane hemisphere mono surface
+        </figcaption>
+      </figure>
+      <pre
+        class="osf">This is a M-brane mono surface with a bulk (void) separating the surface layers wrapping over and over. The shape of the surface area of this (two hemisphere) structure, given the bulk infinitely thin and ignoring the subsurface spiral, is approaching that of a sphere.</pre>
+      <pre
+        class="osf">With the singularity as center of this structure, any perfect sphere with fixed radius will cut as a ghost through this surface and only have two (2) coordinates in common with that surface, those are the conjoined surface coordinate(s) $\left\{ C,E\right\}$ and the coordinate at the absolute center B, see figure 5.6: Root 2 equilibrium.</pre>
 
+      <!--
 <pre class="osf">Unity orthogonal to the sphere</pre>
 <pre class="osf">------------------------------</pre>
-<pre class="osf">Taking another look at figure 5.6: Root 2 equilibrium it becomes clear what is represented. As $\overline{CE}$ shortens $\overline{BE}$ approaches the point at which $\overline{BC}$ stands orthogonal to the surface of the sphere. As that point is reached then $\overline{BC}$ and $\overline{BE}$ share the same radius.</pre>
-<pre class="osf">There is one aspect to take note of and that is the angle. $\overline{BC}$ and $\overline{BE}$ are at that point orthogonal to the surface of the sphere, however, no radius can be orthogonal to the surface of the M-brane.</pre>
-<pre class="osf">A better way to look at it is that because the sphere only intersects the spiral at one point, a continuous decreasing radius will visit each coordinate at the spiral without exception.</pre>
-<pre class="osf">At certain radial distances it must be the case that the shared coordinate is at the point of equilibrium, see figure 4.9: Projection plane regression and table 4.4: Zeta, the SA/Volume equilibrium. In principle the decreasing radius paints the surface of the spiral as a space filling curve, linear and missing no spot.</pre>
-<pre class="osf">This is what we see expressed in figure 5.6: Root 2 equilibrium, only from that perspective it is the spheres surface being painted, after all, we are dealing with an infinite set of orthogonal unity chords, see figure 5.2: Planck base - Unity chord for $h_{init}=h_{lim}=\frac{\sqrt{5}}{2}$. The question to ask is however, “did you not notice your radius decreasing?”</pre>
-  </div>
-  <nav class="pager"><a href="Chapter 4 The triangular numbers.html">← Prev</a><a href="Chapter 6 A cartesian M-brane monos.html">Next →</a></nav>
-</main>
-<footer class="wrap">© <span id="y"></span> Virgorises</footer>
-<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
-<script>
-  document.querySelectorAll('pre.osf').forEach(el => {
-    if (!el.textContent.trim()) el.remove();
-  });
-</script>
-</body></html>
+-->
+      <h3>Unity orthogonal to the sphere</h3>
+      <pre
+        class="osf">Taking another look at figure 5.6: Root 2 equilibrium it becomes clear what is represented. As $\overline{CE}$ shortens $\overline{BE}$ approaches the point at which $\overline{BC}$ stands orthogonal to the surface of the sphere. As that point is reached then $\overline{BC}$ and $\overline{BE}$ share the same radius.</pre>
+      <pre
+        class="osf">There is one aspect to take note of and that is the angle. $\overline{BC}$ and $\overline{BE}$ are at that point orthogonal to the surface of the sphere, however, no radius can be orthogonal to the surface of the M-brane.</pre>
+      <pre
+        class="osf">A better way to look at it is that because the sphere only intersects the spiral at one point, a continuous decreasing radius will visit each coordinate at the spiral without exception.</pre>
+      <pre
+        class="osf">At certain radial distances it must be the case that the shared coordinate is at the point of equilibrium, see figure 4.9: Projection plane regression and table 4.4: Zeta, the SA/Volume equilibrium. In principle the decreasing radius paints the surface of the spiral as a space filling curve, linear and missing no spot.</pre>
+      <pre
+        class="osf">This is what we see expressed in figure 5.6: Root 2 equilibrium, only from that perspective it is the spheres surface being painted, after all, we are dealing with an infinite set of orthogonal unity chords, see figure 5.2: Planck base - Unity chord for $h_{init}=h_{lim}=\frac{\sqrt{5}}{2}$. The question to ask is however, “did you not notice your radius decreasing?”</pre>
+    </div>
+    <nav class="pager"><a href="Chapter 4 The triangular numbers.html">← Prev</a><a
+        href="Chapter 6 A cartesian M-brane monos.html">Next →</a></nav>
+  </main>
+  <footer class="wrap">© <span id="y"></span> Virgorises</footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script>
+    document.querySelectorAll('pre.osf').forEach(el => {
+      if (!el.textContent.trim()) el.remove();
+    });
+  </script>
+</body>
+
+</html>
