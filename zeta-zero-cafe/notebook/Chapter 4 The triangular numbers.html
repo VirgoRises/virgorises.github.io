@@ -169,15 +169,187 @@
         class="osf">This needs to be justified for $\zeta\left(1\right)$. Considering that the mathematical universe is $A_{\square}$, where do the function values $\zeta\left(s\right)\forall s\neq 2$ project on the projection/triangular plane? The answer is intriguing, first the context for $\zeta\left(2\right)$ should be clear.</pre>
       <pre
         class="osf">Table 4.1 discrete triangular continues projection plane, shows three sections, connecting Cartesian triangular projection and associated spherical geometry.</pre>
-        <figure>
-          <img loading="lazy"
-              src="tables/Table_4.1_discrtriangprojplane.PNG"
-              alt="Table 4.1 discrete triangular continues projection plane" />
-          <figcaption class="small">
-            Table 4.1 discrete triangular continues projection plane
-          </figcaption>
-        </figure>
+<!-- Table 4.1 -->
+<figure id="tbl-4-1" class="card">
+  <figcaption><strong>Table 4.1 — Discrete triangular — Continues projection plane</strong></figcaption>
 
+  <table>
+    <colgroup>
+      <col span="6"><col><!-- spacer -->
+      <col span="2"><col><!-- spacer -->
+      <col>
+    </colgroup>
+
+    <thead>
+      <!-- Top group headers -->
+      <tr>
+        <th colspan="6">\( A_{\triangle} \) Triangular plane</th>
+        <th></th>
+        <th colspan="2">\( A_{\Box} \) Projection plane</th>
+        <th></th>
+        <th>Proportional SA</th>
+      </tr>
+      <!-- Second header row -->
+      <tr>
+        <th colspan="5">Discrete</th>
+        <th>Continue</th>
+        <th></th>
+        <th colspan="2">\(\displaystyle \lim_{n\to\infty} a=\tfrac12 \;\rightarrow\; r_q=\tfrac{0.5}{a}\)</th>
+        <th></th>
+        <th>\( r_q \rightarrow r_x \)</th>
+      </tr>
+      <!-- Third header row -->
+      <tr>
+        <th colspan="3">\( \propto A_{\triangle} \)</th>
+        <th colspan="2">\( \propto A_{\Box} \)</th>
+        <th>Sides \(ab\)</th>
+        <th></th>
+        <th>Closed</th>
+        <th>Calculated</th>
+        <th></th>
+        <th>radius \( r_x \propto SA\)</th>
+      </tr>
+      <!-- Column labels -->
+      <tr>
+        <th>\(n\)</th>
+        <th>\(T_n\)</th>
+        <th>\( \tfrac{T_n}{n^2} \)</th>
+        <th>\( \tfrac{T_n}{4n^2} \)</th>
+        <th>\(A\)</th>
+        <th>\( a=\sqrt{2\times A} \)</th>
+
+        <th></th>
+
+        <th>\( r_q=\sqrt{\tfrac{n}{n+1}} \)</th>
+        <th>\( r_q=\tfrac{0.5}{a} \)</th>
+
+        <th></th>
+
+        <th>\( r_x=\dfrac{r_q}{\sqrt{P\Delta\!\left(\looparrowright^{-1}\right)}} \)</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>1</td>
+        <td>\(1\)</td>
+        <td>\(\tfrac14\)</td>
+        <td>\(\tfrac14\)</td>
+        <td>\(\sqrt{2}^{\,-1}\)</td>
+        <td></td>
+        <td>\(\sqrt{\tfrac12}\)</td>
+        <td>0.7071067812</td>
+        <td></td>
+        <td>\(\propto SA=\tfrac{2}{3}\pi^{2}\)</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>3</td>
+        <td>\(\tfrac{3}{4}\)</td>
+        <td>\(\tfrac{3}{16}\)</td>
+        <td>\(\tfrac{3}{16}\)</td>
+        <td>\(\sqrt{\left(2\tfrac{2}{3}\right)^{-1}}\)</td>
+        <td></td>
+        <td>\(\sqrt{\tfrac23}\)</td>
+        <td>0.8164965809</td>
+        <td></td>
+        <td>\(\propto SA=\tfrac{8}{9}\pi^{2}\)</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>6</td>
+        <td>\(\tfrac{6}{9}\)</td>
+        <td>\(\tfrac{6}{36}\)</td>
+        <td>\(\tfrac{1}{6}\)</td>
+        <td>\(\sqrt{\tfrac{1}{3}}\)</td>
+        <td></td>
+        <td>\(\sqrt{\tfrac34}\)</td>
+        <td>0.8660254038</td>
+        <td></td>
+        <td>\(\propto SA=\pi^{2}\)</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>10</td>
+        <td>\(\tfrac{10}{16}\)</td>
+        <td>\(\tfrac{10}{64}\)</td>
+        <td>\(\tfrac{5}{32}\)</td>
+        <td>\(\sqrt{\tfrac{10}{32}}\)</td>
+        <td></td>
+        <td>\(\sqrt{\tfrac45}\)</td>
+        <td>0.894427191</td>
+        <td></td>
+        <td>\(\propto SA=\tfrac{16}{15}\pi^{2}\)</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>15</td>
+        <td>\(\tfrac{15}{25}\)</td>
+        <td>\(\tfrac{15}{100}\)</td>
+        <td>\(\tfrac{3}{20}\)</td>
+        <td>\(\sqrt{\tfrac{3}{10}}\)</td>
+        <td></td>
+        <td>\(\sqrt{\tfrac56}\)</td>
+        <td>0.9128709292</td>
+        <td></td>
+        <td>\(\propto SA=\tfrac{10}{9}\pi^{2}\)</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>21</td>
+        <td>\(\tfrac{21}{36}\)</td>
+        <td>\(\tfrac{21}{144}\)</td>
+        <td>\(\tfrac{7}{48}\)</td>
+        <td>0.5400617249</td>
+        <td></td>
+        <td>\(\sqrt{\tfrac67}\)</td>
+        <td>0.9258200998</td>
+        <td></td>
+        <td>\(\propto SA=\tfrac{8}{7}\pi^{2}\)</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>28</td>
+        <td>\(\tfrac{28}{49}\)</td>
+        <td>\(\tfrac{28}{196}\)</td>
+        <td>\(\tfrac{1}{7}\)</td>
+        <td>0.5345224838</td>
+        <td></td>
+        <td>\(\sqrt{\tfrac78}\)</td>
+        <td>0.9354143467</td>
+        <td></td>
+        <td>\(\propto SA=\tfrac{7}{6}\pi^{2}\)</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>36</td>
+        <td>\(\tfrac{36}{64}\)</td>
+        <td>\(\tfrac{36}{256}\)</td>
+        <td>\(\tfrac{9}{64}\)</td>
+        <td>0.5303300859</td>
+        <td></td>
+        <td>\(\sqrt{\tfrac89}\)</td>
+        <td>0.9428090416</td>
+        <td></td>
+        <td>\(\propto SA=\tfrac{32}{27}\pi^{2}\)</td>
+      </tr>
+      <tr>
+        <td>\(\infty\)</td>
+        <td>\(\infty\)</td>
+        <td></td>
+        <td></td>
+        <td>\(\tfrac{1}{8}\)</td>
+        <td>0.5</td>
+        <td></td>
+        <td>1</td>
+        <td>1</td>
+        <td></td>
+        <td>\(\propto SA=\tfrac{4}{3}\pi^{2}\)</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
       <pre
         class="osf">Section $A_{\Delta}Triangular\\,plane$: “Discrete” lists the area affected, “Continue” lists the associated right angle sides $a=b$ for the projection (fig. 4.04 triangular to projection plane), onto the projection plane.</pre>
 
@@ -200,19 +372,118 @@
       <pre
         class="osf">At $n=3$, table 4.1, we find that the affected triangular area amounts to $A=\frac{A_{\square}}{6}$, and that the proportional surface area is $\pi^2$. Assumed spatial aspect of $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ is closely related to $T_{n=3}$ by $P\Delta$ and $\looparrowright$, which follow from the primorial function, and therefor from the prime numbers.</pre>
 
-      <pre class="osf">Is this merely a mathematical coincidence for $\zeta\left(2\right)$?</pre>
+<!-- Table 4.2 -->
+<figure id="tbl-4-2" class="card">
+  <figcaption><strong>Table 4.2 — Projection plane ranges (all s)</strong></figcaption>
+  <table>
+    <thead>
+      <tr>
+        <th>s</th>
+        <th>value</th>
+        <th>\(\dfrac{\pi^2}{(\pi^2)(\zeta(s)^{-1})}\)</th>
+        <th>\(a=\sqrt{2A}\)</th>
+        <th>\(r_q=\tfrac{0.5}{a}\)</th>
+        <th>\(r_x=\dfrac{r_q}{\sqrt{P\Delta(\looparrowright^{-1})}}\)</th>
+        <th>\(SA \propto \pi^2\)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2">1</td>
+        <td rowspan="2">\(\tfrac{\pi^2}{4}\)</td>
+        <td rowspan="2">\(\tfrac{\pi^2}{4}\)</td>
+        <td>\(\sqrt{2\times\tfrac{1}{4}}\)</td>
+        <td rowspan="2">\(\sqrt{2}^{-1}\)</td>
+        <td>\(\sqrt{\tfrac{2\pi \cdot (P\Delta(\looparrowright^{-1}))^{-1}}{4\pi}}\)</td>
+        <td rowspan="2">\(SA \propto \tfrac{6}{9}\pi^2\)</td>
+      </tr>
+      <tr>
+        <td>=0.7071067812</td>
+        <td>=0.7236012546</td>
+      </tr>
 
-      <pre class="osf">Zeta for s other then 2</pre>
-      <pre class="osf">-----------------------</pre>
+      <tr>
+        <td rowspan="2">2</td>
+        <td rowspan="2">\(\tfrac{\pi^2}{6}\)</td>
+        <td rowspan="2">\(\tfrac{\pi^2}{6}\)</td>
+        <td>\(\sqrt{2\times\tfrac{1}{6}}\)</td>
+        <td rowspan="2">\(\sqrt{\tfrac{3}{4}}\)</td>
+        <td>\(\sqrt{\tfrac{\pi^2}{4\pi}}\)</td>
+        <td rowspan="2">\(SA \propto \pi^2\)</td>
+      </tr>
+      <tr>
+        <td>=0.5773502692</td>
+        <td>=0.8660254038</td>
+      </tr>
 
-        <figure>
-          <img loading="lazy"
-              src="tables/Table_4.2_projplanerangealls.PNG"
-              alt="Table 4.02 Projection plane range for all s" />
-          <figcaption class="small">
-            Table 4.02 Projection plane range for all s
-          </figcaption>
-        </figure>
+      <tr>
+        <td rowspan="2">3</td>
+        <td rowspan="2">\(\tfrac{\pi^2}{8.210596}\)</td>
+        <td rowspan="2">\(\tfrac{\pi^2}{8.210596}\)</td>
+        <td>\(\sqrt{2\times\tfrac{1}{8.210596}}\)</td>
+        <td rowspan="2">1.013076749</td>
+        <td rowspan="2"></td>
+        <td rowspan="2"></td>
+      </tr>
+      <tr>
+        <td>=0.4935460224</td>
+      </tr>
+
+      <tr>
+        <td rowspan="2">4</td>
+        <td rowspan="2">\(\tfrac{\pi^4}{90}\)</td>
+        <td rowspan="2">\(\tfrac{\pi^2}{9.118906528}\)</td>
+        <td>\(\sqrt{2\times\tfrac{1}{9.118906528}}\)</td>
+        <td rowspan="2">1.067643851</td>
+        <td rowspan="2"></td>
+        <td rowspan="2"></td>
+      </tr>
+      <tr>
+        <td>=0.4683209821</td>
+      </tr>
+
+      <tr>
+        <td rowspan="2">5</td>
+        <td rowspan="2">\(\tfrac{\pi^2}{9.518121541}\)</td>
+        <td rowspan="2">\(\tfrac{\pi^2}{9.518121541}\)</td>
+        <td>\(\sqrt{2\times\tfrac{1}{9.518121541}}\)</td>
+        <td rowspan="2">1.090763582</td>
+        <td rowspan="2"></td>
+        <td rowspan="2"></td>
+      </tr>
+      <tr>
+        <td>=0.4583944753</td>
+      </tr>
+
+      <tr>
+        <td rowspan="2">6</td>
+        <td rowspan="2">\(\tfrac{\pi^6}{945}\)</td>
+        <td rowspan="2">\(\tfrac{\pi^2}{9.701359231}\)</td>
+        <td>\(\sqrt{2\times\tfrac{1}{9.701359231}}\)</td>
+        <td rowspan="2">1.101212924</td>
+        <td rowspan="2"></td>
+        <td rowspan="2"></td>
+      </tr>
+      <tr>
+        <td>=0.4540447984</td>
+      </tr>
+
+      <tr>
+        <td rowspan="2">\(\infty\)</td>
+        <td rowspan="2">\(\tfrac{\pi^{\infty}}{\infty}\)</td>
+        <td rowspan="2">\(\tfrac{\pi^2}{\pi^2}\)</td>
+        <td>\(\sqrt{2\times\tfrac{1}{\pi^2}} = \tfrac{\sqrt{2}}{\pi}\)</td>
+        <td rowspan="2">1.110720734</td>
+        <td>\(\sqrt{\tfrac{\tfrac{\pi^2}{6}\times\pi^2}{4\pi}}\)</td>
+        <td rowspan="2">\(SA \propto \tfrac{\pi^2}{6}\times\pi^2\)</td>
+      </tr>
+      <tr>
+        <td>=0.4501581581</td>
+        <td>=1.136630193</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 
       <pre
         class="osf">Table 4.2 projection plane range for all s, tabulates the values for $s=\{1,\dots,6,\infty\}$, where for $s=1$ the proposed value $\frac{\pi^2}{4}$ is used.</pre>
@@ -439,14 +710,48 @@
         class="osf">The projection plane exposes a point of equilibrium between volume and surface area, $\zeta\left(2\right)$, at which Surface Area and Volume can be recognized as expressions of one underlying principle. Table 4.3 the base of Planck&#x27;s constant, gives a break down for the formulas of surface area and volume.</pre>
       <pre class="osf">A break down for the formulas of surface area and volume.</pre>
 
-      <figure>
-        <img loading="lazy"
-            src="tables/Table_4.3_baseofplackconst.PNG"
-            alt="Table 4.03 The base of Planck&#x27;s constant" />
-        <figcaption class="small">
-          Table 4.03 The base of Planck&#x27;s constant
-        </figcaption>
-      </figure>
+
+<!-- Table 4.3 -->
+<figure id="tbl-4-3" class="card">
+  <figcaption><strong>Table 4.3 — Base of Planck constant</strong></figcaption>
+  <table>
+    <thead>
+      <tr>
+        <th>\(SA\)</th>
+        <th>\(V\)</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>\(4\pi r^2\)</td>
+        <td>\(\tfrac{4}{3}\pi r^2\)</td>
+        <td>/ \(\pi\)</td>
+      </tr>
+      <tr>
+        <td>\(4r^2\)</td>
+        <td>\(\tfrac{4}{3}r^3\)</td>
+        <td>/ 4</td>
+      </tr>
+      <tr>
+        <td>\(r^2\)</td>
+        <td>\(\tfrac{1}{3}r^3\)</td>
+        <td>/ \(r^2\)</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>\(\tfrac{1}{3}r^1\)</td>
+        <td>\(x^2\)</td>
+      </tr>
+      <tr>
+        <td>\(SA=1\)</td>
+        <td>\(V=\tfrac{1}{9}\)</td>
+        <td>\(SA \propto \bigl(\tfrac{1}{8}+\tfrac{1}{24}\bigr)\propto V\)</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
       <pre
         class="osf">For every unit surface area $SA=1$, there is $V=\frac{1}{9}$ unit of volume. The ratio is defined as $T_{h}\overset{def}{=}1+\frac{1}{9}=0.9^{-1}=1.111111\dots$ from which Planck’s constant $h=6.62607015\times10^{-34}J.s.$,is approached by $h_{*}=\sqrt{T_{h}}\times2\pi\sim h\rightarrow\Delta h\approx\frac{2201}{2200}$. The equilibrium follows from the fractal argument for zeta.</pre>
 
@@ -485,14 +790,77 @@
       <pre
         class="osf">This results in a regression pattern where the values appear to project in a region $\frac{A_\Delta}{9}$ of the universe measuring $\frac{9}{9}=1\frac{1}{8}$. This proportion can be interpreted as a volume wrapped by a (continuously reducing) surface area.</pre>
 
-      <figure>
-        <img loading="lazy"
-            src="tables/Table_4.4_zetasavolequilib.PNG"
-            alt="Table 4.04 Zeta, the SA/Volume equilibrium" />
-        <figcaption class="small">
-          Table 4.04 Zeta, the SA/Volume equilibrium
-        </figcaption>
-      </figure>
+<!-- Table 4.4 -->
+<figure id="tbl-4-4" class="card">
+  <figcaption><strong>Table 4.4 — Zeta SA–Volume equilibrium</strong></figcaption>
+  <table>
+    <thead>
+      <tr>
+        <th rowspan="2">\(s\)</th>
+        <th colspan="2">\(\tfrac{1}{4} \propto A_{\Box}\)</th>
+        <th colspan="2">\(\tfrac{6}{9} \propto A_{\triangle}\)</th>
+        <th rowspan="2">ratio \(\propto \zeta(2)\)</th>
+      </tr>
+      <tr>
+        <th>\(\#\Box\;cells\)</th>
+        <th>\(\#\blacksquare\;cells\)</th>
+        <th>\(\#\triangle\;cells\)</th>
+        <th>\(\#\blacktriangle\;cells\)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>0</td>
+        <td>\(6^{0}=1\)</td>
+        <td>\(\tfrac{3^{0}}{6^{0}}=1\)</td>
+        <td>\(3^{0}=1\)</td>
+        <td>\(\tfrac{6}{9}\times 3^{0}=\tfrac{6}{9}\)</td>
+        <td>\(\tfrac{6^{0}}{\tfrac{6}{9}}=\tfrac{9}{6}\)</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>\(6^{1}=6\)</td>
+        <td>\(\tfrac{3^{1}}{6^{1}}=\tfrac{1}{2}\)</td>
+        <td>\(3^{1}=3\)</td>
+        <td>\(\tfrac{6}{9}\times 3^{1}=2\)</td>
+        <td>\(\tfrac{6^{1}}{2}=3\)</td>
+      </tr>
+      <tr>
+        <td>\(2^{\bigstar}\)</td>
+        <td>\(6^{2}=36\)</td>
+        <td>\(\tfrac{3^{2}}{6^{2}}=\tfrac{1}{4}\)</td>
+        <td>\(3^{2}=9\)</td>
+        <td>\(\tfrac{6}{9}\times 3^{2}=6^{\bigstar}\)</td>
+        <td>\(\tfrac{6^{2}}{6}=6^{\bigstar}\)</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>\(6^{3}=216\)</td>
+        <td>\(\tfrac{3^{3}}{6^{3}}=\tfrac{1}{8}\)</td>
+        <td>\(3^{3}=27\)</td>
+        <td>\(\tfrac{6}{9}\times 3^{3}=18\)</td>
+        <td>\(\tfrac{6^{3}}{18}=12\)</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>\(6^{4}=1296\)</td>
+        <td>\(\tfrac{3^{4}}{6^{4}}=\tfrac{1}{16}\)</td>
+        <td>\(3^{4}=81\)</td>
+        <td>\(\tfrac{6}{9}\times 3^{4}=54\)</td>
+        <td>\(\tfrac{6^{4}}{54}=24\)</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>\(6^{5}=7776\)</td>
+        <td>\(\tfrac{3^{5}}{6^{5}}=\tfrac{1}{32}\)</td>
+        <td>\(3^{5}=243\)</td>
+        <td>\(\tfrac{6}{9}\times 3^{5}=162\)</td>
+        <td>\(\tfrac{6^{5}}{162}=48\)</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
 
       <pre
         class="osf">The function $\zeta\left(2\right)=\frac{\pi^{2}}{6}$ represents the scale invariant ratio of affected surface area and/or volume, where volume is defined by $V=\frac{1}{6}\zeta\left(2\right)$. Realizing that each second iteration results in $SA=\frac{1}{9}$ of the initial $SA=\pi^2$ it is of course not discernible whether there exist such thing as an even or odd cycle, for all intends and purposes $SA=V$. </pre>

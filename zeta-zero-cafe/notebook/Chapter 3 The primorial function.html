@@ -45,22 +45,125 @@
 <pre class="osf"> 5. $\Delta P_{s}$ , the difference $\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}$</pre>
 <pre class="osf"> 6. $\uparrow\downarrow$ , upper and lower bound alternating odd/even n</pre>
 
-<pre class="osf">|Tabel 3.01 Primorial root 2 approach|</pre>
-<pre class="osf">|---|</pre>
+<!-- Table 3.1 -->
+<figure id="tbl-3-1" class="card">
+  <figcaption><strong>Table 3.1 — Primorial root 2 approach</strong></figcaption>
+  <table>
+    <thead>
+      <tr>
+        <th>n</th>
+        <th>\(P_n\)</th>
+        <th>\(P_n\#\)</th>
+        <th>\((P_n\#)^{-1}\)</th>
+        <th>\(P_s = \sum_{n=1}^{\infty} \left(\prod_{k=1}^{n\to\infty} P_k\right)^{-1}\)</th>
+        <th>\(\Delta P_s \to (\sqrt{2})^{-1}\)</th>
+        <th>\(\uparrow\downarrow\)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>2</td>
+        <td>\(\tfrac{1}{2}\)</td>
+        <td>\(\tfrac{1}{2}\)</td>
+        <td>\(\sqrt{2}\)</td>
+        <td>ub</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>3</td>
+        <td>6</td>
+        <td>\(\tfrac{1}{6}\)</td>
+        <td>\(\tfrac{2}{3}\)</td>
+        <td>\(\tfrac{\sqrt{2}^{-1}}{\tfrac{2}{3}}\)</td>
+        <td>lb</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>5</td>
+        <td>30</td>
+        <td>\(\tfrac{1}{30}\)</td>
+        <td>\(\tfrac{7}{10}\)</td>
+        <td>\(\tfrac{\sqrt{2}^{-1}}{\tfrac{7}{10}}\)</td>
+        <td>ub</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>7</td>
+        <td>210</td>
+        <td>\(\tfrac{1}{210}\)</td>
+        <td>0.7047619048</td>
+        <td>1.00332719</td>
+        <td>lb</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>11</td>
+        <td>2310</td>
+        <td>\(\tfrac{1}{2310}\)</td>
+        <td>0.7051948052</td>
+        <td>1.002711274</td>
+        <td>ub</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>13</td>
+        <td>30030</td>
+        <td>\(\tfrac{1}{30030}\)</td>
+        <td>0.7052281052</td>
+        <td>1.002663927</td>
+        <td>lb</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>17</td>
+        <td>510510</td>
+        <td>\(\tfrac{1}{510510}\)</td>
+        <td>0.7052300641</td>
+        <td>1.002661142</td>
+        <td>ub</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>19</td>
+        <td>9699690</td>
+        <td>\(\tfrac{1}{9699690}\)</td>
+        <td>0.7052301671</td>
+        <td>1.002660995</td>
+        <td>lb</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>23</td>
+        <td>223092870</td>
+        <td>\(\tfrac{1}{223092870}\)</td>
+        <td>0.7052301716</td>
+        <td>1.002660989</td>
+        <td>ub</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>29</td>
+        <td>6469693230</td>
+        <td>\(\tfrac{1}{6469693230}\)</td>
+        <td>0.7052301718</td>
+        <td>1.002660989</td>
+        <td>lb</td>
+      </tr>
+      <tr>
+        <td>\(\infty\)</td>
+        <td>\(\infty\)</td>
+        <td></td>
+        <td></td>
+        <td>\(\sim (\sqrt{2})^{-1}\)</td>
+        <td>\(\sqrt{\looparrowright} = \sqrt{\tfrac{2\pi}{2.5^2}}\)</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 
-<pre class="osf">n|$P_n$|$P_{n}\#$|$\left(P_{n}\#\right)^{\text{-1}}$|${\small P_{s}=\sum_{n=1}^{\infty}}$&lt;br&gt;${\small \left(\prod_{k=1}^{n-1}P_{k}\right)^{\text{-1}}}$|${\small \overset{\Delta P_{s}\rightarrow}{\left(\sqrt{2}\right)^{\text{-1}}}}$|$\uparrow\downarrow$</pre>
-<pre class="osf">---|---|---|---|---|---|---</pre>
-<pre class="osf">1|2 | 2 | $\frac{1}{2}$ | $\frac{1}{2}$ | $\sqrt{2}$ | ub</pre>
-<pre class="osf">2|3 | 6 | $\frac{1}{6}$ | $\frac{2}{3}$ | $\frac{\sqrt{2}^{\text{ -1}}}{\frac{2}{3}}$ | lb</pre>
-<pre class="osf">3|5 | 30 | $\frac{1}{30}$|$\frac{7}{10}$|$\frac{\sqrt{2}^{\text{ -1}}}{\frac{7}{10}}$|ub </pre>
-<pre class="osf">4|7 | 210 | $\frac{1}{210}$ | 0.7047619048 | 1.00332719 | lb </pre>
-<pre class="osf">5 |11 | 2310 | $\frac{1}{2310}$ | 0.7051948052 | 1.002711274 | ub</pre>
-<pre class="osf">6 |13 | 30030 | $\frac{1}{30030}$ | 0.7052281052 | 1.002663927 | lb</pre>
-<pre class="osf">7 |17 | 510510 | $\frac{1}{510510}$ | 0.7052300641 | 1.002661142 | ub</pre>
-<pre class="osf">8 |19 | 9699690 | $\frac{1}{9699690}$ | 0.7052301671 | 1.002660995 | lb</pre>
-<pre class="osf">9 |23 | 223092870 | $\frac{1}{223092870}$ | 0.7052301716 | 1.002660989 | ub</pre>
-<pre class="osf">10 |29 | 6469693230 | $\frac{1}{6469693230}$ | 0.7052301718 | 1.002660989 | lb</pre>
-<pre class="osf">$\infty$ | $\infty$ |  | | ${\small \sim\left(\sqrt{2}\right)^{\text{ -1}}}$|${\small \sqrt{\looparrowright}=\sqrt{\frac{2\pi}{2.5^2}}}$ | --- </pre>
 
 <pre class="osf">The partial sum of the inverse primorials $P_{s}$ approaches the inverse square root of 2, $\left(\sqrt{2}\right)^{-1}\simeq0.7071067812$, but falls short by some factor.</pre>
 <pre class="osf">The primorial delta $\Delta P_{s}$ is the discrepancy between $\left(\sqrt{2}\right)^{-1}$ and the limit of $P_{s}$ which has a closed form $\sqrt{\frac{2\pi}{2.5^{2}}}$ :</pre>
@@ -82,23 +185,112 @@
 <pre class="osf"> 4. $\frac{lb}{ub}$, the ratio between the $P_{s}\\:increment$ for grouped rows $\frac{\left(2n\right)}{\left(2n\right)-1}$</pre>
 <pre class="osf"> 5. $\Delta\frac{lb}{ub}$, the ratio between the first row and current row $\frac{\left(2n\right)}{\left(n=1\right)}$</pre>
 
-<pre class="osf">|Table 3.02 Primorial lb/ub oscillation|</pre>
-<pre class="osf">|---|</pre>
-
-<pre class="osf">n|${\small P_n}$|$\uparrow\downarrow$|${\small P_{s}\\, increment}$|$\frac{lb}{ub}$|${\small \Delta\frac{lb_{n\rightarrow\infty}}{lb_{n=1}}=\text{ 3}\frac{lb}{ub}}$</pre>
-<pre class="osf">---|---|---|---|---|---</pre>
-<pre class="osf">1|2 | ub | $\frac{1}{2}$ |  | </pre>
-<pre class="osf">2|3 | lb | $\frac{1}{6}$ | $\frac{1}{3}$ | **1**</pre>
-<pre class="osf">3|5 | ub | $\frac{\frac{16}{3}}{10}=\\,$0.5333$\\,\dots$ |  | </pre>
-<pre class="osf">4|7 | lb | 0.1714285714 | 0.3214285714 | 0.964285714</pre>
-<pre class="osf">5|11 | ub | 0.5337662338 |  | </pre>
-<pre class="osf">6|13 | lb | 0.1714618715 | 0.3212302701 | 0.96369081</pre>
-<pre class="osf">7|17 | ub | 0.5337681926 |  | </pre>
-<pre class="osf">8|19 | lb | 0.1714619746 | 0.3212292844 | 0.963687853</pre>
-<pre class="osf">9|23 | ub | 0.5337681971 |  | </pre>
-<pre class="osf">10|29 | lb | 0.1714619747 | 0.321229282 | 0.963687846</pre>
-<pre class="osf">$\infty$|$\infty$ |  |  ${\small \sim\left(\sqrt{2}\right)^{\text{-1}}}$ | ${\small 0.32=\frac{1}{3.125}}$ | ${\small P\Delta=}$&lt;br&gt;${\small \frac{24}{25}\text{=0.96}}$</pre>
-
+<!-- Table 3.2 -->
+<figure id="tbl-3-2" class="card">
+  <figcaption><strong>Table 3.2 — Primorial lb–ub oscillation</strong></figcaption>
+  <table>
+    <thead>
+      <tr>
+        <th>n</th>
+        <th>\(P_n\)</th>
+        <th>\(\uparrow\downarrow\)</th>
+        <th>\(P_s \; increment\)</th>
+        <th>\(\tfrac{lb}{ub}\)</th>
+        <th>\(P_{\Delta}=\tfrac{lb_{\infty}}{lb_{n=1}}\)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>ub</td>
+        <td>\(\tfrac{1}{2}\)</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>3</td>
+        <td>lb</td>
+        <td>\(\tfrac{1}{6}\)</td>
+        <td>\(\tfrac{1}{3}\)</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>5</td>
+        <td>ub</td>
+        <td>\(\tfrac{16}{3}\,/\,10 = 0.5333\dots\)</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>7</td>
+        <td>lb</td>
+        <td>0.1714285714</td>
+        <td>0.3214285714</td>
+        <td>0.964285714</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>11</td>
+        <td>ub</td>
+        <td>0.5337662338</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>13</td>
+        <td>lb</td>
+        <td>0.1714618715</td>
+        <td>0.3212302701</td>
+        <td>0.96369081</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>17</td>
+        <td>ub</td>
+        <td>0.5337681926</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>19</td>
+        <td>lb</td>
+        <td>0.1714619746</td>
+        <td>0.3212292844</td>
+        <td>0.963687853</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>23</td>
+        <td>ub</td>
+        <td>0.5337681971</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>29</td>
+        <td>lb</td>
+        <td>0.1714619747</td>
+        <td>0.321229282</td>
+        <td>0.963687846</td>
+      </tr>
+      <tr>
+        <td>\(\infty\)</td>
+        <td>\(\infty\)</td>
+        <td></td>
+        <td>\(\sim (\sqrt{2})^{-1}\)</td>
+        <td>\(0.32 = \tfrac{1}{3.125}\)</td>
+        <td>\(P_{\Delta}=\tfrac{24}{25}=0.96\)</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <pre class="osf">The partial sum increment, lb/ub oscillation, shows a peculiar alternating progression.</pre>
 <pre class="osf">The clear oscillation between a upper and lower bound follows from taking the current partial sum $\left(P_{s}\\,\\, for\\,row\\,n\right)$ minus the increment so far $\left(P_{s}\\:increment\\,\\,for\\,row\\, n-1\right)$.</pre>
 <pre class="osf">The column $\frac{lb}{ub}$ contains the ratio between lower and upper bound for each group. Column $\Delta\frac{lb_{n\rightarrow\infty}}{lb_{n=1}}=3\frac{lb}{ub}$ contains the progressive ratio between the current $\frac{lb}{ub}$ row pair with respect to the ratio of the first $\frac{lb}{ub}$ row pair, $\left(\frac{lb}{ub}\right)_{n=1}=\frac{1}{3}$.</pre>
