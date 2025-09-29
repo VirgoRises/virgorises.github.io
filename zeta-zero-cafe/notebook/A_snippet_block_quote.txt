@@ -4,5 +4,5 @@
         The quote
         </p>
     </blockquote>
-    <p>—label the quote</cite></p>
+    <p>—label the</cite></p>
 </div>
