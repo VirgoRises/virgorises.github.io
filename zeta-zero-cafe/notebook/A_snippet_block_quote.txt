@@ -1,0 +1,8 @@
+<div>
+    <blockquote cite="https://...">
+        <p>
+        The quote
+        </p>
+    </blockquote>
+    <p>—label the quote</cite></p>
+</div>
