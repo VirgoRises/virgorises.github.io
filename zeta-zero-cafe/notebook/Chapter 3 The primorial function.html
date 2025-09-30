@@ -43,8 +43,6 @@
   -->
 
       <h3>Table 3.01 Primorial root 2 approach</h3>
-
-      <pre class="osf">Table 3.1 lists:</pre>
       <!--
 <pre class="osf"> 1. $P_{n}$ , the consecutive primes</pre>
 <pre class="osf"> 2. $P_{n}\#$ , the primorials</pre>
@@ -53,16 +51,11 @@
 <pre class="osf"> 5. $\Delta P_{s}$ , the difference $\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}$</pre>
 <pre class="osf"> 6. $\uparrow\downarrow$ , upper and lower bound alternating odd/even n</pre>
   -->
-      <ol>
-        <li>$P_{n}$ , the consecutive primes</li>
-        <li>$P_{n}\#$ , the primorials</li>
-        <li>$\left(P_{n}\#\right)^{-1}$ , the inverse primorials</li>
-        <li>$P_{s}$ , the partial sum of $\left(P_{n}\#\right)^{-1}$ up til $P_{n}$</li>
-        <li>$\Delta P_{s}$ , the difference $\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}$</li>
-        <li>$\uparrow\downarrow$ , upper and lower bound alternating odd/even n</li>
-      </ol>
+      <pre class="osf">Table 3.1 lists:
+        <ol><li>$P_{n}$ , the consecutive primes</li><li>$P_{n}\#$ , the primorials</li><li>$\left(P_{n}\#\right)^{-1}$ , the inverse primorials</li><li>$P_{s}$ , the partial sum of $\left(P_{n}\#\right)^{-1}$ up til $P_{n}$</li><li>$\Delta P_{s}$ , the difference $\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}$</li><li>$\uparrow\downarrow$ , upper and lower bound alternating odd/even n</li></ol></pre>
       <!-- Table 3.1 -->
-      <figure id="tbl-3-1" class="card">
+      <pre class="osf">
+        <figure id="tbl-3-1" class="card">
         <figcaption><strong>Table 3.1 — Primorial root 2 approach</strong></figcaption>
         <table>
           <thead>
@@ -179,7 +172,7 @@
           </tbody>
         </table>
       </figure>
-
+      </pre>
 
       <pre
         class="osf">The partial sum of the inverse primorials $P_{s}$ approaches the inverse square root of 2, $\left(\sqrt{2}\right)^{-1}\simeq0.7071067812$, but falls short by some factor.</pre>
@@ -211,17 +204,10 @@
 <pre class="osf"> 5. $\Delta\frac{lb}{ub}$, the ratio between the first row and current row $\frac{\left(2n\right)}{\left(n=1\right)}$</pre>
 -->
 
-      <ol>
-        <li>$P_{n}$, the consecutive primes</li>
-        <li>$\uparrow\downarrow$, upper and lower bound alternating odd / even n</li>
-        <li>$P_{s}\\:increment$, the step wise increment in $P_{s}$ from previous to current row</li>
-        <li>$\frac{lb}{ub}$, the ratio between the $P_{s}\:increment$ for grouped rows
-          $\frac{\left(2n\right)}{\left(2n\right)-1}$</li>
-        <li>$\Delta\frac{lb}{ub}$, the ratio between the first row and current row
-          $\frac{\left(2n\right)}{\left(n=1\right)}$</li>
-      </ol>
+      <pre class="osf"><ol><li>$P_{n}$, the consecutive primes</li><li>$\uparrow\downarrow$, upper and lower bound alternating odd / even n</li><li>$P_{s}\\:increment$, the step wise increment in $P_{s}$ from previous to current row</li><li>$\frac{lb}{ub}$, the ratio between the $P_{s}\:increment$ for grouped rows $\frac{\left(2n\right)}{\left(2n\right)-1}$</li><li>$\Delta\frac{lb}{ub}$, the ratio between the first row and current row $\frac{\left(2n\right)}{\left(n=1\right)}$</li></ol></pre>
       <!-- Table 3.2 -->
-      <figure id="tbl-3-2" class="card">
+<pre class="osf">
+  <figure id="tbl-3-2" class="card">
         <figcaption><strong>Table 3.2 — Primorial lb–ub oscillation</strong></figcaption>
         <table>
           <thead>
@@ -326,6 +312,7 @@
           </tbody>
         </table>
       </figure>
+</pre>
       <pre class="osf">The partial sum increment, lb/ub oscillation, shows a peculiar alternating progression.</pre>
       <pre
         class="osf">The clear oscillation between a upper and lower bound follows from taking the current partial sum $\left(P_{s}\,\, for\,row\,n\right)$ minus the increment so far $\left(P_{s}\:increment\,\,for\,row\, n-1\right)$.</pre>

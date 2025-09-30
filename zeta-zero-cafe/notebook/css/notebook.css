@@ -119,7 +119,7 @@ figcaption.small { margin-top: .5rem; color: var(--muted); font-size: .92rem; }
   mjx-container{font-size:95%}
 }
 
-figure img{width:70%;height:auto;max-width:860px;margin-inline:auto}
+figure img{width:50%;height:auto;max-width:860px;margin-inline:auto}
 /* — deep links with auto-scroll + highlight will make discussion way snappier. */
 /* Layout wrapper for each numbered paragraph */
 .osf-block { 
@@ -195,3 +195,74 @@ html { scroll-behavior: smooth; }
   z-index: 9999;
 }
 .osf-toast.show { opacity: 1; transform: translateY(0); }
+
+/* -------- Cards that contain tables -------- */
+figure.card{
+  background: rgba(20,22,28,0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: .75rem 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;            /* horizontal scroll on narrow screens */
+}
+
+/* Highlight if linked via #anchor */
+figure.card:target{
+  box-shadow: 0 0 0 3px rgba(255,193,7,.35) inset;
+}
+
+/* Caption */
+figure.card > figcaption{
+  margin: .25rem 0 .5rem 0;
+  color: #cfd6df;              /* readable on dark bg */
+  font: 600 .95rem/1.25 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+
+/* -------- Table itself -------- */
+figure.card table{
+  width: 100%;
+  border-collapse: collapse;    /* enables zebra rows */
+  min-width: 420px;             /* keeps columns from crushing */
+  font-size: .95rem;
+}
+
+/* Header cells */
+figure.card thead th{
+  text-align: left;
+  font-weight: 700;
+  padding: .6rem .75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.16);
+  background: rgba(15,17,22,0.95);  /* subtle contrast vs body rows */
+  position: sticky; top: 0;         /* sticky header inside the figure */
+  z-index: 1;
+}
+
+/* Body cells */
+figure.card tbody td{
+  padding: .55rem .75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  vertical-align: top;
+}
+
+/* Zebra striping for readability */
+figure.card tbody tr:nth-child(odd) td{
+  background: rgba(255,255,255,0.025);
+}
+
+/* Last row border cleanup */
+figure.card tbody tr:last-child td{
+  border-bottom: 0;
+}
+
+/* Optional: right-align numeric columns */
+figure.card th.num,
+figure.card td.num{
+  text-align: right;
+  font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+
+/* Optional: de-emphasize placeholder text like “no value” */
+figure.card td.em{
+  color: #9aa4b2;
+  font-style: italic;
+}
