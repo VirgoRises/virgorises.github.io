@@ -1,0 +1,41 @@
+.table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.notebook-table {
+  width: 100%;
+  border-collapse: collapse
+}
+
+.notebook-table td,
+.notebook-table th {
+  border: 1px solid var(--line, #333);
+  padding: .4rem .6rem;
+  vertical-align: top
+}
+
+.notebook-table .rule td {
+  border: none;
+  border-top: 1px solid var(--line, #333);
+  padding: 0;
+  height: .5rem
+}
+
+figure.table {
+  margin: 1.2rem 0
+}
+
+figure.table>figcaption {
+  font-size: .95rem;
+  color: var(--muted, rgb(170, 169, 153));
+  margin: 0 0 .4rem
+}
+
+figure.table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+

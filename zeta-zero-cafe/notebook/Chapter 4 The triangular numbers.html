@@ -1060,6 +1060,120 @@
       if (!el.textContent.trim()) el.remove();
     });
   </script>
+  <script>
+  // 
+  // — deep links with auto-scroll + highlight will make discussion way snappier.
+document.addEventListener("DOMContentLoaded", function () {
+  // Adjust if you have a fixed header
+  const SCROLL_OFFSET_PX = 80; // 0 if no fixed header
+
+  // Find all <pre class="osf"> blocks and number them
+  const osfBlocks = document.querySelectorAll("pre.osf");
+  let counter = 1;
+
+  osfBlocks.forEach(pre => {
+    const anchorId = "osf-" + counter;
+    pre.id = anchorId;
+
+    // Create § label (deep link)
+    const label = document.createElement("a");
+    label.className = "osf-label";
+    label.href = "#" + anchorId;
+    label.textContent = "§ " + counter;
+
+    // Create copy icon (icon-only, hidden until hover/focus)
+    const copyBtn = document.createElement("button");
+    copyBtn.className = "osf-copy";
+    copyBtn.type = "button";
+    copyBtn.title = "Copy link";
+    copyBtn.setAttribute("aria-label", "Copy link to paragraph " + counter);
+    copyBtn.textContent = "🔗";
+
+    // Wrap and insert
+    const wrapper = document.createElement("div");
+    wrapper.className = "osf-block";
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(label);
+    wrapper.appendChild(copyBtn);
+    wrapper.appendChild(pre);
+
+    // Clicking the § label: update URL, scroll & highlight
+    label.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      history.replaceState(null, "", "#" + anchorId);
+      scrollAndHighlight(pre);
+    });
+
+    // Clicking the copy icon: place absolute URL on clipboard, toast
+    copyBtn.addEventListener("click", async (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      const absoluteUrl = new URL("#" + anchorId, window.location.href).toString();
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(absoluteUrl);
+        } else {
+          const ta = document.createElement("textarea");
+          ta.value = absoluteUrl;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+        }
+        showToast("Link copied");
+      } catch {
+        showToast("Copy failed");
+      }
+    });
+
+    counter++;
+  });
+
+  // On load with a hash -> scroll & highlight
+  if (location.hash && /^#osf-\d+$/.test(location.hash)) {
+    const target = document.getElementById(location.hash.slice(1));
+    if (target) scrollAndHighlight(target);
+  }
+
+  // Respond to subsequent hash changes
+  window.addEventListener("hashchange", function () {
+    if (location.hash && /^#osf-\d+$/.test(location.hash)) {
+      const target = document.getElementById(location.hash.slice(1));
+      if (target) scrollAndHighlight(target);
+    }
+  });
+
+  function scrollAndHighlight(el) {
+    // Clear previous highlights
+    document.querySelectorAll(".osf-highlight").forEach(n => n.classList.remove("osf-highlight"));
+
+    // Smooth scroll with offset
+    const rect = el.getBoundingClientRect();
+    const absoluteY = window.pageYOffset + rect.top;
+    const y = Math.max(absoluteY - SCROLL_OFFSET_PX, 0);
+    window.scrollTo({ top: y, behavior: "smooth" });
+
+    // Temporary highlight
+    el.classList.add("osf-highlight");
+    setTimeout(() => el.classList.remove("osf-highlight"), 6000);
+  }
+
+  // Lightweight toast
+  let toastTimer;
+  function showToast(msg) {
+    let el = document.querySelector(".osf-toast");
+    if (!el) {
+      el = document.createElement("div");
+      el.className = "osf-toast";
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 1600);
+  }
+});
+</script>
 </body>
 
 </html>
