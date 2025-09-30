@@ -32,7 +32,60 @@ figure.table>figcaption {
   margin: 0 0 .4rem
 }
 
-figure.table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
+figure.table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+/* — deep links with auto-scroll + highlight will make discussion way snappier. */
+
+/* Layout + label */
+.osf-block {
+  margin: 1em 0;
+}
+
+/* Style the paragraph labels like normal body text */
+.osf-label {
+  color: inherit;
+  /* inherit from surrounding text */
+  text-decoration: none;
+  /* remove underline */
+  font-weight: 600;
+  /* keep bold if you want */
+}
+
+.osf-label:hover {
+  text-decoration: underline;
+  /* underline on hover if you want */
+  color: inherit;
+  /* still match body text */
+}
+
+/* Highlight effect */
+.osf-highlight {
+  outline: 3px solid rgba(255, 193, 7, 0.9);
+  outline-offset: 2px;
+  animation: osfPulse 1.2s ease-in-out 0s 3;
+  background-image: linear-gradient(to right, rgba(255, 235, 150, 0.6), rgba(255, 235, 150, 0.1));
+}
+
+
+
+@keyframes osfPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.5);
   }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 193, 7, 0.2);
+  }
+}
+
+/* Nice to have; browsers that support it will smooth scroll */
+html {
+  scroll-behavior: smooth;
+}

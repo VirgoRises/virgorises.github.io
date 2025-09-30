@@ -157,6 +157,76 @@
     });
   </script>
 
+<script>
+  // 
+  // — deep links with auto-scroll + highlight will make discussion way snappier.
+document.addEventListener("DOMContentLoaded", function () {
+  // If you have a fixed header, tweak this to offset the scroll position.
+  const SCROLL_OFFSET_PX = 80; // set to 0 if not needed
+
+  // 1) Number + anchor every <pre class="osf"> that actually exists in the DOM.
+  const osfBlocks = document.querySelectorAll("pre.osf");
+  let counter = 1;
+
+  osfBlocks.forEach(pre => {
+    const anchorId = "osf-" + counter;
+    pre.id = anchorId;
+
+    // Create clickable label (deep link)
+    const label = document.createElement("a");
+    label.className = "osf-label";
+    label.href = "#" + anchorId;
+    label.textContent = "§ " + counter;
+
+    // Wrap for consistent styling
+    const wrapper = document.createElement("div");
+    wrapper.className = "osf-block";
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(label);
+    wrapper.appendChild(pre);
+
+    // Clicking the label: update URL without page jump, then scroll + highlight
+    label.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      history.replaceState(null, "", "#" + anchorId);
+      scrollAndHighlight(pre);
+    });
+
+    counter++;
+  });
+
+  // 2) On initial load with a hash, scroll + highlight that paragraph.
+  if (location.hash && /^#osf-\d+$/.test(location.hash)) {
+    const target = document.getElementById(location.hash.slice(1));
+    if (target) scrollAndHighlight(target);
+  }
+
+  // 3) Handle manual hash changes (e.g., user edits URL or clicks other links).
+  window.addEventListener("hashchange", function () {
+    if (location.hash && /^#osf-\d+$/.test(location.hash)) {
+      const target = document.getElementById(location.hash.slice(1));
+      if (target) scrollAndHighlight(target);
+    }
+  });
+
+  function scrollAndHighlight(el) {
+    // Remove previous highlights
+    document.querySelectorAll(".osf-highlight").forEach(n => n.classList.remove("osf-highlight"));
+
+    // Smooth scroll with optional offset (works even if html{scroll-behavior} unsupported)
+    const rect = el.getBoundingClientRect();
+    const absoluteY = window.pageYOffset + rect.top;
+    const y = Math.max(absoluteY - SCROLL_OFFSET_PX, 0);
+    window.scrollTo({ top: y, behavior: "smooth" });
+
+    // Apply temporary highlight
+    el.classList.add("osf-highlight");
+    // Optional: remove after some time (keep if you want persistent highlight)
+    setTimeout(() => el.classList.remove("osf-highlight"), 6000);
+  }
+});
+</script>
+
 </body>
 
 </html>
