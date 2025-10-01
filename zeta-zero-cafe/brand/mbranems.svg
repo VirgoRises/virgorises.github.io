@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560">
+  <style>
+    .ink { stroke:#000; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+    .rim { stroke:#000; stroke-width:14; fill:none; }
+  </style>
+
+  <!-- ===== tweakables ===== -->
+  <g id="params"
+     data-cx="450" data-cy="190"
+     data-R="220" data-tiltdeg="35"
+     data-sheets="4" data-wrapdeg="288"
+     data-thetaend="0.12" data-strokew="22"
+     data-gapcenterdeg="22" data-rimswell="12"></g>
+
+  <!-- Clip spiral to the bowl opening -->
+  <defs>
+    <clipPath id="clipOpening">
+      <ellipse id="open-ellipse"/>
+    </clipPath>
+
+    <!-- Mask to HIDE the spiral under the front rim band (black = hide) -->
+    <mask id="hideFront">
+      <!-- start fully visible -->
+      <rect x="0" y="0" width="100%" height="100%" fill="#fff"/>
+      <!-- front rim band shape will be drawn in black via script -->
+      <path id="front-band-mask" fill="#000"/>
+    </mask>
+  </defs>
+
+  <!-- Back rim ellipse -->
+  <ellipse id="rim-ellipse" class="rim"/>
+
+  <!-- Spiral, clipped to opening and masked under the front rim -->
+  <g clip-path="url(#clipOpening)" mask="url(#hideFront)">
+    <g id="spiral-group"></g>
+  </g>
+
+  <!-- Front rim stroke split around the gap -->
+  <path id="front-rim-seg1" class="rim"/>
+  <path id="front-rim-seg2" class="rim"/>
+
+  <!-- Exterior bowl silhouette -->
+  <path id="bowl-outline" class="ink" stroke-width="14"/>
+
+  <script><![CDATA[
+  (function () {
+    const P = document.getElementById('params').dataset;
+    const cx = +P.cx, cy = +P.cy, R = +P.r;
+    const tilt = (+P.tiltdeg) * Math.PI/180;
+    const sheets = +P.sheets;
+    const wrapDeg = +P.wrapdeg;
+    const thetaEnd = +P.thetaend;
+    const strokeW = +P.strokew;
+    const gapCenterDeg = +P.gapcenterdeg;
+    const rimSwell = +P.rimswell;
+
+    // Rim ellipse radii from tilt
+    const rx = R, ry = R*Math.cos(tilt);
+    const theta0 = Math.PI/2;
+
+    // Total azimuth: (sheets-1) full turns + wrapDeg of the last
+    const phiMax = (sheets - 1) * 2*Math.PI + (wrapDeg * Math.PI/180);
+    // Choose k so θ descends from rim to thetaEnd exactly over phiMax
+    const k = (theta0 - thetaEnd) / phiMax;
+
+    // Helpers
+    function rotX([x,y,z]) {
+      const ct = Math.cos(tilt), st = Math.sin(tilt);
+      return [x, y*ct - z*st, y*st + z*ct];
+    }
+    function proj([x,y,z]) { return [cx + x, cy + y, z]; }
+
+    function spiralPoint(phi) {
+      const theta = Math.max(thetaEnd, theta0 - k*phi);
+      const s = Math.sin(theta), c = Math.cos(theta);
+      const x = R * s * Math.cos(phi);
+      const y = R * s * Math.sin(phi);
+      const z = R * c;
+      return proj(rotX([x,y,z]));
+    }
+
+    // Apply opening ellipse to clipPath and rim
+    const openEl = document.getElementById('open-ellipse');
+    openEl.setAttribute('cx', cx);
+    openEl.setAttribute('cy', cy);
+    openEl.setAttribute('rx', rx);
+    openEl.setAttribute('ry', ry);
+
+    const rim = document.getElementById('rim-ellipse');
+    rim.setAttribute('cx', cx);
+    rim.setAttribute('cy', cy);
+    rim.setAttribute('rx', rx);
+    rim.setAttribute('ry', ry);
+
+    // Build spiral (depth-sorted tiny segments)
+    const segs = [];
+    const dphi = 0.03;
+    let prev = spiralPoint(0);
+    for (let phi=dphi; phi<=phiMax; phi+=dphi) {
+      const cur = spiralPoint(phi);
+      const zAvg = (prev[2] + cur[2]) * 0.5;
+      segs.push({
+        z: zAvg,
+        d: `M ${prev[0].toFixed(2)} ${prev[1].toFixed(2)} L ${cur[0].toFixed(2)} ${cur[1].toFixed(2)}`
+      });
+      prev = cur;
+    }
+    segs.sort((a,b)=>a.z-b.z);
+    const g = document.getElementById('spiral-group');
+    g.innerHTML = "";
+    for (const s of segs) {
+      const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+      p.setAttribute('class','ink');
+      p.setAttribute('stroke','#000');
+      p.setAttribute('stroke-width', strokeW);
+      p.setAttribute('d', s.d);
+      g.appendChild(p);
+    }
+
+    // Front rim band MASK (black = hide)
+    // Define a band on the FRONT half (u in [0, π]) with a wedge (gap)
+    function ellipsePt(u, rxi, ryi) { return [cx + rxi*Math.cos(u), cy + ryi*Math.sin(u)]; }
+    const gapRad = (360 - wrapDeg) * Math.PI/180; // size of missing chunk
+    const u0 = (gapCenterDeg * Math.PI/180);      // center of gap on front edge
+    const ua = u0 - gapRad/2, ub = u0 + gapRad/2;
+
+    const rxIn = rx - rimSwell, ryIn = ry - rimSwell;
+    const N = 90, du = Math.PI/N;
+    const outer = [], inner = [];
+    for (let i=0;i<=N;i++){
+      const u = i*du; // 0..π
+      outer.push(ellipsePt(u, rx, ry));
+      inner.push(ellipsePt(u, rxIn, ryIn));
+    }
+    // Entire front band path (outer CW + inner CCW) — we’ll then carve a wedge out by not masking it
+    function closedBandPath(outerPts, innerPts){
+      let d = `M ${outerPts[0][0].toFixed(2)} ${outerPts[0][1].toFixed(2)}`;
+      for (let i=1;i<outerPts.length;i++) d += ` L ${outerPts[i][0].toFixed(2)} ${outerPts[i][1].toFixed(2)}`;
+      for (let i=innerPts.length-1;i>=0;i--) d += ` L ${innerPts[i][0].toFixed(2)} ${innerPts[i][1].toFixed(2)}`;
+      return d + " Z";
+    }
+    // Convert to path string
+    const bandPath = closedBandPath(outer, inner);
+
+    // But we need a GAP in this band: we’ll draw the full band in black, then re-draw the wedge in white
+    // so the mask does NOT hide the spiral there.
+    // Build wedge polygon along [ua..ub]
+    function buildWedge(uA,uB,steps){
+      const out=[], inn=[];
+      const duw=(uB-uA)/steps;
+      for(let i=0;i<=steps;i++){
+        const u=uA+i*duw;
+        out.push(ellipsePt(u,rx,ry));
+      }
+      for(let i=0;i<=steps;i++){
+        const u=uB-i*duw;
+        inn.push(ellipsePt(u,rxIn,ryIn));
+      }
+      let d=`M ${out[0][0].toFixed(2)} ${out[0][1].toFixed(2)}`;
+      for(let i=1;i<out.length;i++) d+=` L ${out[i][0].toFixed(2)} ${out[i][1].toFixed(2)}`;
+      for(let i=0;i<inn.length;i++) d+=` L ${inn[i][0].toFixed(2)} ${inn[i][1].toFixed(2)}`;
+      return d+" Z";
+    }
+
+    // write mask paths
+    const bandMask = document.getElementById('front-band-mask');
+    bandMask.setAttribute('d', bandPath);
+    // Add the wedge “unmask” (white) as a sibling
+    const wedge = document.createElementNS('http://www.w3.org/2000/svg','path');
+    wedge.setAttribute('fill','#fff');
+    wedge.setAttribute('d', buildWedge(ua,ub,32));
+    bandMask.parentNode.appendChild(wedge);
+
+    // Front rim strokes split around the gap
+    function arcSegment(uA,uB){
+      const steps=64, du=(uB-uA)/steps, pts=[];
+      for(let i=0;i<=steps;i++){
+        const u=uA+i*du;
+        pts.push(ellipsePt(u,rx,ry));
+      }
+      let d=`M ${pts[0][0].toFixed(2)} ${pts[0][1].toFixed(2)}`;
+      for(let i=1;i<pts.length;i++) d+=` L ${pts[i][0].toFixed(2)} ${pts[i][1].toFixed(2)}`;
+      return d;
+    }
+    const seg1 = document.getElementById('front-rim-seg1');
+    const seg2 = document.getElementById('front-rim-seg2');
+    seg1.setAttribute('d', arcSegment(0, Math.max(0,ua)));
+    seg2.setAttribute('d', arcSegment(Math.min(Math.PI,ub), Math.PI));
+
+    // Exterior bowl silhouette
+    const depth = cy + ry*3.3;
+    const out = document.getElementById('bowl-outline');
+    out.setAttribute('d', `M ${cx - rx} ${cy+3} Q ${cx} ${depth+18} ${cx + rx} ${cy+3}`);
+  })();
+  ]]></script>
+</svg>
