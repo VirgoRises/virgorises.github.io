@@ -167,73 +167,63 @@ node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature 
 ```
 **Write:** add `--write` (auto-backup enabled)
 
-## § candidate — index 165
-- reason: density=2, chars=383, sentences=1, inlineMath=5, blockMath=0
-- snippet: The interval between $z_{n}$ progressing on the x-axis follow the harmonic series if the interval is defined to full $360\text{°}\thinspace or\thinspace2\pi$ p…
-
-**Dry-run:**
-```bash
-node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 165
-```
-**Write:** add `--write` (auto-backup enabled)
-
-## § candidate — index 169
+## § candidate — index 170
 - reason: density=4, chars=1331, sentences=1, inlineMath=10, blockMath=0
 - snippet: Table 7.5 — Level 1 coordinate listing n \(C_{unity}\)\(cl=\frac{\sqrt[4]{|a|}}{\lfloor \sqrt[4]{|a|}\rfloor}\) ngon / chord \(\cos\!\left(\tfrac{idx}{ngon}2\p…
 
 **Dry-run:**
 ```bash
-node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 169
+node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 170
 ```
 **Write:** add `--write` (auto-backup enabled)
 
-## § candidate — index 171
+## § candidate — index 172
 - reason: density=2, chars=261, sentences=1, inlineMath=1, blockMath=0
 - snippet: The prime number ‘5’ takes a pivotal role and presents itself in eighth identities, one in its original role as the prime number 5, and then consecutive as the…
 
 **Dry-run:**
 ```bash
-node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 171
+node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 172
 ```
 **Write:** add `--write` (auto-backup enabled)
 
-## § candidate — index 176
+## § candidate — index 178
 - reason: density=2, chars=286, sentences=1, inlineMath=4, blockMath=0
 - snippet: $\left\{ \left[1\right],\left[2,3\right],\left[4,5,6\right]\right\} $$\left\{ \left[7\right],\left[8,9\right],\left[10,11,12\right]\right\}$$\left\{\left[13\ri…
 
 **Dry-run:**
 ```bash
-node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 176
+node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 178
 ```
 **Write:** add `--write` (auto-backup enabled)
 
-## § candidate — index 182
+## § candidate — index 184
 - reason: density=2, chars=263, sentences=1, inlineMath=2, blockMath=0
 - snippet: The consequence of the stacking is a numerical additive sequence visiting primes and composites on the diagonal $1+4+2+4+2+4+2,\dots,\left\{ 1,5,7,11,13,17,19,…
 
 **Dry-run:**
 ```bash
-node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 182
+node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 184
 ```
 **Write:** add `--write` (auto-backup enabled)
 
-## § candidate — index 194
-- reason: density=2, chars=422, sentences=3, inlineMath=5, blockMath=0
-- suggested split **after sentence**: 2
-- snippet: Back to figure 7.20: Orthogonal diagonal as circumference, the inner arc labeled “$8\times8$ orthogonal diagonal” indicates the part of the spiral that defines…
+## § candidate — index 197
+- reason: density=2, chars=244, sentences=2, inlineMath=4, blockMath=0
+- suggested split **after sentence**: 1
+- snippet: It covers x=0 to x=-4, $\left(25\times-0.16=-4\right)$ radial units of $\frac{1}{2.5^{2}}$. This $180{^\circ}$ of arc holds the 9 primes under 25,$\left(2,3,5,…
 
 **Dry-run:**
 ```bash
-node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 194 --sentence 2
+node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 197 --sentence 1
 ```
 **Write:** add `--write` (auto-backup enabled)
 
-## § candidate — index 204
+## § candidate — index 207
 - reason: density=2, chars=270, sentences=1, inlineMath=1, blockMath=0
 - snippet: The result as seen in figure 7.20: Orthogonal diagonal as circumference, is that in the limit all prime numbers combined address the whole continuum $\frac{n\t…
 
 **Dry-run:**
 ```bash
-node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 204
+node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html" --index 207
 ```
 **Write:** add `--write` (auto-backup enabled)

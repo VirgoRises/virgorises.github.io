@@ -71,21 +71,21 @@
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 3 The primorial function.html",
-    "paragraphIndex": 19,
-    "reason": "density=2, chars=474, sentences=3, inlineMath=8, blockMath=0",
-    "splitAfterSentence": 2,
-    "snippet": "The partial sum increment, $P_{s}\\:increment$, table 3.2, shows a peculiar alternating progression. The current partial sum $P_{s}\\rightarrow n$ minus the incr…"
+    "paragraphIndex": 20,
+    "reason": "density=2, chars=200, sentences=1, inlineMath=4, blockMath=0",
+    "splitAfterSentence": null,
+    "snippet": "The upper and lower bounds alternate row by row and group the primes like $\\left\\{ 2,3\\right\\} ,$$\\left\\{ 5,7\\right\\} ,$$\\left\\{ 11,13\\right\\} ,$$\\left\\{ 17,19…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 3 The primorial function.html",
-    "paragraphIndex": 20,
-    "reason": "density=2, chars=425, sentences=3, inlineMath=5, blockMath=0",
-    "splitAfterSentence": 2,
+    "paragraphIndex": 21,
+    "reason": "density=2, chars=286, sentences=2, inlineMath=4, blockMath=0",
+    "splitAfterSentence": 1,
     "snippet": "For the first two terms $\\left\\{ 2,3\\right\\}$ the ratio is exact, $\\frac{lb}{ub}=\\frac{1}{3}$, the last two terms in the table $\\left\\{ 23,29\\right\\}$ approach…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 3 The primorial function.html",
-    "paragraphIndex": 34,
+    "paragraphIndex": 36,
     "reason": "density=2, chars=257, sentences=1, inlineMath=7, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The quadrature constant $\\looparrowright=\\frac{2\\pi}{2.5^2}$ provides a smooth mapping from $\\mathbb{Q}$ to $\\mathbb{R}$ if we define $\\mathbb{Q}$ as a circle …"
@@ -106,248 +106,234 @@
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 33,
-    "reason": "density=3, chars=523, sentences=1, inlineMath=5, blockMath=0",
+    "paragraphIndex": 36,
+    "reason": "density=2, chars=294, sentences=1, inlineMath=4, blockMath=0",
     "splitAfterSentence": null,
-    "snippet": "The process starts with $Area=\\frac{1}{2}\\left(\\sqrt{2}^{\\thinspace-1}\\right)^{2}-\\frac{1}{6}=\\frac{1}{12}$ and this area reduces as the cycle approaches $lim_…"
+    "snippet": "Consider that the triangular number $T_{n=1}$ projects in a $1\\times1$ grid in the triangular plane and has $a=\\sqrt{2\\times\\frac{1}{4}}=\\sqrt{2}^{\\thinspace -…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 39,
+    "paragraphIndex": 42,
     "reason": "density=5, chars=1854, sentences=1, inlineMath=64, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "Table 4.1 — Discrete triangular — Continues projection plane \\( A_{\\triangle} \\) Triangular plane \\( A_{\\Box} \\) Projection plane Proportional SA Discrete Cont…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 41,
+    "paragraphIndex": 44,
     "reason": "density=3, chars=305, sentences=1, inlineMath=4, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "section $A_{\\square}\\,Projection\\,plane$: “Closed” lists the from “n” derived “intermediate radius” as the closed formula $r_{q}=\\sqrt{\\frac{n}{n+1}}$, the “Ca…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 48,
+    "paragraphIndex": 51,
     "reason": "density=4, chars=1378, sentences=1, inlineMath=32, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "Table 4.2 — Projection plane ranges (all s) s value \\(\\dfrac{\\pi^2}{(\\pi^2)(\\zeta(s)^{-1})}\\) \\(a=\\sqrt{2A}\\) \\(r_q=\\tfrac{0.5}{a}\\) \\(r_x=\\dfrac{r_q}{\\sqrt{P\\…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 52,
+    "paragraphIndex": 55,
     "reason": "density=2, chars=276, sentences=1, inlineMath=4, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The value for $\\zeta\\left(s=1\\right)$ in column $SA\\propto\\pi^2$ lists $SA\\propto\\frac{6}{9}\\pi^{2}$, this result hints at a fractal property if interpreted as…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 54,
+    "paragraphIndex": 57,
     "reason": "density=2, chars=354, sentences=1, inlineMath=5, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The fraction $\\frac{6}{9}$ is associated with the affected area of the triangular plane $A_{\\Delta}$ in the third quadrant of the projection plane $A_{\\square}…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 59,
-    "reason": "density=2, chars=353, sentences=2, inlineMath=5, blockMath=0",
-    "splitAfterSentence": 1,
+    "paragraphIndex": 62,
+    "reason": "density=2, chars=182, sentences=1, inlineMath=4, blockMath=0",
+    "splitAfterSentence": null,
     "snippet": "The triangular cycle $T_{n\\{1,\\dots,\\infty\\}}$ only holds $\\zeta\\left(s\\right)$ for $s\\in\\{1,2\\}$, values for $\\zeta\\left(s>2\\right)$ are not represented withi…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 62,
+    "paragraphIndex": 66,
     "reason": "density=2, chars=346, sentences=1, inlineMath=4, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The projection for $\\zeta\\left(\\infty\\right)$ (see table 4.2 projection plane range for all s) yields the radius for a sphere with $SA\\propto\\left(\\frac{\\pi^{2…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 68,
-    "reason": "density=2, chars=413, sentences=2, inlineMath=6, blockMath=0",
-    "splitAfterSentence": 1,
+    "paragraphIndex": 72,
+    "reason": "density=2, chars=170, sentences=1, inlineMath=4, blockMath=0",
+    "splitAfterSentence": null,
     "snippet": "We find values for $SA\\propto\\frac{6}{9}\\times$$ \\pi^2,SA=1\\times$$\\pi^2,\\\\,and\\\\,SA\\propto$$\\frac{\\pi^2}{6}\\times\\pi^2$ (see table 4.2 projection plane range …"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 69,
-    "reason": "density=2, chars=485, sentences=2, inlineMath=5, blockMath=0",
-    "splitAfterSentence": 1,
-    "snippet": "We see that with respect to scale, $\\left(\\frac{A_{\\square}}{A_{\\Delta}}\\right)\\times\\frac{\\pi^2}{6}\\propto\\frac{6}{9}\\pi^2$. The apparent increment in surface…"
+    "paragraphIndex": 73,
+    "reason": "density=2, chars=242, sentences=1, inlineMath=2, blockMath=0",
+    "splitAfterSentence": null,
+    "snippet": "As found previously, the scale factor $\\left(\\frac{A_{\\square}}{A_{\\Delta}}\\right)=4$ is key because the triangular plane, or rather quadrant III it projects i…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 78,
+    "paragraphIndex": 84,
     "reason": "density=2, chars=210, sentences=1, inlineMath=5, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The affected area $A_{\\Delta}=100\\%$ gives the maximum value for the right angled side of the projection plane $A_{\\square}$; $a=\\sqrt{2\\left(\\frac{1}{4}\\right…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 79,
+    "paragraphIndex": 85,
     "reason": "density=3, chars=272, sentences=1, inlineMath=4, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The hypotenuse from $a=\\sqrt{2}^{\\thinspace-1}$ to $b=\\sqrt{2}^{\\thinspace-1}$ is off course $c=a\\sqrt{2}=1$, the hypotenuse of the mathematical universe $A_{\\…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 85,
+    "paragraphIndex": 91,
     "reason": "density=2, chars=281, sentences=1, inlineMath=5, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "This seems to confine us to an infinite cycle during which only $\\zeta\\left(2\\right)$, and by completing the pattern $\\zeta\\left(1\\right)$, play a roll within …"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 88,
-    "reason": "density=2, chars=529, sentences=2, inlineMath=7, blockMath=0",
-    "splitAfterSentence": 1,
-    "snippet": "There is a limit beyond $\\underset{n\\rightarrow\\infty}{lim}\\rightarrow T_{n}$, out of reach for the window provided by $T_{n}$, see table \\ref{tab:projectionpl…"
+    "paragraphIndex": 95,
+    "reason": "density=2, chars=315, sentences=1, inlineMath=5, blockMath=0",
+    "splitAfterSentence": null,
+    "snippet": "There for s=2 we find that $\\sqrt{2\\times\\frac{1}{6}}=$$\\sqrt{\\frac{2}{3}}=$$0.5773502692$ and we know that the limit for the triangular projection is: $a=\\sqr…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 90,
-    "reason": "density=3, chars=491, sentences=2, inlineMath=4, blockMath=0",
-    "splitAfterSentence": 1,
-    "snippet": "This can be understood as a function of volume, $\\frac{1}{8}$ affected area as limit implies the reduction of a volume by cutting its radius in half, $V_{1}\\ti…"
+    "paragraphIndex": 98,
+    "reason": "density=2, chars=309, sentences=1, inlineMath=2, blockMath=0",
+    "splitAfterSentence": null,
+    "snippet": "To find values in the range $\\frac{\\pi^{2}}{8.210596}\\rightarrow\\frac{1}{8.210596}<\\frac{1}{8}$ must, by completing the pattern, imply this fraction is address…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 93,
+    "paragraphIndex": 101,
     "reason": "density=3, chars=298, sentences=1, inlineMath=5, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The limit for the triangular projection in $A_{\\Delta}$, $c>=\\sqrt{2}^{\\thinspace-1}$, is geometrically hard coded by the premise that the triangular projectio…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 99,
+    "paragraphIndex": 107,
     "reason": "density=2, chars=245, sentences=1, inlineMath=4, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The range for the triangular numbers is $a=\\left[\\sqrt{2}^{\\thinspace-1},0.5\\right]$, in this range only the values for $\\zeta\\left(1\\right)$ and $\\zeta\\left(2…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 121,
+    "paragraphIndex": 129,
     "reason": "density=3, chars=287, sentences=1, inlineMath=14, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "Table 4.3 — Base of Planck constant \\(SA\\) \\(V\\) \\(4\\pi r^2\\) \\(\\tfrac{4}{3}\\pi r^2\\) / \\(\\pi\\) \\(4r^2\\) \\(\\tfrac{4}{3}r^3\\) / 4 \\(r^2\\) \\(\\tfrac{1}{3}r^3\\) / …"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 125,
-    "reason": "density=3, chars=493, sentences=2, inlineMath=5, blockMath=0",
-    "splitAfterSentence": 1,
-    "snippet": "The fractal iteration in the lower left cell of quadrant III occupies $\\frac{1}{6}$ of the affected area of quadrant III. If we assume the recursive product $\\…"
+    "paragraphIndex": 134,
+    "reason": "density=3, chars=371, sentences=1, inlineMath=4, blockMath=0",
+    "splitAfterSentence": null,
+    "snippet": "If we assume the recursive product $\\prod_{n}\\zeta\\left(2\\right)^{n}=\\left\\{1,\\frac{1}{6},\\frac{1}{36},\\frac{1}{216},\\frac{1}{1296},\\dots\\right\\}$ then for eac…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 129,
+    "paragraphIndex": 138,
     "reason": "density=5, chars=1032, sentences=1, inlineMath=38, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "Table 4.4 — Zeta SA–Volume equilibrium \\(s\\) \\(\\tfrac{1}{4} \\propto A_{\\Box}\\) \\(\\tfrac{6}{9} \\propto A_{\\triangle}\\) ratio \\(\\propto \\zeta(2)\\) \\(\\#\\Box\\;cell…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 131,
-    "reason": "density=2, chars=398, sentences=2, inlineMath=4, blockMath=0",
-    "splitAfterSentence": 1,
-    "snippet": "What must be true is that each iterative step results in a scale invariant projection of the universe that is expressed by $\\zeta\\left(2\\right)=\\frac{\\pi^2}{6}…"
+    "paragraphIndex": 141,
+    "reason": "density=2, chars=208, sentences=1, inlineMath=3, blockMath=0",
+    "splitAfterSentence": null,
+    "snippet": "If $\\pi^2=1$ then we find that volume and surface area are interchangeable, see table 4.3 the base of Planck's constant, $T_{h}=0.9^{-1}=1+\\frac{1}{9}$ and tab…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
-    "paragraphIndex": 141,
+    "paragraphIndex": 151,
     "reason": "density=2, chars=307, sentences=1, inlineMath=4, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The base of Planck's constant $h=6.62607015\\times10^{-34}J.s.$, (table 4.3 the base of plancks constant) $T_{h}=0.9^{-1}=1+\\frac{1}{9}$ is the ratio between th…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 4,
-    "reason": "density=2, chars=1093, sentences=7, inlineMath=17, blockMath=0",
-    "splitAfterSentence": 5,
-    "snippet": "Chord $c_{vesica}$ is a hexagonal chord and related to the triangular projection by the proportion of side b. In table 4.1: Discrete triangular - Continues pro…"
+    "paragraphIndex": 9,
+    "reason": "density=2, chars=210, sentences=2, inlineMath=5, blockMath=0",
+    "splitAfterSentence": 1,
+    "snippet": "$\\triangle ABD$, with chord $c_{\\hbar}$, has side b extended to $b=1$. This triangle matches the last tuple in the table, but $\\triangle ABD$ does not conform …"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 6,
+    "paragraphIndex": 12,
     "reason": "density=2, chars=379, sentences=1, inlineMath=9, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "Observe that if we counter intuitively apply the Pythagoras theorem by assuming $\\overline{BC}$ as if $\\overline{AC}$, then any $\\angle ABC=\\frac{\\pi}{3}=60^{\\…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 17,
+    "paragraphIndex": 23,
     "reason": "density=3, chars=258, sentences=1, inlineMath=8, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "This results, plugging in the values $a$ and $r_q$ for each tuple $\\angle\\theta=tan\\left(\\frac{r_q}{a}\\right)$, in chords angled between $45^{\\circ}$ and $63.4…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 21,
+    "paragraphIndex": 27,
     "reason": "density=2, chars=381, sentences=1, inlineMath=4, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "Because we assume a distorted representation of a hexagonal triangle in each case, geometrically the unity chords must have $\\angle ABC=\\frac{\\pi}{3}=60^{\\circ…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 26,
+    "paragraphIndex": 32,
     "reason": "density=2, chars=331, sentences=1, inlineMath=2, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "For any pair of coordinates $\\left(a,r_{q}\\right)$ a hypotenuse exists, but only those that occur in the triangular projection, see table 4.1: Discrete triangu…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 29,
-    "reason": "density=2, chars=316, sentences=1, inlineMath=2, blockMath=0",
-    "splitAfterSentence": null,
-    "snippet": "In this reference frame we have an infinite series of chords $c\\propto\\sqrt{1\\frac{1}{4}}=\\frac{\\sqrt{5}}{2}$, each marking an iterative step in a cycle projec…"
-  },
-  {
-    "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 32,
+    "paragraphIndex": 39,
     "reason": "density=3, chars=295, sentences=1, inlineMath=4, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "From the triangles $\\triangle ABC$ and $\\triangle DBE$, the triangle $\\triangle ABC$ does not occur in table 4.1: Discrete triangular - Continues projection pl…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 34,
-    "reason": "density=2, chars=283, sentences=3, inlineMath=4, blockMath=0",
-    "splitAfterSentence": 2,
-    "snippet": "Here the first thing to take note of, is that both triangles in this configuration are indeed hexagonal. The angles $\\angle CAB\\,\\,\\,\\,\\angle EDB$ are both $90…"
+    "paragraphIndex": 42,
+    "reason": "density=2, chars=178, sentences=2, inlineMath=4, blockMath=0",
+    "splitAfterSentence": 1,
+    "snippet": "The angles $\\angle CAB\\,\\,\\,\\,\\angle EDB$ are both $90^{\\circ}$ and $\\angle ABC\\,\\,and\\,\\,\\angle EBD$ are both $60^{\\circ}$. Further, the point of origin for b…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 36,
+    "paragraphIndex": 44,
     "reason": "density=2, chars=334, sentences=1, inlineMath=5, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "We recognize the chord $\\overline{BC}$ in a somewhat peculiar place for a hexagonal chord in figure 5.2, namely it is the chord $h_{init}$ between $r_{q}=\\sqrt…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 38,
+    "paragraphIndex": 46,
     "reason": "density=4, chars=2561, sentences=1, inlineMath=74, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "Table 5.1 — Hexagonal equilibrium \\(n\\) \\((\\sqrt{2})^{-n}\\) a \\(|b|\\) c \\(c_{\\hbar}\\) 360° \\(\\pi \\, rad\\) \\((\\sqrt{2})^{-n}\\) \\(\\sqrt{\\tfrac{3}{2^{n}}}\\) \\(\\sq…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 58,
+    "paragraphIndex": 66,
     "reason": "density=2, chars=327, sentences=1, inlineMath=4, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "Because a surface area is defined by $SA=4\\pi r^{2}$ and this area is subdivided in 8 polar triangles the relative radius for a surface area $SA=8\\pi^{2}$ is $…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 65,
+    "paragraphIndex": 73,
     "reason": "density=2, chars=339, sentences=1, inlineMath=1, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "With the singularity as center of this structure, any perfect sphere with fixed radius will cut as a ghost through this surface and only have two (2) coordinat…"
-  },
-  {
-    "file": "zeta-zero-cafe/notebook/Chapter 5 Chords.html",
-    "paragraphIndex": 70,
-    "reason": "density=2, chars=369, sentences=2, inlineMath=1, blockMath=0",
-    "splitAfterSentence": 1,
-    "snippet": "This is what we see expressed in figure 5.6: Root 2 equilibrium, only from that perspective it is the spheres surface being painted, after all, we are dealing …"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 6 A cartesian M-brane monos.html",
@@ -358,28 +344,21 @@
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 6 A cartesian M-brane monos.html",
-    "paragraphIndex": 26,
+    "paragraphIndex": 28,
     "reason": "density=2, chars=401, sentences=2, inlineMath=5, blockMath=0",
     "splitAfterSentence": 1,
     "snippet": "In figure 6.6 it is really more convenient to use the $360^\\circ$ system. The base of each iteration by scale invariance is always proportional to 1, $\\overlin…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 6 A cartesian M-brane monos.html",
-    "paragraphIndex": 32,
-    "reason": "density=2, chars=460, sentences=3, inlineMath=4, blockMath=0",
-    "splitAfterSentence": 1,
-    "snippet": "The proportionality is convenient. In here we find $\\left(60^\\circ\\;is\\; to\\;360^\\circ\\;as\\;\\left(\\frac{1}{6}\\right)^\\circ\\;is\\;to\\;1^\\circ\\right)$ and therefo…"
-  },
-  {
-    "file": "zeta-zero-cafe/notebook/Chapter 6 A cartesian M-brane monos.html",
-    "paragraphIndex": 35,
+    "paragraphIndex": 38,
     "reason": "density=5, chars=1813, sentences=1, inlineMath=25, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "Table 6.1 — 4/5 proportion: Spherical vs Cartesian projection Cartesian Spherical \\(\\Delta \\tfrac{Cartesian}{Spherical}\\) \\(\\sqrt{2}^{-1}\\) \\(\\bigl(\\tfrac{4}{5…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 6 A cartesian M-brane monos.html",
-    "paragraphIndex": 40,
+    "paragraphIndex": 43,
     "reason": "density=2, chars=312, sentences=1, inlineMath=1, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The fractal argument for zeta just tells us that there exist one specific point at which: $A_{\\square}\\, is\\,to\\,\\zeta\\left(2\\right)\\,as\\,\\zeta\\left(2\\right)\\,…"
@@ -498,49 +477,42 @@
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html",
-    "paragraphIndex": 165,
-    "reason": "density=2, chars=383, sentences=1, inlineMath=5, blockMath=0",
-    "splitAfterSentence": null,
-    "snippet": "The interval between $z_{n}$ progressing on the x-axis follow the harmonic series if the interval is defined to full $360\\text{°}\\thinspace or\\thinspace2\\pi$ p…"
-  },
-  {
-    "file": "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html",
-    "paragraphIndex": 169,
+    "paragraphIndex": 170,
     "reason": "density=4, chars=1331, sentences=1, inlineMath=10, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "Table 7.5 — Level 1 coordinate listing n \\(C_{unity}\\)\\(cl=\\frac{\\sqrt[4]{|a|}}{\\lfloor \\sqrt[4]{|a|}\\rfloor}\\) ngon / chord \\(\\cos\\!\\left(\\tfrac{idx}{ngon}2\\p…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html",
-    "paragraphIndex": 171,
+    "paragraphIndex": 172,
     "reason": "density=2, chars=261, sentences=1, inlineMath=1, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The prime number ‘5’ takes a pivotal role and presents itself in eighth identities, one in its original role as the prime number 5, and then consecutive as the…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html",
-    "paragraphIndex": 176,
+    "paragraphIndex": 178,
     "reason": "density=2, chars=286, sentences=1, inlineMath=4, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "$\\left\\{ \\left[1\\right],\\left[2,3\\right],\\left[4,5,6\\right]\\right\\} $$\\left\\{ \\left[7\\right],\\left[8,9\\right],\\left[10,11,12\\right]\\right\\}$$\\left\\{\\left[13\\ri…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html",
-    "paragraphIndex": 182,
+    "paragraphIndex": 184,
     "reason": "density=2, chars=263, sentences=1, inlineMath=2, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The consequence of the stacking is a numerical additive sequence visiting primes and composites on the diagonal $1+4+2+4+2+4+2,\\dots,\\left\\{ 1,5,7,11,13,17,19,…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html",
-    "paragraphIndex": 194,
-    "reason": "density=2, chars=422, sentences=3, inlineMath=5, blockMath=0",
-    "splitAfterSentence": 2,
-    "snippet": "Back to figure 7.20: Orthogonal diagonal as circumference, the inner arc labeled “$8\\times8$ orthogonal diagonal” indicates the part of the spiral that defines…"
+    "paragraphIndex": 197,
+    "reason": "density=2, chars=244, sentences=2, inlineMath=4, blockMath=0",
+    "splitAfterSentence": 1,
+    "snippet": "It covers x=0 to x=-4, $\\left(25\\times-0.16=-4\\right)$ radial units of $\\frac{1}{2.5^{2}}$. This $180{^\\circ}$ of arc holds the 9 primes under 25,$\\left(2,3,5,…"
   },
   {
     "file": "zeta-zero-cafe/notebook/Chapter 7 Quadrature Geometric Framework.html",
-    "paragraphIndex": 204,
+    "paragraphIndex": 207,
     "reason": "density=2, chars=270, sentences=1, inlineMath=1, blockMath=0",
     "splitAfterSentence": null,
     "snippet": "The result as seen in figure 7.20: Orthogonal diagonal as circumference, is that in the limit all prime numbers combined address the whole continuum $\\frac{n\\t…"

@@ -25,34 +25,33 @@ node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 3 The primori
 ```
 **Write:** add `--write` (auto-backup enabled)
 
-## § candidate — index 19
-- reason: density=2, chars=474, sentences=3, inlineMath=8, blockMath=0
-- suggested split **after sentence**: 2
-- snippet: The partial sum increment, $P_{s}\:increment$, table 3.2, shows a peculiar alternating progression. The current partial sum $P_{s}\rightarrow n$ minus the incr…
+## § candidate — index 20
+- reason: density=2, chars=200, sentences=1, inlineMath=4, blockMath=0
+- snippet: The upper and lower bounds alternate row by row and group the primes like $\left\{ 2,3\right\} ,$$\left\{ 5,7\right\} ,$$\left\{ 11,13\right\} ,$$\left\{ 17,19…
 
 **Dry-run:**
 ```bash
-node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 3 The primorial function.html" --index 19 --sentence 2
+node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 3 The primorial function.html" --index 20
 ```
 **Write:** add `--write` (auto-backup enabled)
 
-## § candidate — index 20
-- reason: density=2, chars=425, sentences=3, inlineMath=5, blockMath=0
-- suggested split **after sentence**: 2
+## § candidate — index 21
+- reason: density=2, chars=286, sentences=2, inlineMath=4, blockMath=0
+- suggested split **after sentence**: 1
 - snippet: For the first two terms $\left\{ 2,3\right\}$ the ratio is exact, $\frac{lb}{ub}=\frac{1}{3}$, the last two terms in the table $\left\{ 23,29\right\}$ approach…
 
 **Dry-run:**
 ```bash
-node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 3 The primorial function.html" --index 20 --sentence 2
+node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 3 The primorial function.html" --index 21 --sentence 1
 ```
 **Write:** add `--write` (auto-backup enabled)
 
-## § candidate — index 34
+## § candidate — index 36
 - reason: density=2, chars=257, sentences=1, inlineMath=7, blockMath=0
 - snippet: The quadrature constant $\looparrowright=\frac{2\pi}{2.5^2}$ provides a smooth mapping from $\mathbb{Q}$ to $\mathbb{R}$ if we define $\mathbb{Q}$ as a circle …
 
 **Dry-run:**
 ```bash
-node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 3 The primorial function.html" --index 34
+node tools/apply-split.mjs --file "zeta-zero-cafe/notebook/Chapter 3 The primorial function.html" --index 36
 ```
 **Write:** add `--write` (auto-backup enabled)
