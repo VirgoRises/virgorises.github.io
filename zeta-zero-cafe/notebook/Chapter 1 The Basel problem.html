@@ -150,19 +150,25 @@
     <nav class="pager"><span></span><a href="Chapter 2 The spatial aspect of zet.html">Next →</a></nav>
   </main>
   <footer class="wrap">© <span id="y"></span> Virgorises</footer>
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script><script>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  
+<script>
   window.OSF_CONFIG = {
-    // send members straight to your channel:
+    // destinations
     discordChannelUrl: "https://discord.com/channels/1421398181098557462/1421432961726939277",
-    // optional: open in desktop app
     discordAppUrl: "discord://-/channels/1421398181098557462/1421432961726939277",
-    // non-members go here:
-    squareUrl: "/zeta-zero-cafe/join-the-square.html",
-    // optional: show a Join link in the popover
-    inviteUrl: "https://discord.gg/YOUR_INVITE"
+    squareUrl: "https://discord.com/channels/1421398181098557462/1421477719157510249",
+    inviteUrl: "https://www.patreon.com/c/virgorises",
+
+    // copy shown in the popover
+    strings: {
+      nonMemberPrimary: "Enter The Square (free)",
+      nonMemberNote: "Open chat for everyone — no payment required.",
+      joinCta: "Support on Patreon (optional)"
+      // (optional) memberPrimary/memberNote/title too
+    }
   };
 </script>
 <script defer src="/zeta-zero-cafe/js/osf.bundle.js"></script>
-
 </body>
 </html>

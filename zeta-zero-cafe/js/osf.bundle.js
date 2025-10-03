@@ -3,19 +3,26 @@
   "use strict";
 
   // -------- Config (override per page with window.OSF_CONFIG = {...}) --------
-  const DEFAULTS = {
-    SCROLL_OFFSET: 80,
-    HILITE_MS: 6000,
-    basePath: null, // auto-detected from /notebook/ if null
-    // where non-members land:
-    squareUrl: "/zeta-zero-cafe/join-the-square.html",
-    // where members land (browser):
-    discordChannelUrl: "https://discord.com/channels/YOUR_SERVER_ID/YOUR_CHANNEL_ID",
-    // optional: open Discord desktop app
-    discordAppUrl: null, // e.g. "discord://-/channels/123/456"
-    // optional: invite link in case the user isn't in your server yet
-    inviteUrl: null
-  };
+const DEFAULTS = {
+  SCROLL_OFFSET: 80,
+  HILITE_MS: 6000,
+  basePath: null,
+  squareUrl: "/zeta-zero-cafe/join-the-square.html",
+  discordChannelUrl: "https://discord.com/channels/YOUR_SERVER_ID/YOUR_CHANNEL_ID",
+  discordAppUrl: null,
+  inviteUrl: null,
+
+  // NEW: text you can override from OSF_CONFIG
+  strings: {
+    title: (label) => `Discuss ${label}`,
+    memberPrimary: "Open Discord",
+    nonMemberPrimary: "Enter The Square (free)",
+    memberNote: "You’re marked as a member on this device.",
+    nonMemberNote: "Open chat for everyone — no payment required.",
+    joinCta: "Support on Patreon (optional)",   // shown if inviteUrl is set
+  }
+};
+
   const CFG = Object.assign({}, DEFAULTS, (window.OSF_CONFIG || {}));
 
   const log = (...a) => console.log("[osf]", ...a);
@@ -108,33 +115,36 @@
   }
 
   // ------------------------ Popover -----------------------------------------
-  function updatePrimaryLink(a, note) {
-    if (isMember()) {
-      a.textContent = "Open Discord";
-      a.href = CFG.discordChannelUrl;
-      if (note) note.textContent = "You’re marked as a member on this device.";
-    } else {
-      a.textContent = "Enter The Square";
-      a.href = CFG.squareUrl;
-      if (note) note.textContent = "Members go straight to Discord; everyone else enters The Square.";
-    }
+function updatePrimaryLink(a, note) {
+  if (isMember()) {
+    a.textContent = CFG.strings.memberPrimary || "Open Discord";
+    a.href = CFG.discordChannelUrl;
+    if (note) note.textContent = CFG.strings.memberNote || "";
+  } else {
+    a.textContent = CFG.strings.nonMemberPrimary || "Enter The Square";
+    a.href = CFG.squareUrl;
+    if (note) note.textContent = CFG.strings.nonMemberNote || "";
   }
-  function buildPopover(labelText, uuid) {
-    const pop = document.createElement("div");
-    pop.className = "osf-pop";
+}
 
-    const title = document.createElement("h5");
-    title.textContent = `Discuss ${labelText}`;
+function buildPopover(labelText, uuid){
+  const pop = document.createElement("div");
+  pop.className = "osf-pop";
 
-    const row1 = document.createElement("div"); row1.className = "osf-row";
-    const row2 = document.createElement("div"); row2.className = "osf-row";
+  const title = document.createElement("h5");
+  const titler = CFG.strings.title;
+  title.textContent = typeof titler === "function" ? titler(labelText)
+                    : (titler || `Discuss ${labelText}`);
 
-    const primary = document.createElement("a");
-    primary.className = "osf-btn primary";
-    primary.target = "_blank"; primary.rel = "noopener";
+  const row1 = document.createElement("div"); row1.className="osf-row";
+  const row2 = document.createElement("div"); row2.className="osf-row";
 
-    const snippet = `${labelText} — ${fullLinkTo(uuid)}`;
-    primary.addEventListener("click", () => { navigator.clipboard?.writeText(snippet); });
+  const primary = document.createElement("a");
+  primary.className = "osf-btn primary";
+  primary.target = "_blank"; primary.rel="noopener";
+
+  const snippet = `${labelText} — ${fullLinkTo(uuid)}`;
+  primary.addEventListener("click", () => { navigator.clipboard?.writeText(snippet); });
 
     // optional: open in app
     if (CFG.discordAppUrl) {
