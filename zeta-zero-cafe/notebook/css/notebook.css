@@ -269,18 +269,45 @@ html {
 .osf-label{ display: inline-block !important; margin: 0 !important; }
 .osf-copy{ margin-left: .4rem !important; }
 
-/* keep label + icon aligned; only show icon on hover or keyboard focus */
-.osf-head { display:inline-flex; align-items:center; gap:.45rem; }
-.osf-head .osf-copy { opacity:0; transition:opacity .12s; }
-.osf-head:hover .osf-copy,
-.osf-head .osf-copy:focus-visible { opacity:1; }
+/* keep label + icons on one row */
+.osf-head{
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .45rem !important;
+}
 
-/* nice focus ring for keyboard users */
+/* hide both icons by default, reveal on hover or keyboard focus */
+.osf-head .osf-copy,
+.osf-head .osf-more{
+  opacity: 0;
+  transition: opacity .12s;
+}
+
+.osf-head:hover .osf-copy,
+.osf-head:hover .osf-more,
 .osf-head .osf-copy:focus-visible,
-.osf-label:focus-visible {
-  outline: 2px solid var(--focus, #88f);
-  outline-offset: 2px;
-  border-radius: .4rem;
+.osf-head .osf-more:focus-visible{
+  opacity: 1;
+}
+/* icons use the same color as text */
+.osf-head .osf-copy,
+.osf-head .osf-more{
+  color: inherit !important;
+}
+/* keep icons hidden by default */
+.osf-head .osf-copy,
+.osf-head .osf-more{
+  opacity: 0;
+  transition: opacity .12s;
+  color: inherit;           /* make emoji/SVG match text color */
+}
+
+/* show icons when hovering the ENTIRE block or when focused via keyboard */
+.osf-block:hover .osf-copy,
+.osf-block:hover .osf-more,
+.osf-block:focus-within .osf-copy,
+.osf-block:focus-within .osf-more{
+  opacity: 1;               /* add !important if earlier rules win */
 }
 
 /* -------- Cards that contain tables -------- */
