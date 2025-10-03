@@ -257,6 +257,31 @@ html {
   opacity: 1;
   transform: translateY(0);
 }
+/* put § label above the paragraph, left-aligned */
+.osf-block{
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: .35rem !important;   /* space between label line and the pre block */
+}
+
+/* keep label + tiny copy icon on one line */
+.osf-label{ display: inline-block !important; margin: 0 !important; }
+.osf-copy{ margin-left: .4rem !important; }
+
+/* keep label + icon aligned; only show icon on hover or keyboard focus */
+.osf-head { display:inline-flex; align-items:center; gap:.45rem; }
+.osf-head .osf-copy { opacity:0; transition:opacity .12s; }
+.osf-head:hover .osf-copy,
+.osf-head .osf-copy:focus-visible { opacity:1; }
+
+/* nice focus ring for keyboard users */
+.osf-head .osf-copy:focus-visible,
+.osf-label:focus-visible {
+  outline: 2px solid var(--focus, #88f);
+  outline-offset: 2px;
+  border-radius: .4rem;
+}
 
 /* -------- Cards that contain tables -------- */
 figure.card {
