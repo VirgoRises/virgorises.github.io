@@ -206,18 +206,19 @@
       ping(isMember() ? "open_discord" : "enter_square", { uuid });
     });
 
-    // optional: open in app
-    if (CFG.discordAppUrl) {
-      const appBtn = document.createElement("a");
-      appBtn.className = "osf-btn";
-      appBtn.textContent = "Open in Discord app";
-      appBtn.href = CFG.discordAppUrl;
-      appBtn.addEventListener("click", () => {
-        navigator.clipboard?.writeText(snippet);
-        ping("open_discord_app", { uuid });
-      });
-      row1.appendChild(appBtn);
-    }
+// optional: open in app (members only)
+let appBtn = null;
+if (CFG.discordAppUrl) {
+  appBtn = document.createElement("a");
+  appBtn.className = "osf-btn";
+  appBtn.textContent = "Open in Discord app";
+  appBtn.href = CFG.discordAppUrl;
+  appBtn.addEventListener("click", () => {
+    navigator.clipboard?.writeText(snippet);
+    ping("open_discord_app", { uuid });
+  });
+  row1.appendChild(appBtn);
+}
 
     const copyBtn = document.createElement("button");
     copyBtn.className = "osf-btn";
@@ -237,26 +238,26 @@
       ping("toggle_member", { to: isMember() ? 1 : 0 });
     });
 
-    // Patreon/Join link — only for non-members
-  let join = null;
-  if (CFG.inviteUrl) {
-    join = document.createElement("a");
-    join.className = "osf-btn";
-    join.textContent = CFG.strings?.joinCta || "Join server";
-    join.href = CFG.inviteUrl;
-    join.target = "_blank"; join.rel = "noopener";
-    row2.appendChild(join);
-  }
+// Patreon/Join link — only for non-members
+let join = null;
+if (CFG.inviteUrl) {
+  join = document.createElement("a");
+  join.className = "osf-btn";
+  join.textContent = CFG.strings?.joinCta || "Join server";
+  join.href = CFG.inviteUrl;
+  join.target = "_blank"; join.rel = "noopener";
+  row2.appendChild(join);
+}
     const note = document.createElement("div");
     note.className = "osf-note";
 
     updatePrimaryLink(primary, note);
   // hide non-member CTAs for members
-  function refreshVisibility(){
-    if (join) join.style.display = isMember() ? "none" : "";
-    // primary already switches to Discord via updatePrimaryLink(...)
-  }
-  refreshVisibility();
+function refreshVisibility(){
+  if (join)   join.style.display   = isMember() ? "none" : "";
+  if (appBtn) appBtn.style.display = isMember() ? ""     : "none";
+}
+refreshVisibility();
     row1.prepend(primary);
     row1.appendChild(copyBtn);
     row2.appendChild(toggle);
