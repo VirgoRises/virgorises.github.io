@@ -514,12 +514,17 @@
   </main>
   <footer class="wrap">© <span id="y"></span> Virgorises</footer>
   <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
- <script>
+<script>
   window.OSF_CONFIG = {
-    // members go here:
     discordChannelUrl: "https://discord.com/channels/1421398181098557462/1421432961726939277",
-    // everyone else goes here:
-    squareUrl: "/zeta-zero-cafe/join-the-square.html"
+    discordAppUrl: "discord://-/channels/1421398181098557462/1421432961726939277",
+    squareUrl: "https://discord.com/channels/1421398181098557462/1421477719157510249",
+    inviteUrl: "https://www.patreon.com/c/virgorises",
+    // optional analytics collector (set to null to disable)
+    analyticsEndpoint: "/osf-analytics",
+    // optional snippet format (anti-spoof by default)
+    snippetTemplate: (label, url, id) => `${label} [id=${id}] — ${url}`,
+    // (if you added 'strings' earlier, keep them—this patch doesn't change that)
   };
 </script>
 <script defer src="/zeta-zero-cafe/js/osf.bundle.js"></script>
