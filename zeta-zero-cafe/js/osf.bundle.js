@@ -53,7 +53,7 @@
   const CFG = Object.assign({}, DEFAULTS, (window.OSF_CONFIG || {}));
 
   const log = (...a) => console.log("[osf]", ...a);
-  const $$  = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
   // --- privacy-light beacon (only if endpoint configured) ---
   function ping(event, data = {}) {
@@ -64,7 +64,7 @@
         CFG.analyticsEndpoint,
         new Blob([payload], { type: "application/json" })
       );
-    } catch (_) {}
+    } catch (_) { }
   }
 
   // ------------------------ Styles ------------------------------------------
@@ -196,35 +196,53 @@
     const snippet = snippetOf(labelText, uuid);
     // Alt-click to skip copy. First time show a hint.
     primary.addEventListener("click", (e) => {
-      if (!e.altKey) {
-        navigator.clipboard?.writeText(snippet);
-        if (!localStorage.getItem("osfAltHintShown")) {
-          toast("Link copied • Alt-click to skip");
-          localStorage.setItem("osfAltHintShown", "1");
-        }
+      const href = primary.href;
+      const target = primary.target || "_self";
+
+      if (e.altKey) {
+        // skip copy AND avoid the browser's Alt+Click "download" behavior
+        e.preventDefault();
+        window.open(href, target, "noopener");
+        ping(isMember() ? "open_discord" : "enter_square", { uuid, alt: 1 });
+        return;
       }
-      ping(isMember() ? "open_discord" : "enter_square", { uuid });
+
+      navigator.clipboard?.writeText(snippet);
+      if (!localStorage.getItem("osfAltHintShown")) {
+        toast("Link copied • Alt-click to skip");
+        localStorage.setItem("osfAltHintShown", "1");
+      }
+      ping(isMember() ? "open_discord" : "enter_square", { uuid, alt: 0 });
     });
 
-// optional: open in app (members only)
-let appBtn = null;
-if (CFG.discordAppUrl) {
-  appBtn = document.createElement("a");
-  appBtn.className = "osf-btn";
-  appBtn.textContent = "Open in Discord app";
-  appBtn.href = CFG.discordAppUrl;
-  appBtn.addEventListener("click", () => {
-    navigator.clipboard?.writeText(snippet);
-    ping("open_discord_app", { uuid });
-  });
-  row1.appendChild(appBtn);
-}
+    // optional: open in app (members only)
+    let appBtn = null;
+    if (CFG.discordAppUrl) {
+      const appBtn = document.createElement("a");
+      appBtn.className = "osf-btn";
+      appBtn.textContent = "Open in Discord app";
+      appBtn.href = CFG.discordAppUrl;
+
+      appBtn.addEventListener("click", (e) => {
+        const href = appBtn.href, target = appBtn.target || "_self";
+        if (e.altKey) {
+          e.preventDefault();
+          window.open(href, target, "noopener");
+          ping("open_discord_app", { uuid, alt: 1 });
+          return;
+        }
+        navigator.clipboard?.writeText(snippet);
+        ping("open_discord_app", { uuid, alt: 0 });
+      });
+
+      row1.appendChild(appBtn);
+    }
 
     const copyBtn = document.createElement("button");
     copyBtn.className = "osf-btn";
     copyBtn.textContent = "Copy paragraph link";
     copyBtn.addEventListener("click", async () => {
-      try { await navigator.clipboard?.writeText(fullLinkTo(uuid)); toast("Link copied"); ping("copy_link", { uuid }); } catch {}
+      try { await navigator.clipboard?.writeText(fullLinkTo(uuid)); toast("Link copied"); ping("copy_link", { uuid }); } catch { }
     });
 
     const toggle = document.createElement("button");
@@ -238,26 +256,26 @@ if (CFG.discordAppUrl) {
       ping("toggle_member", { to: isMember() ? 1 : 0 });
     });
 
-// Patreon/Join link — only for non-members
-let join = null;
-if (CFG.inviteUrl) {
-  join = document.createElement("a");
-  join.className = "osf-btn";
-  join.textContent = CFG.strings?.joinCta || "Join server";
-  join.href = CFG.inviteUrl;
-  join.target = "_blank"; join.rel = "noopener";
-  row2.appendChild(join);
-}
+    // Patreon/Join link — only for non-members
+    let join = null;
+    if (CFG.inviteUrl) {
+      join = document.createElement("a");
+      join.className = "osf-btn";
+      join.textContent = CFG.strings?.joinCta || "Join server";
+      join.href = CFG.inviteUrl;
+      join.target = "_blank"; join.rel = "noopener";
+      row2.appendChild(join);
+    }
     const note = document.createElement("div");
     note.className = "osf-note";
 
     updatePrimaryLink(primary, note);
-  // hide non-member CTAs for members
-function refreshVisibility(){
-  if (join)   join.style.display   = isMember() ? "none" : "";
-  if (appBtn) appBtn.style.display = isMember() ? ""     : "none";
-}
-refreshVisibility();
+    // hide non-member CTAs for members
+    function refreshVisibility() {
+      if (join) join.style.display = isMember() ? "none" : "";
+      if (appBtn) appBtn.style.display = isMember() ? "" : "none";
+    }
+    refreshVisibility();
     row1.prepend(primary);
     row1.appendChild(copyBtn);
     row2.appendChild(toggle);
@@ -270,7 +288,7 @@ refreshVisibility();
   }
 
   // --- smarter popover placement (keep on-screen) ---
-  function positionPopover(pop, anchorBtn){
+  function positionPopover(pop, anchorBtn) {
     const wasClosed = !pop.classList.contains("open");
     if (wasClosed) { pop.style.visibility = "hidden"; pop.classList.add("open"); }
     const ar = anchorBtn.getBoundingClientRect();
@@ -282,7 +300,7 @@ refreshVisibility();
     // place above if overflowing bottom
     if (ar.bottom + pr.height > vh - 12) top = -(pr.height + 8);
     pop.style.left = `${left}px`;
-    pop.style.top  = `${top}px`;
+    pop.style.top = `${top}px`;
     if (wasClosed) { pop.classList.remove("open"); pop.style.visibility = ""; }
   }
 
@@ -294,22 +312,22 @@ refreshVisibility();
     const q = new URLSearchParams(location.search);
     if (q.has("member")) setMember(q.get("member") === "1");
 
-    const ch   = detectChapter();
+    const ch = detectChapter();
     const base = detectBasePath();
-    const map  = await fetchAnchors(base, ch);
+    const map = await fetchAnchors(base, ch);
 
     const pres = $$(".card pre.osf, pre.osf");
     log(`found ${pres.length} <pre.osf> (chapter=${ch ?? "?"}, base="${base}")`);
     if (!pres.length) return;
 
     pres.forEach((pre, i) => {
-      const uuid = map?.paragraphs?.[i]?.uuid || `osf-${i+1}`;
-      const labelText = map?.paragraphs?.[i]?.label || `§ ${i+1}`;
+      const uuid = map?.paragraphs?.[i]?.uuid || `osf-${i + 1}`;
+      const labelText = map?.paragraphs?.[i]?.label || `§ ${i + 1}`;
       pre.id = uuid;
 
       // legacy anchor for old #osf-N links
       const legacy = document.createElement("span");
-      legacy.id = `osf-${i+1}`;
+      legacy.id = `osf-${i + 1}`;
       legacy.style.position = "relative";
       legacy.style.top = "-1px";
       pre.parentNode.insertBefore(legacy, pre);
@@ -343,7 +361,7 @@ refreshVisibility();
       a.addEventListener("click", (ev) => { ev.preventDefault(); history.replaceState(null, "", `#${uuid}`); scrollAndHighlight(pre); });
       copy.addEventListener("click", async (ev) => {
         ev.preventDefault(); ev.stopPropagation();
-        try { await navigator.clipboard?.writeText(fullLinkTo(uuid)); toast("Link copied"); ping("copy_link", { uuid }); } catch {}
+        try { await navigator.clipboard?.writeText(fullLinkTo(uuid)); toast("Link copied"); ping("copy_link", { uuid }); } catch { }
       });
 
       // popover
