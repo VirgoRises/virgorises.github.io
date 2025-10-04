@@ -1,0 +1,27 @@
+name: Hot Feeds
+on:
+  schedule:
+    - cron: "0 * * * *"   # hourly, UTC
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SITE_BASE: https://virgorises.github.io
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node tools/build-hot-feeds.mjs
+      - name: Commit updates
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "osf-bot"
+            git config user.email "bot@zeta-zero-cafe"
+            git add out/hot/*.json out/hot/*.md
+            git commit -m "chore: update hot feeds"
+            git push
+          fi
+    concurrency:
+      group: hot-feeds
+      cancel-in-progress: true
