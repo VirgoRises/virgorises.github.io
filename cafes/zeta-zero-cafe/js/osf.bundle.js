@@ -17,7 +17,7 @@
 //       snippetTemplate: (label, url, id) => `${label} [id=${id}] — ${url}`
 //     };
 //   </script>
-//   <script defer src="/zeta-zero-cafe/js/osf.bundle.js"></script>
+//   <script defer src="/cafes/zeta-zero-cafe/js/osf.bundle.js"></script>
 
 (function () {
   "use strict";
@@ -29,7 +29,7 @@
     basePath: null, // auto-detected from /notebook/ if null
 
     // paths/destinations
-    squareUrl: "/zeta-zero-cafe/join-the-square.html",
+    squareUrl: "/cafes/zeta-zero-cafe/join-the-square.html",
     discordChannelUrl: "https://discord.com/channels/YOUR_SERVER_ID/YOUR_CHANNEL_ID",
     discordAppUrl: null, // e.g. "discord://-/channels/123/456"
     inviteUrl: null,
