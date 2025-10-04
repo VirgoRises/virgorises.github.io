@@ -1,0 +1,25 @@
+name: RFC Compile
+on:
+  push:
+    paths:
+      - "data/proposals/**"
+      - "tools/rfc-compile.mjs"
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node tools/rfc-compile.mjs
+      - name: Commit changes
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "osf-bot"
+            git config user.email "bot@zeta-zero-cafe"
+            git add -A
+            git commit -m "CI: compile RFC tallies/badges"
+            git push
+          fi
