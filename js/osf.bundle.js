@@ -266,13 +266,24 @@
       join.target = "_blank"; join.rel = "noopener";
       row2.appendChild(join);
     }
+
+    // --- Draft RFC Memo button -------------------------------------------------
+    const memoBtn = document.createElement("button");
+    memoBtn.className = "osf-btn";
+    memoBtn.textContent = "Draft RFC memo";
+    memoBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      window.OSF?.Memo?.open(uuid);
+    });
+    row2.appendChild(memoBtn);
+
     const note = document.createElement("div");
     note.className = "osf-note";
 
     updatePrimaryLink(primary, note);
 
     function refreshVisibility() {
-      if (join)   join.style.display   = isMember() ? "none" : "";
+      if (join) join.style.display = isMember() ? "none" : "";
       if (appBtn) appBtn.style.display = isMember() ? "" : "none";
     }
     refreshVisibility();
@@ -299,7 +310,7 @@
     if (ar.left + pr.width > vw - 12) left = Math.max(vw - ar.left - pr.width - 12, -ar.left + 12);
     if (ar.bottom + pr.height > vh - 12) top = -(pr.height + 8);
     pop.style.left = `${left}px`;
-    pop.style.top  = `${top}px`;
+    pop.style.top = `${top}px`;
     if (wasClosed) { pop.classList.remove("open"); pop.style.visibility = ""; }
   }
 
@@ -311,9 +322,9 @@
     const q = new URLSearchParams(location.search);
     if (q.has("member")) setMember(q.get("member") === "1");
 
-    const ch   = detectChapter();
+    const ch = detectChapter();
     const base = detectBasePath();
-    const map  = await fetchAnchors(base, ch);
+    const map = await fetchAnchors(base, ch);
 
     const pres = $$(".card pre.osf, pre.osf");
     log(`found ${pres.length} <pre.osf> (chapter=${ch ?? "?"}, base="${base}")`);

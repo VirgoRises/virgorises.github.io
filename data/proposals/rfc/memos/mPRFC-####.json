@@ -1,0 +1,20 @@
+{
+  "memo_id": "mPRFC-0001",
+  "status": "draft|submitted|promoted|withdrawn",
+  "created_at": "2025-10-04T08:05:00Z",
+  "updated_at": "2025-10-04T08:05:00Z",
+
+  "cafe_slug": "zeta-zero-cafe",
+  "chapter_no": 4,
+  "chapter_url": "/cafes/zeta-zero-cafe/notebook/Chapter 4 The triangular numbers.html",
+  "paragraph_uuid": "osf-15",
+
+  "figures": ["fig-2-1","fig-2-3"],
+  "tables":  ["tbl-2-1"],
+  "labels":  [],
+
+  "memo_md": "Short thesis, concerns, sketches, LaTeX $\\dots$",
+  "user_id": "discord:123456789012345678",  
+  "role": "rpoh|ntzz|other",                
+  "source_msg": "https://discord.com/channels/.../...."
+}
