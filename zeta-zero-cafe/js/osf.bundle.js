@@ -407,5 +407,67 @@
 
   // (optional) expose for debugging
   window.OSF = { config: CFG };
+
+  // local role flag (UI only; bot validates real role)
+  function getLocalRole() {
+    return localStorage.getItem("osfRole") || "ntz"; // "rpoH" | "ntz"
+  }
+  function setLocalRole(r) { localStorage.setItem("osfRole", r); }
+
+  // UI: role switcher
+  function roleSwitcher() {
+    const w = document.createElement("div");
+    w.className = "rfc-note";
+    w.innerHTML = `Acting as:
+    <button class="rfc-btn" data-role="ntz">non-trivial-zero</button>
+    <button class="rfc-btn" data-role="rpoH">real-part-one-half</button>`;
+    w.addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-role]"); if (!b) return;
+      setLocalRole(b.dataset.role);
+      location.reload(); // simplest: re-render
+    });
+    return w;
+  }
+
+  const role = getLocalRole();
+  const actions = el("div", "rfc-actions");
+
+  if (role === "rpoH") {
+    const underBtn = btn("Underwrite", "primary");
+    const dissentBtn = btn("Dissent");
+    const retractBtn = btn("Retract");
+    actions.append(underBtn, dissentBtn, retractBtn);
+    // same handler as before, but include --role:
+    const run = (kind) => {
+      const reason = prompt(`Optional motivation for ${kind} of ${rfc.prfc_id}:`, "");
+      const cmd = buildCommand(rfc.prfc_id, kind.toLowerCase(), reason || "", role);
+      navigator.clipboard?.writeText(cmd);
+      window.open(CFG.discordChannelUrl || CFG.squareUrl, "_blank", "noopener");
+    };
+    underBtn.onclick = () => run("Underwrite");
+    dissentBtn.onclick = () => run("Dissent");
+    retractBtn.onclick = () => run("Retract");
+  } else {
+    const motBtn = btn("Motivate", "primary");
+    actions.append(motBtn);
+    motBtn.onclick = () => {
+      const reason = prompt(`Motivation for ${rfc.prfc_id}:`, "") || "";
+      const cmd = buildMotivation(rfc.prfc_id, reason);
+      navigator.clipboard?.writeText(cmd);
+      window.open(CFG.discordChannelUrl || CFG.squareUrl, "_blank", "noopener");
+    };
+  }
+  card.append(actions);
+  card.append(roleSwitcher());
+  
+  function buildCommand(prfc_id, action, motivation, role) {
+    const why = (motivation || "").replace(/\s+/g, " ").trim().slice(0, 400).replace(/"/g, '\\"');
+    return `!rfcvote ${prfc_id} ${action} --role ${role} --why "${why}"`;
+  }
+  function buildMotivation(prfc_id, motivation) {
+    const why = (motivation || "").replace(/\s+/g, " ").trim().slice(0, 800).replace(/"/g, '\\"');
+    return `!rfcmot ${prfc_id} --why "${why}"`;
+  }
+
 })();
 

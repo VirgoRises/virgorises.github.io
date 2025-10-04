@@ -1,0 +1,7 @@
+{
+  "user_id": "discord:1421398181098557462",
+  "roles": ["rpoH"],                 // mirrored from Discord
+  "points": 37.5,
+  "badges": ["aligned-5", "early-call-2", "persuader-3"],  // slugs
+  "history": { "voted": 18, "aligned": 12, "persuaded": 5 }
+}

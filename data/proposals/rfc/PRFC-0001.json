@@ -1,0 +1,14 @@
+{
+  "prfc_id": "PRFC-0001",
+  "paragraph_uuid": "c4-0002-2b91a0",
+  "author_user_id": "discord:1421398181098557462",
+  "title": "Clarify definition of T(n) and its projection",
+  "motivation": "Readers misinterpret the projection step...",
+  "proposed_change": "Replace last sentence with …",
+  "defense": "Keeps notation consistent with §14…",
+  "created_at": "2025-03-01T18:42:00Z",
+  "status": "active",    // active | ready | closed
+  "conflicts_with": ["PRFC-0007"],
+  "voting": { "quorum": 5, "role": "rpoHOnly" },
+  "tallies": { "underwrite": 5, "dissent": 1 } // derived
+}

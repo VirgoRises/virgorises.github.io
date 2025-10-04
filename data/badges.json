@@ -1,0 +1,5 @@
+{
+  "aligned":   { "title": "Aligned", "desc": "Your vote matched the final outcome", "unit":"count" },
+  "early-call":{ "title": "Early Call", "desc": "Correct vote ≥48h before closure", "unit":"count" },
+  "persuader": { "title": "Persuader", "desc": "An RPOH voted referencing your motivation", "unit":"count" }
+}
