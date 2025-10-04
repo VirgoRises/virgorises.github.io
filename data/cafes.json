@@ -1,0 +1,20 @@
+{
+  "cafes": [
+    {
+      "slug": "zeta-zero-cafe",
+      "title": "Zeta Zero Café",
+      "basePath": "/cafes/zeta-zero-cafe",
+      "description": "Working notebook on zeta, primes, geometry — and the connective tissue with physics.",
+      "tags": ["number theory", "geometry", "zeta", "physics"],
+      "created_at": "2025-09-01T00:00:00Z",
+      "status": "open", 
+      "discord": {
+        "guild": "1421398181098557462",
+        "channel": "1421477719157510249"
+      },
+      "maintainers": [
+        { "id": "discord:940631263797186612", "role": "owner" }
+      ]
+    }
+  ]
+}

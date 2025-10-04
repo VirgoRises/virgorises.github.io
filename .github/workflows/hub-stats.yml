@@ -1,0 +1,24 @@
+# .github/workflows/hub-stats.yml
+name: Hub Stats
+on:
+  push:
+    paths: ["data/**", "tools/build-hub-stats.mjs"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node tools/build-hub-stats.mjs
+      - name: Commit stats
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "osf-bot"
+            git config user.email "bot@zeta-zero-cafe"
+            git add out/hub_stats.json out/latest_rfcs.json
+            git commit -m "chore: update hub stats"
+            git push
+          fi

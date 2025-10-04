@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hot Feed — Café</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="/css/virgorises.css" />
+<style>
+  .subtle { opacity:.85; }
+  .row { display:flex; gap:.5rem; flex-wrap:wrap; }
+  .pill { display:inline-block; margin:.1rem .25rem .1rem 0; padding:.1rem .45rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.18); font-size:.85rem; opacity:.95; }
+  .heat { display:inline-block; padding:.15rem .5rem; border-radius:.5rem; border:1px solid rgba(255,120,0,.35); background: rgba(255,120,0,.10); }
+  .warn { border-left: 4px solid #ff7a66; padding-left:.6rem; }
+  .feed-grid { display:grid; grid-template-columns: 2fr 1fr; gap:1rem; }
+  @media (max-width: 900px){ .feed-grid { grid-template-columns: 1fr; } }
+  .ev { border-bottom:1px dashed rgba(255,255,255,.12); padding:.4rem 0; }
+  .ev .meta { font-size:.8rem; opacity:.8; }
+</style>
+</head>
+<body>
+<header class="hero wrap">
+  <span class="tag">Momentum · Live digest</span>
+  <h1 id="title">Café</h1>
+  <p class="lead" id="desc"></p>
+  <div class="row">
+    <a class="btn" id="open-notebook" href="#">📓 Open notebook</a>
+    <a class="btn" href="/#cafes">⬅ Back to The Square</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <h2>Heat & Motion</h2>
+    <div class="row">
+      <span class="pill">Events 24h: <b id="ev24">0</b></span>
+      <span class="pill">Events 7d: <b id="ev7">0</b></span>
+      <span class="pill">Top spicy: <b id="spicy">0.0</b> 🔥</span>
+      <span class="pill subtle">Updated: <span id="gen">—</span></span>
+    </div>
+  </section>
+
+  <div class="feed-grid">
+    <section class="card">
+      <h2>🔥 Hottest RFCs</h2>
+      <div id="top"></div>
+    </section>
+
+    <section class="card">
+      <h2>📰 Recent Activity (72h)</h2>
+      <div id="feed"></div>
+    </section>
+  </div>
+</main>
+
+<script>
+(async function(){
+  // infer slug: /cafes/<slug>/hot.html
+  const m = location.pathname.match(/^\/cafes\/([^\/]+)\/hot\.html$/);
+  const slug = m ? m[1] : null;
+  if (!slug) { document.getElementById('title').textContent = "Hot Feed"; return; }
+
+  const res = await fetch(`/out/hot/${slug}.json`, { cache: 'no-store' });
+  if (!res.ok) { document.getElementById('title').textContent = "Hot Feed"; return; }
+  const data = await res.json();
+
+  // header
+  document.title = `Hot Feed — ${data.title}`;
+  document.getElementById('title').textContent = `${data.title} · Hot Feed`;
+  document.getElementById('desc').textContent = data.description || '';
+  document.getElementById('open-notebook').href = `${data.basePath}/notebook/`;
+  document.getElementById('ev24').textContent = (data.totals?.events_24h ?? 0);
+  document.getElementById('ev7').textContent  = (data.totals?.events_7d ?? 0);
+  document.getElementById('spicy').textContent= (data.totals?.top_spicy_index ?? 0).toFixed(1);
+  document.getElementById('gen').textContent   = new Date(data.generated_at).toLocaleString();
+
+  // hottest list
+  const topHost = document.getElementById('top');
+  if (!data.top_prfcs?.length) {
+    topHost.innerHTML = '<p class="subtle">No motion yet. Check back soon.</p>';
+  } else {
+    const warn = (x)=> x.dissent_share_24h>0.5 && x.counts.ev_24h>=3;
+    topHost.innerHTML = data.top_prfcs.map((x,i)=>`
+      <div class="card" style="margin:.6rem 0;padding:.6rem;">
+        <div class="row">
+          <span class="heat">${i<3?('#'+(i+1)+' 🔥'): 'Heat'}</span>
+          <span class="pill">Spicy: <b>${x.spicy_index.toFixed(1)}</b></span>
+          <span class="pill">24h: <b>${x.counts.ev_24h}</b></span>
+          <span class="pill">✅ ${x.counts.under_24h}</span>
+          <span class="pill">❌ ${x.counts.dissent_24h}</span>
+          <span class="pill">✍️ ${x.counts.motivate_24h}</span>
+        </div>
+        <h3 style="margin:.4rem 0;"><a href="${x.deep_link}">${x.prfc_id} — ${escapeHTML(x.title)}</a></h3>
+        ${warn(x)? `<p class="warn">⚠️ Duck & cover: strong dissent energy (${Math.round(x.dissent_share_24h*100)}%). Thread may be “polite heat.”</p>` : ``}
+        <p class="subtle">Updated: ${x.updated_at ? new Date(x.updated_at).toLocaleString() : '—'} · Status: ${x.status}</p>
+      </div>
+    `).join('');
+  }
+
+  // recent feed
+  const feedHost = document.getElementById('feed');
+  if (!data.recent_feed?.length) {
+    feedHost.innerHTML = '<p class="subtle">Nothing in the last 72 hours.</p>';
+  } else {
+    feedHost.innerHTML = data.recent_feed.map(ev=>{
+      const icon = ev.action==='underwrite'?'✅': ev.action==='dissent'?'❌': ev.action==='retract'?'↩️':'✍️';
+      const deep = ev.paragraph_uuid ? `${data.basePath}/notebook/#${ev.paragraph_uuid}` : `${data.basePath}/notebook/`;
+      const lnk = ev.link ? `<a href="${ev.link}" target="_blank" rel="noopener">msg</a>` : '';
+      return `
+        <div class="ev">
+          <div class="meta">${new Date(ev.at).toLocaleString()} · ${icon} ${ev.action} · ${ev.user}${ev.ref_user?` ↦ ${ev.ref_user}`:''}</div>
+          <div><a href="${deep}">${ev.prfc_id} — ${escapeHTML(ev.title)}</a></div>
+          ${ev.motivation?`<div class="subtle">${escapeHTML(ev.motivation)}</div>`:''}
+          ${lnk?`<div class="subtle">${lnk}</div>`:''}
+        </div>`;
+    }).join('');
+  }
+
+  function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+})();
+</script>
+</body>
+</html>
