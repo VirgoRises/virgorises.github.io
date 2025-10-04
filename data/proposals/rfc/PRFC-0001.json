@@ -7,7 +7,7 @@
   "proposed_change": "Replace last sentence with …",
   "defense": "Keeps notation consistent with §14…",
   "created_at": "2025-03-01T18:42:00Z",
-  "status": "active",
+  "status": "closed",
   "conflicts_with": [
     "PRFC-0007"
   ],
@@ -19,5 +19,8 @@
     "underwrite": 1,
     "dissent": 0
   },
-  "ready_candidate": false
+  "ready_candidate": false,
+  "decision": "accepted",
+  "closed_at": "2025-10-04T07:39:09.188Z",
+  "closure_note": "Board review completed"
 }
