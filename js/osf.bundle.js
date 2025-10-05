@@ -266,6 +266,13 @@
       join.target = "_blank"; join.rel = "noopener";
       row2.appendChild(join);
     }
+    
+    // inside buildPopover(...)
+    memoBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      // pass both uuid and the actual <pre> element for rock-solid preview
+      window.OSF?.Memo?.open(uuid, pre);
+    });
 
     // --- Draft RFC Memo button -------------------------------------------------
     const memoBtn = document.createElement("button");

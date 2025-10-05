@@ -1,10 +1,9 @@
-// js/memo.compose.js — minimal RFC memo composer (popup)
+// js/memo.compose.js — RFC memo composer (popup) — resilient version
 (function(){
   const $ = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
   function cafeSlugFromPath() {
-    // /cafes/<slug>/notebook/...
     const m = location.pathname.match(/^\/cafes\/([^\/]+)/);
     return m ? m[1] : "zeta-zero-cafe";
   }
@@ -14,46 +13,6 @@
     const m = t.match(/Chapter\s+(\d+)/i) || p.match(/Chapter\s+(\d+)/i);
     return m ? Number(m[1]) : null;
   }
-  function makeOverlay() {
-    const wrap = document.createElement("div");
-    wrap.className = "memo-overlay";
-    wrap.innerHTML = `
-      <div class="memo-modal" role="dialog" aria-label="Draft RFC memo">
-        <header class="memo-head">
-          <h3>Draft RFC memo</h3>
-          <button class="memo-x" aria-label="Close">×</button>
-        </header>
-        <div class="memo-body">
-          <aside class="memo-left">
-            <div class="memo-section">
-              <div class="memo-kicker">Paragraph</div>
-              <div id="memo-paragraph"></div>
-            </div>
-            <div class="memo-section">
-              <div class="memo-kicker">Figures</div>
-              <div id="memo-figs" class="memo-grid"></div>
-            </div>
-            <div class="memo-section">
-              <div class="memo-kicker">Tables</div>
-              <div id="memo-tbls" class="memo-grid"></div>
-            </div>
-          </aside>
-          <section class="memo-right">
-            <label class="memo-label">Memo to self (Markdown/LaTeX)</label>
-            <textarea id="memo-text" rows="14" placeholder="State the issue, desired change, and rationale..."></textarea>
-            <div class="memo-actions">
-              <button id="memo-save" class="btn">Save draft (browser)</button>
-              <button id="memo-export" class="btn primary">Export JSON</button>
-              <button id="memo-submit" class="btn">Submit via Discord</button>
-            </div>
-            <p class="memo-note">Tip: Draft, step away, revise, then submit. RFCs are processes, not chats.</p>
-          </section>
-        </div>
-      </div>`;
-    document.body.appendChild(wrap);
-    return wrap;
-  }
-
   function styleOnce(){
     if ($('#memo-style')) return;
     const s = document.createElement('style');
@@ -78,32 +37,114 @@
       .btn{border:1px solid rgba(255,255,255,.2);background:transparent;color:inherit;border-radius:.45rem;padding:.35rem .7rem;cursor:pointer}
       .btn.primary{background:rgba(80,160,255,.18);border-color:rgba(80,160,255,.4)}
       .memo-note{font-size:.8rem;opacity:.8}
+      .memo-none{opacity:.75;font-size:.85rem}
     `;
     document.head.appendChild(s);
   }
-
+  function makeOverlay() {
+    const wrap = document.createElement("div");
+    wrap.className = "memo-overlay";
+    wrap.innerHTML = `
+      <div class="memo-modal" role="dialog" aria-label="Draft RFC memo">
+        <header class="memo-head">
+          <h3>Draft RFC memo</h3>
+          <button class="memo-x" aria-label="Close">×</button>
+        </header>
+        <div class="memo-body">
+          <aside class="memo-left">
+            <div class="memo-section">
+              <div class="memo-kicker">Paragraph</div>
+              <div id="memo-paragraph"></div>
+            </div>
+            <div class="memo-section">
+              <div class="memo-kicker">Figures</div>
+              <div id="memo-figs" class="memo-grid"></div>
+              <div id="memo-figs-none" class="memo-none" style="display:none">No figures found. Add <code>id="fig-…"</code> to the figure you want to reference.</div>
+            </div>
+            <div class="memo-section">
+              <div class="memo-kicker">Tables</div>
+              <div id="memo-tbls" class="memo-grid"></div>
+              <div id="memo-tbls-none" class="memo-none" style="display:none">No tables found. Add <code>id="tbl-…"</code> to the table or its figure wrapper.</div>
+            </div>
+          </aside>
+          <section class="memo-right">
+            <label class="memo-label">Memo to self (Markdown/LaTeX)</label>
+            <textarea id="memo-text" rows="14" placeholder="State the issue, desired change, and rationale..."></textarea>
+            <div class="memo-actions">
+              <button id="memo-save" class="btn">Save draft (browser)</button>
+              <button id="memo-export" class="btn primary">Export JSON</button>
+              <button id="memo-submit" class="btn">Submit via Discord</button>
+            </div>
+            <p class="memo-note">Tip: Draft, step away, revise, then submit. RFCs are processes, not chats.</p>
+          </section>
+        </div>
+      </div>`;
+    document.body.appendChild(wrap);
+    return wrap;
+  }
   function checkboxItem(id, label, href){
     const el = document.createElement('label');
     el.className = 'memo-item';
-    el.innerHTML = `<input type="checkbox" data-id="${id}"/><span>${label}</span>${href?`<a href="${href}" target="_blank">open</a>`:''}`;
+    el.innerHTML = `<input type="checkbox" data-id="${id}"/><span>${label}</span>${href?` <a href="${href}" target="_blank">open</a>`:''}`;
     return el;
   }
 
-  function gatherFigures(basePath){
-    // figures with id; tables with id or figure wrappers
+  // -------- Paragraph resolution (robust) --------
+  function getParagraphEl(uuid, ctxEl) {
+    // 1) explicit DOM element provided
+    if (ctxEl && ctxEl.tagName) return ctxEl;
+
+    // 2) id lookup
+    if (uuid) {
+      const direct = document.getElementById(uuid);
+      if (direct) return direct;
+    }
+
+    // 3) best-effort: first visible pre.osf in viewport
+    const candidates = $$("pre.osf");
+    const mid = window.scrollY + window.innerHeight/2;
+    let best = null, bestDist = Infinity;
+    for (const p of candidates){
+      const r = p.getBoundingClientRect();
+      const y = r.top + window.scrollY;
+      const d = Math.abs(y - mid);
+      if (d < bestDist) { best = p; bestDist = d; }
+    }
+    return best || candidates[0] || null;
+  }
+
+  // -------- Figure/Table discovery (wider net) --------
+  function gatherReferences(basePath){
     const figs = [];
-    $$('figure[id]').forEach(f=>{
+    // figure with id, or figure.card with id
+    $$("figure[id], figure.card[id]").forEach(f=>{
       const id = f.id;
       const cap = f.querySelector('figcaption')?.textContent?.trim() || id;
       figs.push({ id, label: cap, href: `${basePath}/notebook/#${id}` });
     });
-    const tbls = [];
-    $$('table[id], figure.card table[id]').forEach(t=>{
+    // also figure that contains a table with id (use table id as reference)
+    $$("figure table[id]").forEach(t=>{
       const id = t.id;
-      const caption = t.closest('figure')?.querySelector('figcaption')?.textContent?.trim() || id;
-      tbls.push({ id, label: caption, href: `${basePath}/notebook/#${id}` });
+      const fig = t.closest('figure');
+      const cap = fig?.querySelector('figcaption')?.textContent?.trim() || id;
+      figs.push({ id, label: cap, href: `${basePath}/notebook/#${id}` });
     });
-    return { figs, tbls };
+
+    const tbls = [];
+    $$("table[id]").forEach(t=>{
+      const id = t.id;
+      const cap = t.closest('figure')?.querySelector('figcaption')?.textContent?.trim()
+               || t.getAttribute('aria-label') || id;
+      tbls.push({ id, label: cap, href: `${basePath}/notebook/#${id}` });
+    });
+
+    // de-dup
+    const uniq = (arr, key) => {
+      const seen = new Set(); const out = [];
+      for (const x of arr){ if (!seen.has(x[key])){ seen.add(x[key]); out.push(x); } }
+      return out;
+    };
+    return { figs: uniq(figs, "id"), tbls: uniq(tbls, "id") };
   }
 
   function exportJSON(obj, fname){
@@ -113,12 +154,9 @@
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=> URL.revokeObjectURL(a.href), 5000);
   }
+  function loadDraftKey(uuid){ return `osf:memo:${uuid||"unknown"}`; }
 
-  function loadDraftKey(uuid){
-    return `osf:memo:${uuid}`;
-  }
-
-  function open(uuid){
+  function open(uuid, ctxEl){
     styleOnce();
     const overlay = makeOverlay();
 
@@ -126,30 +164,46 @@
     const chapterNo = chapterNoFromTitleOrPath();
     const basePath = location.pathname.split('/notebook/')[0] || `/cafes/${cafe}`;
 
-    // left: live paragraph preview
-    const para = document.getElementById(uuid);
-    $('#memo-paragraph').innerHTML = para ? para.outerHTML : `<em>Paragraph not found.</em>`;
+    // ---- paragraph preview
+    const para = getParagraphEl(uuid, ctxEl);
+    const paraHost = $('#memo-paragraph');
+    if (para) {
+      paraHost.innerHTML = para.outerHTML;
+    } else {
+      paraHost.innerHTML = `<div class="memo-none">Paragraph not found. (UUID: ${uuid || "?"})</div>`;
+    }
 
-    // figure/table pickers
-    const { figs, tbls } = gatherFigures(basePath);
-    const figsHost = $('#memo-figs');
-    const tblsHost = $('#memo-tbls');
-    figs.forEach(f => figsHost.appendChild(checkboxItem(f.id, f.label, f.href)));
-    tbls.forEach(t => tblsHost.appendChild(checkboxItem(t.id, t.label, t.href)));
+    // ---- figures/tables
+    const { figs, tbls } = gatherReferences(basePath);
+    console.info(`[memo] discovered figures=${figs.length}, tables=${tbls.length}`);
+    const figsHost = $('#memo-figs'), tblsHost = $('#memo-tbls');
+    const figsNone = $('#memo-figs-none'), tblsNone = $('#memo-tbls-none');
 
-    // restore draft if any
+    if (figs.length) {
+      figs.forEach(f => figsHost.appendChild(checkboxItem(f.id, f.label, f.href)));
+      figsNone.style.display = "none";
+    } else {
+      figsNone.style.display = "";
+    }
+    if (tbls.length) {
+      tbls.forEach(t => tblsHost.appendChild(checkboxItem(t.id, t.label, t.href)));
+      tblsNone.style.display = "none";
+    } else {
+      tblsNone.style.display = "";
+    }
+
+    // ---- restore draft if present
     const saved = localStorage.getItem(loadDraftKey(uuid));
     if (saved) {
       try {
         const j = JSON.parse(saved);
         $('#memo-text').value = j.memo_md || '';
-        // tick saved selections
         j.figures?.forEach(id => { const c = figsHost.querySelector(`input[data-id="${id}"]`); if (c) c.checked = true; });
-        j.tables?.forEach(id => { const c = tblsHost.querySelector(`input[data-id="${id}"]`); if (c) c.checked = true; });
+        j.tables ?.forEach(id => { const c = tblsHost.querySelector(`input[data-id="${id}"]`); if (c) c.checked = true; });
       } catch {}
     }
 
-    // buttons
+    // ---- controls
     $('.memo-x').onclick = () => overlay.remove();
     $('#memo-save').onclick = () => {
       const memo = collect();
@@ -158,11 +212,11 @@
     };
     $('#memo-export').onclick = () => {
       const memo = collect();
-      const fname = `${cafe}-${uuid}-memo.json`;
+      const fname = `${cafe}-${uuid||"paragraph"}-memo.json`;
       exportJSON(memo, fname);
     };
     $('#memo-submit').onclick = () => {
-      const fname = `${cafe}-${uuid}-memo.json`;
+      const fname = `${cafe}-${uuid||"paragraph"}-memo.json`;
       alert([
         "Submit your memo:\n",
         "1) Click Export JSON to save the file.",
@@ -184,7 +238,7 @@
         cafe_slug: cafe,
         chapter_no: chapterNo,
         chapter_url: location.pathname,
-        paragraph_uuid: uuid,
+        paragraph_uuid: uuid || null,
         figures, tables, labels: [],
         memo_md: $('#memo-text').value || "",
         user_id: null, role: null, source_msg: null
