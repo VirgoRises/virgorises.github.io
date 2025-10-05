@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>WB02 CH A primorial counter example</title>
-  <link rel="stylesheet" href="css/notebook.css" />
+  <link rel="stylesheet" href="css/notebook.css">
 
   <!-- MathJax config (must come BEFORE MathJax itself) -->
   <script src="math/mathconfig.js"></script>
 
   <!-- MathJax core -->
-  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script id="MathJax-script" defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 </head>
 
@@ -36,8 +33,7 @@
 <pre class="osf">&gt;</pre>
 <pre class="osf">&gt;There is no set whose cardinality is strictly between that of the integers and the real numbers.</pre>
 -->
-      <pre class="osf">
-    <blockquote cite="https://en.wikipedia.org/wiki/Continuum_hypothesis"><p>There is no set whose cardinality is strictly between that of the integers and the real numbers.</p></blockquote><p>—Wikipedia: The continuum hypothesis</cite></p></pre>
+      <pre class="osf" id="osf-1">    <blockquote cite="https://en.wikipedia.org/wiki/Continuum_hypothesis"><p>There is no set whose cardinality is strictly between that of the integers and the real numbers.</p></blockquote><p>—Wikipedia: The continuum hypothesis</p></pre>
 
       <!--
 <pre class="osf">&gt;&gt;[Wikipedia: The cardinality of the continuum][2]</pre>
@@ -54,27 +50,22 @@
 <pre class="osf">------------------------</pre>
 -->
 
-      <pre
-        class="osf"><blockquote cite="https://en.wikipedia.org/wiki/Cardinality_of_the_continuum"><p>&gt;&gt;In set theory, the cardinality of the continuum is the cardinality or &quot;size&quot; of the set of real numbers $\mathbb {R}$ , sometimes called the continuum. It is an infinite cardinal number and is denoted by $\mathfrak {c}$ (lowercase fraktur &quot;c&quot;) or $\mathbb {\left|R\right|}$</p><p>&gt;&gt;The real numbers $\mathbb {R}$ are more numerous than the natural numbers $\mathbb{N}$. Moreover, $\mathbb {R}$ has the same number of elements as the power set of $\mathbb {N}$. Symbolically, if the cardinality of $\mathbb {N}$ is denoted as $\aleph _{0}$, the cardinality of the continuum is $$\mathfrak {c}=2^{\aleph _{0}}&gt;\aleph _{0}\,.$$</p><p>&gt;&gt;This was proven by Georg Cantor in his uncountability proof of 1874,.... The inequality was later stated more simply in his diagonal argument in 1891. Cantor defined cardinality in terms of bijective functions: two sets have the same cardinality if, and only if, there exists a bijective function between them.</p><p>&gt;&gt;Between any two real numbers a &lt; b, no matter how close they are to each other, there are always infinitely many other real numbers, and Cantor showed that they are as many as those contained in the whole set of real numbers. In other words, the open interval (a,b) is equinumerous with $\mathbb {R}$.....</p></blockquote><p>—Wikipedia: The cardinality of the continuum</cite></p></pre>
+      <pre class="osf" id="osf-2"><blockquote cite="https://en.wikipedia.org/wiki/Cardinality_of_the_continuum"><p>&gt;&gt;In set theory, the cardinality of the continuum is the cardinality or "size" of the set of real numbers $\mathbb {R}$ , sometimes called the continuum. It is an infinite cardinal number and is denoted by $\mathfrak {c}$ (lowercase fraktur "c") or $\mathbb {\left|R\right|}$</p><p>&gt;&gt;The real numbers $\mathbb {R}$ are more numerous than the natural numbers $\mathbb{N}$. Moreover, $\mathbb {R}$ has the same number of elements as the power set of $\mathbb {N}$. Symbolically, if the cardinality of $\mathbb {N}$ is denoted as $\aleph _{0}$, the cardinality of the continuum is $$\mathfrak {c}=2^{\aleph _{0}}&gt;\aleph _{0}\,.$$</p><p>&gt;&gt;This was proven by Georg Cantor in his uncountability proof of 1874,.... The inequality was later stated more simply in his diagonal argument in 1891. Cantor defined cardinality in terms of bijective functions: two sets have the same cardinality if, and only if, there exists a bijective function between them.</p><p>&gt;&gt;Between any two real numbers a &lt; b, no matter how close they are to each other, there are always infinitely many other real numbers, and Cantor showed that they are as many as those contained in the whole set of real numbers. In other words, the open interval (a,b) is equinumerous with $\mathbb {R}$.....</p></blockquote><p>—Wikipedia: The cardinality of the continuum</p></pre>
 
 
 
-      <pre
-        class="osf">&gt;Cantor defined cardinality in terms of bijective functions: two sets have the same cardinality if, and only if, there exists a bijective function between them.</pre>
+      <pre class="osf" id="osf-3">&gt;Cantor defined cardinality in terms of bijective functions: two sets have the same cardinality if, and only if, there exists a bijective function between them.</pre>
 
-      <pre
-        class="osf">Between the set of rational numbers $\mathbb{Q}$ and natural numbers $\mathbb{N}$ exists a bijection, those can be put in a one to one correspondence using [Cantor&#x27;s diagonal argument][3]. However, between the set of real numbers $\mathbb{R}$ and natural numbers $\mathbb{N}$ such a bijection is not believed to be possible.</pre>
+      <pre class="osf" id="osf-4">Between the set of rational numbers $\mathbb{Q}$ and natural numbers $\mathbb{N}$ exists a bijection, those can be put in a one to one correspondence using [Cantor's diagonal argument][3]. However, between the set of real numbers $\mathbb{R}$ and natural numbers $\mathbb{N}$ such a bijection is not believed to be possible.</pre>
 
-      <pre
-        class="osf">The argument &#x27;Between any two real numbers a &lt; b, no matter how close they are to each other, there are always infinitely many other real numbers,...&#x27; we do not dispute. The diagonal argument, for instance, is restricted to ordering numbers in the two dimensional plane. Inhere we do not propose that a bijection can be found by ordering in n dimensional space, in stead a more profound method is discovered by examining the progressive sum of inverse primorials.</pre>
+      <pre class="osf" id="osf-5">The argument 'Between any two real numbers a &lt; b, no matter how close they are to each other, there are always infinitely many other real numbers,...' we do not dispute. The diagonal argument, for instance, is restricted to ordering numbers in the two dimensional plane. Inhere we do not propose that a bijection can be found by ordering in n dimensional space, in stead a more profound method is discovered by examining the progressive sum of inverse primorials.</pre>
 
-      <pre
-        class="osf">Chapter 3, The primorial function, produces a counterexample to CH that hinges on, keep the door open for now, the equivalence $\mathbb{Q}\equiv\mathbb{R}$ and thus because $\mathbb{Q}$ is countable infinite also $\mathbb{R}$ must be, if $\mathbb{Q}\equiv\mathbb{R}$ holds.</pre>
+      <pre class="osf" id="osf-6">Chapter 3, The primorial function, produces a counterexample to CH that hinges on, keep the door open for now, the equivalence $\mathbb{Q}\equiv\mathbb{R}$ and thus because $\mathbb{Q}$ is countable infinite also $\mathbb{R}$ must be, if $\mathbb{Q}\equiv\mathbb{R}$ holds.</pre>
 
       <!--<pre class="osf">### Hidden sqare root of 2</pre>-->
       <h2>Hidden sqare root of 2</h2>
 
-      <pre class="osf">The primorial function is similar to the factorial function for the natural numbers but involves the product over the primes. \begin{equation}P_{n}\#=\prod_{k=1}^{n}P_{k}=2\times3\times5\times7\times\dots\in\mathbb{N}
+      <pre class="osf" id="osf-7">The primorial function is similar to the factorial function for the natural numbers but involves the product over the primes. \begin{equation}P_{n}\#=\prod_{k=1}^{n}P_{k}=2\times3\times5\times7\times\dots\in\mathbb{N}
 \label{eq:03.01}
 \tag{03.01}
 \end{equation}</pre>
@@ -88,8 +79,7 @@
         <pre class="osf">This column hints at a deeper structure underlaying the sum/product equality, where a sum over the natural numbers equates a product over the primes.
         \begin{equation}\sum_{n}^{\infty}n^{-s}=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}\label{eq:03.03}\tag{03.03}\end{equation}</pre>
       -->
-      <pre
-        class="osf">Table 3.01 has 7 columns, <ol><li><p>row number &#x27;n&#x27;</p></li><li><p>the nth prime number $P_{n}=\left\{2,5,7,11,13,\dots\right\}$</p></li><li><p>the consequtive primorials $P_{n}\#=\left\{2,6,30,210,2310,\dots\right\}$</p></li><li><p>the inverse of the primorials $\underset{n=1}{\Pi\thinspace }\left(P_{n}\right)^{\text{ -1}}=\left\{\frac{1}{2},\frac{1}{6},\frac{1}{30},\frac{1}{210},\frac{1}{2310},\dots\right\}$.</p><li><p><!--Column 5, -->$P_{s}$, is the progressing sum of primorials that seems to approach, but falls short of $\sqrt[2]{2}^{\text{ -1}}\approx 0.7071067812\dots$.</p></li><li><p>Column 6, ${\small \Delta P_{s}\rightarrow\left(\sqrt{2}\right)^{\text{-1}}}$ shows the discrepancy between column 5, the progressive sum, and $\sqrt[2]{2}^{\text{ -1}}$. The limit of this column states a closed formula, ${\small \sqrt{\looparrowright}=\sqrt{\frac{2\pi}{2.5^2}}}$,</p><p>a.k.a. the square root of the quadrature constant $qc=\looparrowright=\frac{2\pi}{2.5^2}$. Column 5, $P_{s}$, will have a limit of $\frac{\sqrt[2]{2}^{\text{ -1}}}{\sqrt[2]{\looparrowright}}\approx0.705236979\dots$</p></li><li><p>column 7 identifies the row as upper- or lower-bound (ub or lb), which will become clear in &#x27;Table 3.02 Primorial lb/ub oscillation&#x27;</li></ol></p></pre>
+      <pre class="osf" id="osf-8">Table 3.01 has 7 columns, <ol><li><p>row number 'n'</p></li><li><p>the nth prime number $P_{n}=\left\{2,5,7,11,13,\dots\right\}$</p></li><li><p>the consequtive primorials $P_{n}\#=\left\{2,6,30,210,2310,\dots\right\}$</p></li><li><p>the inverse of the primorials $\underset{n=1}{\Pi\thinspace }\left(P_{n}\right)^{\text{ -1}}=\left\{\frac{1}{2},\frac{1}{6},\frac{1}{30},\frac{1}{210},\frac{1}{2310},\dots\right\}$.</p></li><li><p><!--Column 5, -->$P_{s}$, is the progressing sum of primorials that seems to approach, but falls short of $\sqrt[2]{2}^{\text{ -1}}\approx 0.7071067812\dots$.</p></li><li><p>Column 6, ${\small \Delta P_{s}\rightarrow\left(\sqrt{2}\right)^{\text{-1}}}$ shows the discrepancy between column 5, the progressive sum, and $\sqrt[2]{2}^{\text{ -1}}$. The limit of this column states a closed formula, ${\small \sqrt{\looparrowright}=\sqrt{\frac{2\pi}{2.5^2}}}$,</p><p>a.k.a. the square root of the quadrature constant $qc=\looparrowright=\frac{2\pi}{2.5^2}$. Column 5, $P_{s}$, will have a limit of $\frac{\sqrt[2]{2}^{\text{ -1}}}{\sqrt[2]{\looparrowright}}\approx0.705236979\dots$</p></li><li><p>column 7 identifies the row as upper- or lower-bound (ub or lb), which will become clear in 'Table 3.02 Primorial lb/ub oscillation'</p></li></ol><p></p></pre>
 
       <!--
        <pre
@@ -102,10 +92,9 @@
  <pre class="osf">![T3.01 Primorial root 2 approach](https://osf.io/c3fbx/download =400x400)</pre>
       -->
 
-      <pre class="osf">
-        <figure id="tbl-3-1" class="card">
+      <pre class="osf" id="osf-9">        <figure class="card" id="fig-table-31-primorial-root-2-approach">
     <figcaption><strong>Table 3.1 — Primorial root 2 approach</strong></figcaption>
-    <table>
+    <table id="tbl-3-1-2">
       <thead>
         <tr>
           <th>n</th>
@@ -225,15 +214,13 @@
 
       <!-- <pre class="osf">#### Table 3.02 Primorial lb/ub oscillation</pre> -->
       <h3>Table 3.02 Primorial lb/ub oscillation</h3>
-      <pre
-        class="osf">Table 3.02 Primorial lb/ub oscillation has 6 columns of which the first three are found in table 3.01.<ol start="4"><li><p>Column 4, ${\small P_{s}\thinspace increment}$ shows the reason for distinguishing a upper and lower bound because clearly the partial increments oscillate between $\frac{1}{2}$ and $\frac{1}{6}$.</p></li><li><p>Column 5, $\frac{lb}{ub}$ gives the ratio of change between the upper and lower bound, and we deduce that ${\small \underset{n\rightarrow\infty}{Lim}\frac{lb}{ub}=\frac{1}{\pi(\looparrowright)^{-1}}=\frac{1}{3.125}=0.32}$.</p></li><li><p>Finally column 6, ${\small \Delta\frac{lb_{n\rightarrow\infty}}{lb_{n=1}}=\text{ 3}\frac{lb}{ub}}$. In the limit this will be ${\small P\Delta=\frac{24}{25}\text{=0.96}}$.</p></li></ol></pre>
+      <pre class="osf" id="osf-10">Table 3.02 Primorial lb/ub oscillation has 6 columns of which the first three are found in table 3.01.<ol start="4"><li><p>Column 4, ${\small P_{s}\thinspace increment}$ shows the reason for distinguishing a upper and lower bound because clearly the partial increments oscillate between $\frac{1}{2}$ and $\frac{1}{6}$.</p></li><li><p>Column 5, $\frac{lb}{ub}$ gives the ratio of change between the upper and lower bound, and we deduce that ${\small \underset{n\rightarrow\infty}{Lim}\frac{lb}{ub}=\frac{1}{\pi(\looparrowright)^{-1}}=\frac{1}{3.125}=0.32}$.</p></li><li><p>Finally column 6, ${\small \Delta\frac{lb_{n\rightarrow\infty}}{lb_{n=1}}=\text{ 3}\frac{lb}{ub}}$. In the limit this will be ${\small P\Delta=\frac{24}{25}\text{=0.96}}$.</p></li></ol></pre>
       <!--
   <pre class="osf">![T3.02 Primorial lb/ub oscillation](https://osf.io/37e5r/download =400x400)</pre>
 -->
-      <pre class="osf">
-  <figure id="tbl-3-2" class="card">
+      <pre class="osf" id="osf-11">  <figure class="card" id="fig-table-32-primorial-lb-ub-oscillation">
     <figcaption><strong>Table 3.2 — Primorial lb–ub oscillation</strong></figcaption>
-    <table>
+    <table id="tbl-3-2-2">
       <thead>
         <tr>
           <th>n</th>
@@ -350,81 +337,64 @@
         </figcaption>
       </figure>
 -->
-      <pre
-        class="osf">The quadrature constant (qc) is the stick that puts distance between rational and real values. But figure 3.01 IS <em>a bijection that scales</em>em> with $\mathbb{Q}$: $3.125\in\mathbb{Q}\leftrightarrow\pi\in\mathbb{R}$, and does so in a direct fasion, skipping over an infinity of rational numbers, $q\in\mathbb{Q}$, that lay between the paired dimensionless points, e.g., $\forall x\in\mathbb{R}, x=q\looparrowright, \mathbb{O}=\\{x-q\\}\neq\\{0\\}$. </pre>
-      <pre
-        class="osf">This does not conform to the currently held theory which assumes that a limit exist where the real number x occupies a dimensionless point, which point is not reachable by a finite number of rational (discrete) intermittend steps.</pre>
+      <pre class="osf" id="osf-12">The quadrature constant (qc) is the stick that puts distance between rational and real values. But figure 3.01 IS <em>a bijection that scales</em>em&gt; with $\mathbb{Q}$: $3.125\in\mathbb{Q}\leftrightarrow\pi\in\mathbb{R}$, and does so in a direct fasion, skipping over an infinity of rational numbers, $q\in\mathbb{Q}$, that lay between the paired dimensionless points, e.g., $\forall x\in\mathbb{R}, x=q\looparrowright, \mathbb{O}=\\{x-q\\}\neq\\{0\\}$. </pre>
+      <pre class="osf" id="osf-13">This does not conform to the currently held theory which assumes that a limit exist where the real number x occupies a dimensionless point, which point is not reachable by a finite number of rational (discrete) intermittend steps.</pre>
 
       <!--
         <pre class="osf">&gt;[Wikipedia: Dedekind cut][6],constructing real numbers
         </pre>
       -->
-      <pre
-        class="osf"><blockquote cite="https://en.wikipedia.org/wiki/Dedekind_cut"><p>
-        A typical Dedekind cut of the rational numbers $\mathbb{Q}$  is given by the partition $\left(A,B\right)$ with <ul><li>&gt;&gt;$\;A=\{a\in \mathbb{Q}:a^{2}&lt;2{\text{ or }}a&lt;0\}$</li><li>&gt;&gt;$\;B=\{b\in \mathbb{Q}:b^{2}\geq 2{\text{ and }}b\geq 0\}$</li></p></ul>  </blockquote><p>—Wikipedia: Dedekind cut</cite></p></pre>
+      <pre class="osf" id="osf-14"><blockquote cite="https://en.wikipedia.org/wiki/Dedekind_cut"><p>
+        A typical Dedekind cut of the rational numbers $\mathbb{Q}$  is given by the partition $\left(A,B\right)$ with </p><ul><li>&gt;&gt;$\;A=\{a\in \mathbb{Q}:a^{2}&lt;2{\text{ or }}a&lt;0\}$</li><li>&gt;&gt;$\;B=\{b\in \mathbb{Q}:b^{2}\geq 2{\text{ and }}b\geq 0\}$</li><p></p></ul>  </blockquote><p>—Wikipedia: Dedekind cut</p></pre>
       <!--
       <pre class="osf">&gt;&gt; $A=\\{a\in \mathbb{Q}:a^{2}&lt;2{\text{ or }}a&lt;0\\}$,</pre>
       <pre class="osf">&gt;&gt; $B=\\{b\in \mathbb{Q}:b^{2}\geq 2{\text{ and }}b\geq 0\\}$</pre>
       <pre class="osf">&gt;</pre>
       -->
-      <pre
-        class="osf">&gt;This cut represents the irrational number $\sqrt{2}$ in Dedekind&#x27;s construction. The essential idea is that we use a set $A$, which is the set of all rational numbers whose squares are less than 2, to &quot;represent&quot; number $\sqrt{2}$, and further, by defining properly arithmetic operators over these sets (addition, subtraction, multiplication, and division), these sets (together with these arithmetic operations) form the familiar real numbers.</pre>
+      <pre class="osf" id="osf-15">&gt;This cut represents the irrational number $\sqrt{2}$ in Dedekind's construction. The essential idea is that we use a set $A$, which is the set of all rational numbers whose squares are less than 2, to "represent" number $\sqrt{2}$, and further, by defining properly arithmetic operators over these sets (addition, subtraction, multiplication, and division), these sets (together with these arithmetic operations) form the familiar real numbers.</pre>
 
-      <pre
-        class="osf">The definition of the real number $\sqrt{2}$, as wedged between the set A for which $a\in \mathbb{Q}, a^2 &lt; 2\text{ and }a \lt 0$, and  set B for which $b\in \mathbb{Q}, b^2 &gt;= 2\text{ and }b \geq 0$, containing al rational numbers who&#x27;s square is less then 2. This is an algorithm that seeks to identify a unique real number that in essence is analogues to &#x27;a coordinate that occupies space between two adjacent coordinates at Planck length distance&#x27;. </pre>
+      <pre class="osf" id="osf-16">The definition of the real number $\sqrt{2}$, as wedged between the set A for which $a\in \mathbb{Q}, a^2 &lt; 2\text{ and }a \lt 0$, and  set B for which $b\in \mathbb{Q}, b^2 &gt;= 2\text{ and }b \geq 0$, containing al rational numbers who's square is less then 2. This is an algorithm that seeks to identify a unique real number that in essence is analogues to 'a coordinate that occupies space between two adjacent coordinates at Planck length distance'. </pre>
 
       <!--<pre class="osf">#### The radial argument, diffuse coordinates</pre>-->
       <h3>The radial argument, diffuse coordinates</h3>
 
-      <pre
-        class="osf">The continuum hypothesis tels us that a straight line segment, like the individual chords of a closed polygon, represents the continuum. So also does the (perfect) circle. We construct a circle with a radius of $r=2\pi$, a $2\pi:1$ scale model of the unit circle. The circumference is $c=\left(2\pi\right)^{2}=4\pi^{2}\approx39.4784176\dots$ and consists of an infinity of dimensionless points. Then we construct a circle at a radius of $r=\frac{2\pi}{\looparrowright}=2.5^2$, the circumference is $c=\left(2.5^2\right)^{2}=39.0625$.</pre>
+      <pre class="osf" id="osf-17">The continuum hypothesis tels us that a straight line segment, like the individual chords of a closed polygon, represents the continuum. So also does the (perfect) circle. We construct a circle with a radius of $r=2\pi$, a $2\pi:1$ scale model of the unit circle. The circumference is $c=\left(2\pi\right)^{2}=4\pi^{2}\approx39.4784176\dots$ and consists of an infinity of dimensionless points. Then we construct a circle at a radius of $r=\frac{2\pi}{\looparrowright}=2.5^2$, the circumference is $c=\left(2.5^2\right)^{2}=39.0625$.</pre>
 
-      <pre
-        class="osf">Figure 3.02 ( for illustration purposes not to scale), is a scaled down version, $1:2\pi$, and thus a unit circle lined with a filament between $x\left<\frac{1}{\looparrowright},1\right>$ that in the QGF is named $C_{box}$. In physics this lining filament is the extent of the convex set shaping our universe. A dynamic version of the $C_{box}$ <em>that can only exist in physical reality, and must be inferred from the QGF</em>. </pre>
+      <pre class="osf" id="osf-18">Figure 3.02 ( for illustration purposes not to scale), is a scaled down version, $1:2\pi$, and thus a unit circle lined with a filament between $x\left&lt;\frac{1}{\looparrowright},1\right&gt;$ that in the QGF is named $C_{box}$. In physics this lining filament is the extent of the convex set shaping our universe. A dynamic version of the $C_{box}$ <em>that can only exist in physical reality, and must be inferred from the QGF</em>. </pre>
 
-      <pre
-        class="osf">Now we add a radial of width 1 dimensionless point from $\mathbb{O}\rightarrow x=0$ to $\mathbb{R}\rightarrow x=2\pi$, and rotate anticlockwise. Then we rotate by a set number of degrees, or radians, to project to a position and analyze from there.</pre>
+      <pre class="osf" id="osf-19">Now we add a radial of width 1 dimensionless point from $\mathbb{O}\rightarrow x=0$ to $\mathbb{R}\rightarrow x=2\pi$, and rotate anticlockwise. Then we rotate by a set number of degrees, or radians, to project to a position and analyze from there.</pre>
 
-      <pre
-        class="osf">Figure 3.02 (not to scale), is a model of the unit circle. At $r=1$, the circumference is both in ratio to the radius, as well as real number length $c=2\pi\thinspace r=2\pi$. </pre>
+      <pre class="osf" id="osf-20">Figure 3.02 (not to scale), is a model of the unit circle. At $r=1$, the circumference is both in ratio to the radius, as well as real number length $c=2\pi\thinspace r=2\pi$. </pre>
 
-      <pre
-        class="osf">This changes when we modify the radius to $r=\frac{1}{\looparrowright}$. The proportional ratio radius to circumference maintains $1:\pi$, but the circumference can now be stated as $q\in\mathbb{Q},\thinspace q = \frac{2\pi}{\looparrowright}=2.5^2$. Also for $\pi\thinspace rad\rightarrow 3.125$, $\frac{\pi}{2}\thinspace rad\rightarrow \frac{1}{0.64}$, $\frac{\pi}{3}\thinspace rad\rightarrow \frac{1}{0.96}$, and $\frac{\pi}{6}\thinspace rad\rightarrow \frac{1}{1.92}$, all $q\in\mathbb{Q}$.</pre>
+      <pre class="osf" id="osf-21">This changes when we modify the radius to $r=\frac{1}{\looparrowright}$. The proportional ratio radius to circumference maintains $1:\pi$, but the circumference can now be stated as $q\in\mathbb{Q},\thinspace q = \frac{2\pi}{\looparrowright}=2.5^2$. Also for $\pi\thinspace rad\rightarrow 3.125$, $\frac{\pi}{2}\thinspace rad\rightarrow \frac{1}{0.64}$, $\frac{\pi}{3}\thinspace rad\rightarrow \frac{1}{0.96}$, and $\frac{\pi}{6}\thinspace rad\rightarrow \frac{1}{1.92}$, all $q\in\mathbb{Q}$.</pre>
 
-      <pre
-        class="osf">Although the circumferences differ in geometric length, the radial (1 dimensionless point thick) seems to indicate, because $2\pi$ spans the whole continuum in both cases, that the same dimensionless point references both $\pi$ and $\frac{\pi}{\looparrowright}$. Afterall, the only method available for addressing the dimensionless coordinates $\pi$ and $\frac{\pi}{\looparrowright}$ on both circumferences is by means of angle bisecting the circle, and it seems that both share the same angular property.</pre>
+      <pre class="osf" id="osf-22">Although the circumferences differ in geometric length, the radial (1 dimensionless point thick) seems to indicate, because $2\pi$ spans the whole continuum in both cases, that the same dimensionless point references both $\pi$ and $\frac{\pi}{\looparrowright}$. Afterall, the only method available for addressing the dimensionless coordinates $\pi$ and $\frac{\pi}{\looparrowright}$ on both circumferences is by means of angle bisecting the circle, and it seems that both share the same angular property.</pre>
 
-      <pre
-        class="osf">The argument might be that the $\mathbb{Q}$ circle is &#x27;diffuser in partition&#x27; than the $\mathbb{R}$ circle, and one cant be sure to address 3.125 at that angle is not realy convincing. Figure F3.01 Quadrature constant - leap, allready shows that $2\pi-2.5^2$ or $\approx \frac{0.0331853072\dots}{2\pi}\approx0.005$ or $\frac{1}{200}\mathbb{R}$ is jumped. The method here is not to get arbitrarely close to $\pi$ or perform a Dedekind cut to cunningly isolate the rascal by pure logic. This &#x27;method&#x27; is more like crossing the bulk wormhole style, as if being really one coordinate. </pre>
+      <pre class="osf" id="osf-23">The argument might be that the $\mathbb{Q}$ circle is 'diffuser in partition' than the $\mathbb{R}$ circle, and one cant be sure to address 3.125 at that angle is not realy convincing. Figure F3.01 Quadrature constant - leap, allready shows that $2\pi-2.5^2$ or $\approx \frac{0.0331853072\dots}{2\pi}\approx0.005$ or $\frac{1}{200}\mathbb{R}$ is jumped. The method here is not to get arbitrarely close to $\pi$ or perform a Dedekind cut to cunningly isolate the rascal by pure logic. This 'method' is more like crossing the bulk wormhole style, as if being really one coordinate. </pre>
 
-      <pre
-        class="osf">The circumference at $r=\frac{1}{\looparrowright}$ can be envisioned as an inscribed polygon of $\#\text{ chords }$, each the width of a dimensionless point, but &#x27;linear chords&#x27; nonetheless?</pre>
+      <pre class="osf" id="osf-24">The circumference at $r=\frac{1}{\looparrowright}$ can be envisioned as an inscribed polygon of $\#\text{ chords }$, each the width of a dimensionless point, but 'linear chords' nonetheless?</pre>
 
       <!--
 <pre class="osf">![F3.02 Quadrature continuum](https://osf.io/2qcvd/download =300x300)</pre>
     -->
-      <figure>
-        <img loading="lazy" src="figures/Figure_3.2_Quadrature_continuum.GIF" alt="F3.02 Quadrature continuum" />
+      <pre class="osf" id="osf-25"><figure id="fig-f302-quadrature-continuum">
+        <img loading="lazy" src="figures/Figure_3.2_Quadrature_continuum.GIF" alt="F3.02 Quadrature continuum">
         <figcaption class="small">
           F3.02 Quadrature continuum
         </figcaption>
-      </figure>
-      <pre class="osf">In figure F3.02 it seems that in this case &#x27;pointlike&#x27; and &#x27;linear&#x27; is a distiction whithout a difference. Not because we will not accept abstract mathematics, but because the Quadrature Geometric Framework (QGF) is based on *a first principle that arises with physical reality*. The consequence is that where mathematical abstraction allows for defining arbitrary length scales, nature seems to be restricted by the Planck length. As mentioned before discussing the Dedekind cut, an algorithm that seeks to identify a unique real number that in essence is analogues to *&#x27;a coordinate that occupies space between two adjacent coordinates at Planck length distance&#x27;*.</pre>
+      </figure></pre>
+      <pre class="osf" id="osf-26">In figure F3.02 it seems that in this case 'pointlike' and 'linear' is a distiction whithout a difference. Not because we will not accept abstract mathematics, but because the Quadrature Geometric Framework (QGF) is based on *a first principle that arises with physical reality*. The consequence is that where mathematical abstraction allows for defining arbitrary length scales, nature seems to be restricted by the Planck length. As mentioned before discussing the Dedekind cut, an algorithm that seeks to identify a unique real number that in essence is analogues to *'a coordinate that occupies space between two adjacent coordinates at Planck length distance'*.</pre>
 
-      <pre
-        class="osf">The sets $\mathbb{Q}$ and $\mathbb{R}$ are only distinct in mathematical appearance, but do so because they express different topological points of view in physical expression, i.e. the proposed equivalence $\mathbb{Q}\equiv\mathbb{R}$ is obscured by a horizon problem.</pre>
+      <pre class="osf" id="osf-27">The sets $\mathbb{Q}$ and $\mathbb{R}$ are only distinct in mathematical appearance, but do so because they express different topological points of view in physical expression, i.e. the proposed equivalence $\mathbb{Q}\equiv\mathbb{R}$ is obscured by a horizon problem.</pre>
 
-      <pre
-        class="osf">The QGF provides the geometric mathematical model for understanding the zeta zeros as chords of n-gon, but those geometric chords cannot exist outside the bounds of the radius $r=2\pi$, which defines the bounds of the convex set. The inference must be that those chords exist in the narrow confinement of $C_{box}\thinspace r=\left<\frac{1}{\looparrowright} ,1\right>$, the &#x27;lining&#x27; of the convex set.</pre>
+      <pre class="osf" id="osf-28">The QGF provides the geometric mathematical model for understanding the zeta zeros as chords of n-gon, but those geometric chords cannot exist outside the bounds of the radius $r=2\pi$, which defines the bounds of the convex set. The inference must be that those chords exist in the narrow confinement of $C_{box}\thinspace r=\left&lt;\frac{1}{\looparrowright} ,1\right&gt;$, the 'lining' of the convex set.</pre>
 
       <!--<pre class="osf">The base of the QGF</pre>
       <pre class="osf">-------------------</pre>-->
 
       <h3>The base of the QGF</h3>
-      <pre
-        class="osf">At $\angle 90&deg;$ the radian crossing the two circles adressess two dimensionless points, one at $c=\frac{1}{0.64}\in\mathbb{Q}$, and the other in $c=\frac{\pi}{2}\in\mathbb{R}$.</pre>
-      <pre
-        class="osf">The same holds arguably for other angles like those addressing  $c=\left\{2\pi\leftrightarrow2.5^{2},\pi\leftrightarrow3\frac{1}{8},\frac{\pi}{2}\leftrightarrow\frac{25}{16},\dots\right\}$.</pre>
+      <pre class="osf" id="osf-29">At $\angle 90°$ the radian crossing the two circles adressess two dimensionless points, one at $c=\frac{1}{0.64}\in\mathbb{Q}$, and the other in $c=\frac{\pi}{2}\in\mathbb{R}$.</pre>
+      <pre class="osf" id="osf-30">The same holds arguably for other angles like those addressing  $c=\left\{2\pi\leftrightarrow2.5^{2},\pi\leftrightarrow3\frac{1}{8},\frac{\pi}{2}\leftrightarrow\frac{25}{16},\dots\right\}$.</pre>
 
       <!--<pre class="osf">Table TWB02.01 lists 10 rotations of 10&deg; each from 0&deg; to 90&deg; en lists;</pre>
     
@@ -450,18 +420,17 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
 8|80&deg;|${\small 1.396263402\dots}$|$\frac{1}{0.72}$|${\small 0.984807753\dots}$|${\small 0.1736481777\dots}$
 <em>9</em>|90&deg;|${\small \frac{\pi}{2}=1.570796327\dots}$|$\frac{1}{0.64}$|${\small 1}$|${\small 0}$</pre>
 -->
-      <pre
-        class="osf"><p>Table TWB02.01 lists 10 rotations of 10&deg; each from 0&deg; to 90&deg;;</p><ol><li>Step increment 0 to 1</li><li>&#x27;360&deg;&#x27;, starting from coordinate $\left(1,0\right)$ in increments of 10&deg;, up to 90&deg;</li><li>The angle in &pi; radians</li><li>The angle in &pi; radians over qc</li><li>Sine of &pi; rad</li><li>Cosine of &pi; rad</li></pre>
+      <pre class="osf" id="osf-31"><p>Table TWB02.01 lists 10 rotations of 10° each from 0° to 90°;</p><ol><li>Step increment 0 to 1</li><li>'360°', starting from coordinate $\left(1,0\right)$ in increments of 10°, up to 90°</li><li>The angle in π radians</li><li>The angle in π radians over qc</li><li>Sine of π rad</li><li>Cosine of π rad</li></ol></pre>
 
-      <pre class="osf"><figure id="tbl-wb-2-1" class="card">
+      <pre class="osf" id="osf-32"><figure class="card" id="fig-table-wb-21-rotation-to-coordinate">
     <figcaption><strong>Table WB 2.1 — Rotation to coordinate</strong></figcaption>
-    <table>
+    <table id="tbl-wb-2-1-2">
       <thead>
         <tr>
           <th>n</th>
-          <th>\(360&deg;\)</th>
+          <th>\(360°\)</th>
           <th>\(\pi\,rad\)</th>
-          <th>\(\frac{&pi;\,rad}{\looparrowright}\)</th>
+          <th>\(\frac{π\,rad}{\looparrowright}\)</th>
           <th>\(\sin(x)\)</th>
           <th>\(\cos(x)\)</th>
         </tr>
@@ -469,7 +438,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
       <tbody>
         <tr>
           <td>0</td>
-          <td>360&deg;</td>
+          <td>360°</td>
           <td>\({2\pi}\)</td>
           <td>\(\frac{1}{0.16}=2.5^2\)</td>
           <td>\({0}\)</td>
@@ -477,7 +446,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
         </tr>
         <tr>
           <td>1</td>
-          <td>10&deg;</td>
+          <td>10°</td>
           <td>\({0.174532925\cdots}\)</td>
           <td>\(\frac{1}{5.76}\)</td>
           <td>\({0.173481777\cdots}\)</td>
@@ -485,7 +454,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
         </tr>
         <tr>
           <td>2</td>
-          <td>20&deg;</td>
+          <td>20°</td>
           <td>\({0.3490658504\cdots}\)</td>
           <td>\(\frac{1}{2.88}\)</td>
           <td>\({0.3420201433\cdots}\)</td>
@@ -493,7 +462,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
         </tr>
         <tr>
           <td><em>3</em></td>
-          <td>30&deg;</td>
+          <td>30°</td>
           <td>\({\frac{\pi}{6}=0.5235987756\cdots}\)</td>
           <td>\(\frac{1}{1.92}\)</td>
           <td>\({\sqrt{\frac{1}{4}}=0.5}\)</td>
@@ -502,7 +471,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
         </tr>
         <tr>
           <td>4</td>
-          <td>40&deg;</td>
+          <td>40°</td>
           <td>\({0.6981317008\cdots}\)</td>
           <td>\(\frac{1}{1.44}\)</td>
           <td>\({0.6427876097\cdots}\)</td>
@@ -511,7 +480,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
         </tr>
         <tr>
           <td>5</td>
-          <td>50&deg;</td>
+          <td>50°</td>
           <td>\({0.872664626\cdots}\)</td>
           <td>\(\frac{1}{1.152}\)</td>
           <td>\({0.7660444431\cdots}\)</td>
@@ -519,7 +488,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
         </tr>
         <tr>
           <td><em>6</em></td>
-          <td>60&deg;</td>
+          <td>60°</td>
           <td>\({\frac{\pi}{3}=1.047197551\cdots}\)</td>
           <td>\(\frac{1}{0.96}\)</td>
           <td>\({\sqrt{\frac{3}{4}}=0.8660254038\cdots}\)</td>
@@ -527,7 +496,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
         </tr>
         <tr>
           <td>7</td>
-          <td>70&deg;</td>
+          <td>70°</td>
           <td>\({1.221730476\cdots}\)</td>
           <td>\({0.8228571429}\)</td>
           <td>\({0.9396926208\cdots}\)</td>
@@ -535,7 +504,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
         </tr>
         <tr>
           <td>8</td>
-          <td>80&deg;</td>
+          <td>80°</td>
           <td>\({1.396263402\cdots}\)</td>
           <td>\(\frac{1}{0.72}\)</td>
           <td>\({0.984807753\cdots}\)</td>
@@ -543,7 +512,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
         </tr>
         <tr>
           <td><em>9</em></td>
-          <td>90&deg;</td>
+          <td>90°</td>
           <td>\({\frac{\pi}{2}=1.570796327\cdots}\)</td>
           <td>\(\frac{1}{0.64}\)</td>
           <td>\({1}\)</td>
@@ -559,8 +528,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
 -->
       <h3>The real horizon</h3>
 
-      <pre
-        class="osf">At (x,y) coordinate (2&amp;pi;,0) a &#x27;horizon&#x27; is defined which is considered unreachable by rational increments alone. In essence this is what the topological argument for real numbers tells us.</pre>
+      <pre class="osf" id="osf-33">At (x,y) coordinate (2&amp;pi;,0) a 'horizon' is defined which is considered unreachable by rational increments alone. In essence this is what the topological argument for real numbers tells us.</pre>
 
       <!--
         <pre class="osf">&gt;[Wikipedia: Real numbers and topological properties][7]</pre>
@@ -568,8 +536,7 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
       <pre
         class="osf">&gt; The rationals are a dense subset of the real numbers: every real number has rational numbers arbitrarily close to it. A related property is that rational numbers are the only numbers with finite expansions as regular continued fractions.</pre>-->
 
-      <pre
-        class="osf"><blockquote cite="https://en.wikipedia.org/wiki/Rational_number#Real_numbers_and_topological_properties"><p>The rationals are a dense subset of the real numbers: every real number has rational numbers arbitrarily close to it. A related property is that rational numbers are the only numbers with finite expansions as regular continued fractions.</p></blockquote><p>—Wikipedia: Real numbers and topological properties</cite></p></pre>
+      <pre class="osf" id="osf-34"><blockquote cite="https://en.wikipedia.org/wiki/Rational_number#Real_numbers_and_topological_properties"><p>The rationals are a dense subset of the real numbers: every real number has rational numbers arbitrarily close to it. A related property is that rational numbers are the only numbers with finite expansions as regular continued fractions.</p></blockquote><p>—Wikipedia: Real numbers and topological properties</p></pre>
 
       <!--<pre class="osf">There is discussion whether a more fundamental theory exists replacing the real numbers.</pre>
 
@@ -579,61 +546,51 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
       <pre class="osf">&gt;
         &gt; **Physicists have occasionally suggested that a more fundamental theory would replace the real numbers with quantities that do not form a continuum, but such proposals remain speculative.**</pre>-->
 
-      <pre
-        class="osf"><p>There is discussion whether a more fundamental theory exists replacing the real numbers.</p><blockquote cite="https://en.wikipedia.org/wiki/Real_number#In_physics"><p>In physics</p><p>In the physical sciences, most physical constants such as the universal gravitational constant, and physical variables, such as position, mass, speed, and electric charge, are modeled using real numbers. </p><p>In fact, the fundamental physical theories such as classical mechanics, electromagnetism, quantum mechanics, general relativity and the standard model are described using mathematical structures, typically smooth manifolds or Hilbert spaces, that are based on the real numbers, although actual measurements of physical quantities are of finite accuracy and precision.</p><em>Physicists have occasionally suggested that a more fundamental theory would replace the real numbers with quantities that do not form a continuum, but such proposals remain speculative.</em></p></blockquote><p>—Wikipedia: Real numbers in physics</cite></p></pre>
+      <pre class="osf" id="osf-35"><p>There is discussion whether a more fundamental theory exists replacing the real numbers.</p><blockquote cite="https://en.wikipedia.org/wiki/Real_number#In_physics"><p>In physics</p><p>In the physical sciences, most physical constants such as the universal gravitational constant, and physical variables, such as position, mass, speed, and electric charge, are modeled using real numbers. </p><p>In fact, the fundamental physical theories such as classical mechanics, electromagnetism, quantum mechanics, general relativity and the standard model are described using mathematical structures, typically smooth manifolds or Hilbert spaces, that are based on the real numbers, although actual measurements of physical quantities are of finite accuracy and precision.</p><em>Physicists have occasionally suggested that a more fundamental theory would replace the real numbers with quantities that do not form a continuum, but such proposals remain speculative.</em><p></p></blockquote><p>—Wikipedia: Real numbers in physics</p></pre>
 
       <!--<pre class="osf">#### Primorial hexagon and rational numbers</pre>-->
       <h3>Primorial hexagon and rational numbers</h3>
 
-      <pre
-        class="osf">As shown the circumference of our constructed circle is $c=\left(2.5^2\right)^{2}=39.0625$. This is normalized in figure F3.02 ( for illustration purposes not to scale), to $1:2\pi$, and thus a unit circle lined with a fillament between $x\left<\frac{1}{\looparrowright},1\right>$ (QGF $C_{box}$).</pre>
+      <pre class="osf" id="osf-36">As shown the circumference of our constructed circle is $c=\left(2.5^2\right)^{2}=39.0625$. This is normalized in figure F3.02 ( for illustration purposes not to scale), to $1:2\pi$, and thus a unit circle lined with a fillament between $x\left&lt;\frac{1}{\looparrowright},1\right&gt;$ (QGF $C_{box}$).</pre>
 
-      <pre
-        class="osf">In figure F3.04 Primorial hexagon, the construction starts with a unmarked ruler and a set of compasses. A x-axis is drawn, a point is chosen and a circle drawn. Then a vesica pisces is constructed, and the orthogonal crossing the x-axis drawn. The crossing point clearly disects the vesica pisces and has coordinate $\left(\frac{1}{2},0\right)$</pre>
+      <pre class="osf" id="osf-37">In figure F3.04 Primorial hexagon, the construction starts with a unmarked ruler and a set of compasses. A x-axis is drawn, a point is chosen and a circle drawn. Then a vesica pisces is constructed, and the orthogonal crossing the x-axis drawn. The crossing point clearly disects the vesica pisces and has coordinate $\left(\frac{1}{2},0\right)$</pre>
 
       <!--
 <pre class="osf">![F3.04 Primorial hexagon](https://osf.io/657tn/download =500x500)</pre>
 -->
 
-      <figure>
-        <img loading="lazy" src="figures/Figure_3.4_Primorial_hexagon.GIF" alt="F3.04 Primorial hexagon" />
+      <pre class="osf" id="osf-38"><figure id="fig-f304-primorial-hexagon">
+        <img loading="lazy" src="figures/Figure_3.4_Primorial_hexagon.GIF" alt="F3.04 Primorial hexagon">
         <figcaption class="small">
           F3.04 Primorial hexagon
         </figcaption>
-      </figure>
+      </figure></pre>
 
       <!--<pre class="osf"> ### Lets replace the real numbers</pre>-->
 
       <h2>Lets replace the real numbers</h2>
 
-      <pre
-        class="osf">The maximum extend of the unit circle radius is $2.5^2=6.25=\frac{24}{4}+\frac{1}{4}=\frac{25}{4}$. And the inverse $\frac{1}{2.5^2}=0.16$, This gives us a convenient formula for locating the x coordinate in the QGF for the $n_{th}$ n-gon: $q_{n}=\frac{n}{2.5^{2}}=n\times 0.16$, e.g. $q_{6}=\frac{6}{2.5^{2}}=6\times \frac{1}{0.16}=0.96$. </pre>
+      <pre class="osf" id="osf-39">The maximum extend of the unit circle radius is $2.5^2=6.25=\frac{24}{4}+\frac{1}{4}=\frac{25}{4}$. And the inverse $\frac{1}{2.5^2}=0.16$, This gives us a convenient formula for locating the x coordinate in the QGF for the $n_{th}$ n-gon: $q_{n}=\frac{n}{2.5^{2}}=n\times 0.16$, e.g. $q_{6}=\frac{6}{2.5^{2}}=6\times \frac{1}{0.16}=0.96$. </pre>
 
-      <pre
-        class="osf">The set of natural numbers in the QGF is in fact a subset of the rational numbers $\mathbb{Q}$. This is because the unit circle has its pole at $2\pi\text{ and }2.5^2$. Thus $2.5^{2}= 6\frac{1}{4}$, and therefore 6 projects at $q_{6}=\frac{6}{2.5^{2}}=0.96$. </pre>
+      <pre class="osf" id="osf-40">The set of natural numbers in the QGF is in fact a subset of the rational numbers $\mathbb{Q}$. This is because the unit circle has its pole at $2\pi\text{ and }2.5^2$. Thus $2.5^{2}= 6\frac{1}{4}$, and therefore 6 projects at $q_{6}=\frac{6}{2.5^{2}}=0.96$. </pre>
 
-      <pre
-        class="osf">This means that $n\in\mathbb{Q}$ are out of sync with the usual spacing of $\mathbb{N}$ that confirms with attributing intervals of $\mathbb{R}$. The interval in the QGF with respect to the continuum is the now familiar $\Delta\thinspace n\forall\thinspace n\in\mathbb{N}\frac{1}{\left(2.5^{2}\right)^\text{ -1}}={\small 0.16\,Unit}$. </pre>
+      <pre class="osf" id="osf-41">This means that $n\in\mathbb{Q}$ are out of sync with the usual spacing of $\mathbb{N}$ that confirms with attributing intervals of $\mathbb{R}$. The interval in the QGF with respect to the continuum is the now familiar $\Delta\thinspace n\forall\thinspace n\in\mathbb{N}\frac{1}{\left(2.5^{2}\right)^\text{ -1}}={\small 0.16\,Unit}$. </pre>
 
-      <pre
-        class="osf">The unit, <em>in the QGF</em>, for natural numbers is ${QGF}_{Un\thinspace\in\thinspace\mathbb{N}}=\frac{4}{25}$, this makes the standard unit for the QGF ${QGF}_{U}=\frac{1}{25}$, or ${QGF}_{U}=\frac{n\thinspace\in\thinspace \mathbb{QGF}}{4}$.</pre>
+      <pre class="osf" id="osf-42">The unit, <em>in the QGF</em>, for natural numbers is ${QGF}_{Un\thinspace\in\thinspace\mathbb{N}}=\frac{4}{25}$, this makes the standard unit for the QGF ${QGF}_{U}=\frac{1}{25}$, or ${QGF}_{U}=\frac{n\thinspace\in\thinspace \mathbb{QGF}}{4}$.</pre>
 
-      <pre
-        class="osf">It is confusing at the least that because of this discrepancy the interval $\Delta n\in\mathbb{N}_{QGF}$ seems to deviate a scale factor of 0.96 from the unit radius of the enclosing QGF. However, the interval $\left<\frac{1}{16},\frac{2}{16}\right>$, still scales seamlessly with $\mathbb{R}$.</pre>
+      <pre class="osf" id="osf-43">It is confusing at the least that because of this discrepancy the interval $\Delta n\in\mathbb{N}_{QGF}$ seems to deviate a scale factor of 0.96 from the unit radius of the enclosing QGF. However, the interval $\left&lt;\frac{1}{16},\frac{2}{16}\right&gt;$, still scales seamlessly with $\mathbb{R}$.</pre>
 
       <!--
 <pre class="osf">![F7.04 QGF natural state normalized pole](https://osf.io/x9a5g/download =300x300)</pre>
     -->
-      <figure>
-        <img loading="lazy" src="figures/Figure_7.04_QGF_natural_state_normalized_pole.PNG"
-          alt="F7.04 QGF natural state normalized pole" />
+      <pre class="osf" id="osf-44"><figure id="fig-f704-qgf-natural-state-normalized-pole">
+        <img loading="lazy" src="figures/Figure_7.04_QGF_natural_state_normalized_pole.PNG" alt="F7.04 QGF natural state normalized pole">
         <figcaption class="small">
           F7.04 QGF natural state normalized pole
         </figcaption>
-      </figure>
+      </figure></pre>
 
-      <pre
-        class="osf">Figure F7.04 QGF natural state normalized pole, shows that all the action that in the QGF model projects between 0 and 2.5&lt;sup&gt;2&lt;/sup&gt;, in fact should be scaled down by a factor 2.5&lt;sup&gt;2&lt;/sup&gt;, and project between $q=0$ and $q=\frac{1}{\looparrowright}\propto 2.5^{2}$.</pre>
+      <pre class="osf" id="osf-45">Figure F7.04 QGF natural state normalized pole, shows that all the action that in the QGF model projects between 0 and 2.5&lt;sup&gt;2&lt;/sup&gt;, in fact should be scaled down by a factor 2.5&lt;sup&gt;2&lt;/sup&gt;, and project between $q=0$ and $q=\frac{1}{\looparrowright}\propto 2.5^{2}$.</pre>
 
 
 
@@ -666,9 +623,9 @@ n|360&deg;|&pi;rad|$\frac{&pi;rad}{\looparrowright}$|$sin(x)$|$cos(x)$
     // (if you added 'strings' earlier, keep them—this patch doesn't change that)
   };
 </script>
-<script defer src="/js/osf.bundle.js"></script>
-<script defer src="/js/memo.compose.js"></script>
+<script defer="" src="/js/osf.bundle.js"></script>
+<script defer="" src="/js/memo.compose.js"></script>
 
-</body>
 
-</html>
+
+</body></html>

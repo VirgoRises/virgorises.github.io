@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Wiki Homepage</title>
-  <link rel="stylesheet" href="css/notebook.css" />
+  <link rel="stylesheet" href="css/notebook.css">
 
 <!-- MathJax config (must come BEFORE MathJax itself) -->
 <script src="math/mathconfig.js"></script>
 
 <!-- MathJax core -->
-<script id="MathJax-script" defer
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script id="MathJax-script" defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 </head>
 <body>
@@ -26,38 +23,38 @@
 </header>
 <main class="wrap">
   <div class="card">
-<pre class="osf">Wiki Homepage</pre>
-<pre class="osf">=============</pre>
-<pre class="osf"># Zeta and the Geometry of Triangular Numbers</pre>
-<pre class="osf">*Exploring the hidden geometry of numbers through zeta, primes, and triangular patterns*</pre>
+<pre class="osf" id="osf-1">Wiki Homepage</pre>
+<pre class="osf" id="osf-2">=============</pre>
+<pre class="osf" id="osf-3"># Zeta and the Geometry of Triangular Numbers</pre>
+<pre class="osf" id="osf-4">*Exploring the hidden geometry of numbers through zeta, primes, and triangular patterns*</pre>
 
-<pre class="osf">&gt; This notebook explores the surprising ways in which number theory, geometry, and scaling laws overlap. Starting from the Basel problem and Euler’s solution, it follows a line of reasoning through primorial functions, triangular numbers, and chord structures, toward a proposed Quadrature Geometric Framework (QGF). The work is unfinished and speculative, but the hope is that recording the journey — including detours and gaps — will make it easier to see whether these connections hold real mathematical value.</pre>
+<pre class="osf" id="osf-5">&gt; This notebook explores the surprising ways in which number theory, geometry, and scaling laws overlap. Starting from the Basel problem and Euler’s solution, it follows a line of reasoning through primorial functions, triangular numbers, and chord structures, toward a proposed Quadrature Geometric Framework (QGF). The work is unfinished and speculative, but the hope is that recording the journey — including detours and gaps — will make it easier to see whether these connections hold real mathematical value.</pre>
 
-<pre class="osf">---</pre>
+<pre class="osf" id="osf-6">---</pre>
 
-<pre class="osf">### Disclaimer (for all readers)</pre>
-<pre class="osf">- **Formal:** *This project is an exploratory working notebook — speculative, unfinished, and not peer-reviewed — shared openly as a record of reasoning, not as a formal proof.*</pre>
-<pre class="osf">- **Friendly:** *This is a personal research notebook — a mix of math, ideas, and exploration. It’s not polished or peer-reviewed, but I’m sharing it in case the journey is as interesting as the destination.*</pre>
+<pre class="osf" id="osf-7">### Disclaimer (for all readers)</pre>
+<pre class="osf" id="osf-8">- **Formal:** *This project is an exploratory working notebook — speculative, unfinished, and not peer-reviewed — shared openly as a record of reasoning, not as a formal proof.*</pre>
+<pre class="osf" id="osf-9">- **Friendly:** *This is a personal research notebook — a mix of math, ideas, and exploration. It’s not polished or peer-reviewed, but I’m sharing it in case the journey is as interesting as the destination.*</pre>
 
-<pre class="osf">## About This Notebook</pre>
-<pre class="osf">This work began as a dense technical note (*Old_main.pdf*) and has grown into a structured notebook. It preserves the line of thought — sometimes rigorous, sometimes speculative — that led to the development of the Quadrature Geometric Framework (QGF).</pre>
+<pre class="osf" id="osf-10">## About This Notebook</pre>
+<pre class="osf" id="osf-11">This work began as a dense technical note (*Old_main.pdf*) and has grown into a structured notebook. It preserves the line of thought — sometimes rigorous, sometimes speculative — that led to the development of the Quadrature Geometric Framework (QGF).</pre>
 
-<pre class="osf">- **Goal:** Explore whether the interplay between number theory, geometry, and scaling laws reveals structural insights about zeta functions and related phenomena.  </pre>
-<pre class="osf">- **Approach:** Record reasoning steps openly, even when unfinished, so patterns (and mistakes) remain visible.</pre>
+<pre class="osf" id="osf-12">- **Goal:** Explore whether the interplay between number theory, geometry, and scaling laws reveals structural insights about zeta functions and related phenomena.  </pre>
+<pre class="osf" id="osf-13">- **Approach:** Record reasoning steps openly, even when unfinished, so patterns (and mistakes) remain visible.</pre>
 
-<pre class="osf">---</pre>
+<pre class="osf" id="osf-14">---</pre>
 
-<pre class="osf">## Core Files</pre>
-<pre class="osf">- 📄 **Original Note:** *Old_main.pdf*  </pre>
-<pre class="osf">- 🧭 **Editorial Checklist:** *QGF_Wiki_Pothole_Map (Core Chapters &amp; Extras)*</pre>
+<pre class="osf" id="osf-15">## Core Files</pre>
+<pre class="osf" id="osf-16">- 📄 **Original Note:** *Old_main.pdf*  </pre>
+<pre class="osf" id="osf-17">- 🧭 **Editorial Checklist:** *QGF_Wiki_Pothole_Map (Core Chapters &amp; Extras)*</pre>
 
-<pre class="osf">---</pre>
+<pre class="osf" id="osf-18">---</pre>
 
-<pre class="osf">## For Readers</pre>
-<pre class="osf">- **Mathematicians/Physicists:** Read this as a working notebook. Expect gaps, leaps, and conjectures; look for kernels worth formalizing.  </pre>
-<pre class="osf">- **Curious Readers:** Treat this as a journey. You don’t need every formula — the main story is how ideas connect.</pre>
+<pre class="osf" id="osf-19">## For Readers</pre>
+<pre class="osf" id="osf-20">- **Mathematicians/Physicists:** Read this as a working notebook. Expect gaps, leaps, and conjectures; look for kernels worth formalizing.  </pre>
+<pre class="osf" id="osf-21">- **Curious Readers:** Treat this as a journey. You don’t need every formula — the main story is how ideas connect.</pre>
 
-<pre class="osf">J. Helenklaken 21 sept. 2025</pre>
+<pre class="osf" id="osf-22">J. Helenklaken 21 sept. 2025</pre>
   </div>
   <nav class="pager"><a href="WB Scratch block.html">← Prev</a><span></span></nav>
 </main>

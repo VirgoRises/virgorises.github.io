@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Chapter 3 The primorial function</title>
-  <link rel="stylesheet" href="css/notebook.css" />
+  <link rel="stylesheet" href="css/notebook.css">
 
   <!-- MathJax config (must come BEFORE MathJax itself) -->
   <script src="math/mathconfig.js"></script>
 
   <!-- MathJax core -->
-  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script id="MathJax-script" defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 </head>
 
@@ -33,10 +30,8 @@
 
 <pre class="osf">@[toc]</pre>
   -->
-      <pre
-        class="osf">The primorial function is similar to the factorial function for the natural numbers but involves the product over the primes.</pre>
-      <pre
-        class="osf">\begin{equation}P_{n}\#=\prod_{k=1}^{n}P_{k}=2\times3\times5\times7\times\dots\in\mathbb{N}\label{eq:03.01}\tag{03.01}\end{equation}</pre>
+      <pre class="osf" id="osf-1">The primorial function is similar to the factorial function for the natural numbers but involves the product over the primes.</pre>
+      <pre class="osf" id="osf-2">\begin{equation}P_{n}\#=\prod_{k=1}^{n}P_{k}=2\times3\times5\times7\times\dots\in\mathbb{N}\label{eq:03.01}\tag{03.01}\end{equation}</pre>
 
       <!-- 
 <pre class="osf">#### Table 3.01 Primorial root 2 approach</pre>
@@ -51,13 +46,12 @@
 <pre class="osf"> 5. $\Delta P_{s}$ , the difference $\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}$</pre>
 <pre class="osf"> 6. $\uparrow\downarrow$ , upper and lower bound alternating odd/even n</pre>
   -->
-      <pre class="osf">Table 3.1 lists:
+      <pre class="osf" id="osf-3">Table 3.1 lists:
         <ol><li>$P_{n}$ , the consecutive primes</li><li>$P_{n}\#$ , the primorials</li><li>$\left(P_{n}\#\right)^{-1}$ , the inverse primorials</li><li>$P_{s}$ , the partial sum of $\left(P_{n}\#\right)^{-1}$ up til $P_{n}$</li><li>$\Delta P_{s}$ , the difference $\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}$</li><li>$\uparrow\downarrow$ , upper and lower bound alternating odd/even n</li></ol></pre>
       <!-- Table 3.1 -->
-      <pre class="osf">
-        <figure id="tbl-3-1" class="card">
+      <pre class="osf" id="osf-4">        <figure class="card" id="fig-table-31-primorial-root-2-approach">
         <figcaption><strong>Table 3.1 — Primorial root 2 approach</strong></figcaption>
-        <table>
+        <table id="tbl-3-1-2">
           <thead>
             <tr>
               <th>n</th>
@@ -174,27 +168,20 @@
       </figure>
       </pre>
 
-      <pre
-        class="osf">The partial sum of the inverse primorials $P_{s}$ approaches the inverse square root of 2, $\left(\sqrt{2}\right)^{-1}\simeq0.7071067812$, but falls short by some factor.</pre>
-      <pre
-        class="osf">The primorial delta $\Delta P_{s}$ is the discrepancy between $\left(\sqrt{2}\right)^{-1}$ and the limit of $P_{s}$ which has a closed form $\sqrt{\frac{2\pi}{2.5^{2}}}$ :</pre>
-      <pre
-        class="osf">\begin{equation}\begin{split}\underset{n\rightarrow\infty}{lim}&amp;\\,\Delta P_{s}=\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}=\sqrt{\frac{2\pi}{2.5^{2}}}\simeq1.00265131\dots\in\mathbb{R}\end{split}\label{eq:03.02}\tag{03.02}\end{equation}</pre>
+      <pre class="osf" id="osf-5">The partial sum of the inverse primorials $P_{s}$ approaches the inverse square root of 2, $\left(\sqrt{2}\right)^{-1}\simeq0.7071067812$, but falls short by some factor.</pre>
+      <pre class="osf" id="osf-6">The primorial delta $\Delta P_{s}$ is the discrepancy between $\left(\sqrt{2}\right)^{-1}$ and the limit of $P_{s}$ which has a closed form $\sqrt{\frac{2\pi}{2.5^{2}}}$ :</pre>
+      <pre class="osf" id="osf-7">\begin{equation}\begin{split}\underset{n\rightarrow\infty}{lim}&amp;\\,\Delta P_{s}=\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}=\sqrt{\frac{2\pi}{2.5^{2}}}\simeq1.00265131\dots\in\mathbb{R}\end{split}\label{eq:03.02}\tag{03.02}\end{equation}</pre>
 
       <!-- <pre class="osf">### Prime grouping</pre> -->
       <h3>Prime grouping</h3>
 
-      <pre
-        class="osf">The grouping of the primes in an upper and lower bound, column $\uparrow\downarrow$, becomes apparent by analyzing the partial sum increment for each step with respect to the total increment so far.</pre>
-      <pre
-        class="osf">To apply the progressive sum, an additive function, over the primorial function, a multiplicative function, is inspired by the sum/product equality where a sum over the integers is equal to a product over the primes:</pre>
-      <pre
-        class="osf">\begin{equation}\sum_{n}^{\infty}n^{-s}=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}\label{eq:03.03}\tag{03.03}\end{equation}</pre>
+      <pre class="osf" id="osf-8">The grouping of the primes in an upper and lower bound, column $\uparrow\downarrow$, becomes apparent by analyzing the partial sum increment for each step with respect to the total increment so far.</pre>
+      <pre class="osf" id="osf-9">To apply the progressive sum, an additive function, over the primorial function, a multiplicative function, is inspired by the sum/product equality where a sum over the integers is equal to a product over the primes:</pre>
+      <pre class="osf" id="osf-10">\begin{equation}\sum_{n}^{\infty}n^{-s}=\prod_{p}^{\infty}\left(1-p^{-s}\right)^{-1}\label{eq:03.03}\tag{03.03}\end{equation}</pre>
 
      <!-- <pre class="osf">#### Table 3.02 Primorial lb/ub oscillation</pre>-->
 <h3>Table 3.02 Primorial lb/ub oscillation</h3>
-      <pre
-        class="osf">Table 3.2 lists the partial sum increment for each row in table 3.1 in the column $P_{s}\\:increment$.</pre>
+      <pre class="osf" id="osf-11">Table 3.2 lists the partial sum increment for each row in table 3.1 in the column $P_{s}\\:increment$.</pre>
 
       <!--
 <pre class="osf"> 1. $P_{n}$, the consecutive primes</pre>
@@ -204,12 +191,11 @@
 <pre class="osf"> 5. $\Delta\frac{lb}{ub}$, the ratio between the first row and current row $\frac{\left(2n\right)}{\left(n=1\right)}$</pre>
 -->
 
-      <pre class="osf"><ol><li>$P_{n}$, the consecutive primes</li><li>$\uparrow\downarrow$, upper and lower bound alternating odd / even n</li><li>$P_{s}\\:increment$, the step wise increment in $P_{s}$ from previous to current row</li><li>$\frac{lb}{ub}$, the ratio between the $P_{s}\:increment$ for grouped rows $\frac{\left(2n\right)}{\left(2n\right)-1}$</li><li>$\Delta\frac{lb}{ub}$, the ratio between the first row and current row $\frac{\left(2n\right)}{\left(n=1\right)}$</li></ol></pre>
+      <pre class="osf" id="osf-12"><ol><li>$P_{n}$, the consecutive primes</li><li>$\uparrow\downarrow$, upper and lower bound alternating odd / even n</li><li>$P_{s}\\:increment$, the step wise increment in $P_{s}$ from previous to current row</li><li>$\frac{lb}{ub}$, the ratio between the $P_{s}\:increment$ for grouped rows $\frac{\left(2n\right)}{\left(2n\right)-1}$</li><li>$\Delta\frac{lb}{ub}$, the ratio between the first row and current row $\frac{\left(2n\right)}{\left(n=1\right)}$</li></ol></pre>
       <!-- Table 3.2 -->
-<pre class="osf">
-  <figure id="tbl-3-2" class="card">
+<pre class="osf" id="osf-13">  <figure class="card" id="fig-table-32-primorial-lb-ub-oscillation">
         <figcaption><strong>Table 3.2 — Primorial lb–ub oscillation</strong></figcaption>
-        <table>
+        <table id="tbl-3-2-2">
           <thead>
             <tr>
               <th>n</th>
@@ -313,59 +299,46 @@
         </table>
       </figure>
 </pre>
-      <pre class="osf">The partial sum increment, lb/ub oscillation, shows a peculiar alternating progression.</pre>
-      <pre
-        class="osf">The clear oscillation between a upper and lower bound follows from taking the current partial sum $\left(P_{s}\,\, for\,row\,n\right)$ minus the increment so far $\left(P_{s}\:increment\,\,for\,row\, n-1\right)$.</pre>
-      <pre
-        class="osf">The column $\frac{lb}{ub}$ contains the ratio between lower and upper bound for each group. Column $\Delta\frac{lb_{n\rightarrow\infty}}{lb_{n=1}}=3\frac{lb}{ub}$ contains the progressive ratio between the current $\frac{lb}{ub}$ row pair with respect to the ratio of the first $\frac{lb}{ub}$ row pair, $\left(\frac{lb}{ub}\right)_{n=1}=\frac{1}{3}$.</pre>
+      <pre class="osf" id="osf-14">The partial sum increment, lb/ub oscillation, shows a peculiar alternating progression.</pre>
+      <pre class="osf" id="osf-15">The clear oscillation between a upper and lower bound follows from taking the current partial sum $\left(P_{s}\,\, for\,row\,n\right)$ minus the increment so far $\left(P_{s}\:increment\,\,for\,row\, n-1\right)$.</pre>
+      <pre class="osf" id="osf-16">The column $\frac{lb}{ub}$ contains the ratio between lower and upper bound for each group. Column $\Delta\frac{lb_{n\rightarrow\infty}}{lb_{n=1}}=3\frac{lb}{ub}$ contains the progressive ratio between the current $\frac{lb}{ub}$ row pair with respect to the ratio of the first $\frac{lb}{ub}$ row pair, $\left(\frac{lb}{ub}\right)_{n=1}=\frac{1}{3}$.</pre>
 
       <!--
 <pre class="osf">The quadrature constant</pre>
 <pre class="osf">-----------------------</pre>
 -->
       <h2>The quadrature constant</h2>
-      <pre class="osf">The square of $\Delta P_{s}$ is defined as the quadrature constant.</pre>
-      <pre
-        class="osf">\begin{equation}\looparrowright=\left(\Delta P_{s}\right)^{2}=\frac{2\pi}{2.5^{2}}\simeq1.005309649\dots\in\mathbb{R}\label{eq:03.04}\tag{03.04}\end{equation}</pre>
+      <pre class="osf" id="osf-17">The square of $\Delta P_{s}$ is defined as the quadrature constant.</pre>
+      <pre class="osf" id="osf-18">\begin{equation}\looparrowright=\left(\Delta P_{s}\right)^{2}=\frac{2\pi}{2.5^{2}}\simeq1.005309649\dots\in\mathbb{R}\label{eq:03.04}\tag{03.04}\end{equation}</pre>
 
-      <pre
-        class="osf">The partial sum increment, $P_{s}\:increment$, table 3.2, shows a peculiar alternating progression. The current partial sum $P_{s}\rightarrow n$ minus the increment so far, oscillates between a lower and a upper bound of approximately $ub=\frac{1}{2}$ and $lb=\frac{1}{6}$.</pre>
+      <pre class="osf" id="osf-19">The partial sum increment, $P_{s}\:increment$, table 3.2, shows a peculiar alternating progression. The current partial sum $P_{s}\rightarrow n$ minus the increment so far, oscillates between a lower and a upper bound of approximately $ub=\frac{1}{2}$ and $lb=\frac{1}{6}$.</pre>
 
-      <pre
-        class="osf"> 
+      <pre class="osf" id="osf-20"> 
   The upper and lower bounds alternate row by row and group the primes like $\left\{ 2,3\right\} ,$$\left\{ 5,7\right\} ,$$\left\{ 11,13\right\} ,$$\left\{ 17,19\right\}$, etc. in some periodic fashion.</pre>
 
-      <pre
-        class="osf">For the first two terms $\left\{ 2,3\right\}$  the ratio is exact, $\frac{lb}{ub}=\frac{1}{3}$, the last two terms in the table $\left\{ 23,29\right\}$  approach $\frac{lb}{ub}\simeq0.3212292821\sim\frac{1}{\pi}$. The primorials, and thus the inverse and sum thereof, are rational values. </pre>
+      <pre class="osf" id="osf-21">For the first two terms $\left\{ 2,3\right\}$  the ratio is exact, $\frac{lb}{ub}=\frac{1}{3}$, the last two terms in the table $\left\{ 23,29\right\}$  approach $\frac{lb}{ub}\simeq0.3212292821\sim\frac{1}{\pi}$. The primorials, and thus the inverse and sum thereof, are rational values. </pre>
 
-      <pre
-        class="osf">The ratio lb/ub will, by the topological property of the real numbers, approach $\sim\frac{1}{\pi}$, but must be a rational approximation. </pre>
+      <pre class="osf" id="osf-22">The ratio lb/ub will, by the topological property of the real numbers, approach $\sim\frac{1}{\pi}$, but must be a rational approximation. </pre>
 
-      <pre
-        class="osf">By application of the derived quadrature constant $\looparrowright=\frac{2\pi}{2.5^2}$ the limit can be determined to be exactly $\frac{1}{\pi}\times\looparrowright=0.32\in\mathbb{Q}$. The quadrature constant $\looparrowright$ indicates that a one to one correspondence exist between the Rational numbers $\mathbb{Q}$, and Real numbers $\mathbb{R}$ such that:</pre>
-      <pre
-        class="osf">\begin{equation}\mathbb{Q}\looparrowright=\mathbb{R}\leftrightarrow\frac{\mathbb{R}}{\looparrowright}=\mathbb{Q} \label{eq:03.05} \tag{03.05} \end{equation}</pre>
-      <pre class="osf">which implies</pre>
-      <pre
-        class="osf">\begin{equation}\left(\forall x\in\mathbb{R}\right)\left(\exists!q\in\mathbb{Q}\right)\left(x\left(\looparrowright\right)^{-1}=q\right) \label{eq:03.06} \tag{03.06} \end{equation}</pre>
-      <pre
-        class="osf">The set of rational numbers $\mathbb{Q}$ is countable infinite and can be paired with the natural numbers  $\mathbb{N}$, which implies that if the hypothesis is correct, the real numbers $\mathbb{R}$ are also countable infinite.</pre>
+      <pre class="osf" id="osf-23">By application of the derived quadrature constant $\looparrowright=\frac{2\pi}{2.5^2}$ the limit can be determined to be exactly $\frac{1}{\pi}\times\looparrowright=0.32\in\mathbb{Q}$. The quadrature constant $\looparrowright$ indicates that a one to one correspondence exist between the Rational numbers $\mathbb{Q}$, and Real numbers $\mathbb{R}$ such that:</pre>
+      <pre class="osf" id="osf-24">\begin{equation}\mathbb{Q}\looparrowright=\mathbb{R}\leftrightarrow\frac{\mathbb{R}}{\looparrowright}=\mathbb{Q} \label{eq:03.05} \tag{03.05} \end{equation}</pre>
+      <pre class="osf" id="osf-25">which implies</pre>
+      <pre class="osf" id="osf-26">\begin{equation}\left(\forall x\in\mathbb{R}\right)\left(\exists!q\in\mathbb{Q}\right)\left(x\left(\looparrowright\right)^{-1}=q\right) \label{eq:03.06} \tag{03.06} \end{equation}</pre>
+      <pre class="osf" id="osf-27">The set of rational numbers $\mathbb{Q}$ is countable infinite and can be paired with the natural numbers  $\mathbb{N}$, which implies that if the hypothesis is correct, the real numbers $\mathbb{R}$ are also countable infinite.</pre>
 
       <!--
 <pre class="osf">#### Figure 3.01 Quadrature constant - leap</pre>
 <pre class="osf">![F3.01 Quadrature constant - leap](https://osf.io/awgcu/download =300x300)</pre>
 Figure_3.1_Quadrature_constant_-_leap.GIF
 -->
-      <figure>
-        <img loading="lazy" src="figures/Figure_3.1_Quadrature_constant_-_leap.GIF"
-          alt="F3.01 Quadrature constant - leap" />
+      <pre class="osf" id="osf-28"><figure id="fig-f301-quadrature-constant-leap">
+        <img loading="lazy" src="figures/Figure_3.1_Quadrature_constant_-_leap.GIF" alt="F3.01 Quadrature constant - leap">
         <figcaption class="small">
           F3.01 Quadrature constant - leap
         </figcaption>
-      </figure>
+      </figure></pre>
 
-      <pre
-        class="osf">Pairing, not by in the limit approaching arbitrarily close to a partner, but rather leap frogging over an infinity of real and rational numbers (see fig. 3.1) to a distinct value.</pre>
+      <pre class="osf" id="osf-29">Pairing, not by in the limit approaching arbitrarily close to a partner, but rather leap frogging over an infinity of real and rational numbers (see fig. 3.1) to a distinct value.</pre>
 
       <!--
 <pre class="osf">Mapping the continuum</pre>
@@ -378,50 +351,37 @@ Figure_3.1_Quadrature_constant_-_leap.GIF
 
       <h3>Figure 3.02 Quadrature continuum</h3>
 
-      <figure>
-        <img loading="lazy" src="figures/Figure_3.2_Quadrature_continuum.GIF" alt="F3.02 Quadrature continuum" />
+      <pre class="osf" id="osf-30"><figure id="fig-f302-quadrature-continuum">
+        <img loading="lazy" src="figures/Figure_3.2_Quadrature_continuum.GIF" alt="F3.02 Quadrature continuum">
         <figcaption class="small">
           F3.02 Quadrature continuum
         </figcaption>
-      </figure>
+      </figure></pre>
 
-      <pre
-        class="osf">Apparently the &#x27;width of a coordinate&#x27;, on a circumference encodes some property other than &#x27;gradient in spread of arc&#x27;.</pre>
+      <pre class="osf" id="osf-31">Apparently the 'width of a coordinate', on a circumference encodes some property other than 'gradient in spread of arc'.</pre>
 
-      <pre
-        class="osf">Picture 3.2 shows, not to scale, the outer circle $\mathbb{R}$ at radius $x=1$, and the inner circle $\mathbb{Q}$ at radius $x=\left(\looparrowright\right)^{-1}$. Both circumferences represent the continuum $\mathbb{R}$ but both differ in length due to the difference in radius.</pre>
+      <pre class="osf" id="osf-32">Picture 3.2 shows, not to scale, the outer circle $\mathbb{R}$ at radius $x=1$, and the inner circle $\mathbb{Q}$ at radius $x=\left(\looparrowright\right)^{-1}$. Both circumferences represent the continuum $\mathbb{R}$ but both differ in length due to the difference in radius.</pre>
 
-      <pre
-        class="osf">For every arbitrary small change in angle the radius cuts each circle in exactly 1 distinct dimensionless coordinate $\frac{1}{\mathbb{R}}$. This is counter-intuitive, how can the coordinate be dimensionless if circumferences that differ in length are divided up in essentially the same number of coordinates?</pre>
+      <pre class="osf" id="osf-33">For every arbitrary small change in angle the radius cuts each circle in exactly 1 distinct dimensionless coordinate $\frac{1}{\mathbb{R}}$. This is counter-intuitive, how can the coordinate be dimensionless if circumferences that differ in length are divided up in essentially the same number of coordinates?</pre>
 
-      <pre
-        class="osf">We see that at $\angle 180^{\circ}$ radius 1 gives $c=\frac{2\pi\times1}{2}=\pi$ and for radius $\left(\looparrowright\right)^{-1}$ it is $c=\frac{2\pi\times\left(\looparrowright\right)^{-1}}{2}=3.125$.</pre>
-      <pre
-        class="osf">Apparently the &#x27;width of a coordinate&#x27;, on a circumference encodes some property other than &#x27;gradient in spread of arc&#x27;.</pre>
+      <pre class="osf" id="osf-34">We see that at $\angle 180^{\circ}$ radius 1 gives $c=\frac{2\pi\times1}{2}=\pi$ and for radius $\left(\looparrowright\right)^{-1}$ it is $c=\frac{2\pi\times\left(\looparrowright\right)^{-1}}{2}=3.125$.</pre>
+      <pre class="osf" id="osf-35">Apparently the 'width of a coordinate', on a circumference encodes some property other than 'gradient in spread of arc'.</pre>
 
-      <pre
-        class="osf">Because radii intersect concentric circles at $\frac{1}{\mathbb{R}}\in\mathbb{R}$, a dimensionless point, this leads to a intimate and unique connection between the sets $\mathbb{Q}$ and $\mathbb{R}$.</pre>
-      <pre class="osf">The circle is the continuum $\mathbb{R}$, and measures $\frac{2\pi}{\mathbb{R}} = 1$. </pre>
+      <pre class="osf" id="osf-36">Because radii intersect concentric circles at $\frac{1}{\mathbb{R}}\in\mathbb{R}$, a dimensionless point, this leads to a intimate and unique connection between the sets $\mathbb{Q}$ and $\mathbb{R}$.</pre>
+      <pre class="osf" id="osf-37">The circle is the continuum $\mathbb{R}$, and measures $\frac{2\pi}{\mathbb{R}} = 1$. </pre>
 
-      <pre
-        class="osf">The quadrature constant $\looparrowright=\frac{2\pi}{2.5^2}$ provides a smooth mapping from $\mathbb{Q}$ to $\mathbb{R}$ if we define $\mathbb{Q}$ as a circle with radius $r=\left(\looparrowright\right)^{-1}$, and $\mathbb{R}$ as a circle with radius $r=1$.</pre>
-      <pre
-        class="osf">A rotation over $180^{\circ}$ results for radius 1 in $c=\pi\in\mathbb{R}$ and for radius $\left(\looparrowright\right)^{-1}$ to $c=3.125\in\mathbb{Q}$.</pre>
+      <pre class="osf" id="osf-38">The quadrature constant $\looparrowright=\frac{2\pi}{2.5^2}$ provides a smooth mapping from $\mathbb{Q}$ to $\mathbb{R}$ if we define $\mathbb{Q}$ as a circle with radius $r=\left(\looparrowright\right)^{-1}$, and $\mathbb{R}$ as a circle with radius $r=1$.</pre>
+      <pre class="osf" id="osf-39">A rotation over $180^{\circ}$ results for radius 1 in $c=\pi\in\mathbb{R}$ and for radius $\left(\looparrowright\right)^{-1}$ to $c=3.125\in\mathbb{Q}$.</pre>
 
-      <pre
-        class="osf">Apparently the radius has a curvature distorting the observers view such that discrete rational number intervals seem to spread out and project as indeterminable (irrational) real number values.</pre>
+      <pre class="osf" id="osf-40">Apparently the radius has a curvature distorting the observers view such that discrete rational number intervals seem to spread out and project as indeterminable (irrational) real number values.</pre>
 
-      <pre
-        class="osf">As if a number-theoretical uncertainty principle exists with a horizon $\mathbb{R}$ projected at a factor $\Delta\frac{r}{rq}=\frac{2\pi}{2.5^2}=\looparrowright$ from any arbitrary point chosen in $\mathbb{Q}$.</pre>
+      <pre class="osf" id="osf-41">As if a number-theoretical uncertainty principle exists with a horizon $\mathbb{R}$ projected at a factor $\Delta\frac{r}{rq}=\frac{2\pi}{2.5^2}=\looparrowright$ from any arbitrary point chosen in $\mathbb{Q}$.</pre>
 
-      <pre
-        class="osf">There exist a observational limit at radius $2\pi$ which transforms any discrete interval in what seems to be a continuum of real numbers. </pre>
+      <pre class="osf" id="osf-42">There exist a observational limit at radius $2\pi$ which transforms any discrete interval in what seems to be a continuum of real numbers. </pre>
 
-      <pre
-        class="osf">If we choose position at $r=\frac{2\pi}{\looparrowright}=2.5^2$, or $\frac{2\pi}{\looparrowright}$ from the horizon at $\mathbb{R}$, we snap back on the grid of rational coordinates at $\mathbb{Q}$. Both coordinates $\pi$ and $3.125$ map to the exact same coordinate but only differ by perspective. </pre>
+      <pre class="osf" id="osf-43">If we choose position at $r=\frac{2\pi}{\looparrowright}=2.5^2$, or $\frac{2\pi}{\looparrowright}$ from the horizon at $\mathbb{R}$, we snap back on the grid of rational coordinates at $\mathbb{Q}$. Both coordinates $\pi$ and $3.125$ map to the exact same coordinate but only differ by perspective. </pre>
 
-      <pre
-        class="osf">Apparently distinct rational inputs map to distinct irrational outputs because intrinsically $\mathbb{Q}\equiv\mathbb{R}$. This is a bold statement that brings the validity of the continuum hypothesys into question, therefor needs to be justified.</pre>
+      <pre class="osf" id="osf-44">Apparently distinct rational inputs map to distinct irrational outputs because intrinsically $\mathbb{Q}\equiv\mathbb{R}$. This is a bold statement that brings the validity of the continuum hypothesys into question, therefor needs to be justified.</pre>
 
       <!--
 <pre class="osf">Quadrature reference frame</pre>
@@ -431,73 +391,56 @@ Figure_3.1_Quadrature_constant_-_leap.GIF
 -->
       <h2>Quadrature reference frame</h2>
 
-      <figure>
-        <img loading="lazy" src="figures/Figure_3.3_Quadrature_reference_frame.GIF"
-          alt="Figure 3.03  Quadrature reference frame" />
+      <pre class="osf" id="osf-45"><figure id="fig-3-03">
+        <img loading="lazy" src="figures/Figure_3.3_Quadrature_reference_frame.GIF" alt="Figure 3.03  Quadrature reference frame">
         <figcaption class="small">
           Figure 3.03 Quadrature reference frame
         </figcaption>
-      </figure>
+      </figure></pre>
 
 
-      <pre
-        class="osf">Figure 3.3 is a Cartesian construction with compass and (unmarked) straightedge. The construction simply begins with straight line &#x27;A&#x27;, a random point &#x27;B&#x27;, and a circle centered on &#x27;B&#x27; of as yet undetermined radius.</pre>
-      <pre class="osf">Now define the radius to $r=5$ and construct &#x27;$E=2.5$&#x27; and &#x27;$F=2.5^2$&#x27;.</pre>
-      <pre
-        class="osf">Proceed by constructing the square. This results in a square and circle of approximately the same area. </pre>
+      <pre class="osf" id="osf-46">Figure 3.3 is a Cartesian construction with compass and (unmarked) straightedge. The construction simply begins with straight line 'A', a random point 'B', and a circle centered on 'B' of as yet undetermined radius.</pre>
+      <pre class="osf" id="osf-47">Now define the radius to $r=5$ and construct '$E=2.5$' and '$F=2.5^2$'.</pre>
+      <pre class="osf" id="osf-48">Proceed by constructing the square. This results in a square and circle of approximately the same area. </pre>
 
-      <pre
-        class="osf">Transcendental numbers are not constructible with a set of compasses and (unmarked) straight edge (Wikipedia: Constructible number), but in this reference frame we are able to construct an exact solution for $A_{\square}=A_{ \circ}$.</pre>
+      <pre class="osf" id="osf-49">Transcendental numbers are not constructible with a set of compasses and (unmarked) straight edge (Wikipedia: Constructible number), but in this reference frame we are able to construct an exact solution for $A_{\square}=A_{ \circ}$.</pre>
 
-      <pre
-        class="osf">\begin{equation}\begin{split}A_{\square}&amp;=\left(2.5^2\sqrt{2}\right)^2=78.125\in\mathbb{Q}\\\\A_{\circ}&amp;=\pi5^2=78.125\looparrowright\in\mathbb{R}\end{split}\label{eq:03.07} \tag{03.07} \end{equation}</pre>
+      <pre class="osf" id="osf-50">\begin{equation}\begin{split}A_{\square}&amp;=\left(2.5^2\sqrt{2}\right)^2=78.125\in\mathbb{Q}\\\\A_{\circ}&amp;=\pi5^2=78.125\looparrowright\in\mathbb{R}\end{split}\label{eq:03.07} \tag{03.07} \end{equation}</pre>
 
-      <pre
-        class="osf">In a strict Cartesian sense, clearly $A_{\square}\neq A_{\circ}$, however, we did not simply declare $A_{\square}=A_{\circ}$, but rather defined a geometric context in which the equality exist. Assuming the hypothesis correct this is expressed by</pre>
-      <pre
-        class="osf">\begin{equation}\mathbb{Q}\looparrowright=\mathbb{R}\leftrightarrow\frac{\mathbb{R}}{\looparrowright}=\mathbb{Q}\label{eq:03.08}\tag{03.08}\end{equation}</pre>
+      <pre class="osf" id="osf-51">In a strict Cartesian sense, clearly $A_{\square}\neq A_{\circ}$, however, we did not simply declare $A_{\square}=A_{\circ}$, but rather defined a geometric context in which the equality exist. Assuming the hypothesis correct this is expressed by</pre>
+      <pre class="osf" id="osf-52">\begin{equation}\mathbb{Q}\looparrowright=\mathbb{R}\leftrightarrow\frac{\mathbb{R}}{\looparrowright}=\mathbb{Q}\label{eq:03.08}\tag{03.08}\end{equation}</pre>
 
       <!--
 <pre class="osf">Primorial 24 parts in 25 and hexagons</pre>
 <pre class="osf">-------------------------------------</pre>
 -->
       <h2>Primorial 24 parts in 25 and hexagons</h2>
-      <pre
-        class="osf">Each distinct dimensionless point (coordinate) addressed on area $A_{\square}$ maps to exact one, yet indeterminable fuzzy surface like, &#x27;distributed coordinate&#x27; on the area $A_{\circ}$. This aspect of &#x27;fuzzy spread&#x27; is closely related to the distribution of the (non trivial) zeros of the Riemann zeta function for which later a model will be presented.</pre>
+      <pre class="osf" id="osf-53">Each distinct dimensionless point (coordinate) addressed on area $A_{\square}$ maps to exact one, yet indeterminable fuzzy surface like, 'distributed coordinate' on the area $A_{\circ}$. This aspect of 'fuzzy spread' is closely related to the distribution of the (non trivial) zeros of the Riemann zeta function for which later a model will be presented.</pre>
 
-      <pre
-        class="osf">The outline of that model starts with defining the geometry in which to place the quadrature constant $\looparrowright$. The placement is almost derived in figure Quadrature reference frame, point $F=2.5^2$. In fact $F\looparrowright=2\pi$, which is in fact the horizon, or observational limit at radius $2\pi$.</pre>
+      <pre class="osf" id="osf-54">The outline of that model starts with defining the geometry in which to place the quadrature constant $\looparrowright$. The placement is almost derived in figure Quadrature reference frame, point $F=2.5^2$. In fact $F\looparrowright=2\pi$, which is in fact the horizon, or observational limit at radius $2\pi$.</pre>
 
-      <pre
-        class="osf">Point &#x27;F&#x27; functions as a pole at radius $x=2.5^2$ and is the reference point from which all $x\in\mathbb{Q}$ are calculated. The primorial delta $P\Delta=0.96$ (see table 3.2) defines the x-coordinate $P\Delta\times2.5^2=6$ in figure 3.4 Primorial hexagon.</pre>
-      <pre class="osf">\begin{equation}P\Delta=\frac{24}{25}=0.96\label{eq:03.09} \tag{03.09}\end{equation}</pre>
-      <pre
-        class="osf">We find in fact that the x-axis can be subdivided in exactly 25 parts of $\frac{1}{4}$, and that $\frac{24}{25}\times 2.5^2=6$, which makes the pole a $25:1$ scale unit circle.</pre>
-      <pre
-        class="osf">\begin{equation}pole=\frac{2.5^{2}}{2\pi\left(\looparrowright\right)^{-1}}\propto\frac{25}{25}\propto 1\label{eq:03.10} \tag{03.10} \end{equation}</pre>
-      <pre
-        class="osf">The pole at $\frac{25}{25}$ can therefore be unambiguously constructed starting from any inscribed hexagon which, enforced by $P\Delta$, projects at $x=\frac{24}{25}$ within this geometric framework.</pre>
-      <pre
-        class="osf">Lastly, observe that the inverse of the primorial delta, multiplied by the quadrature constant, gives an angle of $60^{\circ}=\frac{\pi}{3}$. The hexagonal chord and the associated equilateral triangle will be a further crucial key element in this hypothesis.</pre>
-      <pre
-        class="osf">\begin{equation}P_{\ast}=\left(P\triangle\right)^{-1}\looparrowright\thinspace\rightarrow\frac{\pi}{3}=60^{\circ}\label{eq:03.11} \tag{03.11} \end{equation}</pre>
-      <pre
-        class="osf">The pole at x=25/25 can therefore be unambiguously constructed starting from any inscribed hexagon which, enforced by the primorial delta, projects at x=25/25 within this geometric framework.</pre>
+      <pre class="osf" id="osf-55">Point 'F' functions as a pole at radius $x=2.5^2$ and is the reference point from which all $x\in\mathbb{Q}$ are calculated. The primorial delta $P\Delta=0.96$ (see table 3.2) defines the x-coordinate $P\Delta\times2.5^2=6$ in figure 3.4 Primorial hexagon.</pre>
+      <pre class="osf" id="osf-56">\begin{equation}P\Delta=\frac{24}{25}=0.96\label{eq:03.09} \tag{03.09}\end{equation}</pre>
+      <pre class="osf" id="osf-57">We find in fact that the x-axis can be subdivided in exactly 25 parts of $\frac{1}{4}$, and that $\frac{24}{25}\times 2.5^2=6$, which makes the pole a $25:1$ scale unit circle.</pre>
+      <pre class="osf" id="osf-58">\begin{equation}pole=\frac{2.5^{2}}{2\pi\left(\looparrowright\right)^{-1}}\propto\frac{25}{25}\propto 1\label{eq:03.10} \tag{03.10} \end{equation}</pre>
+      <pre class="osf" id="osf-59">The pole at $\frac{25}{25}$ can therefore be unambiguously constructed starting from any inscribed hexagon which, enforced by $P\Delta$, projects at $x=\frac{24}{25}$ within this geometric framework.</pre>
+      <pre class="osf" id="osf-60">Lastly, observe that the inverse of the primorial delta, multiplied by the quadrature constant, gives an angle of $60^{\circ}=\frac{\pi}{3}$. The hexagonal chord and the associated equilateral triangle will be a further crucial key element in this hypothesis.</pre>
+      <pre class="osf" id="osf-61">\begin{equation}P_{\ast}=\left(P\triangle\right)^{-1}\looparrowright\thinspace\rightarrow\frac{\pi}{3}=60^{\circ}\label{eq:03.11} \tag{03.11} \end{equation}</pre>
+      <pre class="osf" id="osf-62">The pole at x=25/25 can therefore be unambiguously constructed starting from any inscribed hexagon which, enforced by the primorial delta, projects at x=25/25 within this geometric framework.</pre>
 
       <!--
 <pre class="osf">#### Figure 3.04 Primorial hexagon</pre>
 <pre class="osf">![F3.04 Primorial hexagon](https://osf.io/657tn/download =400x400)</pre>
 -->
-      <figure>
-        <img loading="lazy" src="figures/Figure_3.4_Primorial_hexagon.GIF" alt="F3.04 Primorial hexagon" />
+      <pre class="osf" id="osf-63"><figure id="fig-f304-primorial-hexagon">
+        <img loading="lazy" src="figures/Figure_3.4_Primorial_hexagon.GIF" alt="F3.04 Primorial hexagon">
         <figcaption class="small">
           F3.04 Primorial hexagon
         </figcaption>
-      </figure>
+      </figure></pre>
 
     </div>
-    <nav class="pager"><a href="Chapter 2 The spatial aspect of zet.html">← Prev</a><a
-        href="Chapter 4 The triangular numbers.html">Next →</a></nav>
+    <nav class="pager"><a href="Chapter 2 The spatial aspect of zet.html">← Prev</a><a href="Chapter 4 The triangular numbers.html">Next →</a></nav>
   </main>
   <footer class="wrap">© <span id="y"></span> Virgorises</footer>
   <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
@@ -515,7 +458,7 @@ Figure_3.1_Quadrature_constant_-_leap.GIF
     // (if you added 'strings' earlier, keep them—this patch doesn't change that)
   };
 </script>
-<script defer src="/js/osf.bundle.js"></script>
-<script defer src="/js/memo.compose.js"></script>
+<script defer="" src="/js/osf.bundle.js"></script>
+<script defer="" src="/js/memo.compose.js"></script>
 
-</html>
+</body></html>
