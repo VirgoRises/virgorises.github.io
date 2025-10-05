@@ -60,13 +60,19 @@ async function processFile(file) {
   const used = new Set();
   $("[id]").each((_, el)=> used.add($(el).attr("id")));
 
-  // 1) Wrap stray <figure> (not already inside a pre.osf)
-  $("figure").each((_, el)=>{
-    const fig = $(el);
-    if (fig.parents("pre.osf").length) return;  // already in a paragraph
-    // ignore figures inside comments (not parsed as elements anyway)
-    fig.wrap('<pre class="osf"></pre>');
-  });
+// 1) Wrap stray <figure> (not already inside a pre.osf)
+$("figure").each((_, el)=>{
+  const fig = $(el);
+  if (fig.parents("pre.osf").length) return;
+  fig.wrap('<pre class="osf"></pre>');
+});
+
+// 1b) NEW: wrap stray <blockquote> (not already inside a pre.osf)
+$("blockquote").each((_, el)=>{
+  const q = $(el);
+  if (q.parents("pre.osf").length) return;
+  q.wrap('<pre class="osf"></pre>');
+});
 
   // 2) Move figure id="tbl-..." to table id
   $("figure[id]").each((_, el)=>{

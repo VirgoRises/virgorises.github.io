@@ -4,6 +4,14 @@ import path from 'path';
 import simpleGit from 'simple-git';
 import 'dotenv/config';
 
+const ONE_FILE = arg("--file", null);
+const GLOBS = ONE_FILE
+  ? [path.join(ROOT, ONE_FILE)]
+  : [
+      path.join(BASE, "notebook", "*.html"),
+      path.join(BASE, "whiteboard", "*.html")
+    ];
+
 const DATA_DIR = process.env.DATA_DIR || process.cwd();
 const PROPOSALS_DIR = path.join(DATA_DIR, 'data', 'proposals');
 const RFC_DIR   = path.join(PROPOSALS_DIR, 'rfc');
