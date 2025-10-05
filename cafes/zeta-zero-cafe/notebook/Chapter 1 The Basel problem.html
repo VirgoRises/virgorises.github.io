@@ -128,12 +128,10 @@
     discordAppUrl: "discord://-/channels/1421398181098557462/1421432961726939277",
     squareUrl: "https://discord.com/channels/1421398181098557462/1421477719157510249",
     inviteUrl: "https://www.patreon.com/c/virgorises",
-    // optional analytics collector (set to null to disable)
-    analyticsEndpoint: "/osf-analytics",
-    // optional snippet format (anti-spoof by default)
-    snippetTemplate: (label, url, id) => `${label} [id=${id}] — ${url}`,
-    // (if you added 'strings' earlier, keep them—this patch doesn't change that)
-  };
+    SCROLL_OFFSET: 80,
+    HILITE_MS: 6000,
+    analytics: false
+      };
 </script>
 <script defer src="/js/osf.bundle.js?v=2025-10-05c"></script>
 <script defer src="/js/memo.compose.js?v=2025-10-05"></script>
