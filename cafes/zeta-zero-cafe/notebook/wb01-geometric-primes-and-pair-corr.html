@@ -1,0 +1,549 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>WB01 Geometric primes and Pair corr</title>
+  <link rel="stylesheet" href="css/notebook.css">
+
+  <!-- MathJax config (must come BEFORE MathJax itself) -->
+  <script src="math/mathconfig.js"></script>
+
+  <!-- MathJax core -->
+  <script id="MathJax-script" defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+
+<body>
+  <header class="wrap">
+    <h1>WB01 Geometric primes and Pair corr</h1>
+    <nav>
+      <a href="index.html">Notebook Home</a>
+      <a href="../../index.html">Virgorises Home</a>
+      <a href="../index.html">Zeta Zero Café</a>
+    </nav>
+    <p class="small">Working notebook — speculative, unfinished, not peer-reviewed.</p>
+  </header>
+  <main class="wrap">
+    <div class="card">
+      <!--
+    <pre class="osf">WB01 Geometric primes and Pair correlation</pre>
+<pre class="osf">==========================================</pre>
+<pre class="osf"># White Board 01 </pre>
+<pre class="osf">## Geometric Primes and Pair correlation</pre>
+<pre class="osf">@[toc]</pre>
+  -->
+      <h2>White Board 01</h2>
+      <!--
+<pre class="osf">### Explaination of Figure 7.07</pre>
+-->
+      <h3>Explaination of Figure 7.07</h3>
+      <!--
+<pre class="osf">![F7.07 Geometric primes and Pair correlation](https://osf.io/x4kvc/download =500x500)</pre>
+  -->
+      <pre class="osf" id="osf-1"><figure id="fig-f707-geometric-primes-and-pair-correlation"><img loading="lazy" src="figures/Figure_7.07_Geometric_Primes_and_Pair_correlation.PNG" alt="F7.07 Geometric primes and Pair correlation"><figcaption class="small">F7.07 Geometric primes and Pair correlation</figcaption></figure></pre>
+
+      <pre class="osf" id="osf-2">This figure contains two series:
+  
+  - The bottom series $Pc\left(x\pi\right)=1-\left(\frac{sin\thinspace
+\pi x}{\pi x}\right)^{2}$, which is the Montgomery-Dyson formula for pair correlation. This formula describes both the average spacing between any pair non trivial zeros of the zeta function which is  discovered by Hugh Montgommery, as also the average spacing between eigenvalues of random hermitian matrices, used in modeling quantum physical systems. A chance discovery made at the Institute of Advanced Studies (IAS) in conversation between Hugh Montgommery and Freeman Dyson. [From Prime Numbers to Nuclear Physics and Beyond][1]</pre>
+
+      <pre class="osf" id="osf-3"> - The top series named 'Density chord', is based on the modulus, or 'absolute value' of the non trivial zeta zeros, $\left|z\right|=\sqrt{Re\left(z\right)^{2}+Im\left(z\right)^{2}}$. This function value of a complex function, is assumed a $D4$ value, and succesively normalized to a $D1$ Real value by $x=\frac{\sqrt[4]{\left|z\right\|}}{\lfloor\sqrt[4]{\left\|z\right\|}\rfloor}$. See table 7.03 Non trivial zero to Unity chord, where the first 25 Non trivial zeros are tabulated, and in the rightmost column '$C_{box}$' the normalized values are listed.</pre>
+
+      <pre class="osf" id="osf-4"><b>Side note Unity chord :</b> The Riemann conjecture states 'All non trivial zeros have real part one half'. A special property of a hexagon is that the chord length equals the radius, and 'All hexagons have $y=sin\left(x\right)$ for real part $x\in\mathbb{R}=\frac{1}{2}$'. See figure F5.06 Root 2 equilibrium where the real axis base of the unit circle and the orthogonality of the y-axis for $x=\frac{1}{2}$ , ($\overline{{\tiny ACE}}$), is preserved. Hypothesized is that the imaginary non trivial zeta zeros are distorted artefacts of $y=sin\left(\frac{1}{2}\right)$, and therefor F5.06 illustrates how $\|z\|$ (the modulus), and thus the chord length, relate to the imaginary zeta zero.</pre>
+      <pre class="osf" id="osf-5">This dynamic is also captured by the geometric model 'The projection plane - triangular plane' that provides the geometric proof for RH, see figure F5.03 (Table 4.01) and further below, F4.02.</pre>
+
+      <!--<pre class="osf">![F5.06 Root 2 equilibrium](https://osf.io/8nzgt/download =350x350)</pre>-->
+      <pre class="osf" id="osf-6"><figure id="fig-f506-root-2-equilibrium"><img loading="lazy" src="figures/Figure_5.6_Root_2_equilibrium.PNG" alt="F5.06 Root 2 equilibrium"><figcaption class="small">F5.06 Root 2 equilibrium</figcaption></figure></pre>
+
+      <!--
+<pre class="osf">![F5.03 Triangular numbers-chord density](https://osf.io/tnez4/download =350x350)</pre>
+-->
+      <pre class="osf" id="osf-7"><figure id="fig-f503-triangular-numbers-chord-density"><img loading="lazy" src="figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG" alt="F5.03 Triangular numbers-chord density"><figcaption class="small">F5.03 Triangular numbers-chord density</figcaption></figure></pre>
+
+      <pre class="osf" id="osf-8"><b>End side note Unity chord</b></pre>
+      <!--<pre class="osf">### Explaination of Figure 7.10</pre>-->
+
+      <h3>Explaination of Figure 7.10</h3>
+      <!--
+<pre class="osf">![F7.10 Zeta zero modulus as proportional chord](https://osf.io/hzsfy/download =500x500)</pre>
+-->
+
+      <pre class="osf" id="osf-9"><figure id="fig-f710-zeta-zero-modulus-as-proportional-chord"><img loading="lazy" src="figures/Figure_7.10_Zeta_zero_modulus_as_proportional_chord.PNG" alt="F7.10 Zeta zero modulus as proportional chord"><figcaption class="small">F7.10 Zeta zero modulus as proportional chord</figcaption></figure></pre>
+
+      <pre class="osf" id="osf-10">The set moduli of the non trivial zeta zeros, $$\mathbb{Z_{\left|z\right|}}\rightarrow\forall \thinspace z,\left|z\right|\in\sqrt{Re\left(z\right)^{2}+Im\left(z\right)^{2}}$$ </pre>
+      <pre class="osf" id="osf-11">In figure F7.10 the first 950 values are plotted as y-value, $$y= \frac{\sqrt[4]{\sqrt{a^2+bi^2}}}{\left\lfloor\sqrt[4]{\sqrt{a^2+bi^2}}\right\rfloor}$$</pre>
+      <pre class="osf" id="osf-12">   The x-axis simply plots the sequence number $n\in\mathbb{N}$, the number of appearance in the unsorted list of non trivial zeta zeros, here up to 950 values.</pre>
+
+
+      <!--<pre class="osf">#### Geometric primes</pre>-->
+
+      <h3>Geometric primes</h3>
+      <pre class="osf" id="osf-13">The term 'Geometric primes' is for chords of the set of n-gon not immediately obvious, because for each regular n-gon there exist $\#n$ inscribed chords of equal size. This is as if a set of primes exist like $$x\in\mathbb{Z_{0}}\rightarrow\left\{\overset{1=}{\left\{z_{1}\right\}},\overset{2=}{\left\{z_{2},z_{3}\right\}},\overset{3=}{\left\{z_{4},z_{5},z_{6}\right\}},\overset{4=}{\left\{z_{7},\dots,z_{10}\right\}},\overset{5=}{\left\{z_{11},\dots,z_{15}\right\}},\dots\right\}$$</pre>
+
+      <pre class="osf" id="osf-14">A triangular order that is in fact close to the actual situation, because when we observe $\|z\|$ we find that in the natural order of appearance of consequtive $\|z\|$, a distinct pattern is discernable. </pre>
+
+      <pre class="osf" id="osf-15">The pattern can be denoted as $$x\in\mathbb{Z_{0}}\rightarrow\left\{\overset{1=}{\left\{z_{1}\right\}},\overset{2=}{\left\{z_{2},z_{3}\right\}},\overset{3=}{\left\{z_{4},z_{5},z_{6}\right\}},\overset{4=}{\left\{z_{7},\dots,z_{10}\right\}},\overset{5=}{\left\{z_{11},\dots,z_{15}\right\}},\dots\right\}$$</pre>
+
+
+
+      <pre class="osf" id="osf-16">\begin{equation}\begin{bmatrix}z_{46}\\\\z_{37} &amp; z_{47}\\\\\star z_{29} &amp; z_{38} &amp; z_{48}\\\\z_{22} &amp; \star z_{30} &amp; z_{39} &amp; z_{49}\\\\z_{16} &amp; z_{23} &amp; \star z_{31} &amp; z_{40} &amp; z_{50}\\\\z_{11} &amp; z_{17} &amp; z_{24} &amp; \star z_{32} &amp; z_{41} &amp;z_{51}\\\\z_{7} &amp; z_{12} &amp; z_{18} &amp; z_{25} &amp; \star z_{33} &amp;z_{42} &amp; z_{52}\\\\z_{4} &amp; z_{8} &amp; z_{13} &amp; z_{19} &amp; z_{26} &amp; \star z_{34} &amp; z_{43} &amp; z_{53}\\\\z_{2} &amp; z_{5} &amp; z_{9} &amp; z_{14} &amp; z_{20} &amp; z_{27} &amp;\star z_{35} &amp; z_{44} &amp; z_{54}\\\\z_{1} &amp; z_{3} &amp; z_{6} &amp; z_{10} &amp; z_{15} &amp; z_{21} &amp;z_{28} &amp; \star z_{36} &amp; z_{45} &amp; z_{55}\end{bmatrix}\label{eq:07.16}\tag{07.16}\end{equation}</pre>
+
+      <pre class="osf" id="osf-17">This triangular order is the basis of the geometric model, the projection plane - triangular plane, with which in chapter 4 the solution to the Riemann conjecture 'All non trivial zeros have real part one half' will be presented.</pre>
+
+      <!--<pre class="osf">![F4.02 The projection plane](https://osf.io/45jwq/download =300x300)</pre>-->
+      <pre class="osf" id="osf-18"><figure id="fig-f402-the-projection-plane"><img loading="lazy" src="figures/Figure_4.2_The_projection_plane.PNG" alt="F4.02 The projection plane"><figcaption class="small">F4.02 The projection plane</figcaption></figure></pre>
+
+
+      <pre class="osf" id="osf-19">The triangular order becomes apparent because of an extra grouping in Levels, visible in the distinct pattern as shown in figure F7.10 shown above, where the first **950** $Z_{0}$ are plotted spanning level 0 t/m 4 completely.</pre>
+
+      <pre class="osf" id="osf-20">Level 0 only holds the first $Z_{0}$, then visible in the increasing magnitude of the x value, Level 1 holds the next 20 $Z_{0}$, after which the x-value drops off, and a new ascending sequence starts, see table T7.03, columns 'Level' and $C_{box}$ below.</pre>
+
+      <!---
+      <pre class="osf">![T7.03 Non trivial zero to Unity chord](https://osf.io/jyp4f/download =500x500)</pre>
+    -->
+      <!-- Table 7.3 -->
+      <pre class="osf" id="osf-21"><figure class="card" id="fig-table-73-non-trivial-zero-to-unity-chord"><figcaption><strong>Table 7.3 — Non-trivial zero to Unity chord</strong></figcaption><table id="tbl-7-3-2">
+          <thead>
+            <tr>
+              <th rowspan="2">n</th>
+              <th colspan="3">Complex</th>
+              <th></th>
+              <th colspan="3">\(C_{unity}\) Hexagonal unity chords</th>
+            </tr>
+            <tr>
+              <th>a (Real)</th>
+              <th>bi (Imaginary)</th>
+              <th>\(c = |a| = \sqrt{a^2 + b^2}\)</th>
+              <th>d = \(\sqrt[4]{|a|}\)</th>
+              <th>Level</th>
+              <th>\(C_{box} = \frac{\sqrt[4]{|a|}}{\lfloor \sqrt[4]{|a|}\rfloor}\)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>0.5</td>
+              <td>14.13472514</td>
+              <td>14.14356585</td>
+              <td>1.939276475</td>
+              <td>0</td>
+              <td>1.939276475</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>0.5</td>
+              <td>21.02203964</td>
+              <td>21.02798494</td>
+              <td>2.141407968</td>
+              <td>1</td>
+              <td>1.070703984</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>0.5</td>
+              <td>25.01085758</td>
+              <td>25.01585491</td>
+              <td>2.23642242</td>
+              <td>1</td>
+              <td>1.11821121</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>0.5</td>
+              <td>30.42487613</td>
+              <td>30.42898433</td>
+              <td>2.348669263</td>
+              <td>1</td>
+              <td>1.174334631</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>0.5</td>
+              <td>32.93506159</td>
+              <td>32.93885672</td>
+              <td>2.395670749</td>
+              <td>1</td>
+              <td>1.197835375</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>0.5</td>
+              <td>37.58617816</td>
+              <td>37.58950370</td>
+              <td>2.476091264</td>
+              <td>1</td>
+              <td>1.238045632</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>0.5</td>
+              <td>40.91871901</td>
+              <td>40.92177373</td>
+              <td>2.529231677</td>
+              <td>1</td>
+              <td>1.264615838</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>0.5</td>
+              <td>43.32707328</td>
+              <td>43.32995822</td>
+              <td>2.565647973</td>
+              <td>1</td>
+              <td>1.282823987</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>0.5</td>
+              <td>48.00515088</td>
+              <td>48.00775470</td>
+              <td>2.632254329</td>
+              <td>1</td>
+              <td>1.316127165</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>0.5</td>
+              <td>49.77383248</td>
+              <td>49.77634377</td>
+              <td>2.656169272</td>
+              <td>1</td>
+              <td>1.328084636</td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td>0.5</td>
+              <td>52.97032148</td>
+              <td>52.97268124</td>
+              <td>2.697820118</td>
+              <td>1</td>
+              <td>1.348910059</td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td>0.5</td>
+              <td>56.44624770</td>
+              <td>56.44846215</td>
+              <td>2.741025202</td>
+              <td>1</td>
+              <td>1.370512601</td>
+            </tr>
+            <tr>
+              <td>13</td>
+              <td>0.5</td>
+              <td>59.34704400</td>
+              <td>59.34915022</td>
+              <td>2.775579213</td>
+              <td>1</td>
+              <td>1.387789606</td>
+            </tr>
+            <tr>
+              <td>14</td>
+              <td>0.5</td>
+              <td>60.83177852</td>
+              <td>60.83383334</td>
+              <td>2.792777236</td>
+              <td>1</td>
+              <td>1.396388618</td>
+            </tr>
+            <tr>
+              <td>15</td>
+              <td>0.5</td>
+              <td>65.11254405</td>
+              <td>65.11446377</td>
+              <td>2.840660727</td>
+              <td>1</td>
+              <td>1.420330364</td>
+            </tr>
+            <tr>
+              <td>16</td>
+              <td>0.5</td>
+              <td>67.07981053</td>
+              <td>67.08167396</td>
+              <td>2.861877056</td>
+              <td>1</td>
+              <td>1.430938528</td>
+            </tr>
+            <tr>
+              <td>17</td>
+              <td>0.5</td>
+              <td>69.54640171</td>
+              <td>69.54819905</td>
+              <td>2.887828992</td>
+              <td>1</td>
+              <td>1.443914496</td>
+            </tr>
+            <tr>
+              <td>18</td>
+              <td>0.5</td>
+              <td>72.06715767</td>
+              <td>72.06889215</td>
+              <td>2.913647184</td>
+              <td>1</td>
+              <td>1.456823592</td>
+            </tr>
+            <tr>
+              <td>19</td>
+              <td>0.5</td>
+              <td>75.70469070</td>
+              <td>75.70634183</td>
+              <td>2.949735435</td>
+              <td>1</td>
+              <td>1.474867717</td>
+            </tr>
+            <tr>
+              <td>20</td>
+              <td>0.5</td>
+              <td>77.14484007</td>
+              <td>77.14646038</td>
+              <td>2.963664248</td>
+              <td>1</td>
+              <td>1.481832124</td>
+            </tr>
+            <tr>
+              <td>21</td>
+              <td>0.5</td>
+              <td>79.33737502</td>
+              <td>79.33895055</td>
+              <td>2.984500204</td>
+              <td>1</td>
+              <td>1.492250102</td>
+            </tr>
+            <tr>
+              <td>22</td>
+              <td>0.5</td>
+              <td>82.91038085</td>
+              <td>82.91188849</td>
+              <td>3.017548102</td>
+              <td>2</td>
+              <td>1.005849367</td>
+            </tr>
+            <tr>
+              <td>23</td>
+              <td>0.5</td>
+              <td>84.73549298</td>
+              <td>84.73696815</td>
+              <td>3.034018540</td>
+              <td>2</td>
+              <td>1.011339513</td>
+            </tr>
+            <tr>
+              <td>24</td>
+              <td>0.5</td>
+              <td>87.42527461</td>
+              <td>87.42670439</td>
+              <td>3.057813734</td>
+              <td>2</td>
+              <td>1.019271245</td>
+            </tr>
+            <tr>
+              <td>25</td>
+              <td>0.5</td>
+              <td>88.80911121</td>
+              <td>88.81051871</td>
+              <td>3.069842552</td>
+              <td>2</td>
+              <td>1.023280851</td>
+            </tr>
+          </tbody>
+        </table>
+      </figure>
+      </pre>
+
+      <!--<pre class="osf">#### The triangular numbers and the QGF</pre>-->
+
+      <h3>The triangular numbers and the QGF</h3>
+      <pre class="osf" id="osf-22">The first 2 levels, level 0 and level 1 consists of <em>in total 21</em> $Z_{0}$. This is significant because the sixth triangular number $T_{6}=1+2+3+4+5+6=21$. i.e., The first 6 n-gons that project inside the bounds of the convex set span level 0 and level 1, see figure F7.03 below.</pre>
+      <!--<pre class="osf">![F7.03 QGF natural state](https://osf.io/k8cfr/download =400x400)</pre>-->
+      <pre class="osf" id="osf-23"><figure id="fig-f703-qgf-natural-state"><img loading="lazy" src="figures/Figure_7.03_QGF_natural_state.PNG" alt="F7.03 QGF natural state"><figcaption class="small">F7.03 QGF natural state</figcaption></figure></pre>
+
+      <pre class="osf" id="osf-24">The circle at n=1 represents $Z_{1}$, (which in fact is the fractal projection of the infinite stack of chords at $n\rightarrow\infty$). </pre>
+
+      <pre class="osf" id="osf-25">Then successively the 2,3,4,5 and 6-gon follow $\left\{\overset{2-gon}{Z_{2\dots3}}\right\}$,$\left\{\overset{3-gon}{Z_{4\dots6}}\right\}$,$\left\{\overset{4-gon}{Z_{7\dots10}}\right\}$,$\left\{\overset{5-gon}{Z_{11\dots15}}\right\}$,$\left\{\overset{6-gon}{Z_{16\dots21}}\right\}$.</pre>
+      <pre class="osf" id="osf-26">This all, ofcourse, means that $\forall\thinspace n\in \mathbb{N}$ , any given n is distributed in n parts. </pre>
+
+      <pre class="osf" id="osf-27">As a side note to this distribution: This distribution lays at the basis of the particle repulsion problem, and the solution to the particle repulsion question is in fact the solution to the validity of the continuum hypothesis. In chapter 3, The primorial function, a method is derived that provides a counter example to the continuum hypothesys. </pre>
+
+      <pre class="osf" id="osf-28">The crux is that there is an equivalence between $\mathbb{Q}$ and $\mathbb{R}$ such that rational values have a diffusely distributed set of counterparts in real values. There is a topological distinction, but also a one to one correspondence between $\mathbb{Q}$ and $\mathbb{R}$, which makes $\mathbb{R}$ by association countable infinite.</pre>
+
+      <!--<pre class="osf">#### Geometric QGF model versus physical Convex set</pre>-->
+      <h3>Geometric QGF model versus physical Convex set</h3>
+
+      <pre class="osf" id="osf-29">In figure F7.03 the geometric continuation will clearly disapear to the right and projects to the limit at which we find the 'n-gon'  at $n\rightarrow\infty$, which can be viewed as an infinit stack of chords orthogonal to the x-axis, or as the circle at x=1. </pre>
+
+      <pre class="osf" id="osf-30">That circle has a circumference of $2\pi\thinspace r=2\pi$. The circle itself has therefor a circumference the size of one chord at infinity, the other chords can be found, but that becomes clear as we locate the chords for the n-gon $\text{n7 to n}\infty$ that geometrically project outside the bounds of the QGF convex set.</pre>
+
+      <!--<pre class="osf">#### The QGF must be true because ...</pre>-->
+
+      <h3>The QGF must be true because</h3>
+      <pre class="osf" id="osf-31">**The following construct can only occur in the physical (natural state) setting of a closed system with infinite elastic boundary conditions. </pre>
+
+      <pre class="osf" id="osf-32">This is an experimentally observed property which is modelled with Gaussian Hermitian matrices and therefor MUST confirm the validity of the QGF model!**</pre>
+
+      <pre class="osf" id="osf-33">The necessary assumption must be that the calculated geometric chords, DO exist as a stack of chords cramped against the maximum elastic boundary of some physical complete convex set, the universe.</pre>
+
+      <pre class="osf" id="osf-34">The individual geometric n-gon consist of chords that have a maximum size of $\underset{n\rightarrow\infty}{Lim}\thinspace 2n\cdot sin\left(\frac{2\pi}{2n}\right)=2\pi$. </pre>
+
+      <pre class="osf" id="osf-35">The chord length represents in physical sense the wave length spanning one(1) chord. The n-gon represent standing waves in a particle in a box configuration that for each n-gon projects at coordinate $$\forall\thinspace n&gt;=7,\thinspace x=\frac{2n\cdot sin\left(\frac{2\pi}{2n}\right)}{\left\lfloor 2n\cdot sin\left(\frac{2\pi}{2n}\right)\right\rfloor}=\frac{\left&lt;6,2\pi\right]}{6}\rightarrow \rho _{n}=\left&lt;1,\frac{\pi}{3}\right]\text{ (normalized)}$$ </pre>
+
+      <pre class="osf" id="osf-36">Because at $x=\rho _{n}\text{ (normalized)}$ the (chord length) waves with density $\rho _{n}$ occupy a <em>hexagonal snare where only 6 such waves fit the orbit</em> ([resembling a de Broglie wave configuration][2]).</pre>
+
+      <pre class="osf" id="osf-37">The orbits that contain $n\\,mod\\,6=0$ experience constructive interferance. Other orbits that contain $n\\,mod\\,6&lt;&gt;0$ experience pertubation by a remainder of $\rho _{n}=n-\left\lfloor\frac{n}{6}\right\rfloor$ waves traversing the hexagonal snare.</pre>
+
+      <pre class="osf" id="osf-38">(this perturbation can cause a spectrum of constructive or destructive interferance which can alter local density conditions such that resonance can cause waves to jump strings, thus enabling a system resembling particle/wave interaction). See table T7.02 below for chords, relative density and surplus.</pre>
+
+      <!--
+        <pre class="osf">![T7.02 Chord length and relative density](https://osf.io/6sx57/download =300x300)</pre>
+    -->
+        <!-- Table 7.2 -->
+      <pre class="osf" id="osf-39"><figure class="card" id="fig-table-72-chord-length-and-relative-density"><figcaption><strong>Table 7.2 — Chord length and relative density</strong></figcaption><table id="tbl-7-2-2">
+          <thead>
+            <tr>
+              <th>n</th>
+              <th>\(x_{n}=2n \cdot \sin\!\left(\tfrac{2\pi}{2n}\right)\)</th>
+              <th>\(\rho_{n}=\tfrac{x_{n}}{x_{6}}\)</th>
+              <th>\(\tfrac{1}{6}n\)</th>
+              <th>surplus</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>6</td>
+              <td>6</td>
+              <td>\(1=\tfrac{6}{6}=\tfrac{24}{24}\)</td>
+              <td>\(1=\tfrac{6}{6}\)</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>6.0743723476</td>
+              <td>1.012395391</td>
+              <td>\(1\tfrac{1}{6}=\tfrac{7}{6}\)</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>6.122934918</td>
+              <td>1.020489153</td>
+              <td>\(1\tfrac{2}{6}=\tfrac{8}{6}\)</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>6.15636258</td>
+              <td>1.02606043</td>
+              <td>\(1\tfrac{3}{6}=\tfrac{9}{6}\)</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>6.180339887</td>
+              <td>1.030056648</td>
+              <td>\(1\tfrac{4}{6}=\tfrac{10}{6}\)</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td>6.198116251</td>
+              <td>1.033019375</td>
+              <td>\(1\tfrac{5}{6}=\tfrac{11}{6}\)</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td>6.211657082</td>
+              <td>1.03527618</td>
+              <td>\(2=\tfrac{12}{6}\)</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <td>13</td>
+              <td>6.2222072771</td>
+              <td>1.037034545</td>
+              <td>\(2\tfrac{1}{6}=\tfrac{13}{6}\)</td>
+              <td>7</td>
+            </tr>
+            <tr>
+              <td>14</td>
+              <td>6.230586151</td>
+              <td>1.038431025</td>
+              <td>\(2\tfrac{2}{6}=\tfrac{14}{6}\)</td>
+              <td>8</td>
+            </tr>
+            <tr>
+              <td>15</td>
+              <td>6.237350725</td>
+              <td>1.039558454</td>
+              <td>\(2\tfrac{3}{6}=\tfrac{15}{6}\)</td>
+              <td>9</td>
+            </tr>
+            <tr>
+              <td>16</td>
+              <td>6.242890305</td>
+              <td>1.040481717</td>
+              <td>\(2\tfrac{4}{6}=\tfrac{16}{6}\)</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>\(\infty\)</td>
+              <td>2\(\pi\)</td>
+              <td>\(\tfrac{\pi}{3}\)</td>
+              <td>\(\tfrac{1}{6}\)</td>
+              <td>\(\mathbb{N}\)</td>
+            </tr>
+          </tbody>
+        </table>
+      </figure>
+      </pre>
+
+
+      <!--<pre class="osf">### Core formulae</pre>
+<pre class="osf">#### Pair correlation formula</pre>
+    -->
+
+      <h2>Core formulae</h2>
+      <h3>Pair correlation formula</h3>
+      <pre class="osf" id="osf-40">\begin{equation}1-\left(\frac{sin\thinspace \pi x}{\pi x}\right)^{2}\end{equation}</pre>
+
+      <!--<pre class="osf">#### Chord length</pre>-->
+      <h3>Chord length</h3>
+      <pre class="osf" id="osf-41">\begin{equation}2n\cdot sin\left(\frac{2\pi}{2n}\right)\end{equation}</pre>
+
+      <!--<pre class="osf">#### Modulus</pre>-->
+      <h3>Modulus</h3>
+      <pre class="osf" id="osf-42">\begin{equation}\left\|z\right\|=\sqrt{Re\left(z\right)^{2}+Im\left(z\right)^{2}}\end{equation}</pre>
+
+      <!--<pre class="osf">#### Normalized modulus</pre>-->
+      <h3>Normalized modulus</h3>
+
+      <pre class="osf" id="osf-43">\begin{equation}y= \frac{\sqrt[4]{\sqrt{a^2+bi^2}}}{\left\lfloor\sqrt[4]{\sqrt{a^2+bi^2}}\right\rfloor}\end{equation}</pre>
+
+
+      <!--
+        <pre class="osf">  [1]: https://www.ias.edu/ideas/2013/primes-random-matrices</pre>
+      <pre class="osf">  [2]: https://en.wikipedia.org/wiki/Matter_wave</pre>
+    -->
+    </div>
+    <nav class="pager"><a href="chapter-8-spectrum-of-volume.html">← Prev</a><a href="wb02-ch-a-primorial-counter-example.html">Next →</a></nav>
+  </main>
+  <footer class="wrap">© <span id="y"></span> Virgorises</footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script>
+    document.querySelectorAll('pre.osf').forEach(el => {
+      if (!el.textContent.trim()) el.remove();
+    });
+  </script>
+<script>
+    window.OSF_CONFIG = {
+      SCROLL_OFFSET: 80,
+      HILITE_MS: 6000,
+      squareUrl: "/cafes/zeta-zero-cafe/join-the-square.html",
+      discordChannelUrl: "https://discord.com/channels/1421398181098557462/1421432961726939277",
+      discordAppUrl: "discord://-/channels/1421398181098557462/1421432961726939277",
+      inviteUrl: "https://www.patreon.com/c/virgorises",
+      snippetTemplate: (url, n) => `§${n} — ${url}`
+    };
+  </script>
+  <script defer src="/js/osf.bundle.js"></script>
+  <script defer src="/js/memo.compose.js"></script>
+
+</body></html>

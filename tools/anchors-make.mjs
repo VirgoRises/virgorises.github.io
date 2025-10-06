@@ -1,49 +1,38 @@
-// Node 18+  (npm i cheerio glob)
+// tools/anchors-make.mjs
+// Create /data/cafes/<slug>/anchors/chapter-*.json from normalized HTML,
+// and ensure <pre.osf id="osf-N"> is present (already done by normalizer).
 import fs from "fs/promises";
 import path from "path";
 import { glob } from "glob";
-import { load } from "cheerio";
-import crypto from "crypto";
+import * as cheerio from "cheerio";
 
-const PATTERNS = [
-  "zeta-zero-cafe/notebook/Chapter*.html",
-  "notebook/Chapter*.html",
-  "**/notebook/Chapter*.html"
-];
-const OUT_DIR = "data/anchors";
-await fs.mkdir(OUT_DIR, { recursive: true });
+const ROOT = process.cwd();
+function arg(name, def=null){ const i = process.argv.indexOf(name); return i>-1 ? (process.argv[i+1]??true) : def; }
+const SLUG = arg("--slug", "zeta-zero-cafe");
+const BASE = path.join(ROOT, "cafes", SLUG, "notebook");
+const OUT  = path.join(ROOT, "data", "cafes", SLUG, "anchors");
 
-const files = Array.from(new Set((await Promise.all(PATTERNS.map(p => glob(p)))).flat())).sort();
-
-function chapterNoFromFilename(f) {
+function chapterKeyFromName(f){
+  // "Chapter 4 The triangular numbers.html" -> chapter-4
   const name = path.basename(f);
   const m = name.match(/Chapter\s+(\d+)/i);
-  return m ? Number(m[1]) : null;
+  if (m) return `chapter-${m[1]}`;
+  // fallback: wb or other pages -> strip extension
+  return path.basename(f, ".html").toLowerCase().replace(/\s+/g,"-");
 }
 
-for (const file of files) {
-  const html = await fs.readFile(file, "utf8");
-  const $ = load(html);
-  const pres = $("pre.osf");
-  const chapter = chapterNoFromFilename(file) ?? "X";
-  const outPath = path.join(OUT_DIR, `chapter-${chapter}.json`);
+async function main(){
+  const files = await glob(path.join(BASE, "*.html"));
+  await fs.mkdir(OUT, { recursive:true });
 
-  // Reuse existing mapping if present
-  let mapping = null;
-  try { mapping = JSON.parse(await fs.readFile(outPath, "utf8")); } catch {}
-  const out = { title: $('title').text().trim(), chapter, paragraphs: [] };
-
-  for (let i = 0; i < pres.length; i++) {
-    const prior = mapping?.paragraphs?.[i];
-    if (prior?.uuid) {
-      out.paragraphs.push({ uuid: prior.uuid, label: `§ ${i+1}` });
-    } else {
-      // new uuid: short, readable, but globally unique enough
-      const rand = crypto.randomBytes(3).toString("hex"); // 6 hex chars
-      out.paragraphs.push({ uuid: `c${chapter}-${String(i+1).padStart(3,"0")}-${rand}`, label: `§ ${i+1}` });
-    }
+  for (const file of files){
+    const html = await fs.readFile(file, "utf8");
+    const $ = cheerio.load(html);
+    const ids = $("pre.osf[id]").map((_,el)=>$(el).attr("id")).get();
+    const key = chapterKeyFromName(file);
+    const outFile = path.join(OUT, `${key}.json`);
+    await fs.writeFile(outFile, JSON.stringify({ ids }, null, 2), "utf8");
+    console.log(`wrote ${path.relative(ROOT, outFile)} (${ids.length} paragraphs)`);
   }
-
-  await fs.writeFile(outPath, JSON.stringify(out, null, 2), "utf8");
-  console.log("wrote", outPath, `(${pres.length} paragraphs)`);
 }
+main().catch(e=>{ console.error(e); process.exit(1); });

@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Research Office</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <style>
+    :root {
+      color-scheme: dark
+    }
+
+    body {
+      margin: 0;
+      font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu;
+      color: #e7edf3;
+      background: #0b1117
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 28px auto;
+      padding: 0 16px
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 0 0 16px
+    }
+
+    .muted {
+      opacity: .75
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .card {
+      background: #121720;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 12px;
+      padding: 12px
+    }
+
+    .head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px
+    }
+
+    .tag {
+      display: inline-block;
+      background: #15202b;
+      border: 1px solid rgba(255, 255, 255, .12);
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 12px
+    }
+
+    .btn {
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, .16);
+      background: #0f141a;
+      border-radius: 10px;
+      padding: 8px 12px;
+      color: #e7edf3;
+      text-decoration: none
+    }
+
+    .btn:hover {
+      background: #141b24
+    }
+
+    .list {
+      display: grid;
+      gap: 8px
+    }
+
+    .item {
+      display: flex;
+      gap: 8px;
+      align-items: start
+    }
+
+    .item a {
+      color: #81a9ff;
+      text-decoration: none
+    }
+
+    .item a:hover {
+      text-decoration: underline
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 240px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      background: #0f141a;
+      color: #e7edf3;
+      padding: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace
+    }
+
+    .bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px
+    }
+
+    .preview {
+      min-height: 140px
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace
+    }
+      .ro-preview{
+    background:#0e141b;border:1px solid rgba(255,255,255,.12);
+    border-radius:12px;padding:14px;overflow:auto;
+  }
+  .ro-preview .MathJax{ font-size:1.05rem; }
+
+  </style>
+  <script>
+    // MathJax v3 config (SVG output; enables $...$ and \( ... \) and \begin{equation} ... )
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        // Don't skip our preview container; default also skips <pre> so we render outside it.
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'code']
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="head">
+      <h1 class="ro-title" style="margin:0;">Research Office — <span id="cafeName" class="tag"></span>
+        <span id="chapName" class="muted ro-sub" style="margin-left:.5rem"></span>
+      </h1>
+      <a id="backLink" class="btn" href="#">← Back</a>
+    </div>
+
+    <div class="row">
+      <!-- Left: preview + pick lists -->
+      <div class="card">
+        <div class="head"><strong>Paragraph preview</strong>
+          <span id="paraNum" class="tag">#</span>
+        </div>
+        <pre id="paraPreview" class="card preview"></pre>
+
+        <div class="split" style="margin-top:12px">
+          <div>
+            <div class="head"><strong>Figures</strong></div>
+            <div id="figList" class="list"></div>
+          </div>
+          <div>
+            <div class="head"><strong>Tables</strong></div>
+            <div id="tblList" class="list"></div>
+          </div>
+        </div>
+
+        <div class="bar">
+          <button id="copyLink" class="btn">Copy link</button>
+        </div>
+        <div class="muted" style="margin-top:8px">
+          Tip: toggle “member” in any chapter popover to show/hide the app button.
+        </div>
+      </div>
+
+      <!-- Right: memo editor -->
+      <div class="card">
+        <div class="head"><strong>Memo to self (Markdown/LaTeX)</strong></div>
+        <textarea id="memoBody" placeholder="State the issue, desired change, and rationale..."></textarea>
+        <div class="bar">
+          <button id="saveDraft" class="btn">Save draft (browser)</button>
+          <button id="exportJson" class="btn">Export JSON</button>
+          <button id="submitDiscord" class="btn">Submit via Discord</button>
+        </div>
+        <div class="muted" style="margin-top:8px">
+          RFCs are processes, not chats. Draft → step away → revise → then submit.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="head"><strong>Recent drafts (this browser)</strong></div>
+      <div id="memoList" class="list"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/js/research.office.js"></script>
+</body>
+
+</html>
