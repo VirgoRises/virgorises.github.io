@@ -237,6 +237,113 @@
       // re-render same popover state quickly
       showPopoverFor(pre, n, anchorBtn);
     }, true);
+    //Below is a drop-in patch you can paste near the end of /js/osf.bundle.js
+    //  (after the code that renders the popover)
+    /* ---- OSF popover: robust click handling via delegation ---- */
+    (() => {
+      const toast = (msg) => {
+        let t = document.querySelector('.osf-toast');
+        if (!t) {
+          t = document.createElement('div');
+          t.className = 'osf-toast';
+          t.textContent = msg;
+          document.body.appendChild(t);
+          requestAnimationFrame(() => t.classList.add('show'));
+          setTimeout(() => t.classList.remove('show'), 1600);
+          return;
+        }
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 1600);
+      };
+
+      const copyText = async (text) => {
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+      };
+
+      /* Helper: figure out cafe + chapter path from URL */
+      const pathParts = () => {
+        const parts = location.pathname.split('/'); // ["", "cafes", "<slug>", "notebook", "chapter-...html"]
+        const i = parts.indexOf('cafes');
+        const cafe = i >= 0 ? parts[i + 1] : '';
+        const chapterRel = i >= 0 ? parts.slice(i + 2).join('/') : location.pathname.replace(/^\/+/, '');
+        const cafeRootRel = i >= 0 ? parts.slice(i).join('/') : '';
+        return { cafe, chapterRel, cafeRootRel };
+      };
+
+      document.addEventListener('click', (ev) => {
+        const btn = ev.target.closest('.osf-pop [data-osf]');
+        if (!btn) return;
+
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        // Find the paragraph block/uuid
+        const block = btn.closest('.osf-block');
+        const pre = block ? block.querySelector('pre.osf') : null;
+        const uuid = pre ? (pre.id || pre.getAttribute('data-uuid')) : null;
+
+        const { cafe, chapterRel, cafeRootRel } = pathParts();
+        const paraUrl = `${location.origin}${location.pathname}#${uuid}`;
+        const isMember = localStorage.getItem('osf_member') === '1';
+
+        switch (btn.dataset.osf) {
+          case 'copy':
+            copyText(paraUrl).then(() => toast('Copied paragraph link'));
+            break;
+
+          case 'research': {
+            const back = encodeURIComponent('/' + cafeRootRel);
+            const href = `/cafes/${cafe}/research_office.html?` +
+              `para=${encodeURIComponent(uuid)}&` +
+              `chapter=${encodeURIComponent(chapterRel)}&` +
+              `return=${back}`;
+            window.location.href = href;
+            break;
+          }
+
+          case 'square': {
+            const url = (window.OSF_CONFIG && OSF_CONFIG.squareUrl) ||
+              `/cafes/${cafe}/join-the-square.html`;
+            window.open(url, '_blank', 'noopener');
+            break;
+          }
+
+          case 'app': {
+            if (!isMember) {
+              toast('Toggle “I’m a member” first');
+              return;
+            }
+            const url = (window.OSF_CONFIG && OSF_CONFIG.discordAppUrl) || '';
+            if (url) window.location.href = url;
+            break;
+          }
+
+          case 'patreon': {
+            const url = (window.OSF_CONFIG && OSF_CONFIG.inviteUrl) || '';
+            if (url) window.open(url, '_blank', 'noopener');
+            break;
+          }
+
+          case 'member': {
+            const next = isMember ? '0' : '1';
+            localStorage.setItem('osf_member', next);
+            btn.setAttribute('aria-pressed', next === '1' ? 'true' : 'false');
+            toast(next === '1' ? 'Member mode on' : 'Member mode off');
+            break;
+          }
+        }
+      }, true);
+    })();
 
     // footer
     const foot = document.createElement("div");

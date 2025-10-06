@@ -1,0 +1,103 @@
+/* § wrappers placed by osf.bundle.js */
+.osf-block {
+    position: relative;
+    margin: 1rem 0
+}
+
+.osf-block:focus-within {
+    outline: 2px solid var(--accent-weak);
+    outline-offset: .25rem;
+    border-radius: var(--radius)
+}
+
+/* § label row */
+.osf-head {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: .5rem
+}
+
+.osf-label {
+    font-weight: 700
+}
+
+.osf-copy,
+.osf-more {
+    opacity: .15;
+    transition: opacity .15s
+}
+
+.osf-block:hover .osf-copy,
+.osf-block:hover .osf-more,
+.osf-copy:focus,
+.osf-more:focus {
+    opacity: 1
+}
+
+/* popover */
+.osf-pop {
+    position: absolute;
+    z-index: 9999;
+    inset: auto auto auto 0;
+    transform: translateY(-.25rem);
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: .6rem;
+    width: 22rem
+}
+
+.osf-pop h4 {
+    margin: .2rem .2rem .5rem
+}
+
+.osf-btn {
+    display: block;
+    width: 100%;
+    padding: .55rem .7rem;
+    margin: .35rem 0;
+    background: #1b2230;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    text-align: left
+}
+
+.osf-btn:hover {
+    background: #20283a
+}
+
+.osf-btn[aria-pressed="true"] {
+    outline: 2px solid var(--accent-weak)
+}
+
+/* toast */
+.osf-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%) translateY(8px);
+    opacity: 0;
+    background: #0b111a;
+    border: 1px solid var(--border);
+    padding: .55rem .8rem;
+    border-radius: 10px;
+    transition: transform .15s, opacity .15s
+}
+
+.osf-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1
+}
+
+/* highlight active § on deep-link */
+.osf-active {
+    box-shadow: 0 0 0 2px var(--warn) inset;
+    border-radius: var(--radius)
+}
+
+/* prevents “overlay eats clicks” and ensures popover is on top: */
+.osf-pop { position: absolute; z-index: 9999; }
+.osf-pop, .osf-pop * { pointer-events: auto; }

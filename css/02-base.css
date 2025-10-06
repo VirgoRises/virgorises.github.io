@@ -1,0 +1,33 @@
+a {
+    color: var(--accent);
+    text-decoration: none
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+.wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.25rem
+}
+
+.card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1rem
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+    margin: 1.2rem 0 .6rem
+}
+
+.muted {
+    color: var(--muted)
+}
