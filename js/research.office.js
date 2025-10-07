@@ -1,237 +1,206 @@
-/* Research Office — robust preview with figures */
-(function () {
-  "use strict";
+/* Research Office — loads a single paragraph preview + nearby figures/tables
+   Query: ?para=osf-N&chapter=notebook/<file>.html&return=<encoded-url>
+*/
+(() => {
+  const $ = (sel, el = document) => el.querySelector(sel);
+  const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
 
-  // -------- helpers
-  const $ = sel => document.querySelector(sel);
+  // Basic context
+  const params = new URLSearchParams(location.search);
+  const paraId   = params.get('para') || '';                  // e.g. osf-5
+  const chapter  = decodeURIComponent(params.get('chapter')||''); // notebook/chapter-1-…html
+  const retUrl   = decodeURIComponent(params.get('return')||'');
+  const cafeSlug = location.pathname.split('/').filter(Boolean)[1] || 'zeta-zero-cafe'; // cafes/<slug>/…
 
-  function cafeSlugFromPath() {
-    const p = location.pathname.split("/").filter(Boolean);
-    const i = p.indexOf("cafes");
-    return (i >= 0 && p[i + 1]) ? p[i + 1] : "cafe";
+  // DOM targets
+  const previewBox = $('#paraPreview');       // the paragraph preview container
+  const numBadge   = $('#osfNum');            // small #N badge
+  const figsList   = $('#figList');
+  const tblList    = $('#tblList');
+  const backBtn    = $('#backBtn');
+  const copyBtn    = $('#copyLinkBtn');
+
+  // Utils
+  const chapterFile   = chapter.split('/').pop();                   // chapter-1-the-…html
+  const chapterSlug   = chapterFile.replace(/\.html$/,'');          // chapter-1-the-…
+  const cafeBase      = `/cafes/${cafeSlug}`;
+  const chapterUrlAbs = `${cafeBase}/${chapter}`;                   // absolute URL to chapter html
+  const anchorsUrl    = `/data/cafes/${cafeSlug}/anchors/${chapterSlug}.json`;
+
+  function paraNumberFrom(para) {
+    const m = String(para).match(/osf-(\d+)/);
+    return m ? Number(m[1]) : null;
   }
 
-  function dirOf(url) {
-    // return the directory portion of a URL (ending with /)
+  function setBadge(n) {
+    if (!numBadge) return;
+    numBadge.textContent = n != null ? `#${n}` : '#';
+    numBadge.title = n != null ? `Paragraph ${n}` : '';
+  }
+
+  function setBackLink() {
+    if (!backBtn) return;
+    const href = retUrl || `${cafeBase}/${chapter}`;
+    backBtn.addEventListener('click', e => {
+      e.preventDefault();
+      location.href = href;
+    });
+  }
+
+  function buildOpenLink(anchorId) {
+    // open link points back into the chapter
+    return `${cafeBase}/${chapter}#${anchorId}`;
+  }
+
+  function normalisePreviewAssets(container) {
+    // Make relative images load from /cafes/<slug>/notebook/
+    $$('img', container).forEach(img => {
+      const src = img.getAttribute('src') || '';
+      if (!src) return;
+      if (/^(https?:|data:|\/)/i.test(src)) return; // absolute/data ok
+      img.src = `${cafeBase}/notebook/${src}`;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.style.maxWidth = '100%';
+      img.style.height = 'auto';
+      img.style.display = 'block';
+      img.style.margin = '0 auto';
+    });
+  }
+
+  async function typeset(container) {
+    if (!window.MathJax) return;
     try {
-      const u = new URL(url, location.href);
-      u.pathname = u.pathname.replace(/[^/]+$/, ""); // drop filename
-      u.hash = ""; u.search = "";
-      return u.href;
-    } catch { return url; }
+      // Clear any previous jax + labels before rendering a fresh paragraph
+      if (MathJax.typesetClear) MathJax.typesetClear([container]);
+      if (MathJax.texReset)     MathJax.texReset();
+    } catch (_) {}
+    await MathJax.typesetPromise ? MathJax.typesetPromise([container]) : MathJax.typeset([container]);
   }
 
-  function decodeChapterTitle(chapterParam) {
-    const dec = decodeURIComponent(chapterParam || "");
-    const file = dec.split("/").pop() || dec;
-    return file.replace(/\.html?$/i, "");
-  }
-
-  function rebaseUrls(container, baseDirHref) {
-    // src/href → absolute
-    container.querySelectorAll("[src],[href]").forEach(el => {
-      for (const attr of ["src", "href"]) {
-        const v = el.getAttribute(attr);
-        if (!v) continue;
-        if (/^[a-z]+:/i.test(v) || v.startsWith("//")) continue;   // already absolute
-        try { el.setAttribute(attr, new URL(v, baseDirHref).href); } catch {}
-      }
-    });
-
-    // srcset → absolute
-    container.querySelectorAll("img[srcset], source[srcset]").forEach(el => {
-      const srcset = el.getAttribute("srcset");
-      if (!srcset) return;
-      const parts = srcset.split(",").map(s => s.trim()).filter(Boolean).map(entry => {
-        const [u, desc] = entry.split(/\s+/, 2);
-        if (/^[a-z]+:/i.test(u) || u.startsWith("//")) return entry;
-        let abs = u;
-        try { abs = new URL(u, baseDirHref).href; } catch {}
-        return desc ? `${abs} ${desc}` : abs;
-      });
-      el.setAttribute("srcset", parts.join(", "));
-    });
-
-    // native lazy-loading can fail inside overflow containers → force eager
-    container.querySelectorAll("img").forEach(img => {
-      img.setAttribute("loading", "eager");
-      // handle <img data-src="..."> patterns just in case
-      if (!img.getAttribute("src") && img.dataset && img.dataset.src) {
-        try { img.setAttribute("src", new URL(img.dataset.src, baseDirHref).href); } catch {}
-      }
+  function copyLinkToClipboard() {
+    const link = `${location.origin}${cafeBase}/${chapter}#${paraId}`;
+    navigator.clipboard?.writeText(link).then(() => {
+      copyBtn?.setAttribute('data-copied', '1');
+      copyBtn?.classList.add('ok');
+      setTimeout(() => copyBtn?.classList.remove('ok'), 1000);
+    }).catch(() => {
+      alert('Could not copy link to clipboard.');
     });
   }
 
-  function textOf(el) { return (el?.textContent || "").replace(/\s+/g, " ").trim(); }
-  function pillNumberFrom(id) { const m = /osf-(\d+)/.exec(id || ""); return m ? +m[1] : NaN; }
+  function listChapterFiguresAndTables(chapterDoc) {
+    // Anything <figure id="..."> inside the chapter becomes a selectable reference
+    const figures = [];
+    const tables  = [];
 
-  // -------- config + params
-  const CFG = Object.assign({
-    snippetTemplate: (url, n) => `§${n} — ${url}`,
-    squareUrl: "",
-    discordChannelUrl: "",
-    discordAppUrl: ""
-  }, window.OSF_CONFIG || {});
+    $$('figure[id]', chapterDoc).forEach(fig => {
+      const id = fig.id;
+      const caption = $('figcaption', fig)?.textContent?.trim() || id;
+      const isTable = fig.querySelector('table') !== null;
 
-  const qs       = new URLSearchParams(location.search);
-  const paraId   = qs.get("para")     || "osf-1";
-  // const chapterQ = qs.get("chapter")  || "";
-  const chapterQ = decodeURIComponent(new URLSearchParams(location.search).get("chapter") || "");
-
-  const backUrl  = qs.get("return")   || "index.html";
-
-  const cafe = cafeSlugFromPath();
-  $("#cafeTag").textContent = `[${cafe}]`;
-  $("#chapterTitle").textContent = decodeChapterTitle(chapterQ);
-  $("#backLink").href = backUrl;
-
-  const chapterAbs = new URL(chapterQ, location.href).href;
-  const chapterDir = dirOf(chapterAbs);
-
-  // -------- load & render
-  async function loadChapterDoc() {
-    const html = await fetch(chapterAbs).then(r => {
-      if (!r.ok) throw new Error(`Fetch ${r.status}`);
-      return r.text();
+      const item = { id, caption, href: buildOpenLink(id) };
+      (isTable ? tables : figures).push(item);
     });
-    return new DOMParser().parseFromString(html, "text/html");
+
+    return { figures, tables };
   }
 
-  function makeListItem({ id, title, openHref }) {
-    const wrap = document.createElement("div");
-    wrap.className = "item";
-    const cb = document.createElement("input");
-    cb.type = "checkbox"; cb.dataset.id = id;
-    const label = document.createElement("span"); label.textContent = title || id;
-    const open = document.createElement("a");
-    open.href = openHref; open.target = "_blank"; open.rel = "noopener";
-    open.className = "open"; open.textContent = "open";
-    wrap.append(cb, label, document.createTextNode(" "), open);
-    return wrap;
+  function renderRefLists(refs) {
+    figsList.innerHTML = '';
+    tblList .innerHTML = '';
+
+    refs.figures.forEach(f => {
+      const li = document.createElement('div');
+      li.className = 'ref';
+      li.innerHTML = `
+        <label class="x">
+          <input type="checkbox" data-id="${f.id}">
+          <span>${escapeHtml(f.caption)}</span>
+          <a class="open" href="${f.href}" target="_blank" rel="noopener">open</a>
+        </label>
+      `;
+      figsList.appendChild(li);
+    });
+
+    refs.tables.forEach(t => {
+      const li = document.createElement('div');
+      li.className = 'ref';
+      li.innerHTML = `
+        <label class="x">
+          <input type="checkbox" data-id="${t.id}">
+          <span>${escapeHtml(t.caption)}</span>
+          <a class="open" href="${t.href}" target="_blank" rel="noopener">open</a>
+        </label>
+      `;
+      tblList.appendChild(li);
+    });
   }
 
-  function typeset(node) {
-    if (window.MathJax?.typesetPromise) window.MathJax.typesetPromise([node]).catch(()=>{});
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, m => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[m]));
+  }
+
+  async function loadChapterDom() {
+    const html = await fetch(chapterUrlAbs, { credentials: 'omit' }).then(r => r.text());
+    const doc  = new DOMParser().parseFromString(html, 'text/html');
+    return doc;
+  }
+
+  async function previewParagraph(doc, anchorsJson, para) {
+    // 1) Find the <pre id="osf-N"> in the chapter DOM
+    const pre = doc.getElementById(para);
+    if (!pre) {
+      previewBox.innerHTML = `<div class="warn">Could not locate <code>#${para}</code> in the chapter.</div>`;
+      return;
+    }
+
+    // 2) Inject a *clone* into the preview
+    previewBox.innerHTML = '';
+    const clone = pre.cloneNode(true);
+    // Be generous: remove explicit width on images if any
+    $$('img', clone).forEach(img => img.removeAttribute('width'));
+    previewBox.appendChild(clone);
+
+    // 3) Make relative assets work
+    normalisePreviewAssets(previewBox);
+
+    // 4) Typeset math freshly (no duplicate labels)
+    await typeset(previewBox);
+
+    // 5) Fill figure/table lists from the chapter
+    const refs = listChapterFiguresAndTables(doc);
+    renderRefLists(refs);
+
+    // 6) Copy-link button
+    copyBtn?.addEventListener('click', copyLinkToClipboard, { once: true });
   }
 
   async function init() {
+    if (!paraId || !chapter) {
+      previewBox.innerHTML = `<div class="warn">Missing or invalid query parameters.</div>`;
+      return;
+    }
+    setBackLink();
+    setBadge(paraNumberFrom(paraId));
+
     try {
-      const doc = await loadChapterDoc();
+      // Anchors JSON (not strictly used here, but useful if later we want extra meta)
+      // If it 404s we continue; preview comes straight from the chapter DOM.
+      await fetch(anchorsUrl, { credentials: 'omit' }).catch(() => null);
 
-      // locate paragraph
-      let pre = doc.getElementById(paraId);
-      if (!pre) {
-        const idx = pillNumberFrom(paraId) - 1;
-        const all = Array.from(doc.querySelectorAll("pre.osf"));
-        pre = all[idx] || all[0] || null;
-      }
-      if (!pre) throw new Error("Paragraph not found");
-
-      // §n pill
-      const n = pillNumberFrom(pre.id);
-      if (!Number.isNaN(n)) $("#paraNum").textContent = `#${n}`;
-
-      // preview
-      const preview = $("#paraPreview");
-      preview.innerHTML = pre.innerHTML;
-      rebaseUrls(preview, chapterDir);
-      typeset(preview);
-
-      // lists
-      const figList = $("#figList"); figList.innerHTML = "";
-      Array.from(doc.querySelectorAll("figure[id^='fig-'], figure[id]:has(img), figure[id]:has(svg)"))
-        .forEach(f => figList.appendChild(
-          makeListItem({
-            id: f.id,
-            title: textOf(f.querySelector("figcaption")) || f.id.replace(/^fig[-_]?/i, "Figure "),
-            openHref: chapterAbs + "#" + f.id
-          })
-        ));
-
-      const tblList = $("#tblList"); tblList.innerHTML = "";
-      [...doc.querySelectorAll("figure[id^='tbl-'], table[id^='tbl-']")].forEach(t =>
-        tblList.appendChild(
-          makeListItem({
-            id: t.id,
-            title: textOf(t.querySelector("figcaption")) || ("Table " + t.id.replace(/^tbl[-_]?/i, "")),
-            openHref: chapterAbs + "#" + t.id
-          })
-        )
-      );
-
-      // copy paragraph snippet
-      $("#copyLinkBtn").addEventListener("click", async () => {
-        const url = chapterAbs + "#" + (pre.id || paraId);
-        const snip = CFG.snippetTemplate(url, n);
-        try { await navigator.clipboard.writeText(snip); toast("Copied link"); }
-        catch { prompt("Copy paragraph link:", snip); }
-      });
-
-      // restore/save/export/submit memo
-      restoreDraft();
-
-      $("#saveDraftBtn").addEventListener("click", () => {
-        localStorage.setItem(draftKey(), JSON.stringify(currentMemo()));
-        toast("Draft saved");
-      });
-
-      $("#exportBtn").addEventListener("click", () => {
-        const blob = new Blob([JSON.stringify(currentMemo(), null, 2)], {type:"application/json"});
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = `${cafe}-memo-${pre.id || "osf"}.json`;
-        a.click(); setTimeout(()=>URL.revokeObjectURL(a.href), 300);
-      });
-
-      $("#submitBtn").addEventListener("click", async () => {
-        const url = chapterAbs + "#" + (pre.id || paraId);
-        const snip = CFG.snippetTemplate(url, n);
-        try { await navigator.clipboard.writeText(snip); } catch {}
-        const openUrl = CFG.discordAppUrl || CFG.discordChannelUrl || CFG.squareUrl || "#";
-        if (openUrl && openUrl !== "#") window.open(openUrl, "_blank", "noopener");
-      });
-
-    } catch (e) {
-      console.error(e);
-      $("#paraPreview").textContent = "Failed to load paragraph preview.";
+      const chapterDoc = await loadChapterDom();
+      await previewParagraph(chapterDoc, null, paraId);
+    } catch (err) {
+      console.error('[research-office] failed:', err);
+      previewBox.innerHTML = `<div class="warn">Failed to load the chapter or paragraph preview.</div>`;
     }
   }
 
-  // -------- memo draft helpers
-  function draftKey() {
-    return `rfc.memo|${cafeSlugFromPath()}|${new URL(chapterAbs).pathname}|${paraId}`;
-  }
-  function currentMemo() {
-    return {
-      cafe: cafeSlugFromPath(),
-      chapter: chapterAbs,
-      paraId,
-      figures: Array.from(document.querySelectorAll("#figList input[type=checkbox]:checked")).map(cb => cb.dataset.id),
-      tables:  Array.from(document.querySelectorAll("#tblList input[type=checkbox]:checked")).map(cb => cb.dataset.id),
-      bodyMd: $("#memoBody").value || ""
-    };
-  }
-  function restoreDraft() {
-    try {
-      const raw = localStorage.getItem(draftKey());
-      if (!raw) return;
-      const m = JSON.parse(raw);
-      $("#memoBody").value = m.bodyMd || "";
-      document.querySelectorAll("#figList input[type=checkbox]").forEach(cb => cb.checked = (m.figures||[]).includes(cb.dataset.id));
-      document.querySelectorAll("#tblList input[type=checkbox]").forEach(cb => cb.checked = (m.tables||[]).includes(cb.dataset.id));
-    } catch {}
-  }
-
-  // tiny toast
-  function toast(msg) {
-    const d = Object.assign(document.createElement("div"), {textContent: msg});
-    Object.assign(d.style, {
-      position:"fixed", right:"16px", bottom:"16px", padding:"8px 12px",
-      background:"rgba(0,0,0,.72)", border:"1px solid rgba(255,255,255,.25)",
-      borderRadius:"8px", zIndex:9999
-    });
-    document.body.appendChild(d); setTimeout(()=>d.remove(), 1200);
-  }
-
-  document.addEventListener("DOMContentLoaded", init);
+  // Kick off when DOM is ready
+  if (document.readyState !== 'loading') init();
+  else document.addEventListener('DOMContentLoaded', init);
 })();
+

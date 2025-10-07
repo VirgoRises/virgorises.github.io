@@ -1,0 +1,17 @@
+:root{
+  /* palette */
+  --bg: #101317;
+  --bg-elev: #141922;
+  --text: #e6ebf2;
+  --muted: #9db0c6;
+  --accent: #4da3ff;
+  --accent-weak:#2c6ed6;
+  --warn:#ffcc66;
+  --border:#28303b;
+
+  /* rhythm */
+  --font: 16px;
+  --radius: 12px;
+  --gap: .75rem;
+  --shadow: 0 8px 24px rgba(0,0,0,.35);
+}

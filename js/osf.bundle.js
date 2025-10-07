@@ -1,318 +1,258 @@
-/*!
-  osf.bundle.js — stable anchors + clean popover + copy + smooth scroll
-  Drop-in for pages that contain <pre class="osf"> paragraphs.
-
-  Optional per-page config (define BEFORE loading this file):
-  window.OSF_CONFIG = {
-    SCROLL_OFFSET: 80,
-    HILITE_MS: 6000,
-    squareUrl: "/cafes/zeta-zero-cafe/join-the-square.html",   // “Enter The Square (free)”
-    discordChannelUrl: "https://discord.com/channels/<guild>/<channel>", // web
-    discordAppUrl: "discord://-/channels/<guild>/<channel>",             // desktop app
-    inviteUrl: "https://www.patreon.com/c/virgorises",         // optional
-    snippetTemplate: (absUrl, n) => `§${n} — ${absUrl}`        // optional clipboard snippet
-  };
-*/
-
+/* osf.bundle.js — anchors + copy + smooth scroll + popover (Research) */
 (function () {
   "use strict";
 
-  // ------------------------- config & utils -------------------------
-  const CFG = Object.assign({
+  // ---------- tiny helpers ----------
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+  const on = (el, type, fn) => el.addEventListener(type, fn, { passive: true });
+  const esc = encodeURIComponent;
+
+  // ---------- config ----------
+  const DEFAULTS = {
     SCROLL_OFFSET: 80,
     HILITE_MS: 6000,
-    squareUrl: "",            // public entry (free)
-    discordChannelUrl: "",    // web
-    discordAppUrl: "",        // app (members only)
-    inviteUrl: "",            // Patreon / support (optional)
-    snippetTemplate: null
-  }, window.OSF_CONFIG || {});
-
-  const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
-  const copy = async (text) => { try { await navigator.clipboard.writeText(text); return true; } catch { return false; } };
-  const ensureEl = (id, tag, parent) => {
-    let el = document.getElementById(id);
-    if (!el) { el = document.createElement(tag); el.id = id; (parent || document.body).appendChild(el); }
-    return el;
+    basePath: null, // auto
+    squareUrl: "/zeta-zero-cafe/join-the-square.html",     // fallback
+    discordChannelUrl: "",                                  // set per page via window.OSF_CONFIG
+    discordAppUrl: "",                                      // optional (app)
+    inviteUrl: "",                                          // optional (patreon/etc.)
+    snippetTemplate: (url, n) => `§${n} — ${url}`
   };
-  const cafeSlug = (() => {
-    // /cafes/<slug>/...
-    const m = location.pathname.match(/\/cafes\/([^/]+)\//);
-    return m ? m[1] : "";
-  })();
-  const chapterRel = (() => {
-    // relative chapter path after /cafes/<slug>/
-    const i = location.pathname.indexOf(`/cafes/${cafeSlug}/`);
-    if (i === -1) return "";
-    return location.pathname.slice(i + (`/cafes/${cafeSlug}/`).length);
-  })();
+  const CFG = Object.assign({}, DEFAULTS, (window.OSF_CONFIG || {}));
 
-  const absParaUrl = (id) => location.origin + location.pathname + "#" + encodeURIComponent(id);
-  const snippet = (n, id) => {
-    const url = absParaUrl(id);
-    return typeof CFG.snippetTemplate === "function" ? CFG.snippetTemplate(url, n) : url;
-  };
-  const isMember = () => localStorage.getItem("osf:isMember") === "1";
-  const setMember = (v) => localStorage.setItem("osf:isMember", v ? "1" : "0");
-
-  // ------------------------- inline CSS -------------------------
+  // ---------- ensure minimal styles ----------
   function ensureStyles() {
     if (document.getElementById("osf-inline-style")) return;
     const css = `
-/* layout for the § label + icons */
-.osf-head{display:flex;align-items:center;gap:.6rem;margin:.45rem 0 .35rem 0}
-.osf-label{display:inline-block;font-weight:600;user-select:none}
-.osf-label a{color:inherit;text-decoration:none}
-.osf-icons{display:inline-flex;gap:.35rem}
-.osf-ic{opacity:.45;transition:opacity .12s;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;border:1px solid rgba(255,255,255,.08);background:#0f141a}
-.osf-ic:hover,.osf-head:hover .osf-ic{opacity:.95}
-.osf-ic svg{width:14px;height:14px}
-
-/* keep label + icons above block, left-aligned */
-.osf-block{display:flex;flex-direction:column;align-items:flex-start;gap:.45rem}
-
-/* highlight when deep-linked */
-.osf-highlight{outline:3px solid rgba(255,179,71,.85);outline-offset:2px;animation:osfPulse 1.3s ease-in-out 0s 3}
-@keyframes osfPulse{0%{box-shadow:0 0 0 0 rgba(255,179,71,.0)}50%{box-shadow:0 0 0 6px rgba(255,179,71,.25)}100%{box-shadow:0 0 0 0 rgba(255,179,71,.0)}}
-
-/* popover (clean, compact) */
-.osf-pop{position:absolute;z-index:9999;background:#121720;border:1px solid rgba(255,255,255,.12);border-radius:12px;box-shadow:0 12px 24px rgba(0,0,0,.4);width:320px;padding:10px}
-.osf-pop h3{margin:0 0 8px 2px;font-size:.95rem;opacity:.9}
-.osf-btn{display:block;width:100%;text-align:left;padding:9px 10px;margin:6px 0;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#0f141a;color:#e7edf3}
-.osf-btn:hover{background:#141b24}
-.osf-foot{font-size:.85rem;opacity:.75;margin-top:6px}
-.osf-toast{position:fixed;right:16px;bottom:14px;background:#15202b;border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:10px 12px;opacity:0;transform:translateY(8px);transition:.2s}
-.osf-toast.show{opacity:1;transform:translateY(0)}
-`;
-    const style = document.createElement("style");
-    style.id = "osf-inline-style";
-    style.textContent = css;
-    document.head.appendChild(style);
+      .osf-label{color:inherit;text-decoration:none;font-weight:600}
+      .osf-head{display:inline-flex;gap:.45rem;align-items:center}
+      .osf-copy{margin-left:.4rem}
+      .osf-btn{display:inline-flex;gap:.5rem;align-items:center;cursor:pointer}
+      .osf-pop{position:absolute;z-index:9999;pointer-events:auto}
+      .osf-pop *{pointer-events:auto}
+      .osf-block{margin:1em 0 .25em 0;display:flex;align-items:center;gap:.5rem}
+      .osf-hot{outline:3px solid #f5a623;border-radius:.5rem}
+      .osf-ico{opacity:.55;transition:opacity .15s ease}
+      .osf-ico:hover{opacity:1}
+    `;
+    const s = document.createElement("style");
+    s.id = "osf-inline-style";
+    s.textContent = css;
+    document.head.appendChild(s);
   }
 
-  // ------------------------- icons (inline SVG) -------------------------
-  const ICON = {
-    link: `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.9 12a4.1 4.1 0 014.1-4.1h3v2h-3a2.1 2.1 0 000 4.2h3v2h-3A4.1 4.1 0 013.9 12zm12-4.1h-3v2h3a2.1 2.1 0 010 4.2h-3v2h3a4.1 4.1 0 000-8.2z"></path><path d="M8 13h8v-2H8v2z"></path></svg>`,
-    pen: `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm18.71-11.04a1.003 1.003 0 000-1.42l-2.5-2.5a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.99-1.66z"/></svg>`
-  };
+  // ---- focus/highlight a § by hash, honoring SCROLL_OFFSET
+  function osfFocusFromHash() {
+    const id = (location.hash || "").slice(1);
+    if (!id) return;
 
-  // ------------------------- toast -------------------------
-  function showToast(msg) {
-    const t = ensureEl("osf-toast", "div");
-    t.className = "osf-toast";
-    t.textContent = msg || "Copied";
-    t.classList.add("show");
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(() => t.classList.remove("show"), 1200);
+    const pre = document.getElementById(id);
+    if (!pre) return;
+
+    // highlight
+    document.querySelectorAll('.osf-active').forEach(n => n.classList.remove('osf-active'));
+    pre.classList.add('osf-active');
+
+    // scroll with offset
+    const y = pre.getBoundingClientRect().top + window.scrollY - (CFG.SCROLL_OFFSET || 80);
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+  window.addEventListener('hashchange', osfFocusFromHash);
+  window.addEventListener('load', () => setTimeout(osfFocusFromHash, 0));
+
+  // ---------- anchors json loader ----------
+  function anchorsUrlFromPath() {
+    // /cafes/<slug>/notebook/<file>.html  -> /data/cafes/<slug>/anchors/<file>.json
+    const parts = location.pathname.split("/").filter(Boolean);
+    const slug = parts[1] || "zeta-zero-cafe";
+    const htmlFile = parts.slice(-1)[0] || "";
+    const base = htmlFile.replace(/\.html$/i, "");
+    return `/data/cafes/${slug}/anchors/${base}.json`;
   }
 
-  // ------------------------- build § labels + icons -------------------------
-  function addHead(pre, n) {
-    // wrap: move <pre> under a small header row
-    const wrap = document.createElement("div");
-    wrap.className = "osf-block";
-    pre.parentNode.insertBefore(wrap, pre);
-    const head = document.createElement("div");
-    head.className = "osf-head";
-
-    const label = document.createElement("div");
-    label.className = "osf-label";
-    label.innerHTML = `<a href="#${pre.id}" title="Link to §${n}">§ ${n}</a>`;
-
-    const icons = document.createElement("div");
-    icons.className = "osf-icons";
-
-    const aCopy = document.createElement("button");
-    aCopy.className = "osf-ic";
-    aCopy.title = "Copy paragraph link";
-    aCopy.innerHTML = ICON.link;
-
-    const aMore = document.createElement("button");
-    aMore.className = "osf-ic";
-    aMore.title = "Discuss / research";
-    aMore.innerHTML = ICON.pen;
-
-    icons.appendChild(aCopy);
-    icons.appendChild(aMore);
-    head.appendChild(label);
-    head.appendChild(icons);
-
-    wrap.appendChild(head);
-    wrap.appendChild(pre);
-
-    // copy behavior
-    on(aCopy, "click", async (ev) => {
-      ev.preventDefault();
-      const ok = await copy(snippet(n, pre.id));
-      showToast(ok ? "Copied paragraph link" : "Copy failed");
-    });
-
-    // popover
-    on(aMore, "click", (ev) => {
-      ev.preventDefault();
-      showPopoverFor(pre, n, aMore);
-    });
-  }
-
-  // ------------------------- popover -------------------------
-  function showPopoverFor(pre, n, anchorBtn) {
-    let pop = document.getElementById("osf-pop");
-    if (!pop) {
-      pop = document.createElement("div");
-      pop.id = "osf-pop";
-      pop.className = "osf-pop";
-      document.body.appendChild(pop);
+  async function fetchAnchors() {
+    const url = anchorsUrlFromPath();
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      return await res.json();
+    } catch (e) {
+      console.warn("[osf] anchors load failed:", url, e.message);
+      return { paragraphs: [] };
     }
+  }
 
-    // recompute relative chapter to build research page URL
-    const slug = cafeSlug;
-    const rel = chapterRel;
-    /*
-    const researchUrl =
-      `/cafes/${slug}/research_office.html` +
-      `?para=${encodeURIComponent(pre.id)}` +
-      `&chapter=${encodeURIComponent(rel)}` +
-      `&return=${encodeURIComponent(location.pathname + "#" + pre.id)}`;
-    */
-    const researchUrl =
-      `/cafes/${cafe}/research_office.html` +
-      `?para=${encodeURIComponent(pre.id)}` +
-      `&chapter=${encodeURI(location.pathname)}` +  // keeps slashes, encodes spaces
-      `&return=${encodeURI(location.href)}`;
+  // ---------- popover ----------
+  function buildPopover(para, uuid, paraNum) {
+    // create once then reuse per paragraph
+    const pop = document.createElement("div");
+    pop.className = "osf-pop card";
+    pop.innerHTML = `
+      <div class="card-body" style="min-width: 22rem;">
+        <div class="h6 mb-2">Discuss § ${paraNum}</div>
+        <button class="btn w-100 mb-2" data-osf="memo">Draft RFC memo</button>
+        <button class="btn w-100 mb-2" data-osf="enter">Enter The Square (free)</button>
+        <button class="btn w-100 mb-2" data-osf="open-app">Open in Discord app</button>
+        <button class="btn w-100 mb-2" data-osf="copy">Copy paragraph link</button>
+        <button class="btn w-100 mb-2" data-osf="support">Support on Patreon (optional)</button>
+        <button class="btn w-100" data-osf="member">I’m a member</button>
+        <div class="text-muted mt-2" style="font-size:.85rem">Open chat for everyone — no payment required.</div>
+      </div>
+    `;
+    // wire actions
+    const link = `${location.origin}${location.pathname}#${uuid}`;
 
-    // buttons visibility
-    const member = isMember();
-    const btns = [];
-
-    const mkBtn = (label, onclick, show = true) => {
-      if (!show) return null;
-      const b = document.createElement("button");
-      b.className = "osf-btn";
-      b.textContent = label;
-      on(b, "click", onclick);
-      pop.appendChild(b);
-      btns.push(b);
-      return b;
+    // copy
+    $('[data-osf="copy"]', pop).onclick = () => {
+      navigator.clipboard.writeText(link);
+      toast("Copied paragraph link");
     };
 
-    pop.innerHTML = `<h3>Discuss § ${n}</h3>`;
+    // enter web
+    $('[data-osf="enter"]', pop).onclick = () => {
+      const url = CFG.discordChannelUrl || CFG.squareUrl;
+      // copy snippet before sending people away
+      const n = paraNum;
+      const snippet = (CFG.snippetTemplate || DEFAULTS.snippetTemplate)(link, n);
+      navigator.clipboard.writeText(snippet).catch(() => { });
+      window.open(url, "_blank");
+    };
 
-    // “Draft RFC memo” → Research Office (new page)
-    mkBtn("Draft RFC memo", () => {
-      // also seed clipboard with snippet
-      copy(snippet(n, pre.id));
-      location.href = researchUrl;
-    }, true);
+    // open in app (hidden if no channel configured)
+    const appBtn = $('[data-osf="open-app"]', pop);
+    if (!CFG.discordAppUrl) appBtn.style.display = "none";
+    appBtn.onclick = () => {
+      const n = paraNum;
+      const snippet = (CFG.snippetTemplate || DEFAULTS.snippetTemplate)(link, n);
+      navigator.clipboard.writeText(snippet).catch(() => { });
+      window.location.href = CFG.discordAppUrl;
+    };
 
-    // Public square (free)
-    mkBtn("Enter The Square (free)", () => {
-      if (CFG.squareUrl) window.open(CFG.squareUrl, "_blank");
-    }, !!CFG.squareUrl);
+    // support (hidden if not provided)
+    const supBtn = $('[data-osf="support"]', pop);
+    if (!CFG.inviteUrl) supBtn.style.display = "none";
+    supBtn.onclick = () => window.open(CFG.inviteUrl, "_blank");
 
-    // App (members)
-    mkBtn("Open in Discord app", () => {
-      if (CFG.discordAppUrl) {
-        copy(snippet(n, pre.id));
-        location.href = CFG.discordAppUrl;
-      }
-    }, member && !!CFG.discordAppUrl);
+    // member toggle (simple UX)
+    $('[data-osf="member"]', pop).onclick = (e) => {
+      e.currentTarget.classList.toggle("active");
+      const on = e.currentTarget.classList.contains("active");
+      e.currentTarget.textContent = on ? "I’m a member ✓" : "I’m a member";
+      appBtn.style.display = on && CFG.discordAppUrl ? "" : "none";
+      supBtn.style.display = on ? "none" : (CFG.inviteUrl ? "" : "none");
+    };
 
-    // Copy
-    mkBtn("Copy paragraph link", async () => {
-      const ok = await copy(snippet(n, pre.id));
-      showToast(ok ? "Copied paragraph link" : "Copy failed");
-    }, true);
+    // research office (new page)
+    $('[data-osf="memo"]', pop).onclick = () => {
+      const cafeRoot = location.pathname.split("/").slice(0, 3).join("/"); // /cafes/<slug>
+      const chapterRel = location.pathname.split("/").slice(3).join("/");  // notebook/...
+      const url =
+        `${cafeRoot}/research_office.html?` +
+        `para=${esc(uuid)}&chapter=${esc(chapterRel)}&return=${esc(location.pathname + "#" + uuid)}`;
+      window.location.href = url;
+    };
 
-    // Patreon / Support (optional)
-    mkBtn("Support on Patreon (optional)", () => {
-      if (CFG.inviteUrl) window.open(CFG.inviteUrl, "_blank");
-    }, !!CFG.inviteUrl);
+    // position near paragraph head
+    document.body.appendChild(pop);
+    const head = $(".osf-head", para);
+    const rect = head.getBoundingClientRect();
+    pop.style.left = `${Math.round(rect.left)}px`;
+    pop.style.top = `${Math.round(rect.bottom + window.scrollY + 6)}px`;
 
-    // Member toggle
-    mkBtn(member ? "I'm a member ✓" : "I'm a member", () => {
-      const now = !isMember();
-      setMember(now);
-      // re-render same popover state quickly
-      showPopoverFor(pre, n, anchorBtn);
-    }, true);
-
-    // footer
-    const foot = document.createElement("div");
-    foot.className = "osf-foot";
-    foot.textContent = "Open chat for everyone — no payment required.";
-    pop.appendChild(foot);
-
-    // place near the icon, but keep inside viewport
-    const r = anchorBtn.getBoundingClientRect();
-    const top = window.scrollY + r.bottom + 8;
-    let left = window.scrollX + r.left - 12;
-    pop.style.top = `${top}px`;
-    pop.style.left = `${left}px`;
-    pop.style.maxWidth = "min(92vw, 340px)";
-    pop.style.display = "block";
-
-    // nudge if overflowing right edge
-    const pr = pop.getBoundingClientRect();
-    if (pr.right > window.innerWidth - 8) {
-      left = window.scrollX + (window.innerWidth - pr.width - 8);
-      pop.style.left = `${left}px`;
-    }
-
-    // close on outside/Escape
+    // autoclose on outside click
     const closer = (ev) => {
-      if (ev.type === "keydown" && ev.key !== "Escape") return;
-      if (ev.type === "click" && pop.contains(ev.target)) return;
-      pop.style.display = "none";
-      document.removeEventListener("click", closer, true);
-      document.removeEventListener("keydown", closer, true);
-    };
-    // delay so the click that opened it doesn’t immediately close it
-    setTimeout(() => {
-      document.addEventListener("click", closer, true);
-      document.addEventListener("keydown", closer, true);
-    }, 0);
-  }
-
-  // ------------------------- anchor build + numbering -------------------------
-  function build() {
-    ensureStyles();
-
-    const pres = $$("pre.osf");
-    let n = 0;
-    pres.forEach((pre) => {
-      // skip empty pre
-      if (!pre.textContent || !pre.textContent.trim()) return;
-      n += 1;
-      const id = `osf-${n}`;
-      if (!pre.id) pre.id = id;
-      else if (!/^osf-\d+$/.test(pre.id)) {
-        // keep author-set id but still use § numbering
+      if (!pop.contains(ev.target)) {
+        pop.remove();
+        document.removeEventListener("mousedown", closer, true);
       }
+    };
+    document.addEventListener("mousedown", closer, true);
+  }
 
-      addHead(pre, n);
+  // ---------- toast ----------
+  let toastTimer;
+  function toast(msg) {
+    let t = document.getElementById("osf-toast");
+    if (!t) {
+      t = document.createElement("div");
+      t.id = "osf-toast";
+      t.style.cssText =
+        "position:fixed;left:1rem;bottom:1rem;background:#222;color:#fff;padding:.6rem .8rem;border-radius:.5rem;opacity:0;transform:translateY(6px);transition:all .15s ease;z-index:99999";
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity = "1";
+    t.style.transform = "translateY(0)";
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      t.style.opacity = "0";
+      t.style.transform = "translateY(6px)";
+    }, 1600);
+  }
+
+  // ---------- init ----------
+  async function init() {
+    ensureStyles();
+    const data = await fetchAnchors();
+
+    // number, label, buttons
+    const pres = $$("pre.osf");
+    pres.forEach((pre, i) => {
+      // id like osf-5 (add if missing)
+      if (!pre.id) pre.id = `osf-${i + 1}`;
+      const uuid = pre.id;
+
+      // wrap header row
+      const head = document.createElement("div");
+      head.className = "osf-head";
+      const label = document.createElement("a");
+      label.className = "osf-label";
+      label.href = `#${uuid}`;
+      label.textContent = `§ ${i + 1}`;
+      const copy = document.createElement("button");
+      copy.type = "button";
+      copy.className = "osf-ico osf-copy";
+      copy.title = "Copy link";
+      copy.innerHTML = "🔗";
+      const more = document.createElement("button");
+      more.type = "button";
+      more.className = "osf-ico osf-more";
+      more.title = "Discuss / Research";
+      more.innerHTML = "✎";
+
+      head.appendChild(label);
+      head.appendChild(copy);
+      head.appendChild(more);
+
+      const wrap = document.createElement("div");
+      wrap.className = "osf-block";
+      pre.parentNode.insertBefore(wrap, pre);
+      wrap.appendChild(head);
+      wrap.appendChild(pre);
+
+      // clickers
+      copy.onclick = () => {
+        const url = `${location.origin}${location.pathname}#${uuid}`;
+        navigator.clipboard.writeText(url).then(() => toast("Copied paragraph link"));
+      };
+      more.onclick = () => buildPopover(wrap, uuid, i + 1);
     });
+
+    // highlight target + smooth scroll (when coming with #hash)
+    const H = location.hash.replace(/^#/, "");
+    if (H) {
+      const el = document.getElementById(H);
+      if (el && el.tagName === "PRE") {
+        const y = el.getBoundingClientRect().top + window.scrollY - (CFG.SCROLL_OFFSET || 80);
+        window.scrollTo({ top: y, behavior: "smooth" });
+        el.classList.add("osf-hot");
+        setTimeout(() => el.classList.remove("osf-hot"), CFG.HILITE_MS);
+      }
+    }
   }
 
-  // ------------------------- deep link scroll + highlight -------------------------
-  function byHash() {
-    const hash = decodeURIComponent(location.hash || "").replace(/^#/, "");
-    if (!hash) return;
-    const el = document.getElementById(hash);
-    if (!el) return;
-
-    const y = el.getBoundingClientRect().top + window.scrollY - (CFG.SCROLL_OFFSET || 0);
-    window.scrollTo({ top: y, behavior: "smooth" });
-    el.classList.add("osf-highlight");
-    clearTimeout(byHash._t);
-    byHash._t = setTimeout(() => el.classList.remove("osf-highlight"), CFG.HILITE_MS || 6000);
-  }
-
-  // ------------------------- boot -------------------------
-  on(document, "DOMContentLoaded", () => {
-    build();
-    byHash();
-  });
-  on(window, "hashchange", byHash);
+  if (document.readyState !== "loading") init();
+  else on(document, "DOMContentLoaded", init);
 })();
+
