@@ -1,320 +1,258 @@
-/*!
-  osf.bundle.js — anchors, § label row, copy, discuss popover
-  - Numbers <pre class="osf"> blocks per page and ensures ids (osf-1, osf-2, …)
-  - Adds a compact header with §N + icons
-  - Copy paragraph link (with optional snippetTemplate)
-  - Discuss / Research opens the Research Office with proper params
-  - Smooth-scroll + highlight when visiting #osf-N deep links
-  - No external dependencies; CSS classes are prefixed osf-*
-*/
-
+/* osf.bundle.js — anchors + copy + smooth scroll + popover (Research) */
 (function () {
   "use strict";
 
-  // ---------------- config ----------------
-  const CFG = Object.assign({
+  // ---------- tiny helpers ----------
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+  const on = (el, type, fn) => el.addEventListener(type, fn, { passive: true });
+  const esc = encodeURIComponent;
+
+  // ---------- config ----------
+  const DEFAULTS = {
     SCROLL_OFFSET: 80,
     HILITE_MS: 6000,
-    squareUrl: "",              // public entry (free)
-    discordChannelUrl: "",      // web channel link (optional)
-    discordAppUrl: "",          // app deeplink (optional; members only)
-    inviteUrl: "",              // Patreon / support (optional)
-    snippetTemplate: null       // function(absUrl, n) => string
-  }, (window.OSF_CONFIG || {}));
-
-  // -------------- tiny utils --------------
-  const $  = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const on = (el, e, h) => el && el.addEventListener(e, h);
-
-  const copyText = async (text) => {
-    try { await navigator.clipboard.writeText(text); return true; }
-    catch {
-      // fallback
-      const ta = document.createElement('textarea');
-      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); } catch {}
-      ta.remove();
-      return true;
-    }
+    basePath: null, // auto
+    squareUrl: "/zeta-zero-cafe/join-the-square.html",     // fallback
+    discordChannelUrl: "",                                  // set per page via window.OSF_CONFIG
+    discordAppUrl: "",                                      // optional (app)
+    inviteUrl: "",                                          // optional (patreon/etc.)
+    snippetTemplate: (url, n) => `§${n} — ${url}`
   };
+  const CFG = Object.assign({}, DEFAULTS, (window.OSF_CONFIG || {}));
 
-  const toast = (msg) => {
-    let t = document.getElementById('osf-toast');
-    if (!t) {
-      t = document.createElement('div');
-      t.id = 'osf-toast';
-      t.className = 'osf-toast';
-      // inline minimal style so it works even without site CSS
-      Object.assign(t.style, {
-        position: 'fixed', right: '16px', bottom: '14px',
-        background: '#0b111a', color: '#e7edf3',
-        border: '1px solid rgba(255,255,255,.16)',
-        padding: '8px 10px', borderRadius: '10px',
-        zIndex: 99999, opacity: '0', transform: 'translateY(8px)',
-        transition: 'opacity .15s, transform .15s'
-      });
-      document.body.appendChild(t);
-    }
-    t.textContent = msg || 'Done';
-    t.style.opacity = '1';
-    t.style.transform = 'translateY(0)';
-    clearTimeout(toast._t);
-    toast._t = setTimeout(() => {
-      t.style.opacity = '0';
-      t.style.transform = 'translateY(8px)';
-    }, 1200);
-  };
-
-  // compute cafe slug and chapter-relative path from URL
-  function getPathParts() {
-    // e.g. /cafes/<slug>/notebook/chapter-1-the-basel-problem.html
-    const parts = location.pathname.split('/').filter(Boolean);
-    const i = parts.indexOf('cafes');
-    const slug = i >= 0 ? parts[i + 1] : '';
-    const chapterRel = i >= 0 ? parts.slice(i + 2).join('/') : location.pathname.replace(/^\/+/, '');
-    return { slug, chapterRel };
+  // ---------- ensure minimal styles ----------
+  function ensureStyles() {
+    if (document.getElementById("osf-inline-style")) return;
+    const css = `
+      .osf-label{color:inherit;text-decoration:none;font-weight:600}
+      .osf-head{display:inline-flex;gap:.45rem;align-items:center}
+      .osf-copy{margin-left:.4rem}
+      .osf-btn{display:inline-flex;gap:.5rem;align-items:center;cursor:pointer}
+      .osf-pop{position:absolute;z-index:9999;pointer-events:auto}
+      .osf-pop *{pointer-events:auto}
+      .osf-block{margin:1em 0 .25em 0;display:flex;align-items:center;gap:.5rem}
+      .osf-hot{outline:3px solid #f5a623;border-radius:.5rem}
+      .osf-ico{opacity:.55;transition:opacity .15s ease}
+      .osf-ico:hover{opacity:1}
+    `;
+    const s = document.createElement("style");
+    s.id = "osf-inline-style";
+    s.textContent = css;
+    document.head.appendChild(s);
   }
 
-  const absParaUrl = (id) => location.origin + location.pathname + '#' + encodeURIComponent(id);
-  const snippetFor = (n, id) => {
-    const url = absParaUrl(id);
-    try {
-      if (typeof CFG.snippetTemplate === 'function') {
-        return CFG.snippetTemplate(url, n);
-      }
-    } catch {}
-    return url;
-  };
+  // ---- focus/highlight a § by hash, honoring SCROLL_OFFSET
+  function osfFocusFromHash() {
+    const id = (location.hash || "").slice(1);
+    if (!id) return;
 
-  const isMember = () => localStorage.getItem('osf_member') === '1';
-  const setMember = (v) => localStorage.setItem('osf_member', v ? '1' : '0');
-
-  // -------------- UI builders --------------
-  function makeIconButton(title, svg) {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'osf-ic';
-    b.title = title;
-    b.innerHTML = svg;
-    // minimal inline so icons show even if CSS missing
-    Object.assign(b.style, {
-      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      width: '22px', height: '22px', borderRadius: '6px',
-      border: '1px solid rgba(255,255,255,.08)', background: '#0f141a',
-      opacity: '.5', cursor: 'pointer'
-    });
-    b.addEventListener('mouseenter', () => b.style.opacity = '1');
-    b.addEventListener('mouseleave', () => b.style.opacity = '.5');
-    return b;
-  }
-
-  const ICON = {
-    link: `<svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M3.9 12a4.1 4.1 0 014.1-4.1h3v2h-3a2.1 2.1 0 000 4.2h3v2h-3A4.1 4.1 0 013.9 12zm12-4.1h-3v2h3a2.1 2.1 0 010 4.2h-3v2h3a4.1 4.1 0 000-8.2z"></path><path d="M8 13h8v-2H8v2z"></path></svg>`,
-    pen:  `<svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm18.71-11.04a1.003 1.003 0 000-1.42l-2.5-2.5a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.99-1.66z"/></svg>`
-  };
-
-  function addHead(pre, n) {
-    // wrap block
-    const wrap = document.createElement('div');
-    wrap.className = 'osf-block';
-    wrap.style.display = 'flex';
-    wrap.style.flexDirection = 'column';
-    wrap.style.alignItems = 'flex-start';
-    wrap.style.gap = '.45rem';
-
-    pre.parentNode.insertBefore(wrap, pre);
-    wrap.appendChild(pre);
-
-    // header row
-    const head = document.createElement('div');
-    head.className = 'osf-head';
-    head.style.display = 'flex';
-    head.style.alignItems = 'center';
-    head.style.gap = '.6rem';
-    head.style.margin = '.45rem 0 .35rem 0';
-
-    const label = document.createElement('div');
-    label.className = 'osf-label';
-    label.style.fontWeight = '700';
-    const a = document.createElement('a');
-    a.href = '#' + pre.id;
-    a.textContent = `§ ${n}`;
-    a.style.color = 'inherit';
-    a.style.textDecoration = 'none';
-    label.appendChild(a);
-
-    const icons = document.createElement('div'); icons.className = 'osf-icons';
-    const btnCopy = makeIconButton('Copy paragraph link', ICON.link);
-    const btnMore = makeIconButton('Discuss / research', ICON.pen);
-    icons.append(btnCopy, btnMore);
-    head.append(label, icons);
-    wrap.insertBefore(head, pre);
-
-    on(btnCopy, 'click', async (ev) => {
-      ev.preventDefault();
-      const ok = await copyText(snippetFor(n, pre.id));
-      toast(ok ? 'Copied paragraph link' : 'Copy failed');
-    });
-
-    on(btnMore, 'click', (ev) => {
-      ev.preventDefault();
-      showPopover(pre, n, btnMore);
-    });
-  }
-
-  // -------------- popover ------------------
-  function showPopover(pre, n, anchorBtn) {
-    let pop = document.getElementById('osf-pop');
-    if (!pop) {
-      pop = document.createElement('div');
-      pop.id = 'osf-pop';
-      pop.className = 'osf-pop';
-      // minimal inline style (works with or without site CSS)
-      Object.assign(pop.style, {
-        position: 'absolute', zIndex: 1200, background: '#121720',
-        border: '1px solid rgba(255,255,255,.12)', borderRadius: '12px',
-        boxShadow: '0 12px 24px rgba(0,0,0,.4)', width: '320px', padding: '10px',
-      });
-      document.body.appendChild(pop);
-    }
-
-    const { slug, chapterRel } = getPathParts();
-    const researchUrl =
-      `/cafes/${slug}/research_office.html` +
-      `?para=${encodeURIComponent(pre.id)}` +
-      `&chapter=${encodeURIComponent(chapterRel)}` +
-      `&return=${encodeURIComponent(location.pathname + "#" + pre.id)}`;
-
-    const member = isMember();
-
-    // clear + rebuild content
-    pop.innerHTML = '';
-    const h = document.createElement('h3');
-    h.textContent = `Discuss § ${n}`;
-    h.style.margin = '0 0 8px 2px';
-    h.style.fontSize = '.95rem'; h.style.opacity = '.9';
-    pop.appendChild(h);
-
-    const addBtn = (label, handler, show = true) => {
-      if (!show) return;
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'osf-btn';
-      Object.assign(b.style, {
-        display: 'block', width: '100%', textAlign: 'left',
-        padding: '9px 10px', margin: '6px 0',
-        borderRadius: '10px',
-        border: '1px solid rgba(255,255,255,.12)',
-        background: '#0f141a', color: '#e7edf3', cursor: 'pointer'
-      });
-      b.textContent = label;
-      on(b, 'click', handler);
-      pop.appendChild(b);
-    };
-
-    // main actions
-    addBtn('Draft RFC memo', () => {
-      copyText(snippetFor(n, pre.id));
-      location.href = researchUrl;
-    }, true);
-
-    addBtn('Enter The Square (free)', () => {
-      if (CFG.squareUrl) window.open(CFG.squareUrl, '_blank', 'noopener');
-    }, !!CFG.squareUrl);
-
-    addBtn('Open in Discord app', () => {
-      if (CFG.discordAppUrl) {
-        copyText(snippetFor(n, pre.id));
-        location.href = CFG.discordAppUrl;
-      }
-    }, member && !!CFG.discordAppUrl);
-
-    addBtn('Copy paragraph link', async () => {
-      const ok = await copyText(snippetFor(n, pre.id));
-      toast(ok ? 'Copied paragraph link' : 'Copy failed');
-    }, true);
-
-    addBtn('Support on Patreon (optional)', () => {
-      if (CFG.inviteUrl) window.open(CFG.inviteUrl, '_blank', 'noopener');
-    }, !!CFG.inviteUrl);
-
-    addBtn(member ? "I'm a member ✓" : "I'm a member", () => {
-      setMember(!member);
-      // re-open to refresh visibility
-      showPopover(pre, n, anchorBtn);
-    }, true);
-
-    const foot = document.createElement('div');
-    foot.textContent = 'Open chat for everyone — no payment required.';
-    foot.style.fontSize = '.85rem'; foot.style.opacity = '.75'; foot.style.marginTop = '6px';
-    pop.appendChild(foot);
-
-    // place near icon
-    const r = anchorBtn.getBoundingClientRect();
-    let top = window.scrollY + r.bottom + 8;
-    let left = window.scrollX + r.left - 12;
-    pop.style.top = `${top}px`;
-    pop.style.left = `${left}px`;
-    pop.style.maxWidth = 'min(92vw, 340px)';
-    pop.style.display = 'block';
-
-    const pr = pop.getBoundingClientRect();
-    if (pr.right > window.innerWidth - 8) {
-      left = window.scrollX + (window.innerWidth - pr.width - 8);
-      pop.style.left = `${left}px`;
-    }
-
-    // close on outside / Escape
-    const closer = (ev) => {
-      if (ev.type === 'keydown' && ev.key !== 'Escape') return;
-      if (ev.type === 'click' && pop.contains(ev.target)) return;
-      pop.style.display = 'none';
-      document.removeEventListener('click', closer, true);
-      document.removeEventListener('keydown', closer, true);
-    };
-    setTimeout(() => {
-      document.addEventListener('click', closer, true);
-      document.addEventListener('keydown', closer, true);
-    }, 0);
-  }
-
-  // -------------- build anchors -------------
-  function build() {
-    const pres = $$('pre.osf');
-    let n = 0;
-    pres.forEach((pre) => {
-      // ignore empty paragraphs
-      if (!pre.textContent || !pre.textContent.trim()) return;
-      n += 1;
-      if (!pre.id) pre.id = `osf-${n}`;
-      addHead(pre, n);
-    });
-  }
-
-  // -------------- deep link behavior --------
-  function byHash() {
-    const raw = location.hash || '';
-    if (!raw) return;
-    const id = decodeURIComponent(raw.slice(1));
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    const y = el.getBoundingClientRect().top + window.scrollY - (CFG.SCROLL_OFFSET || 0);
-    window.scrollTo({ top: y, behavior: 'smooth' });
+    const pre = document.getElementById(id);
+    if (!pre) return;
 
     // highlight
-    el.classList.add('osf-active');
-    clearTimeout(byHash._t);
-    byHash._t = setTimeout(() => el.classList.remove('osf-active'), CFG.HILITE_MS || 6000);
+    document.querySelectorAll('.osf-active').forEach(n => n.classList.remove('osf-active'));
+    pre.classList.add('osf-active');
+
+    // scroll with offset
+    const y = pre.getBoundingClientRect().top + window.scrollY - (CFG.SCROLL_OFFSET || 80);
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+  window.addEventListener('hashchange', osfFocusFromHash);
+  window.addEventListener('load', () => setTimeout(osfFocusFromHash, 0));
+
+  // ---------- anchors json loader ----------
+  function anchorsUrlFromPath() {
+    // /cafes/<slug>/notebook/<file>.html  -> /data/cafes/<slug>/anchors/<file>.json
+    const parts = location.pathname.split("/").filter(Boolean);
+    const slug = parts[1] || "zeta-zero-cafe";
+    const htmlFile = parts.slice(-1)[0] || "";
+    const base = htmlFile.replace(/\.html$/i, "");
+    return `/data/cafes/${slug}/anchors/${base}.json`;
   }
 
-  // -------------- boot ----------------------
-  document.addEventListener('DOMContentLoaded', () => {
-    build();
-    byHash();
-  });
-  window.addEventListener('hashchange', byHash);
+  async function fetchAnchors() {
+    const url = anchorsUrlFromPath();
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      return await res.json();
+    } catch (e) {
+      console.warn("[osf] anchors load failed:", url, e.message);
+      return { paragraphs: [] };
+    }
+  }
 
+  // ---------- popover ----------
+  function buildPopover(para, uuid, paraNum) {
+    // create once then reuse per paragraph
+    const pop = document.createElement("div");
+    pop.className = "osf-pop card";
+    pop.innerHTML = `
+      <div class="card-body" style="min-width: 22rem;">
+        <div class="h6 mb-2">Discuss § ${paraNum}</div>
+        <button class="btn w-100 mb-2" data-osf="memo">Draft RFC memo</button>
+        <button class="btn w-100 mb-2" data-osf="enter">Enter The Square (free)</button>
+        <button class="btn w-100 mb-2" data-osf="open-app">Open in Discord app</button>
+        <button class="btn w-100 mb-2" data-osf="copy">Copy paragraph link</button>
+        <button class="btn w-100 mb-2" data-osf="support">Support on Patreon (optional)</button>
+        <button class="btn w-100" data-osf="member">I’m a member</button>
+        <div class="text-muted mt-2" style="font-size:.85rem">Open chat for everyone — no payment required.</div>
+      </div>
+    `;
+    // wire actions
+    const link = `${location.origin}${location.pathname}#${uuid}`;
+
+    // copy
+    $('[data-osf="copy"]', pop).onclick = () => {
+      navigator.clipboard.writeText(link);
+      toast("Copied paragraph link");
+    };
+
+    // enter web
+    $('[data-osf="enter"]', pop).onclick = () => {
+      const url = CFG.discordChannelUrl || CFG.squareUrl;
+      // copy snippet before sending people away
+      const n = paraNum;
+      const snippet = (CFG.snippetTemplate || DEFAULTS.snippetTemplate)(link, n);
+      navigator.clipboard.writeText(snippet).catch(() => { });
+      window.open(url, "_blank");
+    };
+
+    // open in app (hidden if no channel configured)
+    const appBtn = $('[data-osf="open-app"]', pop);
+    if (!CFG.discordAppUrl) appBtn.style.display = "none";
+    appBtn.onclick = () => {
+      const n = paraNum;
+      const snippet = (CFG.snippetTemplate || DEFAULTS.snippetTemplate)(link, n);
+      navigator.clipboard.writeText(snippet).catch(() => { });
+      window.location.href = CFG.discordAppUrl;
+    };
+
+    // support (hidden if not provided)
+    const supBtn = $('[data-osf="support"]', pop);
+    if (!CFG.inviteUrl) supBtn.style.display = "none";
+    supBtn.onclick = () => window.open(CFG.inviteUrl, "_blank");
+
+    // member toggle (simple UX)
+    $('[data-osf="member"]', pop).onclick = (e) => {
+      e.currentTarget.classList.toggle("active");
+      const on = e.currentTarget.classList.contains("active");
+      e.currentTarget.textContent = on ? "I’m a member ✓" : "I’m a member";
+      appBtn.style.display = on && CFG.discordAppUrl ? "" : "none";
+      supBtn.style.display = on ? "none" : (CFG.inviteUrl ? "" : "none");
+    };
+
+    // research office (new page)
+    $('[data-osf="memo"]', pop).onclick = () => {
+      const cafeRoot = location.pathname.split("/").slice(0, 3).join("/"); // /cafes/<slug>
+      const chapterRel = location.pathname.split("/").slice(3).join("/");  // notebook/...
+      const url =
+        `${cafeRoot}/research_office.html?` +
+        `para=${esc(uuid)}&chapter=${esc(chapterRel)}&return=${esc(location.pathname + "#" + uuid)}`;
+      window.location.href = url;
+    };
+
+    // position near paragraph head
+    document.body.appendChild(pop);
+    const head = $(".osf-head", para);
+    const rect = head.getBoundingClientRect();
+    pop.style.left = `${Math.round(rect.left)}px`;
+    pop.style.top = `${Math.round(rect.bottom + window.scrollY + 6)}px`;
+
+    // autoclose on outside click
+    const closer = (ev) => {
+      if (!pop.contains(ev.target)) {
+        pop.remove();
+        document.removeEventListener("mousedown", closer, true);
+      }
+    };
+    document.addEventListener("mousedown", closer, true);
+  }
+
+  // ---------- toast ----------
+  let toastTimer;
+  function toast(msg) {
+    let t = document.getElementById("osf-toast");
+    if (!t) {
+      t = document.createElement("div");
+      t.id = "osf-toast";
+      t.style.cssText =
+        "position:fixed;left:1rem;bottom:1rem;background:#222;color:#fff;padding:.6rem .8rem;border-radius:.5rem;opacity:0;transform:translateY(6px);transition:all .15s ease;z-index:99999";
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity = "1";
+    t.style.transform = "translateY(0)";
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      t.style.opacity = "0";
+      t.style.transform = "translateY(6px)";
+    }, 1600);
+  }
+
+  // ---------- init ----------
+  async function init() {
+    ensureStyles();
+    const data = await fetchAnchors();
+
+    // number, label, buttons
+    const pres = $$("pre.osf");
+    pres.forEach((pre, i) => {
+      // id like osf-5 (add if missing)
+      if (!pre.id) pre.id = `osf-${i + 1}`;
+      const uuid = pre.id;
+
+      // wrap header row
+      const head = document.createElement("div");
+      head.className = "osf-head";
+      const label = document.createElement("a");
+      label.className = "osf-label";
+      label.href = `#${uuid}`;
+      label.textContent = `§ ${i + 1}`;
+      const copy = document.createElement("button");
+      copy.type = "button";
+      copy.className = "osf-ico osf-copy";
+      copy.title = "Copy link";
+      copy.innerHTML = "🔗";
+      const more = document.createElement("button");
+      more.type = "button";
+      more.className = "osf-ico osf-more";
+      more.title = "Discuss / Research";
+      more.innerHTML = "✎";
+
+      head.appendChild(label);
+      head.appendChild(copy);
+      head.appendChild(more);
+
+      const wrap = document.createElement("div");
+      wrap.className = "osf-block";
+      pre.parentNode.insertBefore(wrap, pre);
+      wrap.appendChild(head);
+      wrap.appendChild(pre);
+
+      // clickers
+      copy.onclick = () => {
+        const url = `${location.origin}${location.pathname}#${uuid}`;
+        navigator.clipboard.writeText(url).then(() => toast("Copied paragraph link"));
+      };
+      more.onclick = () => buildPopover(wrap, uuid, i + 1);
+    });
+
+    // highlight target + smooth scroll (when coming with #hash)
+    const H = location.hash.replace(/^#/, "");
+    if (H) {
+      const el = document.getElementById(H);
+      if (el && el.tagName === "PRE") {
+        const y = el.getBoundingClientRect().top + window.scrollY - (CFG.SCROLL_OFFSET || 80);
+        window.scrollTo({ top: y, behavior: "smooth" });
+        el.classList.add("osf-hot");
+        setTimeout(() => el.classList.remove("osf-hot"), CFG.HILITE_MS);
+      }
+    }
+  }
+
+  if (document.readyState !== "loading") init();
+  else on(document, "DOMContentLoaded", init);
 })();
+

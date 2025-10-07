@@ -92,14 +92,17 @@
     opacity: 1
 }
 
-/* highlight active § on deep-link */
-.osf-active {
-    box-shadow: 0 0 0 2px var(--warn) inset;
-    border-radius: var(--radius)
-}
+/* keep anchored paragraphs clear of the fixed header */
+.osf { scroll-margin-top: 96px; }          /* matches your SCROLL_OFFSET (≈80–100px) */
 
-/* prevents “overlay eats clicks” and ensures popover is on top: */
-.osf-pop { position: absolute; z-index: 1200; }
+/* visible highlight for the active paragraph */
+.osf-active {
+  box-shadow: 0 0 0 2px #ffb347 inset;
+  border-radius: 12px;
+}
+/* popover should sit on top and stay clickable */
+.osf-pop { position: absolute; z-index: 9999; }
 .osf-pop, .osf-pop * { pointer-events: auto; }
+
 /* optional highlight */
 .osf-active { box-shadow: 0 0 0 2px #ffb347 inset; border-radius: 12px; }
