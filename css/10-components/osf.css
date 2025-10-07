@@ -53,6 +53,203 @@
     margin: .2rem .2rem .5rem
 }
 
+/* --- OSF discuss popover layout --- */
+
+.osf-pop {
+    position: absolute;
+    z-index: 9999;
+    background: #10161f;
+    border: 1px solid rgba(255, 255, 255, .15);
+    border-radius: 14px;
+    padding: 12px;
+    width: min(520px, 92vw);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, .6);
+}
+
+/* title line */
+.osf-pop .title {
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    font-size: 14px;
+}
+
+/* primary layout: 2-column grid for actions */
+.osf-pop .actions,
+.osf-pop .grid {
+    /* both supported, in case markup differs */
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+/* fallback: if buttons are direct children, still lay them out in a grid */
+.osf-pop>.btn,
+.osf-pop>a.btn,
+.osf-pop>button.btn {
+    display: block;
+    width: 100%;
+}
+
+.osf-pop {
+    /* when there is no .actions wrapper, make the popover itself the grid */
+    display: grid;
+    grid-auto-flow: row;
+    gap: 8px;
+}
+
+/* make the pills stretch nicely and center their text */
+.osf-pop .btn,
+.osf-pop a.btn,
+.osf-pop button.btn {
+    width: 100%;
+    justify-content: center;
+    border-radius: 12px;
+    padding: 10px 12px;
+}
+
+/* footer note */
+.osf-pop .note {
+    margin-top: 4px;
+    font-size: 12px;
+    opacity: .8;
+}
+
+/* ========== Discuss popover — polished ========== */
+
+/* container */
+.osf-pop{
+  position: absolute;
+  z-index: 9999;
+  background: #0f1520;                       /* deep slate */
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  padding: 12px;
+  width: min(560px, 94vw);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+/* header */
+.osf-pop .title{
+  margin: 0 0 10px 0;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: .2px;
+  color: #e7edf6;
+}
+
+/* layout: responsive grid (2 columns desktop, 1 on narrow) */
+.osf-pop .actions{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 8px;
+}
+
+/* fallback: if buttons are direct children (no .actions wrapper) */
+.osf-pop > a.btn,
+.osf-pop > button.btn,
+.osf-pop > .btn{ width: 100%; }
+.osf-pop:not(:has(.actions)){
+  display: grid;
+  grid-auto-flow: row;
+  gap: 8px;
+}
+
+/* buttons (pills) */
+.osf-pop .btn,
+.osf-pop a.btn,
+.osf-pop button.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  background: linear-gradient(180deg,#101926 0%,#0d1420 100%);
+  color: #dbe7ff;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.1;
+  transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease, color .12s ease;
+}
+.osf-pop .btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,.22);
+  box-shadow: 0 4px 14px rgba(0,0,0,.35);
+  color: #ffffff;
+}
+.osf-pop .btn:active{
+  transform: translateY(0);
+  filter: brightness(1.05);
+}
+
+/* subtle variants */
+.osf-pop .btn.secondary{
+  background: #0f1623;
+}
+
+/* footer note */
+.osf-pop .note{
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgba(235,245,255,.8);
+}
+
+/* icons near § — dim until hover */
+.osf-memo, .osf-link{
+  opacity: .55;
+  transition: opacity .15s ease, transform .15s ease;
+}
+.osf-memo:hover, .osf-link:hover{
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* keep popover clickable (pairs with your JS) */
+.osf-pop, .osf-pop *{ pointer-events: auto; }
+
+/* responsive: single column below 560px */
+@media (max-width: 560px){
+  .osf-pop .actions{ grid-template-columns: 1fr; }
+}
+
+/* optional “compact” mode: add .osf-compact to <body> if you ever want
+   a tighter popover for dense pages */
+body.osf-compact .osf-pop{ padding: 10px; }
+body.osf-compact .osf-pop .btn{ padding: 9px 10px; font-size: 13.5px; }
+
+
+/* small-screen: stack buttons in one column */
+@media (max-width: 540px) {
+
+    .osf-pop .actions,
+    .osf-pop .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* icons next to §: dim by default, brighten on hover */
+.osf-memo,
+.osf-link {
+    opacity: .55;
+    transition: opacity .15s ease, transform .15s ease;
+}
+
+.osf-memo:hover,
+.osf-link:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+/* keep the popover fully clickable (pair with your existing pointer rule) */
+.osf-pop,
+.osf-pop * {
+    pointer-events: auto;
+}
+
 .osf-btn {
     display: block;
     width: 100%;
@@ -93,16 +290,103 @@
 }
 
 /* keep anchored paragraphs clear of the fixed header */
-.osf { scroll-margin-top: 96px; }          /* matches your SCROLL_OFFSET (≈80–100px) */
+.osf {
+    scroll-margin-top: 96px;
+}
+
+/* matches your SCROLL_OFFSET (≈80–100px) */
 
 /* visible highlight for the active paragraph */
 .osf-active {
-  box-shadow: 0 0 0 2px #ffb347 inset;
-  border-radius: 12px;
+    box-shadow: 0 0 0 2px #ffb347 inset;
+    border-radius: 12px;
 }
+
 /* popover should sit on top and stay clickable */
-.osf-pop { position: absolute; z-index: 9999; }
-.osf-pop, .osf-pop * { pointer-events: auto; }
+.osf-pop {
+    position: absolute;
+    z-index: 9999;
+}
+
+.osf-pop,
+.osf-pop * {
+    pointer-events: auto;
+}
 
 /* optional highlight */
-.osf-active { box-shadow: 0 0 0 2px #ffb347 inset; border-radius: 12px; }
+.osf-active {
+    box-shadow: 0 0 0 2px #ffb347 inset;
+    border-radius: 12px;
+}
+
+/* --- OSF popover: classless-safe layout + styling ----------------------- */
+
+/* Put the whole popover on a 2-col grid; header + note span both columns */
+.osf-pop{
+  position: absolute;
+  z-index: 9999;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 12px;
+  width: min(560px, 94vw);
+  background: #0f1520;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  pointer-events: auto;           /* keep clickable on top */
+}
+
+/* header = first child, note = last child */
+.osf-pop > :first-child{
+  grid-column: 1 / -1;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+  font-size: 14px;
+  color: #e7edf6;
+}
+.osf-pop > :last-child{
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  font-size: 12px;
+  color: rgba(235,245,255,.85);
+}
+
+/* any direct link/button inside the popover becomes a pill button */
+.osf-pop > a,
+.osf-pop > button{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  background: linear-gradient(180deg,#101926 0%,#0d1420 100%);
+  color: #dbe7ff;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.1;
+  transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease, color .12s ease;
+}
+
+/* hover/active */
+.osf-pop > a:hover,
+.osf-pop > button:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,.22);
+  box-shadow: 0 4px 14px rgba(0,0,0,.35);
+  color: #fff;
+}
+.osf-pop > a:active,
+.osf-pop > button:active{
+  transform: translateY(0);
+  filter: brightness(1.05);
+}
+
+/* Mobile: single column */
+@media (max-width: 560px){
+  .osf-pop{ grid-template-columns: 1fr; }
+}
