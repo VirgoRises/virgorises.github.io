@@ -99,5 +99,7 @@
 }
 
 /* prevents “overlay eats clicks” and ensures popover is on top: */
-.osf-pop { position: absolute; z-index: 9999; }
+.osf-pop { position: absolute; z-index: 1200; }
 .osf-pop, .osf-pop * { pointer-events: auto; }
+/* optional highlight */
+.osf-active { box-shadow: 0 0 0 2px #ffb347 inset; border-radius: 12px; }
