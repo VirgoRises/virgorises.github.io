@@ -1,4 +1,23 @@
 {
+  "meta": {
+    "relative": false,
+    "offset": 0,
+    "offsets": {
+      "wb01-geometric-primes-and-pair-corr.html": 0
+    },
+    "starts": {
+      "notebook/chapter-1-the-basel-problem.html": 7,
+      "notebook/chapter-2-the-spatial-aspect-of-zet.html": 11,
+      "notebook/chapter-3-the-primorial-function.html": 23,
+      "notebook/chapter-4-the-triangular-numbers.html": 31,
+      "notebook/chapter-5-chords.html": 51,
+      "notebook/chapter-6-a-cartesian-m-brane-monos.html": 63,
+      "notebook/chapter-7-quadrature-geometric-framework.html": 73,
+      "notebook/chapter-8-spectrum-of-volume.html": 109
+    }
+  },
+
+  "chapters": {
   "notebook/chapter-1-the-basel-problem.html": {
     "osf-1": { "from": 7, "to": 7 },
     "osf-2": { "from": 7, "to": 7 },
@@ -19,9 +38,9 @@
     "osf-17": { "from": 9, "to": 9 },
     "osf-18": { "from": 9, "to": 9 },
     "osf-19": { "from": 9, "to": 9 },
-    "osf-20": { "from": 10, "to": 10 },
-    "osf-21": { "from": 10, "to": 10 },
-    "osf-22": { "from": 10, "to": 10 }
+    "osf-20": { "from": 9, "to": 9 },
+    "osf-21": { "from": 9, "to": 9 },
+    "osf-22": { "from": 9, "to": 9 }
   },
   "notebook/chapter-2-the-spatial-aspect-of-zet.html": {
     "osf-1": { "from": 11, "to": 11 },
@@ -176,25 +195,25 @@
     "osf-42": { "from": 29, "to": 29 },
     "osf-43": { "from": 29, "to": 29 },
     "osf-44": { "from": 29, "to": 29 },
-    "osf-45": { "from": 30, "to": 30 },
-    "osf-46": { "from": 30, "to": 30 },
-    "osf-47": { "from": 30, "to": 30 },
-    "osf-48": { "from": 30, "to": 30 },
-    "osf-49": { "from": 30, "to": 30 },
-    "osf-50": { "from": 30, "to": 30 },
-    "osf-51": { "from": 30, "to": 30 },
-    "osf-52": { "from": 30, "to": 30 },
-    "osf-53": { "from": 30, "to": 30 },
-    "osf-54": { "from": 30, "to": 30 },
-    "osf-55": { "from": 30, "to": 30 },
-    "osf-56": { "from": 30, "to": 30 },
-    "osf-57": { "from": 30, "to": 30 },
-    "osf-58": { "from": 30, "to": 30 },
-    "osf-59": { "from": 30, "to": 30 },
-    "osf-60": { "from": 30, "to": 30 },
-    "osf-61": { "from": 30, "to": 30 },
-    "osf-62": { "from": 30, "to": 30 },
-    "osf-63": { "from": 30, "to": 30 }
+    "osf-45": { "from": 29, "to": 29 },
+    "osf-46": { "from": 29, "to": 29 },
+    "osf-47": { "from": 29, "to": 29 },
+    "osf-48": { "from": 29, "to": 29 },
+    "osf-49": { "from": 29, "to": 29 },
+    "osf-50": { "from": 29, "to": 29 },
+    "osf-51": { "from": 29, "to": 29 },
+    "osf-52": { "from": 29, "to": 29 },
+    "osf-53": { "from": 29, "to": 29 },
+    "osf-54": { "from": 29, "to": 29 },
+    "osf-55": { "from": 29, "to": 29 },
+    "osf-56": { "from": 29, "to": 29 },
+    "osf-57": { "from": 29, "to": 29 },
+    "osf-58": { "from": 29, "to": 29 },
+    "osf-59": { "from": 29, "to": 29 },
+    "osf-60": { "from": 29, "to": 29 },
+    "osf-61": { "from": 29, "to": 29 },
+    "osf-62": { "from": 29, "to": 29 },
+    "osf-63": { "from": 29, "to": 29 }
   },
   "notebook/chapter-4-the-triangular-numbers.html": {
     "osf-1": { "from": 31, "to": 31 },
@@ -821,4 +840,5 @@
     "osf-79": { "from": 126, "to": 126 },
     "osf-80": { "from": 126, "to": 126 }
   }
+}
 }

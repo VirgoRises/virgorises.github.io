@@ -66,17 +66,17 @@
   const chapter= qs.get('chapter') || '';          // "notebook/…html"
   const ret    = qs.get('return') ? decodeURIComponent(qs.get('return')) : '';
   const fromQ  = parseInt(qs.get('from')||'', 10);
-  const toQ    = parseInt(qs.get('to')||'', 10);
 
   const $  = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
-
   $('#docTitle').textContent = base + '.pdf';
   if (paraId) $('#linkNote').textContent = `Linked from ${paraId}${chapter ? " — " + chapter : ""}`;
 
   const parts = location.pathname.split('/').filter(Boolean);
-  const slug  = parts[1] || 'zeta-zero-cafe';
+  const slug  = parts[1] || 'zeta-zero-cafe';     // /cafes/{slug}/source.html
   const cafe  = `/cafes/${slug}`;
+
+  // helpers
   const norm  = s => (s||"").replace(/\\/g,"/").replace(/^\/+|\/+$/g,"").toLowerCase();
   const onlyFile = s => norm(s).split("/").slice(-1)[0];
   const dropNotebook = s => norm(s).replace(/^notebook\//,"");
@@ -91,48 +91,133 @@
   async function loadMap() {
     const paths = [
       `/data/cafes/${slug}/sources/${base}.map.json`,
+      `/cafes/${slug}/sources/${base}.map.json`,
+      `/cafes/${slug}/data/sources/${base}.map.json`,
+      `/data/cafes/${slug}/${base}.map.json`,
       `/data/sources/${base}.map.json`,
-      `/sources/${base}.map.json`
+      `/sources/${base}.map.json`,
+      `/data/${base}.map.json`,
     ];
     for (const p of paths) {
-      try { const r = await fetch(p, { cache:'no-store' }); if (r.ok) return await r.json(); } catch(_) {}
+      try {
+        const r = await fetch(p, { cache:'no-store' });
+        if (r.ok) return await r.json();
+      } catch(_) {}
     }
     return null;
   }
 
   function pageFromEntry(entry){
-    if (!entry) return undefined;
+    if (entry == null) return undefined;
+    if (typeof entry === 'number') return entry;
     const cand = [entry.from, entry.pdf_from, entry.page, entry.start, entry.p];
     for (const v of cand) { const n = parseInt(v,10); if (Number.isFinite(n) && n>0) return n; }
     return undefined;
   }
 
-  async function resolveStartPage() {
-    // Explicit ?from= wins
-    if (Number.isFinite(fromQ) && fromQ>0) return fromQ;
+  function lookupIn(obj, keys, paraNum){
+    if (!obj) return undefined;
+    for (const k of keys){
+      const bucket = obj[k];
+      if (!bucket) continue;
+      const hit1 = pageFromEntry(bucket[String(paraNum)]) ?? pageFromEntry(bucket[`osf-${paraNum}`]);
+      if (Number.isFinite(hit1)) return hit1;
+      if (bucket.paras) {
+        const hit2 = pageFromEntry(bucket.paras[String(paraNum)]) ?? pageFromEntry(bucket.paras[`osf-${paraNum}`]);
+        if (Number.isFinite(hit2)) return hit2;
+      }
+    }
+    return undefined;
+  }
+
+  function lookupInArray(arr, keys, paraNum){
+    if (!Array.isArray(arr)) return undefined;
+    for (const item of arr){
+      const itemKeys = [norm(item.file), onlyFile(item.file), dropNotebook(item.file)].filter(Boolean);
+      const overlap  = itemKeys.some(k => keys.includes(k));
+      if (!overlap) continue;
+      const hit = pageFromEntry(item.paras?.[String(paraNum)]) ?? pageFromEntry(item.paras?.[`osf-${paraNum}`]);
+      if (Number.isFinite(hit)) return hit;
+    }
+    return undefined;
+  }
+
+  function pickKey(obj, keys){
+    for (const k of keys){ if (obj && Object.prototype.hasOwnProperty.call(obj, k)) return k; }
+    return null;
+  }
+
+  async function resolveStartPage(pdfPageCount) {
+    // ?from= overrides everything
+    if (Number.isFinite(fromQ) && fromQ>0) return Math.min(Math.max(fromQ,1), pdfPageCount);
 
     const map = await loadMap();
     if (!map) return 1;
 
-    // Chaptered map?
-    const chObj = map.chapters && (
-      map.chapters[norm(chapter)] ||
-      map.chapters[dropNotebook(chapter)] ||
-      map.chapters[onlyFile(chapter)]
-    );
-    if (chObj && paraId) {
-      const n = parseInt(String(paraId).replace(/^osf-/,'') || '0', 10);
-      const entry = chObj[String(n)] || chObj[`osf-${n}`];
-      const hit = pageFromEntry(entry);
-      if (Number.isFinite(hit) && hit>0) return hit;
+    const nPara = parseInt(String(paraId).replace(/^osf-/,'') || '0', 10);
+    const chKeys = [norm(chapter), dropNotebook(chapter), onlyFile(chapter)].filter(Boolean);
+
+    // 1) flat legacy
+    if (paraId && (Number.isFinite(map[paraId]) || Number.isFinite(map[String(nPara)]))) {
+      return clamp(applyOffsets(map, chKeys, Number(map[paraId] ?? map[String(nPara)])), pdfPageCount);
     }
 
-    // Flat legacy map { "osf-3": 7 }
-    if (map && paraId && Number.isFinite(map[paraId])) return +map[paraId];
+    // 2) chapters {}
+    if (map.chapters && typeof map.chapters === 'object' && !Array.isArray(map.chapters)) {
+      const rel = lookupIn(map.chapters, chKeys, nPara);
+      if (Number.isFinite(rel)) return clamp(applyOffsets(map, chKeys, rel), pdfPageCount);
+    }
+    // 3) chapters []
+    if (Array.isArray(map.chapters)) {
+      const rel = lookupInArray(map.chapters, chKeys, nPara);
+      if (Number.isFinite(rel)) return clamp(applyOffsets(map, chKeys, rel), pdfPageCount);
+    }
+    // 4) files {}
+    if (map.files) {
+      const rel = lookupIn(map.files, chKeys, nPara);
+      if (Number.isFinite(rel)) return clamp(applyOffsets(map, chKeys, rel), pdfPageCount);
+    }
+    // 5) direct chapter object
+    const rel = lookupIn(map, chKeys, nPara);
+    if (Number.isFinite(rel)) return clamp(applyOffsets(map, chKeys, rel), pdfPageCount);
 
+    // fallback
     return 1;
+
+    // ----- helpers for offsets / chapter starts -----
+    function clamp(n, max){ return Math.min(Math.max(n,1), max); }
+
+    function applyOffsets(mapObj, chapterKeys, pageFromMap){
+      const meta = mapObj.meta || {};
+      const starts = meta.starts || meta.chapterStarts || {};    // { "<key>": startPage }
+      const offsets = meta.offsets || {};                         // { "<key>": number }
+      const relative = !!meta.relative;
+      const globalOffset = parseInt(meta.offset||0,10) || 0;
+
+      // pick whichever key the map actually contains
+      const chosenStartKey  = pickKey(starts, chapterKeys);
+      const chosenOffsetKey = pickKey(offsets, chapterKeys);
+
+      let absolute = pageFromMap;
+
+      // If meta.relative, interpret pageFromMap as 1-based offset inside the chapter
+      if (relative && chosenStartKey && Number.isFinite(+starts[chosenStartKey])) {
+        const start = parseInt(starts[chosenStartKey],10);
+        absolute = start + (pageFromMap - 1);
+      }
+
+      // Apply per-chapter additive offset (if any)
+      if (chosenOffsetKey && Number.isFinite(+offsets[chosenOffsetKey])) {
+        absolute += parseInt(offsets[chosenOffsetKey],10);
+      }
+      // Apply global additive offset
+      absolute += globalOffset;
+
+      return absolute;
+    }
   }
 
+  // find the PDF under cafe
   const pdfUrl = await firstReachable([
     `${cafe}/source/${base}.pdf`,
     `${cafe}/sources/${base}.pdf`,
@@ -150,16 +235,17 @@
   $('#downloadBtn').href = pdfUrl;
   $('#downloadBtn').setAttribute('download', base + '.pdf');
 
+  // Blob load to bypass any Content-Disposition headers
   const bytes = await fetch(pdfUrl, { cache:'no-store' }).then(r => r.arrayBuffer());
   const pdf   = await pdfjsLib.getDocument({ data: bytes }).promise;
 
-  let currentPage = Math.min(Math.max(await resolveStartPage(), 1), pdf.numPages);
+  let currentPage = await resolveStartPage(pdf.numPages);
   let scale = 1.3;
 
   const canvas = $('#pageCanvas');
   const ctx    = canvas.getContext('2d');
 
-  async function renderPage(num) {
+  async function renderPage(num, opts={smooth:true}) {
     const page = await pdf.getPage(num);
     const vp = page.getViewport({ scale });
     canvas.width  = vp.width;
@@ -167,12 +253,13 @@
     await page.render({ canvasContext: ctx, viewport: vp }).promise;
     $('#pgInfo').textContent = `${currentPage} / ${pdf.numPages}`;
     highlightThumb(num);
+    scrollThumb(num, opts.smooth);
   }
 
-  $('#prevBtn').onclick = async ()=>{ if (currentPage>1) { currentPage--; await renderPage(currentPage);} };
-  $('#nextBtn').onclick = async ()=>{ if (currentPage<pdf.numPages){ currentPage++; await renderPage(currentPage);} };
-  $('#zoomIn').onclick  = async ()=>{ scale = Math.min(scale*1.15, 4);  await renderPage(currentPage); };
-  $('#zoomOut').onclick = async ()=>{ scale = Math.max(scale/1.15, .5); await renderPage(currentPage); };
+  $('#prevBtn').onclick = async ()=>{ if (currentPage>1) { currentPage--; await renderPage(currentPage); } };
+  $('#nextBtn').onclick = async ()=>{ if (currentPage<pdf.numPages){ currentPage++; await renderPage(currentPage); } };
+  $('#zoomIn').onclick  = async ()=>{ scale = Math.min(scale*1.15, 4);  await renderPage(currentPage, {smooth:false}); };
+  $('#zoomOut').onclick = async ()=>{ scale = Math.max(scale/1.15, .5); await renderPage(currentPage, {smooth:false}); };
 
   const thumbs = $('#thumbs');
   function highlightThumb(i){
@@ -180,6 +267,12 @@
     const el = thumbs.querySelector(`.thumb[data-page="${i}"]`);
     if (el) el.classList.add('active');
   }
+  function scrollThumb(i, smooth=true){
+    const el = thumbs.querySelector(`.thumb[data-page="${i}"]`);
+    if (!el) return;
+    thumbs.scrollTo({ top: Math.max(0, el.offsetTop - 8), behavior: smooth ? 'smooth' : 'instant' });
+  }
+
   const thumbObserver = new IntersectionObserver(async (entries)=>{
     for (const entry of entries){
       if (!entry.isIntersecting) continue;
@@ -202,12 +295,13 @@
     c.className   = 'thumb';
     c.dataset.page= String(i);
     c.title       = `Page ${i}`;
-    c.onclick     = async ()=>{ currentPage = i; await renderPage(currentPage); thumbs.scrollTo({ top: c.offsetTop-8, behavior:'smooth' }); };
+    c.onclick     = async ()=>{ currentPage = i; await renderPage(currentPage); };
     thumbs.appendChild(c);
     thumbObserver.observe(c);
   }
 
-  await renderPage(currentPage);
+  // initial render; no smooth so the thumb jumps into view immediately
+  await renderPage(currentPage, {smooth:false});
 
   // Back
   $('#backBtn').onclick = (e) => { e.preventDefault(); if (ret) location.href = ret; else history.back(); };
