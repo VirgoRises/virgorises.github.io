@@ -105,3 +105,10 @@ textarea{
 
 /* utility */
 .mono{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace; }
+
+/* active thumb ring */
+.thumb.active {
+  outline: 2px solid #ffb347;   /* same “warn” accent you use elsewhere */
+  outline-offset: 2px;
+}
+

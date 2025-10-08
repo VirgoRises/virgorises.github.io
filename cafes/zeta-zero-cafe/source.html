@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Source document</title>
+  <link rel="stylesheet" href="/css/bundle.css"/>
+  <style>
+    :root { --pad: 14px; }
+    body { margin: 0; background: #0d1117; color: #c9d1d9; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: var(--pad); }
+    .bar { display: flex; align-items: center; gap: .5rem; margin-bottom: 10px; }
+    .bar .spacer { flex: 1; }
+    .btn { padding: 6px 10px; border-radius: 8px; background: #1f2937; border: 1px solid #2a2f3a; color: #c9d1d9; }
+    .btn:hover { background: #263244; }
+    #docTitle { font-weight: 600; margin-left: .25rem; }
+    #linkNote { color: #8b949e; font-size: .9rem; margin: 6px 2px 12px; }
+    .viewerShell { display: grid; grid-template-columns: 260px 1fr; gap: 12px; }
+    .side, .main { border: 1px solid #2a2f3a; border-radius: 12px; background: #0f1420; padding: 12px; }
+    .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .pg { min-width: 6ch; text-align: center; }
+    canvas { width: 100%; height: auto; display: block; background: #111; }
+    .thumbs { display: flex; flex-direction: column; gap: 8px; max-height: calc(100vh - 210px); overflow: auto; }
+    .thumbs canvas { width: 100%; border: 1px solid #243041; border-radius: 8px; cursor: pointer; background:#0b0f16; }
+    .thumb.active { box-shadow: 0 0 0 2px #2563eb inset; }
+    .hr { height: 1px; background: #1f2937; margin: 8px 0; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <button id="backBtn" class="btn">&larr; Back</button>
+    <span id="docTitle"></span>
+    <span class="spacer"></span>
+    <a id="openRaw" class="btn" target="_blank" rel="noopener">Open original</a>
+    <a id="downloadBtn" class="btn" download>Download</a>
+  </div>
+  <div id="linkNote"></div>
+
+  <div class="viewerShell">
+    <div class="side">
+      <div class="controls">
+        <button id="prevBtn" class="btn">Prev</button>
+        <span id="pgInfo" class="pg"></span>
+        <button id="nextBtn" class="btn">Next</button>
+        <div class="spacer"></div>
+        <button id="zoomOut" class="btn">−</button>
+        <button id="zoomIn" class="btn">+</button>
+      </div>
+      <div class="hr"></div>
+      <div id="thumbs" class="thumbs"></div>
+    </div>
+    <div class="main">
+      <canvas id="pageCanvas"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+(async function () {
+  const qs = new URLSearchParams(location.search);
+  const base   = (qs.get('pdf') || 'Old_main').replace(/\.pdf$/i, '');
+  const paraId = qs.get('para') || '';             // "osf-17"
+  const chapter= qs.get('chapter') || '';          // "notebook/…html"
+  const ret    = qs.get('return') ? decodeURIComponent(qs.get('return')) : '';
+  const fromQ  = parseInt(qs.get('from')||'', 10);
+  const toQ    = parseInt(qs.get('to')||'', 10);
+
+  const $  = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+
+  $('#docTitle').textContent = base + '.pdf';
+  if (paraId) $('#linkNote').textContent = `Linked from ${paraId}${chapter ? " — " + chapter : ""}`;
+
+  const parts = location.pathname.split('/').filter(Boolean);
+  const slug  = parts[1] || 'zeta-zero-cafe';
+  const cafe  = `/cafes/${slug}`;
+  const norm  = s => (s||"").replace(/\\/g,"/").replace(/^\/+|\/+$/g,"").toLowerCase();
+  const onlyFile = s => norm(s).split("/").slice(-1)[0];
+  const dropNotebook = s => norm(s).replace(/^notebook\//,"");
+
+  async function firstReachable(urls) {
+    for (const u of urls) {
+      try { const h = await fetch(u, { method:'HEAD', cache:'no-store' }); if (h.ok) return u; } catch(_) {}
+    }
+    return null;
+  }
+
+  async function loadMap() {
+    const paths = [
+      `/data/cafes/${slug}/sources/${base}.map.json`,
+      `/data/sources/${base}.map.json`,
+      `/sources/${base}.map.json`
+    ];
+    for (const p of paths) {
+      try { const r = await fetch(p, { cache:'no-store' }); if (r.ok) return await r.json(); } catch(_) {}
+    }
+    return null;
+  }
+
+  function pageFromEntry(entry){
+    if (!entry) return undefined;
+    const cand = [entry.from, entry.pdf_from, entry.page, entry.start, entry.p];
+    for (const v of cand) { const n = parseInt(v,10); if (Number.isFinite(n) && n>0) return n; }
+    return undefined;
+  }
+
+  async function resolveStartPage() {
+    // Explicit ?from= wins
+    if (Number.isFinite(fromQ) && fromQ>0) return fromQ;
+
+    const map = await loadMap();
+    if (!map) return 1;
+
+    // Chaptered map?
+    const chObj = map.chapters && (
+      map.chapters[norm(chapter)] ||
+      map.chapters[dropNotebook(chapter)] ||
+      map.chapters[onlyFile(chapter)]
+    );
+    if (chObj && paraId) {
+      const n = parseInt(String(paraId).replace(/^osf-/,'') || '0', 10);
+      const entry = chObj[String(n)] || chObj[`osf-${n}`];
+      const hit = pageFromEntry(entry);
+      if (Number.isFinite(hit) && hit>0) return hit;
+    }
+
+    // Flat legacy map { "osf-3": 7 }
+    if (map && paraId && Number.isFinite(map[paraId])) return +map[paraId];
+
+    return 1;
+  }
+
+  const pdfUrl = await firstReachable([
+    `${cafe}/source/${base}.pdf`,
+    `${cafe}/sources/${base}.pdf`,
+    `${cafe}/pdf/${base}.pdf`,
+    `${cafe}/${base}.pdf`,
+  ]);
+  if (!pdfUrl) {
+    $('.main').innerHTML = `<div style="padding:12px">Could not find <b>${base}.pdf</b>.</div>`;
+    $('#openRaw').style.display = 'none';
+    $('#downloadBtn').style.display = 'none';
+    return;
+  }
+
+  $('#openRaw').href = pdfUrl;
+  $('#downloadBtn').href = pdfUrl;
+  $('#downloadBtn').setAttribute('download', base + '.pdf');
+
+  const bytes = await fetch(pdfUrl, { cache:'no-store' }).then(r => r.arrayBuffer());
+  const pdf   = await pdfjsLib.getDocument({ data: bytes }).promise;
+
+  let currentPage = Math.min(Math.max(await resolveStartPage(), 1), pdf.numPages);
+  let scale = 1.3;
+
+  const canvas = $('#pageCanvas');
+  const ctx    = canvas.getContext('2d');
+
+  async function renderPage(num) {
+    const page = await pdf.getPage(num);
+    const vp = page.getViewport({ scale });
+    canvas.width  = vp.width;
+    canvas.height = vp.height;
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+    $('#pgInfo').textContent = `${currentPage} / ${pdf.numPages}`;
+    highlightThumb(num);
+  }
+
+  $('#prevBtn').onclick = async ()=>{ if (currentPage>1) { currentPage--; await renderPage(currentPage);} };
+  $('#nextBtn').onclick = async ()=>{ if (currentPage<pdf.numPages){ currentPage++; await renderPage(currentPage);} };
+  $('#zoomIn').onclick  = async ()=>{ scale = Math.min(scale*1.15, 4);  await renderPage(currentPage); };
+  $('#zoomOut').onclick = async ()=>{ scale = Math.max(scale/1.15, .5); await renderPage(currentPage); };
+
+  const thumbs = $('#thumbs');
+  function highlightThumb(i){
+    $$('.thumb.active', thumbs).forEach(el => el.classList.remove('active'));
+    const el = thumbs.querySelector(`.thumb[data-page="${i}"]`);
+    if (el) el.classList.add('active');
+  }
+  const thumbObserver = new IntersectionObserver(async (entries)=>{
+    for (const entry of entries){
+      if (!entry.isIntersecting) continue;
+      const c = entry.target;
+      if (c.dataset.rendered === '1') continue;
+      const i = +c.dataset.page;
+      try{
+        const p  = await pdf.getPage(i);
+        const vp = p.getViewport({ scale: 0.22 });
+        c.width  = vp.width;
+        c.height = vp.height;
+        await p.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+        c.dataset.rendered = '1';
+      }catch(err){ console.warn('Thumb render failed', i, err); }
+    }
+  }, { root: thumbs, rootMargin: '300px 0px', threshold: 0.01 });
+
+  for (let i=1;i<=pdf.numPages;i++){
+    const c = document.createElement('canvas');
+    c.className   = 'thumb';
+    c.dataset.page= String(i);
+    c.title       = `Page ${i}`;
+    c.onclick     = async ()=>{ currentPage = i; await renderPage(currentPage); thumbs.scrollTo({ top: c.offsetTop-8, behavior:'smooth' }); };
+    thumbs.appendChild(c);
+    thumbObserver.observe(c);
+  }
+
+  await renderPage(currentPage);
+
+  // Back
+  $('#backBtn').onclick = (e) => { e.preventDefault(); if (ret) location.href = ret; else history.back(); };
+})();
+</script>
+</body>
+</html>
