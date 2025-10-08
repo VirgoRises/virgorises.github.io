@@ -60,164 +60,166 @@
 
 <script>
 (async function () {
+  // ---------- URL & helpers ----------
   const qs = new URLSearchParams(location.search);
   const base   = (qs.get('pdf') || 'Old_main').replace(/\.pdf$/i, '');
-  const paraId = qs.get('para') || '';             // "osf-17"
-  const chapter= qs.get('chapter') || '';          // "notebook/…html"
+  const paraRaw= qs.get('para') || '';
+  const chapterParam = qs.get('chapter') || '';
   const ret    = qs.get('return') ? decodeURIComponent(qs.get('return')) : '';
   const fromQ  = parseInt(qs.get('from')||'', 10);
 
   const $  = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
-  $('#docTitle').textContent = base + '.pdf';
-  if (paraId) $('#linkNote').textContent = `Linked from ${paraId}${chapter ? " — " + chapter : ""}`;
 
-  const parts = location.pathname.split('/').filter(Boolean);
-  const slug  = parts[1] || 'zeta-zero-cafe';     // /cafes/{slug}/source.html
+  $('#docTitle').textContent = base + '.pdf';
+  if (paraRaw) $('#linkNote').textContent = `Linked from ${paraRaw}${chapterParam ? " — " + decodeURIComponent(chapterParam) : ""}`;
+
+  const parts = location.pathname.split('/').filter(Boolean);  // /cafes/{slug}/source.html
+  const slug  = parts[1] || 'zeta-zero-cafe';
   const cafe  = `/cafes/${slug}`;
 
-  // helpers
-  const norm  = s => (s||"").replace(/\\/g,"/").replace(/^\/+|\/+$/g,"").toLowerCase();
-  const onlyFile = s => norm(s).split("/").slice(-1)[0];
-  const dropNotebook = s => norm(s).replace(/^notebook\//,"");
+  const normPath  = s => (s||"").replace(/\\/g,"/").replace(/^\/+|\/+$/g,"").toLowerCase();
+  const onlyFile  = s => normPath(s).split("/").slice(-1)[0];
+  const dropNotebook = s => normPath(s).replace(/^notebook\//,"");
 
-  async function firstReachable(urls) {
-    for (const u of urls) {
-      try { const h = await fetch(u, { method:'HEAD', cache:'no-store' }); if (h.ok) return u; } catch(_) {}
-    }
-    return null;
+  function normParaKey(p) {
+    const m = String(p||'').match(/^osf-(\d+)$/i);
+    return m ? `osf-${parseInt(m[1],10)}` : String(p||'');
   }
+  const paraKey = normParaKey(paraRaw);
+  const paraNum = (() => {
+    const m = paraKey.match(/^osf-(\d+)$/i); return m ? parseInt(m[1],10) : null;
+  })();
 
+  const chapterFull   = decodeURIComponent(chapterParam || '');
+  const chapterKeys = [ normPath(chapterFull), dropNotebook(chapterFull), onlyFile(chapterFull) ].filter(Boolean);
+
+  // ---------- map loading ----------
+  async function fetchJSON(url) {
+    const r = await fetch(url, { cache:'no-store' });
+    if (!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  }
   async function loadMap() {
-    const paths = [
+    const candidates = [
       `/data/cafes/${slug}/sources/${base}.map.json`,
       `/cafes/${slug}/sources/${base}.map.json`,
       `/cafes/${slug}/data/sources/${base}.map.json`,
       `/data/cafes/${slug}/${base}.map.json`,
       `/data/sources/${base}.map.json`,
       `/sources/${base}.map.json`,
-      `/data/${base}.map.json`,
+      `/data/${base}.map.json`
     ];
-    for (const p of paths) {
+    for (const u of candidates) {
       try {
-        const r = await fetch(p, { cache:'no-store' });
-        if (r.ok) return await r.json();
+        return await fetchJSON(u + `?v=${Date.now()}`);
       } catch(_) {}
     }
     return null;
   }
 
-  function pageFromEntry(entry){
+  function pickChapterBlock(map) {
+    // Prefer map.chapters[...] if present, else tolerate root keyed by chapter
+    const chs = map?.chapters;
+    if (chs && typeof chs === 'object') {
+      for (const k of chapterKeys) {
+        if (chs[k]) return { block: chs[k], key: k, container: 'chapters' };
+      }
+    }
+    // root-level chapter blocks
+    for (const k of chapterKeys) {
+      if (map && map[k] && typeof map[k] === 'object') return { block: map[k], key: k, container: 'root' };
+    }
+    // nothing found -> empty
+    return { block: null, key: chapterKeys[0] || '', container: null };
+  }
+
+  function pageFromEntry(entry) {
     if (entry == null) return undefined;
     if (typeof entry === 'number') return entry;
-    const cand = [entry.from, entry.pdf_from, entry.page, entry.start, entry.p];
-    for (const v of cand) { const n = parseInt(v,10); if (Number.isFinite(n) && n>0) return n; }
+    const cand = [entry.from, entry.pdf_from, entry.page, entry.start, entry.p, entry.to];
+    for (const v of cand) {
+      const n = parseInt(v,10);
+      if (Number.isFinite(n) && n > 0) return n;
+    }
     return undefined;
   }
 
-  function lookupIn(obj, keys, paraNum){
-    if (!obj) return undefined;
-    for (const k of keys){
-      const bucket = obj[k];
-      if (!bucket) continue;
-      const hit1 = pageFromEntry(bucket[String(paraNum)]) ?? pageFromEntry(bucket[`osf-${paraNum}`]);
-      if (Number.isFinite(hit1)) return hit1;
-      if (bucket.paras) {
-        const hit2 = pageFromEntry(bucket.paras[String(paraNum)]) ?? pageFromEntry(bucket.paras[`osf-${paraNum}`]);
-        if (Number.isFinite(hit2)) return hit2;
+  function computeAbsolute(meta, chapterKey, rawPage) {
+    const relative = !!meta?.relative;
+    const starts   = meta?.starts || meta?.chapterStarts || {};
+    const offsets  = meta?.offsets || {};
+    const globalOffset = parseInt(meta?.offset||0,10) || 0;
+
+    let abs = parseInt(rawPage,10);
+    if (relative) {
+      // interpret as 1-based within chapter
+      const startKey = chapterKeys.find(k => Object.prototype.hasOwnProperty.call(starts, k));
+      const start = startKey ? parseInt(starts[startKey],10) : 1;
+      abs = start + (abs - 1);
+    }
+    const offKey = chapterKeys.find(k => Object.prototype.hasOwnProperty.call(offsets, k));
+    if (offKey) abs += parseInt(offsets[offKey],10) || 0;
+    abs += globalOffset;
+    return abs;
+  }
+
+  function getMappedPage(map) {
+    if (!map) return null;
+
+    // ?from= override
+    if (Number.isFinite(fromQ) && fromQ > 0) return fromQ;
+
+    const meta = map.meta || {};
+    const starts = map.starts || meta.starts || meta.chapterStarts || {};
+    // Chapter start fallback if nothing else
+    const chapterStart = (() => {
+      const k = chapterKeys.find(kk => Object.prototype.hasOwnProperty.call(starts, kk));
+      return k ? parseInt(starts[k],10) : 1;
+    })();
+
+    const { block, key: foundKey } = pickChapterBlock(map);
+
+    // If there is no chapter block at all, fall back to chapter start (plus offsets)
+    if (!block || typeof block !== 'object') {
+      return computeAbsolute(meta, foundKey, chapterStart);
+    }
+
+    // Try exact match first
+    const exact = block[paraKey] ?? block[String(paraNum)] ?? null;
+    const exactPage = pageFromEntry(exact);
+    if (Number.isFinite(exactPage)) {
+      return computeAbsolute(meta, foundKey, exactPage);
+    }
+
+    // Numeric nearest-previous *within this chapter block* (no spillover)
+    const entries = Object.keys(block)
+      .map(k => ({ n: parseInt((k.match(/^osf-(\d+)$/i)||[])[1],10), k }))
+      .filter(e => Number.isFinite(e.n))
+      .sort((a,b)=>a.n-b.n);
+
+    if (Number.isFinite(paraNum)) {
+      const prev = entries.filter(e => e.n <= paraNum).pop();
+      if (prev) {
+        const p = pageFromEntry(block[prev.k]);
+        if (Number.isFinite(p)) return computeAbsolute(meta, foundKey, p);
       }
     }
-    return undefined;
+
+    // Fallback to explicit chapter start
+    return computeAbsolute(meta, foundKey, chapterStart);
   }
 
-  function lookupInArray(arr, keys, paraNum){
-    if (!Array.isArray(arr)) return undefined;
-    for (const item of arr){
-      const itemKeys = [norm(item.file), onlyFile(item.file), dropNotebook(item.file)].filter(Boolean);
-      const overlap  = itemKeys.some(k => keys.includes(k));
-      if (!overlap) continue;
-      const hit = pageFromEntry(item.paras?.[String(paraNum)]) ?? pageFromEntry(item.paras?.[`osf-${paraNum}`]);
-      if (Number.isFinite(hit)) return hit;
+  // ---------- find the PDF ----------
+  async function firstReachable(urls) {
+    for (const u of urls) {
+      try {
+        const h = await fetch(u, { method:'HEAD', cache:'no-store' });
+        if (h.ok) return u;
+      } catch(_) {}
     }
-    return undefined;
-  }
-
-  function pickKey(obj, keys){
-    for (const k of keys){ if (obj && Object.prototype.hasOwnProperty.call(obj, k)) return k; }
     return null;
   }
-
-  async function resolveStartPage(pdfPageCount) {
-    // ?from= overrides everything
-    if (Number.isFinite(fromQ) && fromQ>0) return Math.min(Math.max(fromQ,1), pdfPageCount);
-
-    const map = await loadMap();
-    if (!map) return 1;
-
-    const nPara = parseInt(String(paraId).replace(/^osf-/,'') || '0', 10);
-    const chKeys = [norm(chapter), dropNotebook(chapter), onlyFile(chapter)].filter(Boolean);
-
-    // 1) flat legacy
-    if (paraId && (Number.isFinite(map[paraId]) || Number.isFinite(map[String(nPara)]))) {
-      return clamp(applyOffsets(map, chKeys, Number(map[paraId] ?? map[String(nPara)])), pdfPageCount);
-    }
-
-    // 2) chapters {}
-    if (map.chapters && typeof map.chapters === 'object' && !Array.isArray(map.chapters)) {
-      const rel = lookupIn(map.chapters, chKeys, nPara);
-      if (Number.isFinite(rel)) return clamp(applyOffsets(map, chKeys, rel), pdfPageCount);
-    }
-    // 3) chapters []
-    if (Array.isArray(map.chapters)) {
-      const rel = lookupInArray(map.chapters, chKeys, nPara);
-      if (Number.isFinite(rel)) return clamp(applyOffsets(map, chKeys, rel), pdfPageCount);
-    }
-    // 4) files {}
-    if (map.files) {
-      const rel = lookupIn(map.files, chKeys, nPara);
-      if (Number.isFinite(rel)) return clamp(applyOffsets(map, chKeys, rel), pdfPageCount);
-    }
-    // 5) direct chapter object
-    const rel = lookupIn(map, chKeys, nPara);
-    if (Number.isFinite(rel)) return clamp(applyOffsets(map, chKeys, rel), pdfPageCount);
-
-    // fallback
-    return 1;
-
-    // ----- helpers for offsets / chapter starts -----
-    function clamp(n, max){ return Math.min(Math.max(n,1), max); }
-
-    function applyOffsets(mapObj, chapterKeys, pageFromMap){
-      const meta = mapObj.meta || {};
-      const starts = meta.starts || meta.chapterStarts || {};    // { "<key>": startPage }
-      const offsets = meta.offsets || {};                         // { "<key>": number }
-      const relative = !!meta.relative;
-      const globalOffset = parseInt(meta.offset||0,10) || 0;
-
-      // pick whichever key the map actually contains
-      const chosenStartKey  = pickKey(starts, chapterKeys);
-      const chosenOffsetKey = pickKey(offsets, chapterKeys);
-
-      let absolute = pageFromMap;
-
-      // If meta.relative, interpret pageFromMap as 1-based offset inside the chapter
-      if (relative && chosenStartKey && Number.isFinite(+starts[chosenStartKey])) {
-        const start = parseInt(starts[chosenStartKey],10);
-        absolute = start + (pageFromMap - 1);
-      }
-
-      // Apply per-chapter additive offset (if any)
-      if (chosenOffsetKey && Number.isFinite(+offsets[chosenOffsetKey])) {
-        absolute += parseInt(offsets[chosenOffsetKey],10);
-      }
-      // Apply global additive offset
-      absolute += globalOffset;
-
-      return absolute;
-    }
-  }
-
-  // find the PDF under cafe
   const pdfUrl = await firstReachable([
     `${cafe}/source/${base}.pdf`,
     `${cafe}/sources/${base}.pdf`,
@@ -225,25 +227,42 @@
     `${cafe}/${base}.pdf`,
   ]);
   if (!pdfUrl) {
-    $('.main').innerHTML = `<div style="padding:12px">Could not find <b>${base}.pdf</b>.</div>`;
+    document.querySelector('.main').innerHTML = `<div style="padding:12px">Could not find <b>${base}.pdf</b>.</div>`;
     $('#openRaw').style.display = 'none';
     $('#downloadBtn').style.display = 'none';
     return;
   }
-
   $('#openRaw').href = pdfUrl;
   $('#downloadBtn').href = pdfUrl;
   $('#downloadBtn').setAttribute('download', base + '.pdf');
 
-  // Blob load to bypass any Content-Disposition headers
+  // ---------- load PDF via Blob ----------
   const bytes = await fetch(pdfUrl, { cache:'no-store' }).then(r => r.arrayBuffer());
   const pdf   = await pdfjsLib.getDocument({ data: bytes }).promise;
 
-  let currentPage = await resolveStartPage(pdf.numPages);
+  // ---------- resolve start page from map ----------
+  const map = await loadMap();
+  let targetPage = getMappedPage(map) || 1;
+  targetPage = Math.min(Math.max(targetPage, 1), pdf.numPages);
+
+  // ---------- viewer ----------
+  let currentPage = targetPage;
   let scale = 1.3;
 
   const canvas = $('#pageCanvas');
   const ctx    = canvas.getContext('2d');
+  const thumbs = $('#thumbs');
+
+  function highlightThumb(i){
+    $$('.thumb.active', thumbs).forEach(el => el.classList.remove('active'));
+    const el = thumbs.querySelector(`.thumb[data-page="${i}"]`);
+    if (el) el.classList.add('active');
+  }
+  function scrollThumb(i, smooth=true){
+    const el = thumbs.querySelector(`.thumb[data-page="${i}"]`);
+    if (!el) return;
+    thumbs.scrollTo({ top: Math.max(0, el.offsetTop - 8), behavior: smooth ? 'smooth' : 'instant' });
+  }
 
   async function renderPage(num, opts={smooth:true}) {
     const page = await pdf.getPage(num);
@@ -261,18 +280,7 @@
   $('#zoomIn').onclick  = async ()=>{ scale = Math.min(scale*1.15, 4);  await renderPage(currentPage, {smooth:false}); };
   $('#zoomOut').onclick = async ()=>{ scale = Math.max(scale/1.15, .5); await renderPage(currentPage, {smooth:false}); };
 
-  const thumbs = $('#thumbs');
-  function highlightThumb(i){
-    $$('.thumb.active', thumbs).forEach(el => el.classList.remove('active'));
-    const el = thumbs.querySelector(`.thumb[data-page="${i}"]`);
-    if (el) el.classList.add('active');
-  }
-  function scrollThumb(i, smooth=true){
-    const el = thumbs.querySelector(`.thumb[data-page="${i}"]`);
-    if (!el) return;
-    thumbs.scrollTo({ top: Math.max(0, el.offsetTop - 8), behavior: smooth ? 'smooth' : 'instant' });
-  }
-
+  // thumbnails (lazy)
   const thumbObserver = new IntersectionObserver(async (entries)=>{
     for (const entry of entries){
       if (!entry.isIntersecting) continue;
@@ -300,7 +308,7 @@
     thumbObserver.observe(c);
   }
 
-  // initial render; no smooth so the thumb jumps into view immediately
+  // initial render; snap thumb immediately
   await renderPage(currentPage, {smooth:false});
 
   // Back

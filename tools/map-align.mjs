@@ -1,281 +1,242 @@
-#!/usr/bin/env node
-/**
- * tools/map-align.mjs — constrained, monotone aligner (full file)
- *
- * Guarantees (by construction):
- *  - Paragraphs never map outside their chapter band.
- *  - Mappings are monotone non-decreasing within a chapter (no inversions).
- *
- * Approach:
- *  1) Build candidate pages/spans per paragraph inside a chapter band (from meta.starts ± band).
- *  2) Score with token-overlap + IDF + bigram boost, filter boilerplate.
- *  3) Dynamic-programming to pick a non-decreasing path that maximizes total score
- *     with a small penalty for big jumps.
- *  4) Confirm and write {from,to} per §.
- */
+// tools/map-align.mjs
+// Align notebook paragraphs to PDF pages and update data/cafes/<slug>/sources/<PDF>.map.json
+// ESM-only (Node ≥ 20). No require() anywhere.
 
 import fs from "node:fs";
 import path from "node:path";
-import readline from "node:readline";
-import { glob } from "glob";
-import * as cheerio from "cheerio";
-import he from "he";
-import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
+import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs"; // legacy build works in Node ESM
 
-// ----------------- args -----------------
-function parseArgs(argv) {
+// ---------- tiny argv ----------
+function argv() {
+  const a = process.argv.slice(2);
   const out = {};
-  for (let i = 0; i < argv.length; i++) {
-    const a = argv[i];
-    if (!a.startsWith("--")) continue;
-    const eq = a.indexOf("=");
-    if (eq > 2) { out[a.slice(2,eq)] = a.slice(eq+1); }
-    else { const k=a.slice(2), n=argv[i+1]; if (n && !n.startsWith("--")) { out[k]=n; i++; } else out[k]=true; }
+  for (let i = 0; i < a.length; i++) {
+    const t = a[i];
+    if (t.startsWith("--")) {
+      const k = t.slice(2);
+      const v = (i + 1 < a.length && !a[i + 1].startsWith("--")) ? a[++i] : true;
+      out[k] = v;
+    }
   }
   return out;
 }
-const args = parseArgs(process.argv.slice(2));
+const args = argv();
 
-const SLUG        = String(args.slug || "zeta-zero-cafe");
-const PDF_BN      = String(args.pdf  || "Old_main").replace(/\.pdf$/i, "");
-const DRY         = !!args.dry;
-const ACCEPT_ALL  = !!args["accept-all"];
-const WINDOW      = Number.isFinite(+args.window)   ? Math.max(0, +args.window) : 0;      // local span
-const TOPK        = Number.isFinite(+args.topk)     ? Math.max(3, +args.topk)   : 5;      // candidates per para
-const JUMP_COST   = Number.isFinite(+args.jumpcost) ? +args.jumpcost : 0.15;              // penalty per |Δpage|
-const MIN_TOKENS  = Number.isFinite(+args.min_tokens) ? +args.min_tokens : 6;
-const MINSCORE    = Number.isFinite(+args.minscore) ? +args.minscore : 0.06;              // keep candidates above
-const BAND_PAGES  = Number.isFinite(+args.band_pages) ? +args.band_pages : 24;            // chapter rail-guard
-const ONLY_CHAPTER= args.chapter ? String(args.chapter) : null;
-const ONLY_PARA   = args.para ? parseInt(String(args.para), 10) : null;
-
-const ROOT = process.cwd();
-const cafeRoot = path.join(ROOT, "cafes", SLUG);
-const notebookDir = path.join(cafeRoot, "notebook");
-const pdfPath = path.join(cafeRoot, "sources", `${PDF_BN}.pdf`);
-const mapPath = path.join(ROOT, "data", "cafes", SLUG, "sources", `${PDF_BN}.map.json`);
-
-const log  = (...xs) => console.log("[align]", ...xs);
-const warn = (...xs) => console.warn("[align:warn]", ...xs);
-
-if (!fs.existsSync(pdfPath)) { warn("PDF not found:", pdfPath); process.exit(1); }
-
-// ----------------- text utils -----------------
-const stripMath = (s) => s
-  .replace(/\$\$[\s\S]*?\$\$/g, " ")
-  .replace(/\\\[[\s\S]*?\\\]/g, " ")
-  .replace(/\\\([\s\S]*?\\\)/g, " ")
-  .replace(/\$[^$]*\$/g, " ");
-function normalizeText(raw) {
-  let s = he.decode(String(raw || ""));
-  s = stripMath(s)
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&[a-z]+;/gi, " ")
-    .replace(/[\u0000-\u001F]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .toLowerCase();
-  return s;
+// ---------- required args ----------
+if (!args.slug) {
+  console.error("❌ Usage: node tools/map-align.mjs --slug <cafe> --pdf Old_main --chapter \"notebook/....html\" [options]");
+  process.exit(1);
 }
-function tokenize(s) {
-  const base = s.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().split(/\s+/).filter(w=>w.length>2);
-  const bigrams=[]; for (let i=0;i<base.length-1;i++) bigrams.push(base[i]+"_"+base[i+1]);
-  return base.concat(bigrams);
-}
-function cleansePageText(raw){
-  return raw
-    .replace(/\b(page|pagina|hoofdstuk|chapter|figure|table)\s*\d+\b/gi,' ')
-    .replace(/\b(virgo\s*rises|zeta[- ]zero|draft|index)\b/gi,' ');
+const PDF_BN = String(args.pdf ?? "Old_main").replace(/\.pdf$/i, "");
+const CHAPTER = String(args.chapter ?? "");
+if (!CHAPTER) {
+  console.error("❌ Missing --chapter notebook/..html");
+  process.exit(1);
 }
 
-// ----------------- load HTML -----------------
-async function loadParagraphs() {
-  const files = await glob("*.html", { cwd: notebookDir });
-  const out=[];
-  for (const f of files){
-    const rel = `notebook/${f}`;
-    if (ONLY_CHAPTER && rel !== ONLY_CHAPTER) continue;
-    const html = fs.readFileSync(path.join(notebookDir,f),"utf8");
-    const $ = cheerio.load(html);
-    const rows=[]; $("pre.osf").each((i,el)=>{
-      const id=$(el).attr("id")||`osf-${i+1}`;
-      const raw=$(el).html()||$(el).text()||"";
-      const txt=normalizeText(raw);
-      rows.push({ id, index:i+1, text:txt });
-    });
-    out.push({ file: rel, paras: rows });
+// tuning
+const WINDOW = Number(args.window ?? 2);          // ± pages around pointer
+const BAND_PAGES = Number(args.band_pages ?? 24); // guard band when start unknown
+const TOPK = Number(args.topk ?? 8);
+const MIN_TOK = Number(args.min_tokens ?? 8);
+const MINSCORE = Number(args.minscore ?? 0.12);
+const ACCEPT_ALL = !!args["accept-all"];
+const RESET_CHAPTER = !!args["reset-chapter"];
+
+// paths
+const MAP_FILE = path.join("data", "cafes", String(args.slug), "sources", `${PDF_BN}.map.json`);
+const PDF_FILE = path.join("cafes", String(args.slug), "sources", `${PDF_BN}.pdf`);
+const CHAPTER_FILE = path.join("cafes", String(args.slug), CHAPTER);
+
+// ---------- load / init map ----------
+const map = fs.existsSync(MAP_FILE)
+  ? JSON.parse(fs.readFileSync(MAP_FILE, "utf8"))
+  : { meta: { relative: false, offset: 0 }, starts: {}, offsets: {} };
+
+if (!map.meta) map.meta = { relative: false, offset: 0 };
+if (!map.starts) map.starts = {};
+if (!map.offsets) map.offsets = {};
+
+// optional single-chapter reset (keep meta/starts/offsets)
+if (RESET_CHAPTER) {
+  map[CHAPTER] = {};
+  fs.writeFileSync(MAP_FILE, JSON.stringify(map, null, 2));
+  console.log(`[align] reset chapter block: ${CHAPTER}`);
+}
+
+// ensure chapter block exists
+if (!map[CHAPTER]) map[CHAPTER] = {};
+
+// ---------- helpers ----------
+const STOP = new Set([
+  "the","a","an","and","or","of","to","in","on","for","by","with","as","is","are","was","were",
+  "this","that","these","those","it","its","be","from","at","into","their","there","we","our",
+  "you","your","but","not","have","has","had","which","also","than","then","so","such","may",
+  "can","could","would","should","will","shall","if","when","while","because","about"
+]);
+
+function normalizeText(s) {
+  return String(s)
+    .replace(/<[^>]+>/g, " ")      // strip tags
+    .replace(/&[a-z]+;/gi, " ")    // entities
+    .replace(/[^a-z0-9]+/gi, " ")
+    .toLowerCase()
+    .trim();
+}
+function toTokens(s) {
+  return normalizeText(s)
+    .split(/\s+/)
+    .filter(t => t && !STOP.has(t));
+}
+function tfVector(tokens) {
+  const m = new Map();
+  for (const t of tokens) m.set(t, (m.get(t) ?? 0) + 1);
+  return m;
+}
+function cosine(a, b) {
+  let dot = 0, na = 0, nb = 0;
+  for (const [k, v] of a) {
+    if (b.has(k)) dot += v * b.get(k);
+    na += v * v;
   }
-  return out;
+  for (const v of b.values()) nb += v * v;
+  if (!na || !nb) return 0;
+  return dot / Math.sqrt(na + 1e-9) / Math.sqrt(nb + 1e-9);
 }
 
-// ----------------- pdf text -----------------
-async function extractPdfPages(pdfFile){
-  const data = new Uint8Array(fs.readFileSync(pdfFile)).buffer;
-  const pdf  = await pdfjsLib.getDocument({ data }).promise;
-  const pages=[];
-  for (let i=1;i<=pdf.numPages;i++){
-    const page=await pdf.getPage(i);
-    const tc=await page.getTextContent();
-    const s=tc.items.map(it=>it.str||"").join(" ");
-    pages.push(normalizeText(cleansePageText(s)));
+// extract all <pre class="osf">...</pre>
+function extractParagraphsFromHtml(html) {
+  const paras = [];
+  const re = /<pre\s+class=["']osf["'][^>]*>([\s\S]*?)<\/pre>/gi;
+  let m, idx = 1;
+  while ((m = re.exec(html))) {
+    const raw = m[1];
+    const text = normalizeText(raw);
+    paras.push({ n: idx++, raw, text });
   }
-  return pages;
+  return paras;
 }
 
-// ----------------- scoring -----------------
-function buildIdf(pagesTokens){
-  const df=new Map();
-  for (const toks of pagesTokens){ const seen=new Set(toks); for (const t of seen) df.set(t,(df.get(t)||0)+1); }
-  const N=pagesTokens.length, idf=new Map();
-  for (const [t,d] of df) idf.set(t, Math.log(1+(N/(1+d))));
-  return idf;
+// ---------- read chapter HTML ----------
+if (!fs.existsSync(CHAPTER_FILE)) {
+  console.error(`❌ Chapter file not found: ${CHAPTER_FILE}`);
+  process.exit(2);
 }
-function score(paraToks, pageToks, idf){
-  if (!paraToks.length||!pageToks.length) return 0;
-  const set=new Set(pageToks); let s=0;
-  for (const t of paraToks) if (set.has(t)) s += (idf.get(t)||0.1);
-  return s/Math.sqrt(paraToks.length);
+const chapterHtml = fs.readFileSync(CHAPTER_FILE, "utf8");
+const chapterParas = extractParagraphsFromHtml(chapterHtml);
+
+// ---------- load PDF, cache page text + vectors ----------
+if (!fs.existsSync(PDF_FILE)) {
+  console.error(`❌ PDF not found: ${PDF_FILE}`);
+  process.exit(2);
 }
-function bestLocalSpan(paraToks, pagesTokens, idf, center, window){
-  const L=Math.max(1, center-window), R=Math.min(pagesTokens.length, center+window);
-  let best={from:center,to:center,score:score(paraToks,pagesTokens[center-1],idf)};
-  for (let l=center;l>=L;l--){
-    let acc=0, cnt=0;
-    for (let r=center;r<=R;r++){
-      acc += score(paraToks, pagesTokens[r-1], idf); cnt++;
-      const avg = acc/cnt; if (avg>best.score) best={from:l,to:r,score:avg};
-    }
+
+// PDF.js worker for ESM (Node ≥ 20) — NO require()
+try {
+  const workerSrc = await import.meta.resolve("pdfjs-dist/build/pdf.worker.mjs");
+  pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
+} catch {
+  // Fallback: many Node runs of pdfjs-dist legacy no-op the worker in Node context.
+}
+
+console.log(`[align] slug=${args.slug} pdf=${PDF_BN}.pdf band=${BAND_PAGES} window=${WINDOW} topk=${TOPK}`);
+
+const loadingTask = pdfjsLib.getDocument(PDF_FILE);
+const pdf = await loadingTask.promise;
+const NUM_PAGES = pdf.numPages;
+
+async function pageText(i) {
+  const page = await pdf.getPage(i);
+  const content = await page.getTextContent();
+  const s = content.items.map(it => it.str ?? "").join(" ");
+  return normalizeText(s);
+}
+
+// prepare page vectors (lazy, but cache)
+const pageCache = new Map();
+async function getPageVec(i) {
+  if (pageCache.has(i)) return pageCache.get(i);
+  const text = await pageText(i);
+  const vec = tfVector(toTokens(text));
+  const rec = { text, vec };
+  pageCache.set(i, rec);
+  return rec;
+}
+
+// ---------- compute chapter band ----------
+const globalOffset = Number(map.meta.offset ?? 0);
+const chapterOffset = Number((map.meta.offsets && map.meta.offsets[CHAPTER]) ?? 0);
+const starts = map.starts ?? {};
+const chapterStart = starts[CHAPTER] ?? null;
+
+let bandLo = 1, bandHi = Math.min(NUM_PAGES, BAND_PAGES);
+if (chapterStart != null) {
+  const start = Math.max(1, Number(chapterStart) + globalOffset + chapterOffset);
+  bandLo = Math.max(1, start);
+  bandHi = Math.min(NUM_PAGES, start + Math.max(6, BAND_PAGES));
+}
+
+// ---------- align with monotone constraint ----------
+let currentPtr = bandLo; // moving pointer within band
+const accepted = [];
+const outBlock = map[CHAPTER];
+
+function fmtBand() {
+  const band = (chapterStart != null) ? `(${bandLo}-${bandHi})` : `(band 1-${BAND_PAGES})`;
+  return band;
+}
+
+for (const p of chapterParas) {
+  const short = p.text.split(/\s+/).slice(0, 120).join(" ");
+  const toks = toTokens(short);
+  if (toks.length < MIN_TOK) {
+    console.log(`[align] ~ §${p.n}  (too short, ${toks.length} tokens) ${fmtBand()}`);
+    continue;
   }
-  return best;
-}
+  const qVec = tfVector(toks);
 
-// ----------------- map I/O -----------------
-function readMap(p){
-  if (!fs.existsSync(p)) return { meta:{ relative:false, offset:0 }, chapters:{} };
-  try{ const j=JSON.parse(fs.readFileSync(p,"utf8")); if(!j.meta) j.meta={relative:false,offset:0}; if(!j.chapters) j.chapters={}; return j; }
-  catch(e){ warn("bad JSON:", p, e.message); return { meta:{relative:false,offset:0}, chapters:{} }; }
-}
-function ensureChapter(map, key){ if (!map.chapters[key]) map.chapters[key] = {}; }
-function setMapping(map, key, paraNum, from, to){ ensureChapter(map,key); map.chapters[key][`osf-${paraNum}`] = { from, to }; }
-function preferredChapterKey(chapterRel, map){
-  const cands=[chapterRel.toLowerCase(), chapterRel.toLowerCase().replace(/^notebook\//,''), chapterRel.toLowerCase().split('/').pop()];
-  for (const c of cands) if (map.chapters[c]) return c; return chapterRel.toLowerCase();
-}
+  // search window around currentPtr but clamp to chapter band
+  const lo = Math.max(bandLo, currentPtr - WINDOW);
+  const hi = Math.min(bandHi, currentPtr + WINDOW);
 
-// ----------------- band from meta.starts -----------------
-function chapterBand(map, chapterRel, total){
-  const meta=map.meta||{}; const starts=meta.starts||meta.chapterStarts||{};
-  const norm=s=> (s||'').toLowerCase(); const only=s=>norm(s).split('/').pop(); const strip=s=>norm(s).replace(/^notebook\//,'');
-  const keys=[norm(chapterRel), strip(chapterRel), only(chapterRel)];
-  let start=1; for (const k of keys) if (k in starts) { start=+starts[k]||1; break; }
-  const lo=Math.max(1, start - (BAND_PAGES)); const hi=Math.min(total, start + (BAND_PAGES));
-  return { lo, hi };
-}
-
-// ----------------- DP over monotone candidates -----------------
-function monotoneAssign(paragraphs, pagesTokens, idf, band, topK, window, minscore){
-  const N = paragraphs.length, P = pagesTokens.length;
-  const allCands = new Array(N);
-
-  for (let i=0;i<N;i++){
-    const para = paragraphs[i];
-    const toks = tokenize(para.text);
-    if (toks.length < MIN_TOKENS) { allCands[i] = []; continue; }
-
-    const singles=[];
-    for (let p=band.lo; p<=band.hi; p++){
-      const s = score(toks, pagesTokens[p-1], idf);
-      if (s >= minscore) singles.push({ page:p, from:p, to:p, score:s });
-    }
-    singles.sort((a,b)=>b.score-a.score);
-    const keep = singles.slice(0, topK);
-
-    const refined=[];
-    for (const c of keep){
-      if (window>0){
-        const span = bestLocalSpan(toks, pagesTokens, idf, c.page, window);
-        refined.push({ page:c.page, from:span.from, to:span.to, score:span.score });
-      } else refined.push(c);
-    }
-    allCands[i] = refined.length? refined : keep;
+  const candidates = [];
+  for (let pg = lo; pg <= hi; pg++) {
+    const { vec } = await getPageVec(pg);
+    const score = cosine(qVec, vec);
+    candidates.push({ pg, score });
   }
+  candidates.sort((a, b) => b.score - a.score);
+  const top = candidates.slice(0, TOPK).filter(x => x.score >= MINSCORE);
 
-  const dp = [], prev = [];
-  for (let i=0;i<N;i++){
-    dp[i] = new Array(allCands[i].length).fill(-1e9);
-    prev[i] = new Array(allCands[i].length).fill(-1);
-    if (i===0){ for (let k=0;k<allCands[i].length;k++) dp[i][k] = allCands[i][k].score; continue; }
-    for (let k=0;k<allCands[i].length;k++){
-      const c = allCands[i][k];
-      for (let j=0;j<allCands[i-1].length;j++){
-        const d = allCands[i-1][j];
-        if (c.from < d.from) continue; // monotone
-        const jump = Math.max(0, c.from - d.from);
-        const cand = dp[i-1][j] + c.score - 0.15 * Math.log1p(jump);
-        if (cand > dp[i][k]) { dp[i][k]=cand; prev[i][k]=j; }
-      }
-    }
-    if (Math.max(...dp[i]) <= -1e8 && allCands[i-1].length){
-      const jbest = dp[i-1].indexOf(Math.max(...dp[i-1]));
-      const d = allCands[i-1][jbest];
-      allCands[i] = [{ page:d.page, from:d.from, to:d.to, score:0 }];
-      dp[i] = [dp[i-1][jbest]];
-      prev[i] = [jbest];
-    }
-  }
-
-  const assign = new Array(N).fill(null);
-  if (!dp.length || !dp[N-1].length) return assign;
-  let k = dp[N-1].indexOf(Math.max(...dp[N-1]));
-  for (let i=N-1;i>=0;i--){ assign[i] = allCands[i][k] || null; k = prev[i][k]; if (k<0 && i>0) { assign[i-1] = allCands[i-1][0] || null; k=0; } }
-  return assign;
-}
-
-// ----------------- prompt -----------------
-function askYesNo(question) {
-  return new Promise((resolve) => {
-    if (ACCEPT_ALL) return resolve(true);
-    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-    rl.question(question + " [y/N] ", (ans) => { rl.close(); resolve(/^y(es)?$/i.test(ans.trim())); });
-  });
-}
-
-// ----------------- main -----------------
-(async function main(){
-  console.log(`[align] slug=${SLUG} pdf=${PDF_BN}.pdf band=${BAND_PAGES} window=${WINDOW} topk=${TOPK}`);
-  const chapters = await loadParagraphs();
-  const pageTexts = await extractPdfPages(pdfPath);
-  const pagesTokens = pageTexts.map(tokenize);
-  const idf = buildIdf(pagesTokens);
-
-  let map = readMap(mapPath);
-  let changes=0, examined=0;
-
-  for (const ch of chapters){
-    const chapKey = preferredChapterKey(ch.file, map);
-    const band = chapterBand(map, ch.file, pagesTokens.length);
-
-    const assign = monotoneAssign(ch.paras, pagesTokens, idf, band, TOPK, WINDOW, MINSCORE);
-
-    for (let i=0;i<ch.paras.length;i++){
-      const p = ch.paras[i];
-      if (ONLY_PARA && p.index !== ONLY_PARA) continue;
-      const a = assign[i]; examined++;
-      if (!a){ console.log(`[align] - no cand §${p.index} ${ch.file}`); continue; }
-      const prop = { from:a.from, to:a.to };
-      const curr = map.chapters?.[chapKey]?.[`osf-${p.index}`] || null;
-      const same = curr && curr.from===prop.from && curr.to===prop.to;
-      if (!same){
-        console.log(`[align] ~ §${p.index} → p.${prop.from}${prop.to!==prop.from?'-'+prop.to:''}  (band ${band.lo}-${band.hi})`);
-        const ok = await askYesNo("   apply?");
-        if (ok){ setMapping(map, chapKey, p.index, prop.from, prop.to); changes++; }
-      }
-    }
+  if (top.length === 0) {
+    console.log(`[align] ~ §${p.n}  (no hit ≥ ${MINSCORE.toFixed(2)}) ${fmtBand()}`);
+    continue;
   }
 
-  if (!DRY && changes>0){ fs.mkdirSync(path.dirname(mapPath), {recursive:true}); fs.writeFileSync(mapPath, JSON.stringify(map,null,2),"utf8"); console.log(`[align] wrote ${changes} change(s) to`, mapPath); }
-  else console.log(`[align] no writes (changes=${changes}, dry=${DRY})`);
+  // choose best page that keeps monotone non-decreasing order
+  const best = top.find(c => c.pg >= currentPtr) ?? top[0];
+  const chosen = Math.max(bandLo, Math.min(bandHi, best.pg));
 
-  console.log(`[align] examined paragraphs: ${examined}`);
-})().catch(e=>{ console.error(e); process.exit(1); });
+  const msg = `[align] ~ §${p.n} → p.${chosen}   (best=${best.pg} score ${best.score.toFixed(3)}) ${fmtBand()}`;
+  if (ACCEPT_ALL) {
+    outBlock[`osf-${p.n}`] = { from: chosen, to: chosen };
+    console.log(msg);
+    accepted.push(p.n);
+  } else {
+    console.log(msg + "  [dry]");
+  }
 
+  // advance pointer (rubber-band monotonic)
+  currentPtr = Math.max(currentPtr, chosen);
+}
+
+// ---------- write map ----------
+if (ACCEPT_ALL) {
+  fs.writeFileSync(MAP_FILE, JSON.stringify(map, null, 2));
+  console.log(`[align] wrote ${accepted.length} change(s) to ${MAP_FILE}`);
+} else {
+  console.log(`[align] dry-run; nothing written. Use --accept-all to save.`);
+}
+
+console.log(`[align] examined paragraphs: ${chapterParas.length}`);
+await pdf.cleanup();
