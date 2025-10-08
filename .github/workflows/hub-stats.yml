@@ -2,44 +2,48 @@ name: Hub & Memo Stats
 
 on:
   push:
+    branches: [ main ]
     paths:
+      - "tools/**"
       - "data/**"
-      - "tools/build-hub-stats.mjs"
-      - "tools/aggregate-memos.mjs"
+      - "cafes/**"
+      - "out/**"
+      - "js/**"
+      - ".github/workflows/hub-stats.yml"
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write   # allow commits back to the repo
-    concurrency:
-      group: hub-and-memos
-      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 22
 
       - name: Build hub stats
-        run: node tools/build-hub-stats.mjs
-
-      - name: Aggregate memo focus
-        run: node tools/aggregate-memos.mjs
-
-      - name: Commit outputs
         run: |
-          set -e
-          # stage only if they exist and changed
-          CHANGES="$(git status --porcelain -- out/hub_stats.json out/latest_rfcs.json out/memos_focus.json || true)"
-          if [[ -n "$CHANGES" ]]; then
-            git config user.name "osf-bot"
+          if [ -f tools/build-hub-stats.mjs ]; then
+            node tools/build-hub-stats.mjs
+          fi
+
+      - name: Aggregate memo_focus (optional)
+        run: |
+          if [ -f tools/aggregate-memos.mjs ]; then
+            node tools/aggregate-memos.mjs
+          fi
+
+      - name: Commit generated artifacts (if any)
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name  "osf-bot"
             git config user.email "bot@zeta-zero-cafe"
-            git add out/hub_stats.json out/latest_rfcs.json out/memos_focus.json || true
-            git commit -m "chore: update hub & memo stats"
+            git add out/ data/ || true
+            git commit -m "chore: update hub stats & memo focus"
             git push
-          else
-            echo "No changes to commit."
           fi

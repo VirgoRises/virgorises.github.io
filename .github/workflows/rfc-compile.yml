@@ -1,25 +1,44 @@
 name: RFC Compile
+
 on:
   push:
+    branches: [ main ]
     paths:
-      - "data/proposals/**"
-      - "tools/rfc-compile.mjs"
+      - "cafes/**"
+      - "data/**"
+      - "tools/**"
+      - "js/**"
+      - ".github/workflows/rfc-compile.yml"
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   compile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22 }
-      - run: node tools/rfc-compile.mjs
-      - name: Commit changes
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Compile RFCs
         run: |
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git config user.name "osf-bot"
+          if [ -f tools/rfc-compile.mjs ]; then
+            node tools/rfc-compile.mjs
+          else
+            echo "No RFC compiler found; noop."
+          fi
+
+      - name: Commit RFC outputs (if any)
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name  "osf-bot"
             git config user.email "bot@zeta-zero-cafe"
-            git add -A
-            git commit -m "CI: compile RFC tallies/badges"
+            git add out/ data/ || true
+            git commit -m "chore: update RFC compile outputs"
             git push
           fi

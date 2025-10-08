@@ -1,1 +1,42 @@
-# hourly, UTC
+name: PDF Intake
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "cafes/**/sources/*.pdf"
+      - "data/**/sources/**"
+      - ".github/workflows/pdf-intake.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build sources index (optional)
+        run: |
+          if [ -f tools/pdf-index.mjs ]; then
+            node tools/pdf-index.mjs
+          else
+            echo "No pdf-index.mjs found; leaving as noop."
+          fi
+
+      - name: Commit sources index (if any)
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name  "osf-bot"
+            git config user.email "bot@zeta-zero-cafe"
+            git add data/ || true
+            git commit -m "chore: update sources index"
+            git push
+          fi

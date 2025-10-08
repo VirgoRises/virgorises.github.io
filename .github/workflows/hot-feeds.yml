@@ -1,27 +1,38 @@
 name: Hot Feeds
+
 on:
   schedule:
-    - cron: "0 * * * *"   # hourly, UTC
+    - cron: "*/30 * * * *"   # every 30 minutes
   workflow_dispatch:
+
+permissions:
+  contents: write
+
 jobs:
-  build:
+  hot:
     runs-on: ubuntu-latest
-    env:
-      SITE_BASE: https://virgorises.github.io
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22 }
-      - run: node tools/build-hot-feeds.mjs
-      - name: Commit updates
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build hot feeds
         run: |
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git config user.name "osf-bot"
+          if [ -f tools/build-hot-feeds.mjs ]; then
+            node tools/build-hot-feeds.mjs
+          else
+            echo "No hot feed builder found; noop."
+          fi
+
+      - name: Commit hot feed outputs (if any)
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name  "osf-bot"
             git config user.email "bot@zeta-zero-cafe"
-            git add out/hot/*.json out/hot/*.md
-            git commit -m "chore: update hot feeds"
+            git add out/ data/ || true
+            git commit -m "chore: hot feeds update"
             git push
           fi
-    concurrency:
-      group: hot-feeds
-      cancel-in-progress: true
