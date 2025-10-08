@@ -4,315 +4,180 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Source document</title>
-  <link rel="stylesheet" href="/css/bundle.css"/>
+  <link rel="stylesheet" href="/css/10-components/research-office.css"/>
   <style>
-    :root { --pad: 14px; }
-    body { margin: 0; background: #0d1117; color: #c9d1d9; }
-    .wrap { max-width: 1200px; margin: 0 auto; padding: var(--pad); }
-    .bar { display: flex; align-items: center; gap: .5rem; margin-bottom: 10px; }
-    .bar .spacer { flex: 1; }
-    .btn { padding: 6px 10px; border-radius: 8px; background: #1f2937; border: 1px solid #2a2f3a; color: #c9d1d9; }
-    .btn:hover { background: #263244; }
-    #docTitle { font-weight: 600; margin-left: .25rem; }
-    #linkNote { color: #8b949e; font-size: .9rem; margin: 6px 2px 12px; }
-    .viewerShell { display: grid; grid-template-columns: 260px 1fr; gap: 12px; }
-    .side, .main { border: 1px solid #2a2f3a; border-radius: 12px; background: #0f1420; padding: 12px; }
-    .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
-    .pg { min-width: 6ch; text-align: center; }
-    canvas { width: 100%; height: auto; display: block; background: #111; }
-    .thumbs { display: flex; flex-direction: column; gap: 8px; max-height: calc(100vh - 210px); overflow: auto; }
-    .thumbs canvas { width: 100%; border: 1px solid #243041; border-radius: 8px; cursor: pointer; background:#0b0f16; }
-    .thumb.active { box-shadow: 0 0 0 2px #2563eb inset; }
-    .hr { height: 1px; background: #1f2937; margin: 8px 0; }
+    body{background:#0d1117;color:#c9d1d9;font:14px/1.35 ui-sans-serif,system-ui,Segoe UI,Roboto,sans-serif;margin:0}
+    header{display:flex;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid #30363d}
+    header .tag{background:#0b1420;border:1px solid #1f6feb;border-radius:999px;padding:4px 10px}
+    .wrap{display:grid;grid-template-columns:300px 1fr;gap:12px;padding:12px}
+    .thumbs{height:calc(100vh - 84px);overflow:auto;border:1px solid #30363d;border-radius:10px;padding:8px;background:#0b1020}
+    .viewer{height:calc(100vh - 84px);overflow:auto;border:1px solid #30363d;border-radius:10px;display:flex;align-items:flex-start;justify-content:center;background:#0b1020}
+    canvas{display:block}
+    .thumb{margin:8px 6px;border-radius:8px;overflow:hidden;border:1px solid #30363d;cursor:pointer;position:relative}
+    .thumb.active{box-shadow:0 0 0 2px #ffa657 inset;border-color:#ffa657}
+    .toolbar{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+    .btn{background:#0b1420;border:1px solid #30363d;border-radius:10px;color:#c9d1d9;padding:6px 12px}
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-  <script>pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";</script>
+  <!-- pdf.js (browser build) -->
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.worker.min.js";
+  </script>
 </head>
 <body>
-<div class="wrap">
-  <div class="bar">
-    <button id="backBtn" class="btn">&larr; Back</button>
-    <span id="docTitle"></span>
-    <span class="spacer"></span>
-    <a id="openRaw" class="btn" target="_blank" rel="noopener">Open original</a>
-    <a id="downloadBtn" class="btn" download>Download</a>
-  </div>
-  <div id="linkNote"></div>
+<header>
+  <button id="backBtn" class="btn">← Back</button>
+  <span id="pdfName" class="tag"></span>
+  <span id="linked" class="tag" style="opacity:.75"></span>
+  <span style="flex:1"></span>
+  <button id="openOriginal" class="btn">Open original</button>
+  <button id="downloadBtn" class="btn">Download</button>
+</header>
 
-  <div class="viewerShell">
-    <div class="side">
-      <div class="controls">
-        <button id="prevBtn" class="btn">Prev</button>
-        <span id="pgInfo" class="pg"></span>
-        <button id="nextBtn" class="btn">Next</button>
-        <div class="spacer"></div>
-        <button id="zoomOut" class="btn">−</button>
-        <button id="zoomIn" class="btn">+</button>
-      </div>
-      <div class="hr"></div>
-      <div id="thumbs" class="thumbs"></div>
-    </div>
-    <div class="main">
-      <canvas id="pageCanvas"></canvas>
-    </div>
-  </div>
+<div class="wrap">
+  <div id="thumbs" class="thumbs"></div>
+  <div id="viewer" class="viewer"><canvas id="pageCanvas"></canvas></div>
 </div>
 
-<script>
-(async function () {
-  // ---------- URL & helpers ----------
-  const qs = new URLSearchParams(location.search);
-  const base   = (qs.get('pdf') || 'Old_main').replace(/\.pdf$/i, '');
-  const paraRaw= qs.get('para') || '';
-  const chapterParam = qs.get('chapter') || '';
-  const ret    = qs.get('return') ? decodeURIComponent(qs.get('return')) : '';
-  const fromQ  = parseInt(qs.get('from')||'', 10);
+<div class="toolbar">
+  <button id="prev" class="btn">Prev</button>
+  <button id="next" class="btn">Next</button>
+  <button id="zoomOut" class="btn">−</button>
+  <button id="zoomIn" class="btn">+</button>
+</div>
 
-  const $  = s => document.querySelector(s);
-  const $$ = s => [...document.querySelectorAll(s)];
-
-  $('#docTitle').textContent = base + '.pdf';
-  if (paraRaw) $('#linkNote').textContent = `Linked from ${paraRaw}${chapterParam ? " — " + decodeURIComponent(chapterParam) : ""}`;
-
-  const parts = location.pathname.split('/').filter(Boolean);  // /cafes/{slug}/source.html
-  const slug  = parts[1] || 'zeta-zero-cafe';
-  const cafe  = `/cafes/${slug}`;
-
-  const normPath  = s => (s||"").replace(/\\/g,"/").replace(/^\/+|\/+$/g,"").toLowerCase();
-  const onlyFile  = s => normPath(s).split("/").slice(-1)[0];
-  const dropNotebook = s => normPath(s).replace(/^notebook\//,"");
-
-  function normParaKey(p) {
-    const m = String(p||'').match(/^osf-(\d+)$/i);
-    return m ? `osf-${parseInt(m[1],10)}` : String(p||'');
-  }
-  const paraKey = normParaKey(paraRaw);
-  const paraNum = (() => {
-    const m = paraKey.match(/^osf-(\d+)$/i); return m ? parseInt(m[1],10) : null;
+<script type="module">
+(async () => {
+  const $ = sel => document.querySelector(sel);
+  const params = new URLSearchParams(location.search);
+  const PDF_BN = (params.get('pdf') || 'Old_main').replace(/\.pdf$/i,'');
+  const paraId = params.get('para') || '';
+  const chapter = params.get('chapter') || '';
+  const returnUrl = params.get('return') || document.referrer || '/';
+  const slug = (() => {
+    // current path like /cafes/zeta-zero-cafe/source.html
+    const m = location.pathname.match(/^\/cafes\/([^/]+)/);
+    return m ? m[1] : '';
   })();
+  const cafeRoot = `/cafes/${slug}`;                 // /cafes/zeta-zero-cafe
+  const pdfUrl   = `${cafeRoot}/sources/${PDF_BN}.pdf`;
 
-  const chapterFull   = decodeURIComponent(chapterParam || '');
-  const chapterKeys = [ normPath(chapterFull), dropNotebook(chapterFull), onlyFile(chapterFull) ].filter(Boolean);
+  // try map at /data/cafes/<slug>/sources/<bn>.map.json, then <cafeRoot>/sources/...
+  const mapUrls = [
+    `/data/cafes/${slug}/sources/${PDF_BN}.map.json`,
+    `${cafeRoot}/sources/${PDF_BN}.map.json`,
+  ];
 
-  // ---------- map loading ----------
-  async function fetchJSON(url) {
-    const r = await fetch(url, { cache:'no-store' });
-    if (!r.ok) throw new Error('HTTP '+r.status);
-    return r.json();
-  }
-  async function loadMap() {
-    const candidates = [
-      `/data/cafes/${slug}/sources/${base}.map.json`,
-      `/cafes/${slug}/sources/${base}.map.json`,
-      `/cafes/${slug}/data/sources/${base}.map.json`,
-      `/data/cafes/${slug}/${base}.map.json`,
-      `/data/sources/${base}.map.json`,
-      `/sources/${base}.map.json`,
-      `/data/${base}.map.json`
-    ];
-    for (const u of candidates) {
-      try {
-        return await fetchJSON(u + `?v=${Date.now()}`);
-      } catch(_) {}
+  // UI bits
+  $('#pdfName').textContent = `${PDF_BN}.pdf`;
+  $('#linked').textContent = paraId ? `Linked from ${paraId}` : '';
+  $('#backBtn').onclick = e => { e.preventDefault(); returnUrl ? location.href = returnUrl : history.back(); };
+  $('#openOriginal').onclick = () => window.open(pdfUrl, '_blank', 'noopener');
+  $('#downloadBtn').onclick   = () => window.open(pdfUrl, '_blank', 'noopener');
+
+  // fetch mapping (first that works)
+  async function fetchFirst(urls){
+    for (const u of urls){
+      try{
+        const r = await fetch(u, {cache:'no-cache'});
+        if (r.ok) return await r.json();
+      }catch(_){}
     }
     return null;
   }
+  const map = await fetchFirst(mapUrls);
 
-  function pickChapterBlock(map) {
-    // Prefer map.chapters[...] if present, else tolerate root keyed by chapter
-    const chs = map?.chapters;
-    if (chs && typeof chs === 'object') {
-      for (const k of chapterKeys) {
-        if (chs[k]) return { block: chs[k], key: k, container: 'chapters' };
-      }
-    }
-    // root-level chapter blocks
-    for (const k of chapterKeys) {
-      if (map && map[k] && typeof map[k] === 'object') return { block: map[k], key: k, container: 'root' };
-    }
-    // nothing found -> empty
-    return { block: null, key: chapterKeys[0] || '', container: null };
-  }
-
-  function pageFromEntry(entry) {
-    if (entry == null) return undefined;
-    if (typeof entry === 'number') return entry;
-    const cand = [entry.from, entry.pdf_from, entry.page, entry.start, entry.p, entry.to];
-    for (const v of cand) {
-      const n = parseInt(v,10);
-      if (Number.isFinite(n) && n > 0) return n;
-    }
-    return undefined;
-  }
-
-  function computeAbsolute(meta, chapterKey, rawPage) {
-    const relative = !!meta?.relative;
-    const starts   = meta?.starts || meta?.chapterStarts || {};
-    const offsets  = meta?.offsets || {};
-    const globalOffset = parseInt(meta?.offset||0,10) || 0;
-
-    let abs = parseInt(rawPage,10);
-    if (relative) {
-      // interpret as 1-based within chapter
-      const startKey = chapterKeys.find(k => Object.prototype.hasOwnProperty.call(starts, k));
-      const start = startKey ? parseInt(starts[startKey],10) : 1;
-      abs = start + (abs - 1);
-    }
-    const offKey = chapterKeys.find(k => Object.prototype.hasOwnProperty.call(offsets, k));
-    if (offKey) abs += parseInt(offsets[offKey],10) || 0;
-    abs += globalOffset;
-    return abs;
-  }
-
-  function getMappedPage(map) {
-    if (!map) return null;
-
-    // ?from= override
-    if (Number.isFinite(fromQ) && fromQ > 0) return fromQ;
-
+  function lookupTargetPage() {
+    if (!map) return 1;
+    // global offsets
     const meta = map.meta || {};
-    const starts = map.starts || meta.starts || meta.chapterStarts || {};
-    // Chapter start fallback if nothing else
-    const chapterStart = (() => {
-      const k = chapterKeys.find(kk => Object.prototype.hasOwnProperty.call(starts, kk));
-      return k ? parseInt(starts[k],10) : 1;
-    })();
+    const globalOffset = Number(meta.offset || 0);
+    const perChapterOffset = (meta.offsets && chapter && meta.offsets[chapter]) ? Number(meta.offsets[chapter]) : 0;
 
-    const { block, key: foundKey } = pickChapterBlock(map);
+    // chapter starts table (absolute page where a chapter begins)
+    const starts = (meta.starts || {});
+    // pick chapter block for per-paragraph mapping
+    const chapterBlock = (chapter && map[chapter]) ? map[chapter] : null;
 
-    // If there is no chapter block at all, fall back to chapter start (plus offsets)
-    if (!block || typeof block !== 'object') {
-      return computeAbsolute(meta, foundKey, chapterStart);
+    // paragraph mapping wins if present
+    if (chapterBlock && paraId && chapterBlock[paraId]) {
+      const {from} = chapterBlock[paraId];
+      return Math.max(1, Number(from) + globalOffset + perChapterOffset);
     }
 
-    // Try exact match first
-    const exact = block[paraKey] ?? block[String(paraNum)] ?? null;
-    const exactPage = pageFromEntry(exact);
-    if (Number.isFinite(exactPage)) {
-      return computeAbsolute(meta, foundKey, exactPage);
+    // otherwise: if we know the chapter start, use that as target
+    if (chapter && starts[chapter] != null) {
+      return Math.max(1, Number(starts[chapter]) + globalOffset + perChapterOffset);
     }
-
-    // Numeric nearest-previous *within this chapter block* (no spillover)
-    const entries = Object.keys(block)
-      .map(k => ({ n: parseInt((k.match(/^osf-(\d+)$/i)||[])[1],10), k }))
-      .filter(e => Number.isFinite(e.n))
-      .sort((a,b)=>a.n-b.n);
-
-    if (Number.isFinite(paraNum)) {
-      const prev = entries.filter(e => e.n <= paraNum).pop();
-      if (prev) {
-        const p = pageFromEntry(block[prev.k]);
-        if (Number.isFinite(p)) return computeAbsolute(meta, foundKey, p);
-      }
-    }
-
-    // Fallback to explicit chapter start
-    return computeAbsolute(meta, foundKey, chapterStart);
+    return 1;
   }
 
-  // ---------- find the PDF ----------
-  async function firstReachable(urls) {
-    for (const u of urls) {
-      try {
-        const h = await fetch(u, { method:'HEAD', cache:'no-store' });
-        if (h.ok) return u;
-      } catch(_) {}
+  // pdf.js state
+  let pdf = null, currentPage = 1, scale = 1.15;
+  const canvas = $('#pageCanvas');
+  const ctx = canvas.getContext('2d', {alpha:false});
+
+  async function renderPage(n){
+    currentPage = Math.min(Math.max(1,n), pdf.numPages);
+    const page = await pdf.getPage(currentPage);
+    const viewport = page.getViewport({scale});
+    canvas.width = viewport.width|0;
+    canvas.height = viewport.height|0;
+    await page.render({canvasContext: ctx, viewport}).promise;
+
+    // update active thumb
+    for (const el of document.querySelectorAll('.thumb')) el.classList.remove('active');
+    const t = document.querySelector(`.thumb[data-p="${currentPage}"]`);
+    if (t){
+      t.classList.add('active');
+      t.scrollIntoView({block:'center'});
     }
-    return null;
   }
-  const pdfUrl = await firstReachable([
-    `${cafe}/source/${base}.pdf`,
-    `${cafe}/sources/${base}.pdf`,
-    `${cafe}/pdf/${base}.pdf`,
-    `${cafe}/${base}.pdf`,
-  ]);
-  if (!pdfUrl) {
-    document.querySelector('.main').innerHTML = `<div style="padding:12px">Could not find <b>${base}.pdf</b>.</div>`;
-    $('#openRaw').style.display = 'none';
-    $('#downloadBtn').style.display = 'none';
+
+  async function buildThumbs(){
+    const box = $('#thumbs');
+    box.innerHTML = '';
+    const thumbScale = 0.18;
+    for (let i=1;i<=pdf.numPages;i++){
+      const div = document.createElement('div');
+      div.className = 'thumb'; div.dataset.p = String(i);
+
+      const c = document.createElement('canvas');
+      c.style.display='block';
+      c.width = 480; c.height = 640; // will be resized by render
+      div.appendChild(c);
+      box.appendChild(div);
+
+      div.onclick = () => renderPage(i);
+
+      // render
+      const page = await pdf.getPage(i);
+      const vp = page.getViewport({scale: thumbScale});
+      c.width = vp.width|0; c.height = (vp.height|0);
+      page.render({canvasContext: c.getContext('2d', {alpha:false}), viewport: vp});
+    }
+  }
+
+  // load pdf
+  try{
+    pdf = await pdfjsLib.getDocument({url: pdfUrl}).promise;
+  }catch(e){
+    console.error('Failed to load PDF', e, pdfUrl);
+    alert(`Failed to load PDF (Missing PDF): ${pdfUrl}`);
     return;
   }
-  $('#openRaw').href = pdfUrl;
-  $('#downloadBtn').href = pdfUrl;
-  $('#downloadBtn').setAttribute('download', base + '.pdf');
 
-  // ---------- load PDF via Blob ----------
-  const bytes = await fetch(pdfUrl, { cache:'no-store' }).then(r => r.arrayBuffer());
-  const pdf   = await pdfjsLib.getDocument({ data: bytes }).promise;
+  await buildThumbs();
 
-  // ---------- resolve start page from map ----------
-  const map = await loadMap();
-  let targetPage = getMappedPage(map) || 1;
-  targetPage = Math.min(Math.max(targetPage, 1), pdf.numPages);
+  const targetPage = lookupTargetPage();
+  await renderPage(targetPage);
 
-  // ---------- viewer ----------
-  let currentPage = targetPage;
-  let scale = 1.3;
+  // nav
+  $('#prev').onclick    = () => renderPage(currentPage-1);
+  $('#next').onclick    = () => renderPage(currentPage+1);
+  $('#zoomIn').onclick  = async () => { scale = Math.min(scale+0.1, 3.0); await renderPage(currentPage); };
+  $('#zoomOut').onclick = async () => { scale = Math.max(scale-0.1, 0.4); await renderPage(currentPage); };
 
-  const canvas = $('#pageCanvas');
-  const ctx    = canvas.getContext('2d');
-  const thumbs = $('#thumbs');
-
-  function highlightThumb(i){
-    $$('.thumb.active', thumbs).forEach(el => el.classList.remove('active'));
-    const el = thumbs.querySelector(`.thumb[data-page="${i}"]`);
-    if (el) el.classList.add('active');
-  }
-  function scrollThumb(i, smooth=true){
-    const el = thumbs.querySelector(`.thumb[data-page="${i}"]`);
-    if (!el) return;
-    thumbs.scrollTo({ top: Math.max(0, el.offsetTop - 8), behavior: smooth ? 'smooth' : 'instant' });
-  }
-
-  async function renderPage(num, opts={smooth:true}) {
-    const page = await pdf.getPage(num);
-    const vp = page.getViewport({ scale });
-    canvas.width  = vp.width;
-    canvas.height = vp.height;
-    await page.render({ canvasContext: ctx, viewport: vp }).promise;
-    $('#pgInfo').textContent = `${currentPage} / ${pdf.numPages}`;
-    highlightThumb(num);
-    scrollThumb(num, opts.smooth);
-  }
-
-  $('#prevBtn').onclick = async ()=>{ if (currentPage>1) { currentPage--; await renderPage(currentPage); } };
-  $('#nextBtn').onclick = async ()=>{ if (currentPage<pdf.numPages){ currentPage++; await renderPage(currentPage); } };
-  $('#zoomIn').onclick  = async ()=>{ scale = Math.min(scale*1.15, 4);  await renderPage(currentPage, {smooth:false}); };
-  $('#zoomOut').onclick = async ()=>{ scale = Math.max(scale/1.15, .5); await renderPage(currentPage, {smooth:false}); };
-
-  // thumbnails (lazy)
-  const thumbObserver = new IntersectionObserver(async (entries)=>{
-    for (const entry of entries){
-      if (!entry.isIntersecting) continue;
-      const c = entry.target;
-      if (c.dataset.rendered === '1') continue;
-      const i = +c.dataset.page;
-      try{
-        const p  = await pdf.getPage(i);
-        const vp = p.getViewport({ scale: 0.22 });
-        c.width  = vp.width;
-        c.height = vp.height;
-        await p.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
-        c.dataset.rendered = '1';
-      }catch(err){ console.warn('Thumb render failed', i, err); }
-    }
-  }, { root: thumbs, rootMargin: '300px 0px', threshold: 0.01 });
-
-  for (let i=1;i<=pdf.numPages;i++){
-    const c = document.createElement('canvas');
-    c.className   = 'thumb';
-    c.dataset.page= String(i);
-    c.title       = `Page ${i}`;
-    c.onclick     = async ()=>{ currentPage = i; await renderPage(currentPage); };
-    thumbs.appendChild(c);
-    thumbObserver.observe(c);
-  }
-
-  // initial render; snap thumb immediately
-  await renderPage(currentPage, {smooth:false});
-
-  // Back
-  $('#backBtn').onclick = (e) => { e.preventDefault(); if (ret) location.href = ret; else history.back(); };
 })();
 </script>
 </body>
