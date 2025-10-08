@@ -1,0 +1,9 @@
+{
+  "pdf": "Old_main.pdf",
+  "version": "2025-10-07",
+  "map": [
+    { "para": "osf-1",  "page": 1,  "y": 0.18, "label": "Intro" },
+    { "para": "osf-2",  "page": 1,  "y": 0.56 },
+    { "para": "osf-15", "page": 7,  "y": 0.22, "dest": "eq:01:01" }
+  ]
+}

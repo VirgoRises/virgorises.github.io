@@ -390,3 +390,24 @@ body.osf-compact .osf-pop .btn{ padding: 9px 10px; font-size: 13.5px; }
 @media (max-width: 560px){
   .osf-pop{ grid-template-columns: 1fr; }
 }
+
+/* paragraph mini-tools */
+.osf-tools .osf-tool.osf-src {
+  opacity: .65;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 26px;
+  border: 1px solid var(--muted);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--fg-dim);
+  transition: opacity .15s ease, color .15s ease, border-color .15s ease;
+}
+.osf-tools .osf-tool.osf-src:hover {
+  opacity: 1;
+  color: var(--fg);
+  border-color: var(--fg-weak);
+}
+.osf-tools .osf-tool.osf-src svg { display:block; }
+

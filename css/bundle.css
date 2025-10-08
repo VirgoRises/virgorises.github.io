@@ -146,6 +146,11 @@ body.osf-compact .osf-pop .btn{ padding: 9px 10px; font-size: 13.5px; }
 }
 @media (max-width: 560px){ .osf-pop{ grid-template-columns: 1fr; }
 }
+.osf-tools .osf-tool.osf-src { opacity: .65; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border: 1px solid var(--muted); border-radius: 6px; background: var(--panel); color: var(--fg-dim); transition: opacity .15s ease, color .15s ease, border-color .15s ease;
+}
+.osf-tools .osf-tool.osf-src:hover { opacity: 1; color: var(--fg); border-color: var(--fg-weak);
+}
+.osf-tools .osf-tool.osf-src svg { display:block; }
 :root { color-scheme: dark; }
 body{ margin:0; font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu; color:#e7edf3; background:#0b1117;
 }
@@ -190,6 +195,8 @@ textarea{ width:100%; min-height:240px; border-radius:10px; border:1px solid rgb
 #paraPreview th,#paraPreview td{ padding:4px 6px; }
 #paraPreview .MathJax{ font-size:1.05rem; }
 .mono{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace; }
+.thumb.active { outline: 2px solid #ffb347; outline-offset: 2px;
+}
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0
 }
 .u-flex { display: flex
