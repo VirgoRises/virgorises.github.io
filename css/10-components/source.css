@@ -1,0 +1,168 @@
+/* --- source.css | viewer styles v0.0 | 2025-10-09 --- */
+
+body {
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif
+}
+
+.wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px
+}
+
+.bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap
+}
+
+.btn {
+    background: #161b22;
+    border: 1px solid #30363d;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: #e6edf3;
+    text-decoration: none;
+    cursor: pointer
+}
+
+.btn:hover {
+    background: #1f242d
+}
+
+.badge {
+    font-size: .8rem;
+    opacity: .85;
+    border: 1px solid #30363d;
+    border-radius: 999px;
+    padding: 2px 8px
+}
+
+.cols {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 16px
+}
+
+.thumbs {
+    background: #0b0f14;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 12px;
+    height: 70vh;
+    overflow: auto
+}
+
+.viewer {
+    background: #0b0f14;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 12px;
+    height: 70vh;
+    overflow: auto;
+    position: relative
+}
+
+#stage {
+    position: relative
+}
+
+#pageCanvas {
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2
+}
+
+#overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    z-index: 3
+}
+
+.hl-badge {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    background: #1f6feb22;
+    border: 1px solid #1f6feb;
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-size: .8rem;
+    z-index: 4
+}
+
+/* Context strips (p−1 bottom at top edge, p top at bottom edge) */
+.strip {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    pointer-events: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .35)
+}
+
+#prevStripWrap {
+    top: 0
+}
+
+#nextStripWrap {
+    bottom: 0
+}
+
+.strip .label {
+    position: absolute;
+    left: 8px;
+    top: 6px;
+    font-size: .75rem;
+    opacity: .85;
+    background: #0b0f14d0;
+    border: 1px solid #30363d;
+    padding: 2px 6px;
+    border-radius: 6px;
+    pointer-events: auto
+}
+
+.strip canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px dashed #30363d;
+    border-radius: 8px;
+    background: #0b0f14
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap
+}
+
+.thumb {
+    margin: 8px 0;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer
+}
+
+.thumb.active {
+    box-shadow: 0 0 0 2px #1f6feb inset
+}
+
+.thumb canvas {
+    width: 100% !important;
+    height: auto !important
+}
+
+.sep {
+    opacity: .4
+}
