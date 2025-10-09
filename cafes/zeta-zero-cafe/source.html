@@ -23,8 +23,9 @@
     .hl{position:absolute;left:8px;top:8px;background:#1f6feb22;border:1px solid #1f6feb;border-radius:6px;padding:2px 6px;font-size:.8rem}
     .sep{opacity:.4}
   </style>
-  <!-- PDF.js (UMD) + worker from unpkg: works on GH Pages -->
-  <script src="https://unpkg.com/pdfjs-dist@4.10.38/build/pdf.min.js"></script>
+
+  <!-- PDF.js UMD build (v3.x exposes window.pdfjsLib). Use SAME version for worker. -->
+  <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 </head>
 <body>
   <div class="wrap">
@@ -59,6 +60,15 @@
 
 <script>
 (async () => {
+  // Guard: ensure PDF.js loaded
+  if (!window.pdfjsLib) {
+    alert("PDF.js failed to load. Check network/CSP and try again.");
+    return;
+  }
+  const pdfjsLib = window.pdfjsLib;
+  // Worker must match the library version
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+
   // ---------- Helpers ----------
   function $(sel){ return document.querySelector(sel); }
   function make(el, cls){ const e=document.createElement(el); if(cls) e.className=cls; return e; }
@@ -78,12 +88,11 @@
   const slug = m ? m[1] : "zeta-zero-cafe";
   const cafeRoot = `/cafes/${slug}`;
 
-  // Defaults & UI labels
   $("#pdfName").textContent = `${pdfbnRaw}.pdf`;
   $("#fromTag").textContent = paraRaw || "—";
   $("#backBtn").onclick = (e)=>{ e.preventDefault(); if (returnUrl) location.href = returnUrl; else history.back(); };
 
-  // --------- Robust PDF URL resolver (tries a few likely spots) ---------
+  // Try a few likely PDF locations
   const candidatePdfUrls = [
     `${cafeRoot}/sources/${pdfbnRaw}.pdf`,
     `${cafeRoot}/pdf/${pdfbnRaw}.pdf`,
@@ -100,7 +109,7 @@
     }catch(e){ return null; }
   }
 
-  // --------- Mapping JSON: para → page, with offsets ---------
+  // Mapping JSON candidates (para -> page)
   const candidateMapUrls = [
     `/data/cafes/${slug}/sources/${pdfbnRaw}.map.json`,
     `/data/cafes/${slug}/${pdfbnRaw}.map.json`,
@@ -119,7 +128,6 @@
   let highlight = null;
 
   async function resolveMapping(){
-    // Hard overrides win
     const firstPage = parseInt(pageQP || fromQP || "0", 10);
     const lastPage  = parseInt(toQP   || pageQP || fromQP || "0", 10);
     if (firstPage > 0){
@@ -127,15 +135,12 @@
       highlight = {from:firstPage, to: Math.max(firstPage, lastPage || firstPage)};
       return;
     }
-
-    // Otherwise, try a mapping file
     const paraKey = normalizePara(paraRaw);
     for (const url of candidateMapUrls){
       try{
         const res = await fetch(url, {cache:"no-store"});
         if (!res.ok) continue;
         const map = await res.json();
-
         const meta = map.meta || {};
         const starts = meta.starts || {};
         const globalOffset = +meta.offset || 0;
@@ -157,19 +162,14 @@
           highlight.from = Math.max(1, (highlight.from||targetPage) + globalOffset + chapterOffset);
           highlight.to   = Math.max(highlight.from, (highlight.to||highlight.from) + globalOffset + chapterOffset);
         }
-        return; // stop on first valid map
-      }catch(e){ /* try next */ }
+        return;
+      }catch(e){}
     }
-    // No mapping found; keep defaults (page 1)
   }
-
-  // ---------- PDF.js setup ----------
-  const pdfjsLib = window['pdfjsLib'];
-  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.10.38/build/pdf.worker.min.js";
 
   await resolveMapping();
 
-  // Try each candidate URL until one loads
+  // Load first working PDF URL
   let pdf = null, pdfUrl = null;
   for (const url of candidatePdfUrls){
     const res = await tryLoadPdf(url);
@@ -180,19 +180,19 @@
     return;
   }
 
-  // Wire "Open original" / "Download" once we know the working URL
+  // Wire links
   $("#openOriginal").href = pdfUrl;
   $("#downloadPdf").href  = pdfUrl;
   $("#downloadPdf").download = `${pdfbnRaw}.pdf`;
 
-  // ---------- DOM refs ----------
+  // DOM refs
   const thumbsEl = $("#thumbs");
   const canvas   = $("#pageCanvas");
   const viewer   = $("#viewer");
   const hlEl     = $("#hl");
   const pageBadge= $("#pageBadge");
 
-  // ---------- Render state ----------
+  // Render state
   let scale = 1.2;
   let current = clamp(targetPage, 1, pdf.numPages);
   let deviceScale = window.devicePixelRatio || 1;
@@ -200,7 +200,6 @@
   async function renderPage(pageNum){
     const page = await pdf.getPage(pageNum);
     const vpCSS = page.getViewport({scale});
-    // Render at device pixel ratio for crispness
     const vp = page.getViewport({scale: scale * deviceScale});
     canvas.width  = vp.width;
     canvas.height = vp.height;
@@ -210,14 +209,12 @@
     const ctx = canvas.getContext("2d");
     await page.render({canvasContext: ctx, viewport: vp}).promise;
 
-    // Highlight badge
     if (highlight && pageNum >= (highlight.from||0) && pageNum <= (highlight.to||0)) {
       hlEl.style.display = "block";
       hlEl.textContent = `§ ${paraRaw || ""} · p.${pageNum}`;
     } else {
       hlEl.style.display = "none";
     }
-    // Active thumb & page badge
     document.querySelectorAll(".thumb").forEach(t=>t.classList.toggle("active", +t.dataset.p===pageNum));
     pageBadge.textContent = `p.${pageNum} / ${pdf.numPages}`;
   }
@@ -248,7 +245,7 @@
     }
   }
 
-  // ---------- Controls ----------
+  // Controls
   $("#prevBtn").onclick   = ()=>{ if (current>1){ current--; renderPage(current);} };
   $("#nextBtn").onclick   = ()=>{ if (current<pdf.numPages){ current++; renderPage(current);} };
   $("#zoomOut").onclick   = ()=>{ scale = Math.max(0.5, scale-0.1); renderPage(current); };
@@ -257,12 +254,11 @@
   $("#fitWidth").onclick  = async ()=> {
     const page = await pdf.getPage(current);
     const vp = page.getViewport({scale:1});
-    const avail = viewer.clientWidth - 24; // padding
+    const avail = viewer.clientWidth - 24;
     scale = Math.max(0.5, Math.min(3.0, avail / vp.width));
     renderPage(current);
   };
 
-  // ---------- Go ----------
   await buildThumbs();
   await renderPage(current);
 })();
