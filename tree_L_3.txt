@@ -1,0 +1,451 @@
+.
+├── README.md
+├── bot
+│   ├── bot.mjs
+│   ├── node_modules
+│   │   ├── @discordjs
+│   │   ├── @kwsites
+│   │   ├── @sapphire
+│   │   ├── @types
+│   │   ├── @vladfrangu
+│   │   ├── debug
+│   │   ├── discord-api-types
+│   │   ├── discord.js
+│   │   ├── dotenv
+│   │   ├── fast-deep-equal
+│   │   ├── lodash
+│   │   ├── lodash.snakecase
+│   │   ├── magic-bytes.js
+│   │   ├── ms
+│   │   ├── simple-git
+│   │   ├── ts-mixer
+│   │   ├── tslib
+│   │   ├── undici
+│   │   ├── undici-types
+│   │   └── ws
+│   ├── package-lock.json
+│   └── package.json
+├── cafes
+│   ├── css
+│   └── zeta-zero-cafe
+│       ├── brand
+│       ├── css
+│       ├── hot.html
+│       ├── index.html
+│       ├── notebook
+│       ├── research_office.html
+│       ├── source.html
+│       └── sources
+├── cleanup_empty_pre.py
+├── cleanup_equations.py
+├── css
+│   ├── 00-vars.css
+│   ├── 01-reset.css
+│   ├── 02-base.css
+│   ├── 10-components
+│   │   ├── memo.css
+│   │   ├── osf.css
+│   │   └── research-office.css
+│   ├── 98-utilities.css
+│   ├── _legacy
+│   │   └── cafes
+│   ├── bundle.css
+│   ├── css-map.md
+│   ├── virgorises.css
+│   └── vrw3schoolsnavbar.css
+├── data
+│   ├── badges.json
+│   ├── cafes
+│   │   ├── sources.json
+│   │   └── zeta-zero-cafe
+│   ├── cafes.json
+│   ├── proposals
+│   │   ├── index.json
+│   │   ├── motivations
+│   │   └── rfc
+│   └── users
+│       ├── 940631263797186612.json
+│       └── <discord_id>.json
+├── index.html
+├── js
+│   ├── hub.widgets.js
+│   ├── memo.compose.js
+│   ├── osf.bundle.js
+│   ├── research.office.js
+│   └── source.viewer.js
+├── node_modules
+│   ├── @isaacs
+│   │   ├── balanced-match
+│   │   ├── brace-expansion
+│   │   └── cliui
+│   ├── @napi-rs
+│   │   ├── canvas
+│   │   └── canvas-linux-x64-gnu
+│   ├── ansi-regex
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── license
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── ansi-styles
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── license
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── boolbase
+│   │   ├── README.md
+│   │   ├── index.js
+│   │   └── package.json
+│   ├── cheerio
+│   │   ├── LICENSE
+│   │   ├── Readme.md
+│   │   ├── dist
+│   │   ├── package.json
+│   │   └── src
+│   ├── cheerio-select
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── lib
+│   │   └── package.json
+│   ├── color-convert
+│   │   ├── CHANGELOG.md
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── conversions.js
+│   │   ├── index.js
+│   │   ├── package.json
+│   │   └── route.js
+│   ├── color-name
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── index.js
+│   │   └── package.json
+│   ├── cross-spawn
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── index.js
+│   │   ├── lib
+│   │   └── package.json
+│   ├── css-select
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── lib
+│   │   └── package.json
+│   ├── css-what
+│   │   ├── LICENSE
+│   │   ├── lib
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── dom-serializer
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── lib
+│   │   └── package.json
+│   ├── domelementtype
+│   │   ├── LICENSE
+│   │   ├── lib
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── domhandler
+│   │   ├── LICENSE
+│   │   ├── lib
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── domutils
+│   │   ├── LICENSE
+│   │   ├── lib
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── eastasianwidth
+│   │   ├── README.md
+│   │   ├── eastasianwidth.js
+│   │   └── package.json
+│   ├── emoji-regex
+│   │   ├── LICENSE-MIT.txt
+│   │   ├── README.md
+│   │   ├── RGI_Emoji.d.ts
+│   │   ├── RGI_Emoji.js
+│   │   ├── es2015
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── package.json
+│   │   ├── text.d.ts
+│   │   └── text.js
+│   ├── encoding-sniffer
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── dist
+│   │   ├── package.json
+│   │   ├── sniffer.d.ts
+│   │   └── sniffer.js
+│   ├── entities
+│   │   ├── LICENSE
+│   │   ├── lib
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── foreground-child
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
+│   ├── glob
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
+│   ├── he
+│   │   ├── LICENSE-MIT.txt
+│   │   ├── README.md
+│   │   ├── bin
+│   │   ├── he.js
+│   │   ├── man
+│   │   └── package.json
+│   ├── htmlparser2
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── WritableStream.js
+│   │   ├── dist
+│   │   ├── node_modules
+│   │   ├── package.json
+│   │   └── src
+│   ├── iconv-lite
+│   │   ├── Changelog.md
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── encodings
+│   │   ├── lib
+│   │   └── package.json
+│   ├── is-fullwidth-code-point
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── license
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── isexe
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── index.js
+│   │   ├── mode.js
+│   │   ├── package.json
+│   │   ├── test
+│   │   └── windows.js
+│   ├── jackspeak
+│   │   ├── LICENSE.md
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
+│   ├── lru-cache
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
+│   ├── minimatch
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
+│   ├── minipass
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
+│   ├── nth-check
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── lib
+│   │   └── package.json
+│   ├── package-json-from-dist
+│   │   ├── LICENSE.md
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
+│   ├── parse5
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── dist
+│   │   ├── node_modules
+│   │   └── package.json
+│   ├── parse5-htmlparser2-tree-adapter
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
+│   ├── parse5-parser-stream
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
+│   ├── path-key
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── license
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── path-scurry
+│   │   ├── LICENSE.md
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
+│   ├── pdfjs-dist
+│   │   ├── CODE_OF_CONDUCT.md
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── build
+│   │   ├── cmaps
+│   │   ├── iccs
+│   │   ├── image_decoders
+│   │   ├── legacy
+│   │   ├── package.json
+│   │   ├── standard_fonts
+│   │   ├── types
+│   │   ├── wasm
+│   │   ├── web
+│   │   └── webpack.mjs
+│   ├── safer-buffer
+│   │   ├── LICENSE
+│   │   ├── Porting-Buffer.md
+│   │   ├── Readme.md
+│   │   ├── dangerous.js
+│   │   ├── package.json
+│   │   ├── safer.js
+│   │   └── tests.js
+│   ├── shebang-command
+│   │   ├── index.js
+│   │   ├── license
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── shebang-regex
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── license
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── signal-exit
+│   │   ├── LICENSE.txt
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
+│   ├── slugify
+│   │   ├── CHANGELOG.md
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── package.json
+│   │   ├── slugify.d.ts
+│   │   └── slugify.js
+│   ├── string-width
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── license
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── string-width-cjs
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── license
+│   │   ├── node_modules
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── strip-ansi
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── license
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── strip-ansi-cjs
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── license
+│   │   ├── node_modules
+│   │   ├── package.json
+│   │   └── readme.md
+│   ├── undici
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── docs
+│   │   ├── index-fetch.js
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── lib
+│   │   ├── package.json
+│   │   ├── scripts
+│   │   └── types
+│   ├── whatwg-encoding
+│   │   ├── LICENSE.txt
+│   │   ├── README.md
+│   │   ├── lib
+│   │   └── package.json
+│   ├── whatwg-mimetype
+│   │   ├── LICENSE.txt
+│   │   ├── README.md
+│   │   ├── lib
+│   │   └── package.json
+│   ├── which
+│   │   ├── CHANGELOG.md
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── bin
+│   │   ├── package.json
+│   │   └── which.js
+│   ├── wrap-ansi
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── license
+│   │   ├── package.json
+│   │   └── readme.md
+│   └── wrap-ansi-cjs
+│       ├── index.js
+│       ├── license
+│       ├── node_modules
+│       ├── package.json
+│       └── readme.md
+├── out
+│   ├── checklists
+│   │   ├── Chapter 2 The spatial aspect of zet.md
+│   │   ├── Chapter 3 The primorial function.md
+│   │   ├── Chapter 4 The triangular numbers.md
+│   │   ├── Chapter 5 Chords.md
+│   │   ├── Chapter 6 A cartesian M-brane monos.md
+│   │   ├── Chapter 7 Quadrature Geometric Framework.md
+│   │   └── Chapter 8 Spectrum of volume.md
+│   ├── hot
+│   │   ├── zeta-zero-cafe.json
+│   │   └── zeta-zero-cafe.md
+│   ├── hub_stats.json
+│   ├── latest_rfcs.json
+│   ├── memos_focus.json
+│   ├── osf_analysis.csv
+│   ├── osf_analysis.json
+│   └── osf_split_suggestions.json
+├── package-lock.json
+├── package.json
+├── project
+│   ├── archive
+│   │   ├── fetchsheets
+│   │   ├── fieldset_selectsets_div copy.js
+│   │   ├── fieldset_selectsets_div_MathJax.js
+│   │   ├── sheetnoapi
+│   │   └── testsheetapi
+│   └── vrpaleoplotter
+│       ├── css
+│       ├── index.html
+│       ├── js
+│       ├── media
+│       └── subdocs
+├── tools
+│   ├── aggregate-memos.mjs
+│   ├── analyze-osf.mjs
+│   ├── anchors-make.mjs
+│   ├── build-css.mjs
+│   ├── build-hot-feeds.mjs
+│   ├── build-hub-stats.mjs
+│   ├── kebabize-cafe.mjs
+│   ├── links-kebab-fix.mjs
+│   ├── make-split-checklists.mjs
+│   ├── map-align.mjs
+│   ├── osf-normalize.mjs
+│   ├── pdf-intake.mjs
+│   └── rfc-compile.mjs
+└── tree_L_3.txt
+
+170 directories, 279 files
