@@ -14,31 +14,33 @@
     .badge{font-size:.8rem;opacity:.85;border:1px solid #30363d;border-radius:999px;padding:2px 8px}
     .cols{display:grid;grid-template-columns:280px 1fr;gap:16px}
     .thumbs{background:#0b0f14;border:1px solid #30363d;border-radius:12px;padding:12px;height:70vh;overflow:auto}
-    /* Viewer is a 2-row grid: Stage (page) on top, Context panel beneath it */
-    .viewer{
-      background:#0b0f14;border:1px solid #30363d;border-radius:12px;padding:12px;
-      height:70vh;overflow:auto;display:grid;grid-template-rows:auto auto;gap:8px;position:relative
-    }
-    /* Stage wraps pageCanvas + overlay with explicit stacking */
-    #stage{position:relative; z-index:2}
-    #pageCanvas{display:block;margin:0 auto; position:relative; z-index:2}
-    #overlay{position:absolute;left:0;top:0;pointer-events:none; z-index:3}
+    .viewer{background:#0b0f14;border:1px solid #30363d;border-radius:12px;padding:12px;height:70vh;overflow:auto;position:relative}
+    /* Stage: page + overlays */
+    #stage{position:relative}
+    #pageCanvas{display:block;margin:0 auto;position:relative;z-index:2}
+    #overlay{position:absolute;left:0;top:0;pointer-events:none;z-index:3}
     .hl-badge{position:absolute;left:8px;top:8px;background:#1f6feb22;border:1px solid #1f6feb;border-radius:6px;padding:2px 6px;font-size:.8rem;z-index:4}
+    /* Context strips (p−1 bottom at top edge, p top at bottom edge) */
+    .strip{position:absolute;left:50%;transform:translateX(-50%);width:100%;pointer-events:none;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+    #prevStripWrap{top:0}
+    #nextStripWrap{bottom:0}
+    .strip .label{position:absolute;left:8px;top:6px;font-size:.75rem;opacity:.85;background:#0b0f14d0;border:1px solid #30363d;padding:2px 6px;border-radius:6px;pointer-events:auto}
+    .strip canvas{display:block;width:100%;height:auto;border:1px dashed #30363d;border-radius:8px;background:#0b0f14}
+    /* Stacking toggle */
+    /* default = preview above strips */
+    .strip{z-index:1}
+    #pageCanvas{z-index:2}
+    #overlay{z-index:3}
+    /* when context is on top */
+    #stage.context-front .strip{z-index:5}
+    #stage.context-front #pageCanvas{z-index:2}
+    #stage.context-front #overlay{z-index:4}
+
     .controls{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
     .thumb{margin:8px 0;border:1px solid #30363d;border-radius:8px;overflow:hidden;cursor:pointer}
     .thumb.active{box-shadow:0 0 0 2px #1f6feb inset}
     .thumb canvas{width:100% !important;height:auto !important}
     .sep{opacity:.4}
-
-    /* Context view (always below stage; never overlays it) */
-    #context{grid-row:2; z-index:1}
-    .context{display:none}
-    .context.active{display:block}
-    .halfbox{background:#0b0f14;border:1px dashed #30363d;border-radius:10px;padding:8px;margin:8px 0;overflow:hidden}
-    .halfbox h4{margin:0 0 6px 0;font-size:.8rem;opacity:.8}
-    .halfbox canvas{width:100% !important;height:auto !important}
-    .clip-top{max-height:32vh;overflow:hidden}
-    .clip-bottom{max-height:32vh;overflow:hidden}
   </style>
   <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 </head>
@@ -54,6 +56,7 @@
       <span class="sep">|</span>
       <span id="pageBadge" class="btn badge">p.— / —</span>
       <button class="btn" id="toggleContext">Context view</button>
+      <button class="btn" id="toggleStack">Context on top</button>
     </div>
 
     <div class="cols">
@@ -62,21 +65,19 @@
       <div class="viewer" id="viewer">
         <div class="hl-badge" id="hl" style="display:none"></div>
 
-        <!-- Stage: page canvas + overlay -->
+        <!-- Stage: main page + overlays -->
         <div id="stage">
           <canvas id="pageCanvas"></canvas>
           <canvas id="overlay"></canvas>
-        </div>
 
-        <!-- Context view area (always below stage) -->
-        <div id="context" class="context">
-          <div class="halfbox clip-bottom">
-            <h4>Previous page (bottom)</h4>
-            <canvas id="prevHalf"></canvas>
+          <!-- Overlaid context strips -->
+          <div id="prevStripWrap" class="strip" style="display:none">
+            <span class="label">Prev (p−1) — bottom</span>
+            <canvas id="prevStrip"></canvas>
           </div>
-          <div class="halfbox clip-top">
-            <h4>Next page (top)</h4>
-            <canvas id="nextHalf"></canvas>
+          <div id="nextStripWrap" class="strip" style="display:none">
+            <span class="label">Current (p) — top</span>
+            <canvas id="nextStrip"></canvas>
           </div>
         </div>
       </div>
@@ -101,7 +102,7 @@
   // ---------- helpers ----------
   const $ = sel => document.querySelector(sel);
   const clamp=(n,lo,hi)=> Math.max(lo, Math.min(hi,n));
-  const debounce = (fn, ms=120)=>{ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; };
+  const debounce=(fn,ms=120)=>{ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; };
   const norm = s => (s||'').toLowerCase().replace(/\s+/g,' ').replace(/[\u00ad\u200b]/g,'').trim();
 
   const u = new URL(location.href);
@@ -141,7 +142,7 @@
   }
   const paraKey = normalizePara(paraRaw);
 
-  let mapData=null, mapEntry=null, targetPage=1, pageSpan={from:1,to:1}, quote="";
+  let mapData=null, mapEntry=null, targetPage=1, pageSpan={from:1,to:1};
   for(const url of candidateMapUrls){
     try{ const res=await fetch(url,{cache:"no-store"}); if(res.ok){ mapData=await res.json(); break; } }catch(e){}
   }
@@ -154,8 +155,7 @@
     mapEntry = mapData[chapter][paraKey];
     targetPage = mapEntry.from || 1;
     pageSpan = {from: mapEntry.from || 1, to: mapEntry.to || (mapEntry.from||1)};
-    quote = mapEntry.quote || "";
-  } else if (mapData && mapData.meta && mapData.meta.starts && mapData.meta.starts[chapter]) {
+  } else if (mapData?.meta?.starts?.[chapter]) {
     targetPage = mapData.meta.starts[chapter] || 1;
     pageSpan = {from: targetPage, to: targetPage};
   }
@@ -174,33 +174,39 @@
 
   // ---------- DOM ----------
   const thumbsEl = $("#thumbs");
+  const viewer   = $("#viewer");
   const stage    = $("#stage");
   const canvas   = $("#pageCanvas");
   const overlay  = $("#overlay");
-  const prevHalf = $("#prevHalf");
-  const nextHalf = $("#nextHalf");
-  const contextEl= $("#context");
-
-  const viewer   = $("#viewer");
-  const hlEl     = $("#hl");
-  const pageBadge= $("#pageBadge");
   const ctx      = canvas.getContext("2d");
   const ovx      = overlay.getContext("2d");
+  const pageBadge= $("#pageBadge");
+  const hlEl     = $(".hl-badge");
+
+  const prevWrap = $("#prevStripWrap");
+  const nextWrap = $("#nextStripWrap");
+  const prevStrip= $("#prevStrip");
+  const nextStrip= $("#nextStrip");
+
+  const toggleContextBtn = $("#toggleContext");
+  const toggleStackBtn   = $("#toggleStack");
 
   // ---------- state ----------
-  let scale = 1.0;                           // will auto-fit to width on first render
+  let scale = 1.0; // auto-fit on first render
   let deviceScale = window.devicePixelRatio || 1;
   let current = clamp(targetPage, 1, pdf.numPages);
   let contextOn = false;
+  let contextOnTop = false; // stacking state
   let firstRenderDone = false;
 
   const boxesByPage = new Map();
-
   function sizeOverlayToCanvas(){
     overlay.width  = canvas.width;
     overlay.height = canvas.height;
     overlay.style.width  = canvas.style.width;
     overlay.style.height = canvas.style.height;
+    prevWrap.style.width = canvas.style.width;
+    nextWrap.style.width = canvas.style.width;
   }
   function drawOverlay(pageNum){
     ovx.clearRect(0,0,overlay.width, overlay.height);
@@ -218,19 +224,15 @@
     }
     ovx.globalAlpha = 1;
   }
-
   function fitToWidthScale(page){
     const vp = page.getViewport({scale:1});
-    const avail = viewer.clientWidth - 24; // padding allowance
+    const avail = viewer.clientWidth - 24;
     return Math.max(0.5, Math.min(3.0, avail / vp.width));
   }
 
   async function renderPage(pageNum, {repaintMain=true} = {}){
     const page = await pdf.getPage(pageNum);
-
-    if (!firstRenderDone) {
-      scale = fitToWidthScale(page); // auto fit width on first render
-    }
+    if (!firstRenderDone) scale = fitToWidthScale(page);
 
     const vpCSS   = page.getViewport({scale});
     const vpHiDPI = page.getViewport({scale: scale * deviceScale});
@@ -245,50 +247,70 @@
       drawOverlay(pageNum);
     }
 
-    if (paraKey) { hlEl.style.display = "block"; hlEl.textContent = `§ ${paraKey} · p.${pageNum}`; }
-    else { hlEl.style.display = "none"; }
+    hlEl.style.display = paraRaw ? "block" : "none";
+    if (paraRaw) hlEl.textContent = `§ ${paraRaw} · p.${pageNum}`;
     document.querySelectorAll(".thumb").forEach(t=>t.classList.toggle("active", +t.dataset.p===pageNum));
     pageBadge.textContent = `p.${pageNum} / ${pdf.numPages}`;
 
+    // show strips if toggled OR span across pages
     const shouldContext = (pageSpan.to > pageSpan.from);
-    if (contextOn || shouldContext) {
-      contextEl.classList.add("active");
-      await renderContextHalves(pageNum);
-    } else {
-      contextEl.classList.remove("active");
-    }
+    const wantStrips = contextOn || shouldContext;
+    prevWrap.style.display = wantStrips ? "block" : "none";
+    nextWrap.style.display = wantStrips ? "block" : "none";
+    if (wantStrips) await renderStrips(pageNum);
+
     firstRenderDone = true;
   }
 
-  async function renderContextHalves(pageNum){
-    // Prev (bottom)
-    if (pageNum > 1){
-      const p = await pdf.getPage(pageNum - 1);
-      const s = 0.9 * scale;
-      const vp = p.getViewport({scale:s});
-      const r  = p.getViewport({scale:s * deviceScale});
-      prevHalf.width  = r.width;
-      prevHalf.height = r.height;
-      prevHalf.style.width  = vp.width + "px";
-      prevHalf.style.height = vp.height + "px";
-      await p.render({canvasContext: prevHalf.getContext("2d"), viewport: r}).promise;
-    } else {
-      prevHalf.width = prevHalf.height = 0;
+  // Render prev bottom (p−1) and current top (p) into strip canvases (cropped)
+  async function renderStrips(pageNum){
+    const frac = 0.22; // strip height fraction
+    const stripCssW = parseFloat(canvas.style.width);
+    const stripCssH = Math.max(60, Math.floor(parseFloat(canvas.style.height) * frac));
+    prevWrap.style.height = stripCssH + "px";
+    nextWrap.style.height = stripCssH + "px";
+
+    async function renderCrop(targetPage, which){
+      if (targetPage < 1 || targetPage > pdf.numPages) { // hide if out of bounds
+        (which==="prev" ? prevWrap : nextWrap).style.display = "none";
+        return;
+      }
+      (which==="prev" ? prevWrap : nextWrap).style.display = "block";
+
+      const p = await pdf.getPage(targetPage);
+      const s = scale;
+      const vpHi  = p.getViewport({scale: s * deviceScale});
+
+      // offscreen full page
+      const off = document.createElement("canvas");
+      off.width = vpHi.width; off.height = vpHi.height;
+      await p.render({canvasContext: off.getContext("2d"), viewport: vpHi}).promise;
+
+      // destination + crop rect
+      const dst = (which === "prev") ? prevStrip : nextStrip;
+      dst.width  = Math.floor(vpHi.width);
+      dst.height = Math.floor(vpHi.height * frac);
+      dst.style.width  = stripCssW + "px";
+      dst.style.height = stripCssH + "px";
+
+      const dctx = dst.getContext("2d");
+      dctx.clearRect(0,0,dst.width,dst.height);
+
+      if (which === "prev") {
+        // bottom of p−1
+        const sy = Math.floor(off.height * (1 - frac));
+        const sh = Math.floor(off.height * frac);
+        dctx.drawImage(off, 0, sy, off.width, sh, 0, 0, dst.width, dst.height);
+      } else {
+        // top of current p
+        const sy = 0;
+        const sh = Math.floor(off.height * frac);
+        dctx.drawImage(off, 0, sy, off.width, sh, 0, 0, dst.width, dst.height);
+      }
     }
-    // Next (top)
-    if (pageNum < pdf.numPages){
-      const n = await pdf.getPage(pageNum + 1);
-      const s = 0.9 * scale;
-      const vp = n.getViewport({scale:s});
-      const r  = n.getViewport({scale:s * deviceScale});
-      nextHalf.width  = r.width;
-      nextHalf.height = r.height;
-      nextHalf.style.width  = vp.width + "px";
-      nextHalf.style.height = vp.height + "px";
-      await n.render({canvasContext: nextHalf.getContext("2d"), viewport: r}).promise;
-    } else {
-      nextHalf.width = nextHalf.height = 0;
-    }
+
+    await renderCrop(pageNum - 1, "prev");
+    await renderCrop(pageNum,     "next");
   }
 
   async function buildThumbs(){
@@ -318,7 +340,7 @@
     }
   }
 
-  // Runtime highlight boxes if map lacks boxes
+  // (Optional) runtime highlight boxes if map lacks boxes (kept from your previous version)
   async function computeBoxesIfNeeded(){
     if (mapEntry?.boxes?.length){
       for(const b of mapEntry.boxes){
@@ -338,8 +360,7 @@
       const items = tc.items || [];
       let concat = ""; const ranges=[];
       for(let i=0;i<items.length;i++){
-        const s = norm(items[i].str || "");
-        if (!s) continue;
+        const s = norm(items[i].str || ""); if (!s) continue;
         const start = concat.length;
         concat += (concat ? " " : "") + s;
         const end = concat.length;
@@ -350,10 +371,7 @@
 
       const idxEnd = idx + want.length;
       const use = [];
-      for(const r of ranges){
-        const ov = !(r.end <= idx || r.start >= idxEnd);
-        if (ov) use.push(r.itemIndex);
-      }
+      for(const r of ranges){ const ov = !(r.end <= idx || r.start >= idxEnd); if (ov) use.push(r.itemIndex); }
       const lines = [];
       const epsY = 2.5;
       for(const k of use){
@@ -369,9 +387,7 @@
         const nh = Math.max(0.012, h / vp.height);
 
         let found=null;
-        for(const L of lines){
-          if (Math.abs(L.y - ny) < (epsY / vp.height)) { found=L; break; }
-        }
+        for(const L of lines){ if (Math.abs(L.y - ny) < (epsY / vp.height)) { found=L; break; } }
         if (!found) lines.push({ y: ny, x1: nx, x2: nx+nw, h: nh });
         else { found.x1=Math.min(found.x1,nx); found.x2=Math.max(found.x2,nx+nw); found.h=Math.max(found.h,nh); }
       }
@@ -390,30 +406,37 @@
   $("#zoomIn").onclick    = ()=>{ scale = Math.min(3.0,  scale+0.1); renderPage(current); };
   $("#resetZoom").onclick = ()=>{ scale = 1.0; renderPage(current); };
   $("#fitWidth").onclick  = async ()=> { const page = await pdf.getPage(current); scale = fitToWidthScale(page); renderPage(current); };
-  $("#toggleContext").onclick = async ()=>{
+  toggleContextBtn.onclick = async ()=>{
     contextOn = !contextOn;
-    if (contextOn){ contextEl.classList.add("active"); await renderContextHalves(current); }
-    else { contextEl.classList.remove("active"); }
+    toggleContextBtn.textContent = contextOn ? "Hide context" : "Context view";
+    // show/hide strips; do not repaint main page
+    if (contextOn) { prevWrap.style.display = "block"; nextWrap.style.display = "block"; await renderStrips(current); }
+    else { prevWrap.style.display = "none"; nextWrap.style.display = "none"; }
+  };
+  toggleStackBtn.onclick = ()=>{
+    contextOnTop = !contextOnTop;
+    stage.classList.toggle('context-front', contextOnTop);
+    toggleStackBtn.textContent = contextOnTop ? "Preview on top" : "Context on top";
   };
 
   // ---------- boot ----------
   await computeBoxesIfNeeded();
-  await renderPage(current);            // auto-fit happens here
-  buildThumbs();                        // after first render
+  await renderPage(current);  // auto fit-width here
+  buildThumbs();
   if (pageSpan.from !== current){ current = pageSpan.from; await renderPage(current); }
 
-  // keep "fit width" on resize
   window.addEventListener('resize', debounce(async ()=>{
     const page = await pdf.getPage(current);
     const newScale = fitToWidthScale(page);
     if (Math.abs(newScale - scale) > 0.01){
       scale = newScale;
       await renderPage(current);
-      if (contextEl.classList.contains('active')) { await renderContextHalves(current); }
+      if (prevWrap.style.display === "block" || nextWrap.style.display === "block") await renderStrips(current);
     }
   }, 150));
 })();
 </script>
 </body>
 </html>
+
 
