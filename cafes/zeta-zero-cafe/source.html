@@ -9,22 +9,37 @@
     body{background:#0d1117;color:#e6edf3;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
     .wrap{max-width:1200px;margin:0 auto;padding:16px}
     .bar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
-    .btn{background:#161b22;border:1px solid #30363d;padding:6px 10px;border-radius:8px;color:#e6edf3;text-decoration:none}
+    .btn{background:#161b22;border:1px solid #30363d;padding:6px 10px;border-radius:8px;color:#e6edf3;text-decoration:none;cursor:pointer}
     .btn:hover{background:#1f242d}
     .badge{font-size:.8rem;opacity:.85;border:1px solid #30363d;border-radius:999px;padding:2px 8px}
     .cols{display:grid;grid-template-columns:280px 1fr;gap:16px}
     .thumbs{background:#0b0f14;border:1px solid #30363d;border-radius:12px;padding:12px;height:70vh;overflow:auto}
-    .viewer{background:#0b0f14;border:1px solid #30363d;border-radius:12px;padding:12px;height:70vh;overflow:auto;position:relative}
-    canvas{display:block;margin:0 auto}
+    /* Viewer is a 2-row grid: Stage (page) on top, Context panel beneath it */
+    .viewer{
+      background:#0b0f14;border:1px solid #30363d;border-radius:12px;padding:12px;
+      height:70vh;overflow:auto;display:grid;grid-template-rows:auto auto;gap:8px;position:relative
+    }
+    /* Stage wraps pageCanvas + overlay with explicit stacking */
+    #stage{position:relative; z-index:2}
+    #pageCanvas{display:block;margin:0 auto; position:relative; z-index:2}
+    #overlay{position:absolute;left:0;top:0;pointer-events:none; z-index:3}
+    .hl-badge{position:absolute;left:8px;top:8px;background:#1f6feb22;border:1px solid #1f6feb;border-radius:6px;padding:2px 6px;font-size:.8rem;z-index:4}
     .controls{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
     .thumb{margin:8px 0;border:1px solid #30363d;border-radius:8px;overflow:hidden;cursor:pointer}
     .thumb.active{box-shadow:0 0 0 2px #1f6feb inset}
     .thumb canvas{width:100% !important;height:auto !important}
-    .hl{position:absolute;left:8px;top:8px;background:#1f6feb22;border:1px solid #1f6feb;border-radius:6px;padding:2px 6px;font-size:.8rem}
     .sep{opacity:.4}
-  </style>
 
-  <!-- PDF.js UMD build (v3.x exposes window.pdfjsLib). Use SAME version for worker. -->
+    /* Context view (always below stage; never overlays it) */
+    #context{grid-row:2; z-index:1}
+    .context{display:none}
+    .context.active{display:block}
+    .halfbox{background:#0b0f14;border:1px dashed #30363d;border-radius:10px;padding:8px;margin:8px 0;overflow:hidden}
+    .halfbox h4{margin:0 0 6px 0;font-size:.8rem;opacity:.8}
+    .halfbox canvas{width:100% !important;height:auto !important}
+    .clip-top{max-height:32vh;overflow:hidden}
+    .clip-bottom{max-height:32vh;overflow:hidden}
+  </style>
   <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 </head>
 <body>
@@ -32,19 +47,38 @@
     <div class="bar">
       <a id="backBtn" class="btn" href="javascript:history.back()">← Back</a>
       <span id="pdfName" class="btn badge"></span>
-      <span id="linkedFrom" class="btn badge">Linked from <span id="fromTag">—</span></span>
+      <span class="btn badge">Linked from <span id="fromTag">—</span></span>
       <span class="sep">|</span>
       <a id="openOriginal" class="btn" target="_blank" rel="noopener">Open original</a>
       <a id="downloadPdf" class="btn" download>Download</a>
       <span class="sep">|</span>
       <span id="pageBadge" class="btn badge">p.— / —</span>
+      <button class="btn" id="toggleContext">Context view</button>
     </div>
 
     <div class="cols">
       <div class="thumbs" id="thumbs"></div>
+
       <div class="viewer" id="viewer">
-        <div class="hl" id="hl" style="display:none"></div>
-        <canvas id="pageCanvas"></canvas>
+        <div class="hl-badge" id="hl" style="display:none"></div>
+
+        <!-- Stage: page canvas + overlay -->
+        <div id="stage">
+          <canvas id="pageCanvas"></canvas>
+          <canvas id="overlay"></canvas>
+        </div>
+
+        <!-- Context view area (always below stage) -->
+        <div id="context" class="context">
+          <div class="halfbox clip-bottom">
+            <h4>Previous page (bottom)</h4>
+            <canvas id="prevHalf"></canvas>
+          </div>
+          <div class="halfbox clip-top">
+            <h4>Next page (top)</h4>
+            <canvas id="nextHalf"></canvas>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -60,19 +94,15 @@
 
 <script>
 (async () => {
-  // Guard: ensure PDF.js loaded
-  if (!window.pdfjsLib) {
-    alert("PDF.js failed to load. Check network/CSP and try again.");
-    return;
-  }
+  if (!window.pdfjsLib) { alert("PDF.js failed to load."); return; }
   const pdfjsLib = window.pdfjsLib;
-  // Worker must match the library version
   pdfjsLib.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
 
-  // ---------- Helpers ----------
-  function $(sel){ return document.querySelector(sel); }
-  function make(el, cls){ const e=document.createElement(el); if(cls) e.className=cls; return e; }
-  function clamp(n, lo, hi){ return Math.max(lo, Math.min(hi, n)); }
+  // ---------- helpers ----------
+  const $ = sel => document.querySelector(sel);
+  const clamp=(n,lo,hi)=> Math.max(lo, Math.min(hi,n));
+  const debounce = (fn, ms=120)=>{ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; };
+  const norm = s => (s||'').toLowerCase().replace(/\s+/g,' ').replace(/[\u00ad\u200b]/g,'').trim();
 
   const u = new URL(location.href);
   const pdfbnRaw = (u.searchParams.get("pdf") || "Old_main").replace(/\.pdf$/i,"");
@@ -81,9 +111,8 @@
   const returnUrl= u.searchParams.get("return") || document.referrer || "/";
   const fromQP   = u.searchParams.get("from");
   const toQP     = u.searchParams.get("to");
-  const pageQP   = u.searchParams.get("page"); // optional alias
+  const pageQP   = u.searchParams.get("page");
 
-  // Detect café slug from path (/cafes/<slug>/source.html)
   const m = location.pathname.match(/^\/cafes\/([^\/]+)/);
   const slug = m ? m[1] : "zeta-zero-cafe";
   const cafeRoot = `/cafes/${slug}`;
@@ -92,7 +121,6 @@
   $("#fromTag").textContent = paraRaw || "—";
   $("#backBtn").onclick = (e)=>{ e.preventDefault(); if (returnUrl) location.href = returnUrl; else history.back(); };
 
-  // Try a few likely PDF locations
   const candidatePdfUrls = [
     `${cafeRoot}/sources/${pdfbnRaw}.pdf`,
     `${cafeRoot}/pdf/${pdfbnRaw}.pdf`,
@@ -100,16 +128,6 @@
     `/sources/${pdfbnRaw}.pdf`,
     `/pdf/${pdfbnRaw}.pdf`
   ];
-
-  async function tryLoadPdf(url){
-    try{
-      const task = pdfjsLib.getDocument(url);
-      const pdf = await task.promise;
-      return {pdf, url};
-    }catch(e){ return null; }
-  }
-
-  // Mapping JSON candidates (para -> page)
   const candidateMapUrls = [
     `/data/cafes/${slug}/sources/${pdfbnRaw}.map.json`,
     `/data/cafes/${slug}/${pdfbnRaw}.map.json`,
@@ -118,105 +136,159 @@
   ];
 
   function normalizePara(p){
-    if (!p) return "";
-    const mm = p.match(/^osf-(\d+)$/i);
-    if (!mm) return p;
-    return `osf-${mm[1].padStart(3,"0")}`;
+    const mm = (p||'').match(/^osf-(\d+)$/i);
+    return mm ? `osf-${mm[1].padStart(3,"0")}` : (p||'');
+  }
+  const paraKey = normalizePara(paraRaw);
+
+  let mapData=null, mapEntry=null, targetPage=1, pageSpan={from:1,to:1}, quote="";
+  for(const url of candidateMapUrls){
+    try{ const res=await fetch(url,{cache:"no-store"}); if(res.ok){ mapData=await res.json(); break; } }catch(e){}
   }
 
-  let targetPage = 1;
-  let highlight = null;
-
-  async function resolveMapping(){
-    const firstPage = parseInt(pageQP || fromQP || "0", 10);
-    const lastPage  = parseInt(toQP   || pageQP || fromQP || "0", 10);
-    if (firstPage > 0){
-      targetPage = firstPage;
-      highlight = {from:firstPage, to: Math.max(firstPage, lastPage || firstPage)};
-      return;
-    }
-    const paraKey = normalizePara(paraRaw);
-    for (const url of candidateMapUrls){
-      try{
-        const res = await fetch(url, {cache:"no-store"});
-        if (!res.ok) continue;
-        const map = await res.json();
-        const meta = map.meta || {};
-        const starts = meta.starts || {};
-        const globalOffset = +meta.offset || 0;
-        const chapterOffset = (meta.offsets && +meta.offsets[chapter]) || 0;
-
-        let hit = null;
-        if (chapter && map[chapter] && paraKey && map[chapter][paraKey]) {
-          hit = map[chapter][paraKey];
-        }
-        if (hit){
-          targetPage = +hit.from || 1;
-          highlight = {from:+hit.from, to:+hit.to || +hit.from || 1};
-        } else if (starts[chapter]) {
-          targetPage = +starts[chapter] || 1;
-        }
-
-        targetPage = Math.max(1, targetPage + globalOffset + chapterOffset);
-        if (highlight){
-          highlight.from = Math.max(1, (highlight.from||targetPage) + globalOffset + chapterOffset);
-          highlight.to   = Math.max(highlight.from, (highlight.to||highlight.from) + globalOffset + chapterOffset);
-        }
-        return;
-      }catch(e){}
-    }
+  const firstPage = parseInt(pageQP || fromQP || "0", 10);
+  const lastPage  = parseInt(toQP   || pageQP || fromQP || "0", 10);
+  if (firstPage>0){
+    targetPage = firstPage; pageSpan = {from:firstPage,to:Math.max(firstPage,lastPage||firstPage)};
+  } else if (mapData && chapter && paraKey && mapData[chapter] && mapData[chapter][paraKey]) {
+    mapEntry = mapData[chapter][paraKey];
+    targetPage = mapEntry.from || 1;
+    pageSpan = {from: mapEntry.from || 1, to: mapEntry.to || (mapEntry.from||1)};
+    quote = mapEntry.quote || "";
+  } else if (mapData && mapData.meta && mapData.meta.starts && mapData.meta.starts[chapter]) {
+    targetPage = mapData.meta.starts[chapter] || 1;
+    pageSpan = {from: targetPage, to: targetPage};
   }
 
-  await resolveMapping();
-
-  // Load first working PDF URL
-  let pdf = null, pdfUrl = null;
-  for (const url of candidatePdfUrls){
-    const res = await tryLoadPdf(url);
-    if (res){ pdf = res.pdf; pdfUrl = res.url; break; }
+  async function tryLoadPdf(url){
+    try{ const task=pdfjsLib.getDocument(url); const pdf=await task.promise; return {pdf,url}; }catch(e){ return null; }
   }
-  if (!pdf){
-    alert("Failed to load PDF. Tried:\n" + candidatePdfUrls.join("\n"));
-    return;
+  let pdf=null, pdfUrl=null;
+  for(const url of candidatePdfUrls){
+    const r = await tryLoadPdf(url); if(r){ pdf=r.pdf; pdfUrl=r.url; break; }
   }
-
-  // Wire links
+  if(!pdf){ alert("Failed to load PDF."); return; }
   $("#openOriginal").href = pdfUrl;
-  $("#downloadPdf").href  = pdfUrl;
+  $("#downloadPdf").href = pdfUrl;
   $("#downloadPdf").download = `${pdfbnRaw}.pdf`;
 
-  // DOM refs
+  // ---------- DOM ----------
   const thumbsEl = $("#thumbs");
+  const stage    = $("#stage");
   const canvas   = $("#pageCanvas");
+  const overlay  = $("#overlay");
+  const prevHalf = $("#prevHalf");
+  const nextHalf = $("#nextHalf");
+  const contextEl= $("#context");
+
   const viewer   = $("#viewer");
   const hlEl     = $("#hl");
   const pageBadge= $("#pageBadge");
+  const ctx      = canvas.getContext("2d");
+  const ovx      = overlay.getContext("2d");
 
-  // Render state
-  let scale = 1.2;
-  let current = clamp(targetPage, 1, pdf.numPages);
+  // ---------- state ----------
+  let scale = 1.0;                           // will auto-fit to width on first render
   let deviceScale = window.devicePixelRatio || 1;
+  let current = clamp(targetPage, 1, pdf.numPages);
+  let contextOn = false;
+  let firstRenderDone = false;
 
-  async function renderPage(pageNum){
-    const page = await pdf.getPage(pageNum);
-    const vpCSS = page.getViewport({scale});
-    const vp = page.getViewport({scale: scale * deviceScale});
-    canvas.width  = vp.width;
-    canvas.height = vp.height;
-    canvas.style.width  = vpCSS.width + "px";
-    canvas.style.height = vpCSS.height + "px";
+  const boxesByPage = new Map();
 
-    const ctx = canvas.getContext("2d");
-    await page.render({canvasContext: ctx, viewport: vp}).promise;
-
-    if (highlight && pageNum >= (highlight.from||0) && pageNum <= (highlight.to||0)) {
-      hlEl.style.display = "block";
-      hlEl.textContent = `§ ${paraRaw || ""} · p.${pageNum}`;
-    } else {
-      hlEl.style.display = "none";
+  function sizeOverlayToCanvas(){
+    overlay.width  = canvas.width;
+    overlay.height = canvas.height;
+    overlay.style.width  = canvas.style.width;
+    overlay.style.height = canvas.style.height;
+  }
+  function drawOverlay(pageNum){
+    ovx.clearRect(0,0,overlay.width, overlay.height);
+    const boxes = boxesByPage.get(pageNum) || [];
+    ovx.globalAlpha = 0.25;
+    for(const b of boxes){
+      const x = Math.round(b.x * overlay.width);
+      const y = Math.round(b.y * overlay.height);
+      const w = Math.round(b.w * overlay.width);
+      const h = Math.round(b.h * overlay.height);
+      ovx.fillRect(x,y,w,h);
+      ovx.strokeStyle = "rgba(31,111,235,0.85)";
+      ovx.lineWidth = 2;
+      ovx.strokeRect(x,y,w,h);
     }
+    ovx.globalAlpha = 1;
+  }
+
+  function fitToWidthScale(page){
+    const vp = page.getViewport({scale:1});
+    const avail = viewer.clientWidth - 24; // padding allowance
+    return Math.max(0.5, Math.min(3.0, avail / vp.width));
+  }
+
+  async function renderPage(pageNum, {repaintMain=true} = {}){
+    const page = await pdf.getPage(pageNum);
+
+    if (!firstRenderDone) {
+      scale = fitToWidthScale(page); // auto fit width on first render
+    }
+
+    const vpCSS   = page.getViewport({scale});
+    const vpHiDPI = page.getViewport({scale: scale * deviceScale});
+
+    if (repaintMain) {
+      canvas.width  = vpHiDPI.width;
+      canvas.height = vpHiDPI.height;
+      canvas.style.width  = vpCSS.width + "px";
+      canvas.style.height = vpCSS.height + "px";
+      sizeOverlayToCanvas();
+      await page.render({canvasContext: ctx, viewport: vpHiDPI}).promise;
+      drawOverlay(pageNum);
+    }
+
+    if (paraKey) { hlEl.style.display = "block"; hlEl.textContent = `§ ${paraKey} · p.${pageNum}`; }
+    else { hlEl.style.display = "none"; }
     document.querySelectorAll(".thumb").forEach(t=>t.classList.toggle("active", +t.dataset.p===pageNum));
     pageBadge.textContent = `p.${pageNum} / ${pdf.numPages}`;
+
+    const shouldContext = (pageSpan.to > pageSpan.from);
+    if (contextOn || shouldContext) {
+      contextEl.classList.add("active");
+      await renderContextHalves(pageNum);
+    } else {
+      contextEl.classList.remove("active");
+    }
+    firstRenderDone = true;
+  }
+
+  async function renderContextHalves(pageNum){
+    // Prev (bottom)
+    if (pageNum > 1){
+      const p = await pdf.getPage(pageNum - 1);
+      const s = 0.9 * scale;
+      const vp = p.getViewport({scale:s});
+      const r  = p.getViewport({scale:s * deviceScale});
+      prevHalf.width  = r.width;
+      prevHalf.height = r.height;
+      prevHalf.style.width  = vp.width + "px";
+      prevHalf.style.height = vp.height + "px";
+      await p.render({canvasContext: prevHalf.getContext("2d"), viewport: r}).promise;
+    } else {
+      prevHalf.width = prevHalf.height = 0;
+    }
+    // Next (top)
+    if (pageNum < pdf.numPages){
+      const n = await pdf.getPage(pageNum + 1);
+      const s = 0.9 * scale;
+      const vp = n.getViewport({scale:s});
+      const r  = n.getViewport({scale:s * deviceScale});
+      nextHalf.width  = r.width;
+      nextHalf.height = r.height;
+      nextHalf.style.width  = vp.width + "px";
+      nextHalf.style.height = vp.height + "px";
+      await n.render({canvasContext: nextHalf.getContext("2d"), viewport: r}).promise;
+    } else {
+      nextHalf.width = nextHalf.height = 0;
+    }
   }
 
   async function buildThumbs(){
@@ -225,14 +297,15 @@
     for (let i=1;i<=maxThumbs;i++){
       const page = await pdf.getPage(i);
       const vp = page.getViewport({scale:0.25});
-      const c = make("canvas");
-      c.width = vp.width * deviceScale;
-      c.height = vp.height * deviceScale;
-      c.style.width = (vp.width) + "px";
-      c.style.height = (vp.height) + "px";
-      await page.render({canvasContext:c.getContext("2d"), viewport: page.getViewport({scale:0.25 * deviceScale})}).promise;
-      const wrap = make("div","thumb");
-      wrap.dataset.p = i;
+      const c = document.createElement("canvas");
+      const dpr = deviceScale;
+      c.width  = vp.width * dpr;
+      c.height = vp.height * dpr;
+      c.style.width = vp.width + "px";
+      c.style.height= vp.height + "px";
+      await page.render({canvasContext:c.getContext("2d"), viewport: page.getViewport({scale:0.25 * dpr})}).promise;
+      const wrap = document.createElement("div");
+      wrap.className = "thumb"; wrap.dataset.p = i;
       wrap.appendChild(c);
       wrap.onclick = ()=>{ current=i; renderPage(current); };
       thumbsEl.appendChild(wrap);
@@ -245,23 +318,102 @@
     }
   }
 
-  // Controls
+  // Runtime highlight boxes if map lacks boxes
+  async function computeBoxesIfNeeded(){
+    if (mapEntry?.boxes?.length){
+      for(const b of mapEntry.boxes){
+        const arr = boxesByPage.get(b.page) || [];
+        arr.push({ x:b.x, y:b.y, w:b.w, h:b.h });
+        boxesByPage.set(b.page, arr);
+      }
+      return;
+    }
+    const want = norm(mapEntry?.quote || "");
+    if (!want) return;
+
+    for(let p=pageSpan.from; p<=pageSpan.to; p++){
+      const page = await pdf.getPage(p);
+      const vp = page.getViewport({scale:1});
+      const tc = await page.getTextContent();
+      const items = tc.items || [];
+      let concat = ""; const ranges=[];
+      for(let i=0;i<items.length;i++){
+        const s = norm(items[i].str || "");
+        if (!s) continue;
+        const start = concat.length;
+        concat += (concat ? " " : "") + s;
+        const end = concat.length;
+        ranges.push({ start, end, itemIndex:i, s });
+      }
+      const idx = want ? concat.indexOf(want) : -1;
+      if (idx === -1) continue;
+
+      const idxEnd = idx + want.length;
+      const use = [];
+      for(const r of ranges){
+        const ov = !(r.end <= idx || r.start >= idxEnd);
+        if (ov) use.push(r.itemIndex);
+      }
+      const lines = [];
+      const epsY = 2.5;
+      for(const k of use){
+        const it = items[k]; if(!it || typeof it.transform === "undefined") continue;
+        const tr = it.transform;
+        const x = tr[4], y = tr[5];
+        const w = it.width || Math.hypot(tr[0], tr[2]);
+        const h = Math.abs(tr[3]) || 12;
+
+        const nx = x / vp.width;
+        const ny = 1 - ((y + h) / vp.height);
+        const nw = Math.max(0, w / vp.width);
+        const nh = Math.max(0.012, h / vp.height);
+
+        let found=null;
+        for(const L of lines){
+          if (Math.abs(L.y - ny) < (epsY / vp.height)) { found=L; break; }
+        }
+        if (!found) lines.push({ y: ny, x1: nx, x2: nx+nw, h: nh });
+        else { found.x1=Math.min(found.x1,nx); found.x2=Math.max(found.x2,nx+nw); found.h=Math.max(found.h,nh); }
+      }
+      for(const L of lines){
+        const arr = boxesByPage.get(p) || [];
+        arr.push({ x:L.x1, y:L.y, w:Math.max(0.02,L.x2-L.x1), h:L.h });
+        boxesByPage.set(p, arr);
+      }
+    }
+  }
+
+  // ---------- controls ----------
   $("#prevBtn").onclick   = ()=>{ if (current>1){ current--; renderPage(current);} };
   $("#nextBtn").onclick   = ()=>{ if (current<pdf.numPages){ current++; renderPage(current);} };
   $("#zoomOut").onclick   = ()=>{ scale = Math.max(0.5, scale-0.1); renderPage(current); };
   $("#zoomIn").onclick    = ()=>{ scale = Math.min(3.0,  scale+0.1); renderPage(current); };
   $("#resetZoom").onclick = ()=>{ scale = 1.0; renderPage(current); };
-  $("#fitWidth").onclick  = async ()=> {
-    const page = await pdf.getPage(current);
-    const vp = page.getViewport({scale:1});
-    const avail = viewer.clientWidth - 24;
-    scale = Math.max(0.5, Math.min(3.0, avail / vp.width));
-    renderPage(current);
+  $("#fitWidth").onclick  = async ()=> { const page = await pdf.getPage(current); scale = fitToWidthScale(page); renderPage(current); };
+  $("#toggleContext").onclick = async ()=>{
+    contextOn = !contextOn;
+    if (contextOn){ contextEl.classList.add("active"); await renderContextHalves(current); }
+    else { contextEl.classList.remove("active"); }
   };
 
-  await buildThumbs();
-  await renderPage(current);
+  // ---------- boot ----------
+  await computeBoxesIfNeeded();
+  await renderPage(current);            // auto-fit happens here
+  buildThumbs();                        // after first render
+  if (pageSpan.from !== current){ current = pageSpan.from; await renderPage(current); }
+
+  // keep "fit width" on resize
+  window.addEventListener('resize', debounce(async ()=>{
+    const page = await pdf.getPage(current);
+    const newScale = fitToWidthScale(page);
+    if (Math.abs(newScale - scale) > 0.01){
+      scale = newScale;
+      await renderPage(current);
+      if (contextEl.classList.contains('active')) { await renderContextHalves(current); }
+    }
+  }, 150));
 })();
 </script>
 </body>
 </html>
+
