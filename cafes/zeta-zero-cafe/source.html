@@ -2,182 +2,230 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Source document</title>
-  <link rel="stylesheet" href="/css/10-components/research-office.css"/>
+  <link rel="stylesheet" href="/css/10-components/research-office.css">
   <style>
-    body{background:#0d1117;color:#c9d1d9;font:14px/1.35 ui-sans-serif,system-ui,Segoe UI,Roboto,sans-serif;margin:0}
-    header{display:flex;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid #30363d}
-    header .tag{background:#0b1420;border:1px solid #1f6feb;border-radius:999px;padding:4px 10px}
-    .wrap{display:grid;grid-template-columns:300px 1fr;gap:12px;padding:12px}
-    .thumbs{height:calc(100vh - 84px);overflow:auto;border:1px solid #30363d;border-radius:10px;padding:8px;background:#0b1020}
-    .viewer{height:calc(100vh - 84px);overflow:auto;border:1px solid #30363d;border-radius:10px;display:flex;align-items:flex-start;justify-content:center;background:#0b1020}
-    canvas{display:block}
-    .thumb{margin:8px 6px;border-radius:8px;overflow:hidden;border:1px solid #30363d;cursor:pointer;position:relative}
-    .thumb.active{box-shadow:0 0 0 2px #ffa657 inset;border-color:#ffa657}
-    .toolbar{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
-    .btn{background:#0b1420;border:1px solid #30363d;border-radius:10px;color:#c9d1d9;padding:6px 12px}
+    body{background:#0d1117;color:#e6edf3;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    .wrap{max-width:1200px;margin:0 auto;padding:16px}
+    .bar{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+    .btn{background:#161b22;border:1px solid #30363d;padding:6px 10px;border-radius:8px;color:#e6edf3;text-decoration:none}
+    .btn:hover{background:#1f242d}
+    .badge{font-size:.8rem;opacity:.8;border:1px solid #30363d;border-radius:999px;padding:2px 8px}
+    .cols{display:grid;grid-template-columns:280px 1fr;gap:16px}
+    .thumbs{background:#0b0f14;border:1px solid #30363d;border-radius:12px;padding:12px;height:70vh;overflow:auto}
+    .viewer{background:#0b0f14;border:1px solid #30363d;border-radius:12px;padding:12px;height:70vh;overflow:auto;position:relative}
+    canvas{display:block;margin:0 auto}
+    .controls{display:flex;gap:8px;margin-top:8px}
+    .thumb{margin:8px 0;border:1px solid #30363d;border-radius:8px;overflow:hidden;cursor:pointer}
+    .thumb.active{box-shadow:0 0 0 2px #1f6feb inset}
+    .thumb canvas{width:100% !important;height:auto !important}
+    .hl{position:absolute;left:8px;top:8px;background:#1f6feb22;border:1px solid #1f6feb;border-radius:6px;padding:2px 6px;font-size:.8rem}
   </style>
-  <!-- pdf.js (browser build) -->
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.min.js"></script>
-  <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.worker.min.js";
-  </script>
+  <!-- PDF.js from unpkg (works on GH Pages and localhost) -->
+  <script src="https://unpkg.com/pdfjs-dist@4.10.38/build/pdf.min.js"></script>
 </head>
 <body>
-<header>
-  <button id="backBtn" class="btn">← Back</button>
-  <span id="pdfName" class="tag"></span>
-  <span id="linked" class="tag" style="opacity:.75"></span>
-  <span style="flex:1"></span>
-  <button id="openOriginal" class="btn">Open original</button>
-  <button id="downloadBtn" class="btn">Download</button>
-</header>
+  <div class="wrap">
+    <div class="bar">
+      <a id="backBtn" class="btn" href="javascript:history.back()">← Back</a>
+      <span id="pdfName" class="btn badge"></span>
+      <span id="linkedFrom" class="btn badge">Linked from <span id="fromTag">—</span></span>
+      <a id="openOriginal" class="btn" target="_blank" rel="noopener">Open original</a>
+      <a id="downloadPdf" class="btn" download>Download</a>
+    </div>
 
-<div class="wrap">
-  <div id="thumbs" class="thumbs"></div>
-  <div id="viewer" class="viewer"><canvas id="pageCanvas"></canvas></div>
-</div>
+    <div class="cols">
+      <div class="thumbs" id="thumbs"></div>
+      <div class="viewer" id="viewer">
+        <div class="hl" id="hl" style="display:none"></div>
+        <canvas id="pageCanvas"></canvas>
+      </div>
+    </div>
 
-<div class="toolbar">
-  <button id="prev" class="btn">Prev</button>
-  <button id="next" class="btn">Next</button>
-  <button id="zoomOut" class="btn">−</button>
-  <button id="zoomIn" class="btn">+</button>
-</div>
+    <div class="controls">
+      <button class="btn" id="prevBtn">Prev</button>
+      <button class="btn" id="nextBtn">Next</button>
+      <button class="btn" id="zoomOut">−</button>
+      <button class="btn" id="zoomIn">+</button>
+    </div>
+  </div>
 
-<script type="module">
+<script>
 (async () => {
-  const $ = sel => document.querySelector(sel);
-  const params = new URLSearchParams(location.search);
-  const PDF_BN = (params.get('pdf') || 'Old_main').replace(/\.pdf$/i,'');
-  const paraId = params.get('para') || '';
-  const chapter = params.get('chapter') || '';
-  const returnUrl = params.get('return') || document.referrer || '/';
-  const slug = (() => {
-    // current path like /cafes/zeta-zero-cafe/source.html
-    const m = location.pathname.match(/^\/cafes\/([^/]+)/);
-    return m ? m[1] : '';
-  })();
-  const cafeRoot = `/cafes/${slug}`;                 // /cafes/zeta-zero-cafe
-  const pdfUrl   = `${cafeRoot}/sources/${PDF_BN}.pdf`;
+  // ---------- Query & path helpers ----------
+  const u = new URL(location.href);
 
-  // try map at /data/cafes/<slug>/sources/<bn>.map.json, then <cafeRoot>/sources/...
-  const mapUrls = [
-    `/data/cafes/${slug}/sources/${PDF_BN}.map.json`,
-    `${cafeRoot}/sources/${PDF_BN}.map.json`,
-  ];
+  const pdfbnRaw = (u.searchParams.get("pdf") || "Old_main").replace(/\.pdf$/i,"");
+  const paraRaw = u.searchParams.get("para") || "";
+  const chapter = decodeURIComponent(u.searchParams.get("chapter") || "");
+  const returnUrl = u.searchParams.get("return") || document.referrer || "/";
+  const fromQP = u.searchParams.get("from");
+  const toQP   = u.searchParams.get("to");
 
-  // UI bits
-  $('#pdfName').textContent = `${PDF_BN}.pdf`;
-  $('#linked').textContent = paraId ? `Linked from ${paraId}` : '';
-  $('#backBtn').onclick = e => { e.preventDefault(); returnUrl ? location.href = returnUrl : history.back(); };
-  $('#openOriginal').onclick = () => window.open(pdfUrl, '_blank', 'noopener');
-  $('#downloadBtn').onclick   = () => window.open(pdfUrl, '_blank', 'noopener');
+  // Extract /cafes/<slug>/... safely (works on GH Pages and localhost)
+  const m = location.pathname.match(/^\/cafes\/([^\/]+)/);
+  const slug = m ? m[1] : "zeta-zero-cafe";
+  const cafeRoot = `/cafes/${slug}`;
 
-  // fetch mapping (first that works)
-  async function fetchFirst(urls){
-    for (const u of urls){
-      try{
-        const r = await fetch(u, {cache:'no-cache'});
-        if (r.ok) return await r.json();
-      }catch(_){}
-    }
-    return null;
-  }
-  const map = await fetchFirst(mapUrls);
+  // Absolute URLs (avoid relative double "/cafes/cafes" bugs)
+  const pdfUrl = `${cafeRoot}/sources/${pdfbnRaw}.pdf`;
+  const mapUrl = `/data/cafes/${slug}/sources/${pdfbnRaw}.map.json`;
 
-  function lookupTargetPage() {
-    if (!map) return 1;
-    // global offsets
-    const meta = map.meta || {};
-    const globalOffset = Number(meta.offset || 0);
-    const perChapterOffset = (meta.offsets && chapter && meta.offsets[chapter]) ? Number(meta.offsets[chapter]) : 0;
+  // UI labels
+  document.getElementById("pdfName").textContent = `${pdfbnRaw}.pdf`;
+  document.getElementById("fromTag").textContent = paraRaw || "—";
+  document.getElementById("openOriginal").href = pdfUrl;
+  document.getElementById("downloadPdf").href = pdfUrl;
+  document.getElementById("downloadPdf").download = `${pdfbnRaw}.pdf`;
+  document.getElementById("backBtn").onclick = (e)=>{
+    e.preventDefault();
+    if (returnUrl) location.href = returnUrl; else history.back();
+  };
 
-    // chapter starts table (absolute page where a chapter begins)
-    const starts = (meta.starts || {});
-    // pick chapter block for per-paragraph mapping
-    const chapterBlock = (chapter && map[chapter]) ? map[chapter] : null;
-
-    // paragraph mapping wins if present
-    if (chapterBlock && paraId && chapterBlock[paraId]) {
-      const {from} = chapterBlock[paraId];
-      return Math.max(1, Number(from) + globalOffset + perChapterOffset);
-    }
-
-    // otherwise: if we know the chapter start, use that as target
-    if (chapter && starts[chapter] != null) {
-      return Math.max(1, Number(starts[chapter]) + globalOffset + perChapterOffset);
-    }
-    return 1;
+  // ---------- Mapping resolution ----------
+  function normalizePara(p){
+    if (!p) return "";
+    // accept osf-1, osf-01, osf-001 → zero-pad to 3 for stable keys
+    const m = p.match(/^osf-(\d+)$/i);
+    if (!m) return p;
+    const n = m[1].padStart(3,"0");
+    return `osf-${n}`;
   }
 
-  // pdf.js state
-  let pdf = null, currentPage = 1, scale = 1.15;
-  const canvas = $('#pageCanvas');
-  const ctx = canvas.getContext('2d', {alpha:false});
+  const paraKey = normalizePara(paraRaw);
 
-  async function renderPage(n){
-    currentPage = Math.min(Math.max(1,n), pdf.numPages);
-    const page = await pdf.getPage(currentPage);
-    const viewport = page.getViewport({scale});
-    canvas.width = viewport.width|0;
-    canvas.height = viewport.height|0;
-    await page.render({canvasContext: ctx, viewport}).promise;
+  let targetPage = 1;
+  let highlight = null;
 
-    // update active thumb
-    for (const el of document.querySelectorAll('.thumb')) el.classList.remove('active');
-    const t = document.querySelector(`.thumb[data-p="${currentPage}"]`);
-    if (t){
-      t.classList.add('active');
-      t.scrollIntoView({block:'center'});
+  async function resolveMapping(){
+    // Explicit override wins
+    if (fromQP) {
+      const f = Math.max(1, parseInt(fromQP,10)||1);
+      const t = Math.max(f, parseInt(toQP||fromQP,10)||f);
+      targetPage = f;
+      highlight = {from:f, to:t};
+      return;
     }
-  }
+    try{
+      const res = await fetch(mapUrl, {cache:"no-store"});
+      if (!res.ok) return;
+      const map = await res.json();
 
-  async function buildThumbs(){
-    const box = $('#thumbs');
-    box.innerHTML = '';
-    const thumbScale = 0.18;
-    for (let i=1;i<=pdf.numPages;i++){
-      const div = document.createElement('div');
-      div.className = 'thumb'; div.dataset.p = String(i);
+      // meta: starts, offset, offsets
+      const meta = map.meta || {};
+      const starts = meta.starts || {};
+      const globalOffset = +meta.offset || 0;
+      const chapterOffset = (meta.offsets && +meta.offsets[chapter]) || 0;
 
-      const c = document.createElement('canvas');
-      c.style.display='block';
-      c.width = 480; c.height = 640; // will be resized by render
-      div.appendChild(c);
-      box.appendChild(div);
+      // chapter block present?
+      let hit = null;
+      if (chapter && map[chapter]) {
+        const block = map[chapter];
+        if (paraKey && block[paraKey]) {
+          hit = block[paraKey];
+        }
+      }
+      if (hit) {
+        targetPage = +hit.from || 1;
+        highlight = {from:+hit.from, to:+hit.to || +hit.from || 1};
+      } else if (starts[chapter]) {
+        targetPage = +starts[chapter] || 1;
+      }
 
-      div.onclick = () => renderPage(i);
-
-      // render
-      const page = await pdf.getPage(i);
-      const vp = page.getViewport({scale: thumbScale});
-      c.width = vp.width|0; c.height = (vp.height|0);
-      page.render({canvasContext: c.getContext('2d', {alpha:false}), viewport: vp});
+      // apply offsets
+      targetPage = Math.max(1, targetPage + globalOffset + chapterOffset);
+      if (highlight) {
+        highlight.from = Math.max(1, (highlight.from||targetPage) + globalOffset + chapterOffset);
+        highlight.to   = Math.max(highlight.from, (highlight.to||highlight.from) + globalOffset + chapterOffset);
+      }
+    } catch (e) {
+      // No mapping available; keep defaults
     }
   }
 
-  // load pdf
+  await resolveMapping();
+
+  // ---------- PDF.js setup ----------
+  const pdfjsLib = window['pdfjsLib'];
+  // Use the official worker (CDN path), avoids worker 404s on Pages
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.10.38/build/pdf.worker.min.js";
+
+  const loadingTask = pdfjsLib.getDocument(pdfUrl);
+  let pdf;
   try{
-    pdf = await pdfjsLib.getDocument({url: pdfUrl}).promise;
-  }catch(e){
-    console.error('Failed to load PDF', e, pdfUrl);
+    pdf = await loadingTask.promise;
+  } catch (e) {
     alert(`Failed to load PDF (Missing PDF): ${pdfUrl}`);
     return;
   }
 
+  const thumbsEl = $("#thumbs");
+  const canvas = $("#pageCanvas");
+  const ctx = canvas.getContext("2d");
+  const viewer = $("#viewer");
+  const hlEl = $("#hl");
+
+  let scale = 1.2;
+  let current = Math.min(Math.max(1, targetPage), pdf.numPages);
+
+  // ---------- helpers ----------
+  function $(sel){ return document.querySelector(sel); }
+  function make(el, cls){ const e=document.createElement(el); if(cls) e.className=cls; return e; }
+
+  async function renderPage(pageNum){
+    const page = await pdf.getPage(pageNum);
+    const vp = page.getViewport({scale});
+    canvas.width = vp.width;
+    canvas.height = vp.height;
+    const renderContext = {canvasContext:ctx, viewport:vp};
+    await page.render(renderContext).promise;
+
+    if (highlight && pageNum >= (highlight.from||0) && pageNum <= (highlight.to||0)) {
+      hlEl.style.display = "block";
+      hlEl.textContent = `§ ${paraRaw || ""} · p.${pageNum}`;
+    } else {
+      hlEl.style.display = "none";
+    }
+    // Mark active thumb
+    document.querySelectorAll(".thumb").forEach(t=>t.classList.toggle("active", +t.dataset.p===pageNum));
+  }
+
+  async function buildThumbs(){
+    thumbsEl.innerHTML = "";
+    const maxThumbs = Math.min(pdf.numPages, 126); // cap for perf, but show a lot
+    for (let i=1;i<=maxThumbs;i++){
+      const page = await pdf.getPage(i);
+      // tiny scale for thumbs
+      const vp = page.getViewport({scale:0.25});
+      const c = make("canvas");
+      c.width = vp.width;
+      c.height = vp.height;
+      await page.render({canvasContext:c.getContext("2d"), viewport:vp}).promise;
+      const wrap = make("div","thumb");
+      wrap.dataset.p = i;
+      wrap.appendChild(c);
+      wrap.onclick = ()=>{ current=i; renderPage(current); };
+      thumbsEl.appendChild(wrap);
+    }
+    // nudge into view near the target/highlight band if we have one
+    const anchor = document.querySelector(`.thumb[data-p="${current}"]`);
+    if (anchor) {
+      const y = Math.max(anchor.offsetTop - 80, 0);
+      thumbsEl.scrollTo({top:y, behavior:"instant"});
+      anchor.classList.add("active");
+    }
+  }
+
+  // ---------- controls ----------
+  $("#prevBtn").onclick = ()=>{ if (current>1){ current--; renderPage(current);} };
+  $("#nextBtn").onclick = ()=>{ if (current<pdf.numPages){ current++; renderPage(current);} };
+  $("#zoomOut").onclick = ()=>{ scale = Math.max(0.5, scale-0.1); renderPage(current); };
+  $("#zoomIn").onclick  = ()=>{ scale = Math.min(2.4,  scale+0.1); renderPage(current); };
+
+  // ---------- go ----------
   await buildThumbs();
-
-  const targetPage = lookupTargetPage();
-  await renderPage(targetPage);
-
-  // nav
-  $('#prev').onclick    = () => renderPage(currentPage-1);
-  $('#next').onclick    = () => renderPage(currentPage+1);
-  $('#zoomIn').onclick  = async () => { scale = Math.min(scale+0.1, 3.0); await renderPage(currentPage); };
-  $('#zoomOut').onclick = async () => { scale = Math.max(scale-0.1, 0.4); await renderPage(currentPage); };
-
+  await renderPage(current);
 })();
 </script>
 </body>
