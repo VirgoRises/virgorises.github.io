@@ -12,29 +12,22 @@
     .btn{background:#161b22;border:1px solid #30363d;padding:6px 10px;border-radius:8px;color:#e6edf3;text-decoration:none;cursor:pointer}
     .btn:hover{background:#1f242d}
     .badge{font-size:.8rem;opacity:.85;border:1px solid #30363d;border-radius:999px;padding:2px 8px}
+
     .cols{display:grid;grid-template-columns:280px 1fr;gap:16px}
     .thumbs{background:#0b0f14;border:1px solid #30363d;border-radius:12px;padding:12px;height:70vh;overflow:auto}
+
     .viewer{background:#0b0f14;border:1px solid #30363d;border-radius:12px;padding:12px;height:70vh;overflow:auto;position:relative}
-    /* Stage: page + overlays */
     #stage{position:relative}
     #pageCanvas{display:block;margin:0 auto;position:relative;z-index:2}
     #overlay{position:absolute;left:0;top:0;pointer-events:none;z-index:3}
     .hl-badge{position:absolute;left:8px;top:8px;background:#1f6feb22;border:1px solid #1f6feb;border-radius:6px;padding:2px 6px;font-size:.8rem;z-index:4}
+
     /* Context strips (p−1 bottom at top edge, p top at bottom edge) */
     .strip{position:absolute;left:50%;transform:translateX(-50%);width:100%;pointer-events:none;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
     #prevStripWrap{top:0}
     #nextStripWrap{bottom:0}
     .strip .label{position:absolute;left:8px;top:6px;font-size:.75rem;opacity:.85;background:#0b0f14d0;border:1px solid #30363d;padding:2px 6px;border-radius:6px;pointer-events:auto}
     .strip canvas{display:block;width:100%;height:auto;border:1px dashed #30363d;border-radius:8px;background:#0b0f14}
-    /* Stacking toggle */
-    /* default = preview above strips */
-    .strip{z-index:1}
-    #pageCanvas{z-index:2}
-    #overlay{z-index:3}
-    /* when context is on top */
-    #stage.context-front .strip{z-index:5}
-    #stage.context-front #pageCanvas{z-index:2}
-    #stage.context-front #overlay{z-index:4}
 
     .controls{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
     .thumb{margin:8px 0;border:1px solid #30363d;border-radius:8px;overflow:hidden;cursor:pointer}
@@ -65,12 +58,11 @@
       <div class="viewer" id="viewer">
         <div class="hl-badge" id="hl" style="display:none"></div>
 
-        <!-- Stage: main page + overlays -->
         <div id="stage">
           <canvas id="pageCanvas"></canvas>
           <canvas id="overlay"></canvas>
 
-          <!-- Overlaid context strips -->
+          <!-- Context strips overlay -->
           <div id="prevStripWrap" class="strip" style="display:none">
             <span class="label">Prev (p−1) — bottom</span>
             <canvas id="prevStrip"></canvas>
@@ -200,6 +192,7 @@
   let firstRenderDone = false;
 
   const boxesByPage = new Map();
+
   function sizeOverlayToCanvas(){
     overlay.width  = canvas.width;
     overlay.height = canvas.height;
@@ -208,6 +201,7 @@
     prevWrap.style.width = canvas.style.width;
     nextWrap.style.width = canvas.style.width;
   }
+
   function drawOverlay(pageNum){
     ovx.clearRect(0,0,overlay.width, overlay.height);
     const boxes = boxesByPage.get(pageNum) || [];
@@ -224,10 +218,20 @@
     }
     ovx.globalAlpha = 1;
   }
+
   function fitToWidthScale(page){
     const vp = page.getViewport({scale:1});
     const avail = viewer.clientWidth - 24;
     return Math.max(0.5, Math.min(3.0, avail / vp.width));
+  }
+
+  function applyStacking(){
+    // Explicit z-index so the toggle works on all engines
+    const topZ   = "5";  // strips above overlay/page
+    const baseZ  = "1";  // strips below
+    const z = contextOnTop ? topZ : baseZ;
+    prevWrap.style.zIndex = z;
+    nextWrap.style.zIndex = z;
   }
 
   async function renderPage(pageNum, {repaintMain=true} = {}){
@@ -252,7 +256,6 @@
     document.querySelectorAll(".thumb").forEach(t=>t.classList.toggle("active", +t.dataset.p===pageNum));
     pageBadge.textContent = `p.${pageNum} / ${pdf.numPages}`;
 
-    // show strips if toggled OR span across pages
     const shouldContext = (pageSpan.to > pageSpan.from);
     const wantStrips = contextOn || shouldContext;
     prevWrap.style.display = wantStrips ? "block" : "none";
@@ -271,7 +274,7 @@
     nextWrap.style.height = stripCssH + "px";
 
     async function renderCrop(targetPage, which){
-      if (targetPage < 1 || targetPage > pdf.numPages) { // hide if out of bounds
+      if (targetPage < 1 || targetPage > pdf.numPages) {
         (which==="prev" ? prevWrap : nextWrap).style.display = "none";
         return;
       }
@@ -281,12 +284,10 @@
       const s = scale;
       const vpHi  = p.getViewport({scale: s * deviceScale});
 
-      // offscreen full page
       const off = document.createElement("canvas");
       off.width = vpHi.width; off.height = vpHi.height;
       await p.render({canvasContext: off.getContext("2d"), viewport: vpHi}).promise;
 
-      // destination + crop rect
       const dst = (which === "prev") ? prevStrip : nextStrip;
       dst.width  = Math.floor(vpHi.width);
       dst.height = Math.floor(vpHi.height * frac);
@@ -340,7 +341,7 @@
     }
   }
 
-  // (Optional) runtime highlight boxes if map lacks boxes (kept from your previous version)
+  // Quote-based runtime highlight boxes (if boxes missing from map)
   async function computeBoxesIfNeeded(){
     if (mapEntry?.boxes?.length){
       for(const b of mapEntry.boxes){
@@ -406,22 +407,24 @@
   $("#zoomIn").onclick    = ()=>{ scale = Math.min(3.0,  scale+0.1); renderPage(current); };
   $("#resetZoom").onclick = ()=>{ scale = 1.0; renderPage(current); };
   $("#fitWidth").onclick  = async ()=> { const page = await pdf.getPage(current); scale = fitToWidthScale(page); renderPage(current); };
+
   toggleContextBtn.onclick = async ()=>{
     contextOn = !contextOn;
     toggleContextBtn.textContent = contextOn ? "Hide context" : "Context view";
-    // show/hide strips; do not repaint main page
     if (contextOn) { prevWrap.style.display = "block"; nextWrap.style.display = "block"; await renderStrips(current); }
     else { prevWrap.style.display = "none"; nextWrap.style.display = "none"; }
   };
+
   toggleStackBtn.onclick = ()=>{
     contextOnTop = !contextOnTop;
-    stage.classList.toggle('context-front', contextOnTop);
+    applyStacking(); // force z-index update
     toggleStackBtn.textContent = contextOnTop ? "Preview on top" : "Context on top";
   };
 
   // ---------- boot ----------
+  applyStacking();                 // initialize stacking z-index
   await computeBoxesIfNeeded();
-  await renderPage(current);  // auto fit-width here
+  await renderPage(current);       // auto fit-width here
   buildThumbs();
   if (pageSpan.from !== current){ current = pageSpan.from; await renderPage(current); }
 
@@ -438,5 +441,4 @@
 </script>
 </body>
 </html>
-
 
