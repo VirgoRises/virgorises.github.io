@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cafe Source Page Overrides Manager — Vanilla JS (Refactored)</title>
+  <!-- External stylesheet -->
+  <link rel="stylesheet" href="/css/10-components/overrides-manager.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="toolbar">
+    <div>
+      <h1>Cafe Source Page Overrides Manager</h1>
+      <div class="muted">Populate manual overrides per chapter. First check overrides; if absent, fall back to baseline map.</div>
+    </div>
+    <div class="right">
+      <span id="dirtyBadge" class="pill success">All changes saved locally</span>
+      <button id="exportBtn" class="btn">Export JSON</button>
+    </div>
+  </header>
+
+  <section class="grid g-3" style="margin-top:12px">
+    <div class="card">
+      <h2>1) Load baseline map</h2>
+      <input id="defaultFile" type="file" accept="application/json" />
+      <div class="muted" style="margin-top:6px">Old_main.map.json — auto-detected pages (fallback).</div>
+    </div>
+    <div class="card">
+      <h2>2) Load existing overrides (optional)</h2>
+      <input id="overridesFile" type="file" accept="application/json" />
+      <div class="muted" style="margin-top:6px">Merges into local state; re-export after editing.</div>
+    </div>
+    <div class="card">
+      <h2>Doc settings</h2>
+      <label class="muted">Document ID</label><br/>
+      <input id="docId" type="text" value="Old_main" class="w-40" />
+      <div style="margin-top:8px" class="row">
+        <button id="clearLocal" class="btn secondary">Clear local</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:12px">
+    <div class="toolbar">
+      <div class="row">
+        <label class="muted">Chapter</label>
+        <select id="chapterSelect" class="w-40"></select>
+        <label class="muted">Filter</label>
+        <input id="filterInput" type="text" placeholder="anchor/type/note" class="w-40"/>
+        <label class="muted">Sort</label>
+        <select id="sortKey" class="w-28">
+          <option value="anchor">Anchor</option>
+          <option value="type">Type</option>
+          <option value="detectedPage">Detected page</option>
+          <option value="overridePage">Override page</option>
+          <option value="lastUpdated">Last updated</option>
+        </select>
+        <button id="sortDir" class="btn tiny secondary">Asc</button>
+      </div>
+      <div class="row">
+        <span class="muted">Rows: <span id="rowCount">0</span></span>
+        <span class="muted">| Page:</span>
+        <button id="prevPage" class="btn tiny secondary">◀</button>
+        <span id="pageLabel" class="pill">1</span>
+        <button id="nextPage" class="btn tiny secondary">▶</button>
+        <select id="pageSize" class="w-28">
+          <option>50</option>
+          <option selected>200</option>
+          <option>500</option>
+          <option>1000</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card soft" style="margin-top:10px">
+      <div class="row">
+        <div>
+          <label class="muted">Anchor id</label><br/>
+          <input id="manualAnchor" type="text" placeholder="para-osf-1 / fig-3 / tbl-2" class="w-40"/>
+        </div>
+        <div>
+          <label class="muted">Page</label><br/>
+          <input id="manualPage" type="number" min="1" placeholder="7" class="w-28"/>
+        </div>
+        <div class="muted">Quick add to current chapter</div>
+        <button id="quickAdd" class="btn">Add</button>
+      </div>
+    </div>
+
+    <div class="scroll" style="margin-top:10px">
+      <table>
+        <thead>
+          <tr>
+            <th>Anchor</th>
+            <th>Type</th>
+            <th>Detected</th>
+            <th>Override</th>
+            <th>Partition</th>
+            <th>Note</th>
+            <th>User</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:12px;background:#f8fafc">
+    <h3>Integration snippet</h3>
+    <div class="code" id="snippet"></div>
+  </section>
+
+  <div class="footer">Tip: This tool stores your progress in <span class="mono">localStorage</span>. Export JSON to commit your changes.</div>
+</div>
+
+<!-- External script -->
+<script src="/js/overrides-manager.js"></script>
+
+</body>
+</html>
