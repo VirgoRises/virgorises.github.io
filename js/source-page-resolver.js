@@ -1,57 +1,101 @@
-// source-page-resolver.js
+// /js/source-page-resolver.js  (ES module, override-aware)
+
+/**
+ * initSourcePageResolver({
+ *   chapterId: "notebook/chapter-1-the-basel-problem.html",
+ *   docId: "Old_main",
+ *   // Use your explicit URLs (best for your layout):
+ *   mapUrl: "/data/cafes/zeta-zero-cafe/sources/Old_main.map.json",
+ *   overridesUrl: "/data/cafes/zeta-zero-cafe/sources/Old_main.overrides.json",
+ *
+ *   // optional:
+ *   anchorAttr: "data-source-anchor",
+ *   badgeClass: "src-badge",
+ *   pageIndexOffset: 0, // set to +1 or -1 if your viewer needs it
+ *   linkToSourceHtml: (docId, chapterId, anchorId, from, to) => `/cafes/zeta-zero-cafe/source.html?pdf=${encodeURIComponent(docId)}&para=${encodeURIComponent(anchorId)}&chapter=${encodeURIComponent(chapterId)}&from=${from}&to=${to}`
+ * })
+ */
+
 export async function initSourcePageResolver({
+  chapterId,
   docId = "Old_main",
-  chapterId,            // e.g. "notebook/chapter-1-the-basel-problem.html"
-  mapUrl = `/data/${docId}.map.json`,
-  overridesUrl = `/data/${docId}.overrides.json`, // can 404 (handled)
-  anchorAttr = "data-source-anchor",              // attribute to mark anchors
-  badgeClass = "src-badge",                       // CSS class for badges
-  linkToSourceHtml = (docId, chapterId, anchorId, page) =>
-    `/cafes/zeta-zero-cafe/source.html?pdf=${encodeURIComponent(docId)}&para=${encodeURIComponent(anchorId)}&chapter=${encodeURIComponent(chapterId)}&from=${page}&to=${page}`
-}) {
-  const safeFetch = async (url) => {
-    try {
-      const r = await fetch(url, {cache: "no-store"});
-      if (!r.ok) throw new Error(`${r.status}`);
-      return await r.json();
-    } catch {
-      return null; // allow missing overrides
-    }
-  };
+  mapUrl,
+  overridesUrl,
+  anchorAttr = "data-source-anchor",
+  badgeClass = "src-badge",
+  pageIndexOffset = 0,
+  linkToSourceHtml = (docId_, chapterId_, anchorId_, from_, to_) =>
+    `/cafes/zeta-zero-cafe/source.html?pdf=${encodeURIComponent(docId_)}&para=${encodeURIComponent(anchorId_)}&chapter=${encodeURIComponent(chapterId_)}&from=${from_}&to=${to_}`,
+} = {}) {
+  if (!chapterId) throw new Error("initSourcePageResolver: chapterId is required.");
 
   const [defaultMap, overrides] = await Promise.all([
-    safeFetch(mapUrl), safeFetch(overridesUrl)
+    safeFetchJson(mapUrl),
+    safeFetchJson(overridesUrl, { allow404: true }),
   ]);
 
-  function getSourcePage(chapterId, anchorId) {
-    const o = overrides?.chapters?.[chapterId]?.items?.[anchorId];
-    if (o?.page != null) return o; // {page, partition?, type?, note?}
-    const d = defaultMap?.chapters?.[chapterId]?.items?.[anchorId];
-    return d ? { page: d.page, type: d.type || "paragraph" } : null;
-  }
-
-  // Heuristic: if authors tag things as osf-1 / fig-3 / tbl-2,
-  // normalize to our keys: para-osf-1 / fig-3 / tbl-2.
-  const normalizeAnchor = (raw) => {
-    if (!raw) return raw;
-    if (/^(para|fig|tbl|eqn|equation|figure|table)-/i.test(raw)) return raw;
-    // common pattern: "osf-1" etc → treat as paragraph
-    return `para-${raw}`;
+  // ---- schema helpers -------------------------------------------------------
+  const getChapterBlock = (root, chap) => {
+    if (!root?.chapters) return null;
+    // supports root.chapters[chap] (direct) OR root.chapters[chap].items
+    const block = root.chapters[chap];
+    if (!block) return null;
+    return block.items || block; // normalize to an object of anchors
   };
 
-  // Add a little badge next to anything with data-source-anchor
+  const pickAnchor = (obj, rawId) => {
+    // Try: exact raw ("osf-11"), then "para-osf-11", then "fig-.." unchanged
+    if (!obj || !rawId) return null;
+    if (rawId in obj) return obj[rawId];
+    const maybePara = rawId.startsWith("para-") ? rawId : `para-${rawId}`;
+    if (maybePara in obj) return obj[maybePara];
+    return null;
+  };
+
+  const normalizeRecord = (rec) => {
+    // Accept {page} or {from,to}. Return {from,to,type?,partition?,note?}
+    if (!rec) return null;
+    if (typeof rec.page === "number") {
+      return { from: rec.page, to: rec.page, type: rec.type, partition: rec.partition, note: rec.note };
+    }
+    if (typeof rec.from === "number" && typeof rec.to === "number") {
+      return { from: rec.from, to: rec.to, type: rec.type, partition: rec.partition, note: rec.note };
+    }
+    return null;
+  };
+
+  function getSourceRange(chapter, anchorRaw) {
+    const ovBlock = getChapterBlock(overrides, chapter);
+    const mpBlock = getChapterBlock(defaultMap, chapter);
+
+    // Look up override first
+    const ovRec = normalizeRecord(pickAnchor(ovBlock, anchorRaw));
+    if (ovRec) return ovRec;
+
+    // Fallback to baseline map
+    const mpRec = normalizeRecord(pickAnchor(mpBlock, anchorRaw));
+    if (mpRec) return mpRec;
+
+    return null;
+  }
+
+  // ---- badge rendering ------------------------------------------------------
   const nodes = document.querySelectorAll(`[${anchorAttr}]`);
   nodes.forEach((el) => {
-    const rawAnchor = el.getAttribute(anchorAttr)?.trim();
-    const anchorId = normalizeAnchor(rawAnchor);
-    const rec = getSourcePage(chapterId, anchorId);
+    const rawAnchor = (el.getAttribute(anchorAttr) || "").trim(); // e.g. "osf-11" or "fig-1-01"
+    const rec = getSourceRange(chapterId, rawAnchor);
 
     const badge = document.createElement("a");
     badge.className = badgeClass;
-    if (rec?.page != null) {
-      badge.textContent = `p.${rec.page}` + (rec.partition ? ` ${rec.partition}` : "");
-      badge.href = linkToSourceHtml(docId, chapterId, rawAnchor, rec.page);
-      badge.title = `Open source PDF at page ${rec.page}`;
+
+    if (rec?.from != null && rec?.to != null) {
+      const from = rec.from + pageIndexOffset;
+      const to   = rec.to   + pageIndexOffset;
+
+      // Text: p.8 or p.8–9
+      badge.textContent = from === to ? `p.${from}` : `p.${from}–${to}`;
+      badge.href  = linkToSourceHtml(docId, chapterId, rawAnchor, from, to);
+      badge.title = from === to ? `Open source at page ${from}` : `Open source pages ${from}–${to}`;
     } else {
       badge.textContent = "—";
       badge.href = "javascript:void(0)";
@@ -59,10 +103,25 @@ export async function initSourcePageResolver({
       badge.setAttribute("aria-disabled", "true");
     }
 
-    // Insert after the element's content (or wherever you like)
     el.insertAdjacentElement("beforeend", badge);
   });
 
-  // Also expose a small API if you need programmatic lookups later:
-  return { getSourcePage, defaultMap, overrides };
+  return { defaultMap, overrides };
+}
+
+// ---------- utils ----------
+async function safeFetchJson(url, { allow404 = false } = {}) {
+  if (!url) return null;
+  try {
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) {
+      if (allow404 && r.status === 404) return null;
+      throw new Error(`${r.status} ${r.statusText}`);
+    }
+    return await r.json();
+  } catch (e) {
+    if (allow404) return null;
+    console.warn("source-page-resolver: failed to load", url, e);
+    return null;
+  }
 }
