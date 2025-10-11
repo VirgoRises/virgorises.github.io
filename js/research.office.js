@@ -1,4 +1,4 @@
-/* Research Office — loads a single paragraph preview + nearby figures/tables
+/* Research Office — loads a single paragraph preview + nearby figures/tables.
    Query: ?para=osf-N&chapter=notebook/<file>.html&return=<encoded-url>
 */
 (() => {
@@ -6,26 +6,27 @@
   const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
 
   // Basic context
-  const params = new URLSearchParams(location.search);
-  const paraId   = params.get('para') || '';                  // e.g. osf-5
-  const chapter  = decodeURIComponent(params.get('chapter')||''); // notebook/chapter-1-…html
+  const params   = new URLSearchParams(location.search);
+  const paraId   = params.get('para') || '';                        // e.g. osf-5
+  const chapter  = decodeURIComponent(params.get('chapter')||'');   // notebook/chapter-1-…html
   const retUrl   = decodeURIComponent(params.get('return')||'');
   const cafeSlug = location.pathname.split('/').filter(Boolean)[1] || 'zeta-zero-cafe'; // cafes/<slug>/…
 
-  // DOM targets
-  const previewBox = $('#paraPreview');       // the paragraph preview container
-  const numBadge   = $('#osfNum');            // small #N badge
+  // DOM targets (match IDs in HTML)
+  const previewBox = $('#paraPreview');
+  const numBadge   = $('#paraNum');
   const figsList   = $('#figList');
   const tblList    = $('#tblList');
-  const backBtn    = $('#backBtn');
-  const copyBtn    = $('#copyLinkBtn');
+  const backLink   = $('#backLink');
+  const copyLink   = $('#copyLink');
+  const memoBody   = $('#memoBody');
+  const memoList   = $('#memoList');
 
-  // Utils
-  const chapterFile   = chapter.split('/').pop();                   // chapter-1-the-…html
-  const chapterSlug   = chapterFile.replace(/\.html$/,'');          // chapter-1-the-…
+  // Derived URLs
+  const chapterFile   = chapter.split('/').pop() || '';
+  const chapterSlug   = chapterFile.replace(/\.html$/,'');
   const cafeBase      = `/cafes/${cafeSlug}`;
   const chapterUrlAbs = `${cafeBase}/${chapter}`;                   // absolute URL to chapter html
-  const anchorsUrl    = `/data/cafes/${cafeSlug}/anchors/${chapterSlug}.json`;
 
   function paraNumberFrom(para) {
     const m = String(para).match(/osf-(\d+)/);
@@ -39,9 +40,9 @@
   }
 
   function setBackLink() {
-    if (!backBtn) return;
+    if (!backLink) return;
     const href = retUrl || `${cafeBase}/${chapter}`;
-    backBtn.addEventListener('click', e => {
+    backLink.addEventListener('click', e => {
       e.preventDefault();
       location.href = href;
     });
@@ -56,8 +57,7 @@
     // Make relative images load from /cafes/<slug>/notebook/
     $$('img', container).forEach(img => {
       const src = img.getAttribute('src') || '';
-      if (!src) return;
-      if (/^(https?:|data:|\/)/i.test(src)) return; // absolute/data ok
+      if (!src || /^(https?:|data:|\/)/i.test(src)) return; // absolute/data ok
       img.src = `${cafeBase}/notebook/${src}`;
       img.loading = 'lazy';
       img.decoding = 'async';
@@ -71,22 +71,18 @@
   async function typeset(container) {
     if (!window.MathJax) return;
     try {
-      // Clear any previous jax + labels before rendering a fresh paragraph
       if (MathJax.typesetClear) MathJax.typesetClear([container]);
       if (MathJax.texReset)     MathJax.texReset();
     } catch (_) {}
-    await MathJax.typesetPromise ? MathJax.typesetPromise([container]) : MathJax.typeset([container]);
+    await (MathJax.typesetPromise ? MathJax.typesetPromise([container]) : MathJax.typeset([container]));
   }
 
   function copyLinkToClipboard() {
     const link = `${location.origin}${cafeBase}/${chapter}#${paraId}`;
     navigator.clipboard?.writeText(link).then(() => {
-      copyBtn?.setAttribute('data-copied', '1');
-      copyBtn?.classList.add('ok');
-      setTimeout(() => copyBtn?.classList.remove('ok'), 1000);
-    }).catch(() => {
-      alert('Could not copy link to clipboard.');
-    });
+      copyLink?.classList.add('ok');
+      setTimeout(() => copyLink?.classList.remove('ok'), 900);
+    }).catch(() => alert('Could not copy link to clipboard.'));
   }
 
   function listChapterFiguresAndTables(chapterDoc) {
@@ -111,45 +107,42 @@
     tblList .innerHTML = '';
 
     refs.figures.forEach(f => {
-      const li = document.createElement('div');
-      li.className = 'ref';
-      li.innerHTML = `
-        <label class="x">
+      const row = document.createElement('div');
+      row.className = 'item';
+      row.innerHTML = `
+        <label>
           <input type="checkbox" data-id="${f.id}">
           <span>${escapeHtml(f.caption)}</span>
-          <a class="open" href="${f.href}" target="_blank" rel="noopener">open</a>
         </label>
+        <a class="open" href="${f.href}" target="_blank" rel="noopener">open</a>
       `;
-      figsList.appendChild(li);
+      figsList.appendChild(row);
     });
 
     refs.tables.forEach(t => {
-      const li = document.createElement('div');
-      li.className = 'ref';
-      li.innerHTML = `
-        <label class="x">
+      const row = document.createElement('div');
+      row.className = 'item';
+      row.innerHTML = `
+        <label>
           <input type="checkbox" data-id="${t.id}">
           <span>${escapeHtml(t.caption)}</span>
-          <a class="open" href="${t.href}" target="_blank" rel="noopener">open</a>
         </label>
+        <a class="open" href="${t.href}" target="_blank" rel="noopener">open</a>
       `;
-      tblList.appendChild(li);
+      tblList.appendChild(row);
     });
   }
 
   function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, m => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[m]));
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   }
 
   async function loadChapterDom() {
     const html = await fetch(chapterUrlAbs, { credentials: 'omit' }).then(r => r.text());
-    const doc  = new DOMParser().parseFromString(html, 'text/html');
-    return doc;
+    return new DOMParser().parseFromString(html, 'text/html');
   }
 
-  async function previewParagraph(doc, anchorsJson, para) {
+  async function previewParagraph(doc, para) {
     // 1) Find the <pre id="osf-N"> in the chapter DOM
     const pre = doc.getElementById(para);
     if (!pre) {
@@ -160,7 +153,7 @@
     // 2) Inject a *clone* into the preview
     previewBox.innerHTML = '';
     const clone = pre.cloneNode(true);
-    // Be generous: remove explicit width on images if any
+    // remove fixed image widths, if any
     $$('img', clone).forEach(img => img.removeAttribute('width'));
     previewBox.appendChild(clone);
 
@@ -173,11 +166,51 @@
     // 5) Fill figure/table lists from the chapter
     const refs = listChapterFiguresAndTables(doc);
     renderRefLists(refs);
-
-    // 6) Copy-link button
-    copyBtn?.addEventListener('click', copyLinkToClipboard, { once: true });
   }
 
+  // ---------------- Memos (local only) ----------------
+  function loadMemos() {
+    try { return JSON.parse(localStorage.getItem('ro:memos') || '[]'); }
+    catch { return []; }
+  }
+  function saveMemos(list) {
+    localStorage.setItem('ro:memos', JSON.stringify(list));
+  }
+  function renderMemoList() {
+    const memos = loadMemos();
+    memoList.innerHTML = '';
+    memos.slice().reverse().forEach(m => {
+      const row = document.createElement('div');
+      row.className = 'item';
+      row.innerHTML = `<div class="mono" style="opacity:.7">${escapeHtml(m.title)}</div>`;
+      memoList.appendChild(row);
+    });
+  }
+
+  function wireMemoButtons() {
+    $('#saveDraft')?.addEventListener('click', () => {
+      const body = memoBody?.value?.trim() || '';
+      if (!body) return;
+      const memos = loadMemos();
+      memos.push({ title: `${chapterSlug} · ${paraId}`, body, ts: Date.now() });
+      saveMemos(memos);
+      renderMemoList();
+    });
+
+    $('#exportJson')?.addEventListener('click', () => {
+      const payload = {
+        chapter, para: paraId,
+        memo: memoBody?.value || '',
+        when: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = `${chapterSlug}-${paraId}.memo.json`; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+  }
+
+  // ---------------- Init ----------------
   async function init() {
     if (!paraId || !chapter) {
       previewBox.innerHTML = `<div class="warn">Missing or invalid query parameters.</div>`;
@@ -185,22 +218,19 @@
     }
     setBackLink();
     setBadge(paraNumberFrom(paraId));
+    copyLink?.addEventListener('click', copyLinkToClipboard, { once: true });
 
     try {
-      // Anchors JSON (not strictly used here, but useful if later we want extra meta)
-      // If it 404s we continue; preview comes straight from the chapter DOM.
-      await fetch(anchorsUrl, { credentials: 'omit' }).catch(() => null);
-
       const chapterDoc = await loadChapterDom();
-      await previewParagraph(chapterDoc, null, paraId);
+      await previewParagraph(chapterDoc, paraId);
+      renderMemoList();
+      wireMemoButtons();
     } catch (err) {
       console.error('[research-office] failed:', err);
       previewBox.innerHTML = `<div class="warn">Failed to load the chapter or paragraph preview.</div>`;
     }
   }
 
-  // Kick off when DOM is ready
   if (document.readyState !== 'loading') init();
   else document.addEventListener('DOMContentLoaded', init);
 })();
-

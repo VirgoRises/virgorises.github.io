@@ -108,8 +108,6 @@ textarea {
 }
 
 /* ------- Preview panel ------- */
-
-/* the preview card itself */
 #paraPreview {
   width: 100%;
   max-width: 100%;
@@ -118,12 +116,10 @@ textarea {
   border-radius: 12px;
   background: rgba(255, 255, 255, .03);
   box-sizing: border-box;
-  /* ← keep padding inside width */
   overflow: auto;
-  /* ← never spill out of the card */
 }
 
-/* Make anything that might come from the notebook behave inside the panel */
+/* Keep imported notebook content tame in the preview panel */
 #paraPreview .osf,
 #paraPreview .osf-block,
 #paraPreview pre,
@@ -137,21 +133,16 @@ textarea {
   box-sizing: border-box;
 }
 
-/* Text & code: wrap *aggressively* even inside <pre> */
 #paraPreview pre,
 #paraPreview code,
 #paraPreview .osf {
   white-space: pre-wrap;
-  /* keep linebreaks, allow wrapping */
   word-break: break-word;
-  /* break long tokens */
   overflow-wrap: anywhere;
-  /* last resort */
   hyphens: auto;
   line-height: 1.6;
 }
 
-/* Images/SVG/canvas should scale to panel width */
 #paraPreview img,
 #paraPreview svg,
 #paraPreview canvas {
@@ -162,7 +153,6 @@ textarea {
   image-rendering: auto;
 }
 
-/* Friendlier figure/table defaults inside the preview */
 #paraPreview figcaption {
   text-align: center;
   opacity: .85;
@@ -178,29 +168,18 @@ textarea {
   padding: 4px 6px;
 }
 
-/* Slightly larger math reads nicer in the side panel */
 #paraPreview .MathJax {
   font-size: 1.05rem;
 }
 
-/* utility */
-.mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-}
-
-/* active thumb ring */
-.thumb.active {
-  outline: 2px solid #ffb347;
-  /* same “warn” accent you use elsewhere */
-  outline-offset: 2px;
-}
-
-/* Research Office: grid + markers */
+/* ------- Grid + markers ------- */
 #ro-stage {
   position: relative;
   max-width: 100%;
+  min-height: 280px;
 }
 
+/* never collapse */
 #ro-stage>img,
 #ro-stage>canvas {
   width: 100%;
@@ -208,14 +187,16 @@ textarea {
   display: block;
 }
 
+#ro-stage>img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 .ro-overlay {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   pointer-events: none;
-  z-index: 2;
+  z-index: 3;
 }
 
 .ro-overlay svg {
@@ -261,7 +242,7 @@ textarea {
   gap: 8px;
   align-items: center;
   margin: 10px 0 0;
-  flex-wrap: wrap
+  flex-wrap: wrap;
 }
 
 .ro-toolbar button,
@@ -282,67 +263,15 @@ textarea {
   width: 260px;
 }
 
-.ro-hint,
+/* Toast */
 .ro-toast {
-  position: absolute;
-  right: 8px;
-  top: 8px;
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
   background: #111;
   color: #fff;
   padding: 6px 8px;
   border-radius: 8px;
   font: 12px/1.2 ui-sans-serif;
-  opacity: .95
+  opacity: .95;
 }
-
-.ro-toast {
-  position: fixed;
-  bottom: 12px;
-  right: 12px;
-  top: auto;
-}
-
-#ro-stage>img {
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-.ro-overlay {
-  z-index: 3;
-}
-
-/* ensure grid sits above the image/card border */
-#ro-stage>canvas {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-#ro-stage>img {
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-#ro-stage>canvas {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-#ro-stage>img {
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-.ro-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.ro-overlay svg {
-  width: 100%;
-  height: 100%;
-}
-/* ensures the stage never collapses while we resolve the page */
-#ro-stage { min-height: 280px; }
