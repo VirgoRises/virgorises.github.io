@@ -275,3 +275,49 @@ textarea {
   font: 12px/1.2 ui-sans-serif;
   opacity: .95;
 }
+/* === Crosshair styling (Research Office) === */
+.ro-cross {
+  stroke: rgba(255, 255, 0, 0.6); /* soft yellow overlay line */
+  stroke-width: 0.8px;
+  pointer-events: none;           /* don’t block clicks on the page */
+  shape-rendering: crispEdges;
+  opacity: 0;                     /* hidden until mouse enters */
+  transition: opacity 0.15s ease-out;
+}
+
+/* Optional: tweak grid label readability on dark backgrounds */
+.ro-grid text.label {
+  fill: rgba(255, 255, 255, 0.75);
+  font-size: 9px;
+  font-family: monospace;
+  user-select: none;
+}
+/* === Metric grid tone refinement === */
+
+/* Base 1 mm lines — light neutral gray */
+.ro-grid line {
+  stroke: rgba(180, 180, 180, 0.25);
+  vector-effect: non-scaling-stroke;
+}
+
+/* Every 1 cm line (thicker + brighter) */
+.ro-grid line[stroke-width="1.6"] {
+  stroke: rgba(230, 230, 230, 0.45);
+}
+
+/* Optional: reinforce the outer frame of the page */
+.ro-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255,255,255,0.25);
+  pointer-events: none;
+}
+
+/* Maintain clean snap-to-grid visibility */
+.ro-marker circle,
+.ro-marker rect {
+  fill: rgba(255,255,0,0.3);
+  stroke: rgba(255,255,0,0.7);
+  stroke-width: 1;
+}
