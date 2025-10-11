@@ -97,9 +97,35 @@
   import { initResearchOfficeGrid } from "/js/research-office-grid.js";
 
   const qs      = new URLSearchParams(location.search);
-  const para    = qs.get("para")    || "osf-1";
-  const chapter = qs.get("chapter") || "";
+  const para    = qs.get("para")    || "osf-1";   // e.g. "osf-7"
+  const chapter = qs.get("chapter") || "";        // e.g. "notebook/chapter-7-....html"
   const forced  = Number(qs.get("from") || "0");
+
+  // normalizers used by both overrides + map
+  const norm = s => (s||"").replace(/\\/g,"/").replace(/^\/+|\/+$/g,"").toLowerCase();
+  const dropNotebook = s => norm(s).replace(/^notebook\//,"");
+  const onlyFile = s => norm(s).split("/").slice(-1)[0];
+
+  function probeChapter(obj, chap) {
+    if (!obj || !obj.chapters) return null;
+    const keys = [ norm(chap), dropNotebook(chap), onlyFile(chap) ];
+    return obj.chapters[keys[0]] || obj.chapters[keys[1]] || obj.chapters[keys[2]] || null;
+  }
+  function probePara(chObj, anchor) {
+    if (!chObj) return null;
+    // accept both shapes: direct or .items
+    const P = anchor;
+    return (chObj[P]) || (chObj.items && chObj.items[P]) || null;
+  }
+  function firstPage(entry) {
+    if (!entry) return 0;
+    const cand = [entry.page, entry.from, entry.start, entry.pdf_from, entry.p];
+    for (const v of cand) {
+      const n = parseInt(v, 10);
+      if (Number.isFinite(n) && n > 0) return n;
+    }
+    return 0;
+  }
 
   async function resolveFrom(chapterId, anchorId) {
     const base = "/data/cafes/zeta-zero-cafe/sources";
@@ -108,10 +134,18 @@
         fetch(`${base}/Old_main.overrides.json`).then(r => r.ok ? r.json() : {}),
         fetch(`${base}/Old_main.map.json`).then(r => r.ok ? r.json() : {}),
       ]);
-      const o = ov?.chapters?.[chapterId]?.items?.[anchorId];
-      if (o?.page != null) return Number(o.page);
-      const d = mp?.chapters?.[chapterId]?.items?.[anchorId];
-      if (d?.from != null) return Number(d.from);
+
+      // 1) overrides win
+      const oCh = probeChapter(ov, chapterId);
+      const oEn = probePara(oCh, anchorId);
+      const oPg = firstPage(oEn);
+      if (oPg) return oPg;
+
+      // 2) map fallback
+      const mCh = probeChapter(mp, chapterId);
+      const mEn = probePara(mCh, anchorId);
+      const mPg = firstPage(mEn);
+      if (mPg) return mPg;
     } catch (e) {
       console.warn("resolveFrom failed", e);
     }
@@ -120,14 +154,20 @@
 
   (async () => {
     const fromPage = forced > 0 ? forced : await resolveFrom(chapter, para);
+    if (!fromPage) console.warn("Could not resolve page for", { chapter, para });
+
     initResearchOfficeGrid({
-      para, chapter,
-      fromPage,                                  // always passed
+      para,
+      chapter,
+      fromPage,                                  // always passed (0 becomes “show placeholder”)
       pdfUrl: "/cafes/zeta-zero-cafe/sources/Old_main.pdf",
       initialZoom: "fit",
     });
   })();
 </script>
+
+<!-- HUD (non-invasive) -->
+<script src="/js/research-office-hud.js"></script>
 
 <!-- HUD (non-invasive). Keep AFTER the module block -->
 <script src="/js/research-office-hud.js"></script>
