@@ -321,3 +321,59 @@ textarea {
   stroke: rgba(255,255,0,0.7);
   stroke-width: 1;
 }
+.ro-grid, .ro-grid *, .ro-markers, .ro-markers * { pointer-events: none; }
+.ro-overlay.ro-hover { box-shadow: inset 0 0 0 2px rgba(255,255,0,.25); }
+
+.ro-hud {
+  position: absolute; top: 6px; right: 6px;
+  padding: 2px 6px; border-radius: 6px;
+  font: 11px/1.3 monospace; color: #111;
+  background: rgba(255,255,180,.9);
+  pointer-events: none; opacity: 0; transition: opacity .12s ease;
+}
+.ro-hud.show { opacity: 1; }
+/* Grid should not block pointer events on the SVG surface */
+.ro-grid, .ro-grid *, .ro-markers, .ro-markers * { pointer-events: none; }
+
+/* Crosshair look (fallback inline styles also set from JS) */
+.ro-cross {
+  stroke: rgba(255,255,0,.6);
+  stroke-width: .8px;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+/* Subtle distinction between 1 mm and 1 cm lines */
+.ro-grid line { stroke: rgba(180,180,180,.25); vector-effect: non-scaling-stroke; }
+.ro-grid line[stroke-width="1.6"] { stroke: rgba(230,230,230,.45); }
+.ro-grid text.label { fill: rgba(255,255,255,.75); font: 9px monospace; user-select: none; }
+
+/* Overlay hover + HUD */
+.ro-overlay.ro-hover { box-shadow: inset 0 0 0 2px rgba(255,255,0,.25); }
+.ro-hud {
+  position: absolute; top: 6px; right: 6px;
+  padding: 2px 6px; border-radius: 6px;
+  font: 11px/1.3 monospace; color: #111;
+  background: rgba(255,255,180,.9);
+  pointer-events: none; opacity: 0; transition: opacity .12s ease;
+}
+.ro-hud.show { opacity: 1; }
+
+/* Markers */
+.ro-marker circle, .ro-marker rect {
+  fill: rgba(255,255,0,.30);
+  stroke: rgba(255,255,0,.70);
+  stroke-width: 1;
+}
+
+/* Toolbar */
+.ro-toolbar {
+  display: flex; gap: 8px; align-items: center;
+  margin-bottom: 8px;
+}
+.ro-toolbar button.active { outline: 2px solid #ffd54d; }
+.ro-toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+  background: rgba(0,0,0,.8); color: #fff; padding: 8px 12px; border-radius: 8px;
+  font: 12px/1.2 system-ui, sans-serif; z-index: 9999;
+}

@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>Research Office</title>
@@ -92,48 +93,45 @@
   <script defer src="/js/research.office.js?v=2025-10-11a"></script>
 
   <!-- Grid/backdrop module (single init) -->
-  <script type="module">
-    import { initResearchOfficeGrid } from "/js/research-office-grid.js";
+<script type="module">
+  import { initResearchOfficeGrid } from "/js/research-office-grid.js";
 
-    const Q = new URLSearchParams(location.search);
-    const PARA    = Q.get("para")    || "osf-1";
-    const CHAPTER = Q.get("chapter") || "";
-    const EXPL_FROM = Number(Q.get("from") || "0");
+  const qs      = new URLSearchParams(location.search);
+  const para    = qs.get("para")    || "osf-1";
+  const chapter = qs.get("chapter") || "";
+  const forced  = Number(qs.get("from") || "0");
 
-    // Optional: resolve missing &from via your data (overrides → map)
-    async function resolveFromPage(docId, chapter, anchor) {
-      const base = "/data/cafes/zeta-zero-cafe/sources";
-      const [overrides, map] = await Promise.all([
-        fetch(`${base}/${docId}.overrides.json`, { cache: "no-store" }).then(r => r.ok ? r.json() : null).catch(()=>null),
-        fetch(`${base}/${docId}.map.json`,       { cache: "no-store" }).then(r => r.ok ? r.json() : null).catch(()=>null),
+  async function resolveFrom(chapterId, anchorId) {
+    const base = "/data/cafes/zeta-zero-cafe/sources";
+    try {
+      const [ov, mp] = await Promise.all([
+        fetch(`${base}/Old_main.overrides.json`).then(r => r.ok ? r.json() : {}),
+        fetch(`${base}/Old_main.map.json`).then(r => r.ok ? r.json() : {}),
       ]);
-
-      const block = (root) => root?.chapters?.[chapter] && (root.chapters[chapter].items || root.chapters[chapter]) || null;
-      const pick  = (obj) => obj?.[anchor] ?? obj?.[`para-${anchor}`] ?? null;
-      const norm  = (rec) => rec
-        ? (typeof rec.page === "number" ? {from:rec.page,to:rec.page}
-           : (typeof rec.from === "number" && typeof rec.to === "number" ? {from:rec.from,to:rec.to} : null))
-        : null;
-
-      const o = norm(pick(block(overrides))); if (o) return o.from;
-      const d = norm(pick(block(map)));       if (d) return d.from;
-      return 0;
+      const o = ov?.chapters?.[chapterId]?.items?.[anchorId];
+      if (o?.page != null) return Number(o.page);
+      const d = mp?.chapters?.[chapterId]?.items?.[anchorId];
+      if (d?.from != null) return Number(d.from);
+    } catch (e) {
+      console.warn("resolveFrom failed", e);
     }
+    return 0;
+  }
 
-    (async () => {
-      const FROM = EXPL_FROM || await resolveFromPage("Old_main", CHAPTER, PARA);
+  (async () => {
+    const fromPage = forced > 0 ? forced : await resolveFrom(chapter, para);
+    initResearchOfficeGrid({
+      para, chapter,
+      fromPage,                                  // always passed
+      pdfUrl: "/cafes/zeta-zero-cafe/sources/Old_main.pdf",
+      initialZoom: "fit",
+    });
+  })();
+</script>
 
-      initResearchOfficeGrid({
-        para: PARA,
-        chapter: CHAPTER,
-        fromPage: FROM,
-        // If you have static images, you can provide:
-        // pageToUrl: (p) => `/cafes/zeta-zero-cafe/thumbs/page-${p}.jpg`,
-        // Otherwise render straight from the PDF:
-        pdfUrl: "/cafes/zeta-zero-cafe/sources/Old_main.pdf",
-        initialZoom: "fit"
-      });
-    })();
-  </script>
+<!-- HUD (non-invasive). Keep AFTER the module block -->
+<script src="/js/research-office-hud.js"></script>
+
 </body>
+
 </html>
