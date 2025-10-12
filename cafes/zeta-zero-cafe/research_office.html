@@ -1,177 +1,149 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <title>Research Office</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Styles -->
+  <!-- Your styles -->
   <link rel="stylesheet" href="/css/10-components/research-office.css" />
-
-  <!-- MathJax v3 (SVG) for TeX in previews -->
-  <script>
-    // Allow $...$ and \( ... \) inline; $$...$$ and \[ ... ] display.
-    window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']]
-      },
-      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'code'] },
-      svg: { fontCache: 'global' }
-    };
-  </script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  
 </head>
-
 <body>
-  <div class="wrap">
-    <div class="head">
-      <h1 class="ro-title" style="margin:0;">
-        Research Office — <span id="cafeName" class="tag">zeta-zero-cafe</span>
-        <span id="chapName" class="muted ro-sub" style="margin-left:.5rem"></span>
-      </h1>
-      <a id="backLink" class="btn" href="#">← Back</a>
-    </div>
+  <header class="ro-head">
+    <h1>Research Office <span class="cafe-tag">— <span id="cafeName">zeta-zero-cafe</span></span></h1>
+    <a class="ro-back" href="javascript:history.back()">← Back</a>
+  </header>
 
+  <main class="ro-main">
     <div class="row">
-      <!-- Left: paragraph preview + pick lists -->
-      <div class="card">
-        <div class="head">
-          <strong>Paragraph preview</strong>
-          <span id="paraNum" class="tag">#</span>
-        </div>
+      <!-- LEFT COLUMN -->
+      <div class="col left">
 
-        <pre id="paraPreview" class="card preview"></pre>
-
-        <!-- Backdrop stage: PDF canvas or image sits under this, SVG grid overlays it -->
-        <div id="ro-stage" class="card" style="margin-top:12px">
-          <img id="ro-page" src="" alt="source page" />
-        </div>
-
-        <div class="split" style="margin-top:12px">
-          <div>
-            <div class="head"><strong>Figures</strong></div>
-            <div id="figList" class="list"></div>
-          </div>
-          <div>
-            <div class="head"><strong>Tables</strong></div>
-            <div id="tblList" class="list"></div>
+        <!-- ============ OVERLAY AREA (moved up) ============ -->
+        <div id="stageWrap" class="card">
+          <div id="ro-stage">
+            <!-- the grid module will insert toolbar BEFORE this node -->
+            <img id="ro-page" src="" alt="source page" />
           </div>
         </div>
 
-        <div class="bar">
-          <button id="copyLink" class="btn">Copy link</button>
+        <!-- ============ PARAGRAPH PREVIEW (now below) ============ -->
+        <div class="card">
+          <div class="head">
+            <strong>Paragraph preview</strong>
+            <span id="paraNum" class="tag">#</span>
+          </div>
+          <pre id="paraPreview" class="card preview"></pre>
+
+          <div class="split" style="margin-top:12px">
+            <div>
+              <div class="head"><strong>Figures</strong></div>
+              <div id="figlist" class="list"></div>
+            </div>
+            <div>
+              <div class="head"><strong>Tables</strong></div>
+              <div id="tbllist" class="list"></div>
+            </div>
+          </div>
         </div>
-        <div class="muted" style="margin-top:8px">
-          Tip: toggle “member” in any chapter popover to show/hide the app button.
-        </div>
+
       </div>
 
-      <!-- Right: memo editor -->
-      <div class="card">
-        <div class="head"><strong>Memo to self (Markdown/LaTeX)</strong></div>
-        <textarea id="memoBody" placeholder="State the issue, desired change, and rationale..."></textarea>
-        <div class="bar">
-          <button id="saveDraft" class="btn">Save draft (browser)</button>
-          <button id="exportJson" class="btn">Export JSON</button>
-          <button id="submitDiscord" class="btn">Submit via Discord</button>
+      <!-- RIGHT COLUMN -->
+      <div class="col right">
+
+        <div class="card">
+          <div class="head"><strong>Memo to self (Markdown/LaTeX)</strong></div>
+          <textarea id="memoBody" placeholder="State the issue, desired change, and rationale..."></textarea>
+
+          <div class="actions">
+            <button id="saveDraft">Save draft (browser)</button>
+            <button id="exportMemo">Export JSON</button>
+            <button id="openDiscord">Submit via Discord</button>
+          </div>
+
+          <p class="tips">
+            RFCs are processes, not chats. Draft → step away → revise → then submit.
+          </p>
         </div>
-        <div class="muted" style="margin-top:8px">
-          RFCs are processes, not chats. Draft → step away → revise → then submit.
+
+        <div class="card" id="draftsPanel">
+          <div class="head"><strong>Recent drafts (this browser)</strong></div>
+          <div id="draftsList" class="list"></div>
         </div>
+
       </div>
     </div>
+  </main>
 
-    <div class="card" style="margin-top:16px">
-      <div class="head"><strong>Recent drafts (this browser)</strong></div>
-      <div id="memoList" class="list"></div>
-    </div>
-  </div>
+  <!-- App logic (preview/memo/figlists) -->
+  <script type="module" src="/js/research.office.js"></script>
 
-  <!-- App logic (preview + lists + memo) -->
-  <script defer src="/js/research.office.js?v=2025-10-11a"></script>
+  <!-- Grid/HUD scripts -->
+  <script type="module">
+    import { initResearchOfficeGrid } from "/js/research-office-grid.js";
 
-  <!-- Grid/backdrop module (single init) -->
-<script type="module">
-  import { initResearchOfficeGrid } from "/js/research-office-grid.js";
+    const qs      = new URLSearchParams(location.search);
+    const para    = qs.get("para")    || "osf-1";
+    const chapter = qs.get("chapter") || "";
+    const forced  = Number(qs.get("from") || "0");
 
-  const qs      = new URLSearchParams(location.search);
-  const para    = qs.get("para")    || "osf-1";   // e.g. "osf-7"
-  const chapter = qs.get("chapter") || "";        // e.g. "notebook/chapter-7-....html"
-  const forced  = Number(qs.get("from") || "0");
+    // robust page resolver (overrides first, map fallback)
+    const norm = s => (s||"").replace(/\\/g,"/").replace(/^\/+|\/+$/g,"").toLowerCase();
+    const dropNotebook = s => norm(s).replace(/^notebook\//,"");
+    const onlyFile = s => norm(s).split("/").slice(-1)[0];
 
-  // normalizers used by both overrides + map
-  const norm = s => (s||"").replace(/\\/g,"/").replace(/^\/+|\/+$/g,"").toLowerCase();
-  const dropNotebook = s => norm(s).replace(/^notebook\//,"");
-  const onlyFile = s => norm(s).split("/").slice(-1)[0];
-
-  function probeChapter(obj, chap) {
-    if (!obj || !obj.chapters) return null;
-    const keys = [ norm(chap), dropNotebook(chap), onlyFile(chap) ];
-    return obj.chapters[keys[0]] || obj.chapters[keys[1]] || obj.chapters[keys[2]] || null;
-  }
-  function probePara(chObj, anchor) {
-    if (!chObj) return null;
-    // accept both shapes: direct or .items
-    const P = anchor;
-    return (chObj[P]) || (chObj.items && chObj.items[P]) || null;
-  }
-  function firstPage(entry) {
-    if (!entry) return 0;
-    const cand = [entry.page, entry.from, entry.start, entry.pdf_from, entry.p];
-    for (const v of cand) {
-      const n = parseInt(v, 10);
-      if (Number.isFinite(n) && n > 0) return n;
+    function probeChapter(obj, chap) {
+      if (!obj || !obj.chapters) return null;
+      const keys = [ norm(chap), dropNotebook(chap), onlyFile(chap) ];
+      return obj.chapters[keys[0]] || obj.chapters[keys[1]] || obj.chapters[keys[2]] || null;
     }
-    return 0;
-  }
-
-  async function resolveFrom(chapterId, anchorId) {
-    const base = "/data/cafes/zeta-zero-cafe/sources";
-    try {
-      const [ov, mp] = await Promise.all([
-        fetch(`${base}/Old_main.overrides.json`).then(r => r.ok ? r.json() : {}),
-        fetch(`${base}/Old_main.map.json`).then(r => r.ok ? r.json() : {}),
-      ]);
-
-      // 1) overrides win
-      const oCh = probeChapter(ov, chapterId);
-      const oEn = probePara(oCh, anchorId);
-      const oPg = firstPage(oEn);
-      if (oPg) return oPg;
-
-      // 2) map fallback
-      const mCh = probeChapter(mp, chapterId);
-      const mEn = probePara(mCh, anchorId);
-      const mPg = firstPage(mEn);
-      if (mPg) return mPg;
-    } catch (e) {
-      console.warn("resolveFrom failed", e);
+    function probePara(chObj, anchor) {
+      if (!chObj) return null;
+      return (chObj[anchor]) || (chObj.items && chObj.items[anchor]) || null;
     }
-    return 0;
-  }
+    function firstPage(entry) {
+      if (!entry) return 0;
+      const candidates = [entry.page, entry.from, entry.start, entry.pdf_from, entry.p];
+      for (const v of candidates) {
+        const n = parseInt(v, 10);
+        if (Number.isFinite(n) && n > 0) return n;
+      }
+      return 0;
+    }
+    async function resolveFrom(chapterId, anchorId) {
+      const base = "/data/cafes/zeta-zero-cafe/sources";
+      try {
+        const [ov, mp] = await Promise.all([
+          fetch(`${base}/Old_main.overrides.json`).then(r => r.ok ? r.json() : {}),
+          fetch(`${base}/Old_main.map.json`).then(r => r.ok ? r.json() : {}),
+        ]);
+        const oCh = probeChapter(ov, chapterId);
+        const oPg = firstPage(probePara(oCh, anchorId));
+        if (oPg) return oPg;
 
-  (async () => {
-    const fromPage = forced > 0 ? forced : await resolveFrom(chapter, para);
-    if (!fromPage) console.warn("Could not resolve page for", { chapter, para });
+        const mCh = probeChapter(mp, chapterId);
+        const mPg = firstPage(probePara(mCh, anchorId));
+        if (mPg) return mPg;
+      } catch (e) {
+        console.warn("resolveFrom failed", e);
+      }
+      return 0;
+    }
 
-    initResearchOfficeGrid({
-      para,
-      chapter,
-      fromPage,                                  // always passed (0 becomes “show placeholder”)
-      pdfUrl: "/cafes/zeta-zero-cafe/sources/Old_main.pdf",
-      initialZoom: "fit",
-    });
-  })();
-</script>
+    (async () => {
+      const fromPage = forced > 0 ? forced : await resolveFrom(chapter, para);
 
-<!-- HUD (non-invasive) -->
-<script src="/js/research-office-hud.js"></script>
-
-<!-- HUD (non-invasive). Keep AFTER the module block -->
-<script src="/js/research-office-hud.js"></script>
-
+      initResearchOfficeGrid({
+        para,
+        chapter,
+        fromPage,
+        pdfUrl: "/cafes/zeta-zero-cafe/sources/Old_main.pdf",
+        initialZoom: "fit",
+      });
+    })();
+  </script>
+  <script src="/js/research-office-hud.js"></script>
 </body>
-
 </html>

@@ -1,114 +1,148 @@
-/* Research Office — loads a single paragraph preview + nearby figures/tables.
+/* Research Office — loads a paragraph preview + figures/tables and memo actions.
    Query: ?para=osf-N&chapter=notebook/<file>.html&return=<encoded-url>
 */
 (() => {
-  const $ = (sel, el = document) => el.querySelector(sel);
-  const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
+  // ---------- tiny DOM helpers ----------
+  const $  = (sel, el=document) => el.querySelector(sel);
+  const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
 
-  // Basic context
-  const params   = new URLSearchParams(location.search);
-  const paraId   = params.get('para') || '';                        // e.g. osf-5
-  const chapter  = decodeURIComponent(params.get('chapter')||'');   // notebook/chapter-1-…html
-  const retUrl   = decodeURIComponent(params.get('return')||'');
-  const cafeSlug = location.pathname.split('/').filter(Boolean)[1] || 'zeta-zero-cafe'; // cafes/<slug>/…
+  // ---------- query / context ----------
+  const qs       = new URLSearchParams(location.search);
+  const PARA_ID  = qs.get("para") || "";                        // e.g. osf-7
+  let   CHAPTER  = qs.get("chapter") || "";                     // e.g. notebook/chapter-1-…html
+  try { CHAPTER = decodeURIComponent(CHAPTER); } catch {}
 
-  // DOM targets (match IDs in HTML)
-  const previewBox = $('#paraPreview');
-  const numBadge   = $('#paraNum');
-  const figsList   = $('#figList');
-  const tblList    = $('#tblList');
-  const backLink   = $('#backLink');
-  const copyLink   = $('#copyLink');
-  const memoBody   = $('#memoBody');
-  const memoList   = $('#memoList');
+  // cafes/<slug>/...
+  const cafeSlug = location.pathname.split("/").filter(Boolean)[1] || "zeta-zero-cafe";
+  const cafeBase = `/cafes/${cafeSlug}`;
 
-  // Derived URLs
-  const chapterFile   = chapter.split('/').pop() || '';
-  const chapterSlug   = chapterFile.replace(/\.html$/,'');
-  const cafeBase      = `/cafes/${cafeSlug}`;
-  const chapterUrlAbs = `${cafeBase}/${chapter}`;                   // absolute URL to chapter html
+  // ---------- targets (match your HTML) ----------
+  const previewBox = $("#paraPreview");
+  const numBadge   = $("#paraNum");
+  const figsList   = $("#figlist");
+  const tblList    = $("#tbllist");
+  const memoBody   = $("#memoBody");
+  const draftsList = $("#draftsList");
 
-  function paraNumberFrom(para) {
-    const m = String(para).match(/osf-(\d+)/);
+  // buttons
+  const btnSaveDraft = $("#saveDraft");
+  const btnExport    = $("#exportMemo");
+  const btnDiscord   = $("#openDiscord");
+
+  // ---------- utils ----------
+  const escapeHtml = (s) => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+
+  const paraNumberFrom = (id) => {
+    const m = String(id).match(/osf-(\d+)/);
     return m ? Number(m[1]) : null;
-  }
+  };
 
-  function setBadge(n) {
+  const setBadge = (n) => {
     if (!numBadge) return;
-    numBadge.textContent = n != null ? `#${n}` : '#';
-    numBadge.title = n != null ? `Paragraph ${n}` : '';
-  }
+    numBadge.textContent = n != null ? `#${n}` : "#";
+    numBadge.title = n != null ? `Paragraph ${n}` : "";
+  };
 
-  function setBackLink() {
-    if (!backLink) return;
-    const href = retUrl || `${cafeBase}/${chapter}`;
-    backLink.addEventListener('click', e => {
-      e.preventDefault();
-      location.href = href;
-    });
-  }
-
-  function buildOpenLink(anchorId) {
-    // open link points back into the chapter
-    return `${cafeBase}/${chapter}#${anchorId}`;
-  }
+  const buildOpenLink = (anchorId) => `${cafeBase}/${CHAPTER.replace(/^\/+/, "")}#${anchorId}`;
 
   function normalisePreviewAssets(container) {
     // Make relative images load from /cafes/<slug>/notebook/
-    $$('img', container).forEach(img => {
-      const src = img.getAttribute('src') || '';
+    $$("img", container).forEach(img => {
+      const src = img.getAttribute("src") || "";
       if (!src || /^(https?:|data:|\/)/i.test(src)) return; // absolute/data ok
       img.src = `${cafeBase}/notebook/${src}`;
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      img.style.maxWidth = '100%';
-      img.style.height = 'auto';
-      img.style.display = 'block';
-      img.style.margin = '0 auto';
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.style.maxWidth = "100%";
+      img.style.height = "auto";
+      img.style.display = "block";
+      img.style.margin = "0 auto";
     });
+  }
+
+  // --- MathJax: ensure present + typeset container ---------------------------
+  async function ensureMathJax() {
+    if (window.MathJax) return;
+    // minimal config: allow \( \) and $ $
+    window.MathJax = window.MathJax || {
+      tex: { inlineMath: [['\\(','\\)'], ['$', '$']] },
+      options: { skipHtmlTags: { '[-]': ['script','noscript','style','textarea','pre','code'] } }
+    };
+    await new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.id = "MathJax-script";
+      s.async = true;
+      s.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js";
+      s.onload = resolve;
+      s.onerror = () => reject(new Error("Failed to load MathJax"));
+      document.head.appendChild(s);
+    });
+    await new Promise(r => setTimeout(r, 50));
   }
 
   async function typeset(container) {
-    if (!window.MathJax) return;
     try {
+      await ensureMathJax();
       if (MathJax.typesetClear) MathJax.typesetClear([container]);
       if (MathJax.texReset)     MathJax.texReset();
-    } catch (_) {}
-    await (MathJax.typesetPromise ? MathJax.typesetPromise([container]) : MathJax.typeset([container]));
+      if (MathJax.typesetPromise) {
+        await MathJax.typesetPromise([container]);
+      } else if (MathJax.typeset) {
+        MathJax.typeset([container]);
+      }
+    } catch (e) {
+      console.warn("MathJax typeset skipped:", e);
+    }
   }
 
-  function copyLinkToClipboard() {
-    const link = `${location.origin}${cafeBase}/${chapter}#${paraId}`;
-    navigator.clipboard?.writeText(link).then(() => {
-      copyLink?.classList.add('ok');
-      setTimeout(() => copyLink?.classList.remove('ok'), 900);
-    }).catch(() => alert('Could not copy link to clipboard.'));
+  // ---------- robust chapter fetch ----------
+  function normPath(s){ return (s||"").replace(/\\/g,"/").replace(/^\/+|\/+$/g,""); }
+  function candidatesForChapter(ch) {
+    const c = normPath(ch);
+    const list = [];
+    if (c.startsWith("http")) list.push(c);
+    if (c.startsWith("/"))    list.push(c);
+    list.push(`${cafeBase}/${c}`);                 // cafe-relative
+    list.push(c.replace(/^\/+/, ""));              // bare relative (if served from same root)
+    return [...new Set(list)];
   }
 
+  async function loadChapterDom() {
+    const tries = candidatesForChapter(CHAPTER);
+    let lastErr = null;
+    for (const url of tries) {
+      try {
+        const res = await fetch(url, { credentials: "omit" });
+        if (!res.ok) { lastErr = new Error(`HTTP ${res.status} on ${url}`); continue; }
+        const html = await res.text();
+        const doc  = new DOMParser().parseFromString(html, "text/html");
+        return { doc, usedUrl: url };
+      } catch (e) { lastErr = e; }
+    }
+    throw lastErr || new Error("Failed to fetch chapter HTML");
+  }
+
+  // ---------- preview + lists ----------
   function listChapterFiguresAndTables(chapterDoc) {
-    // Anything <figure id="..."> inside the chapter becomes a selectable reference
     const figures = [];
     const tables  = [];
-
-    $$('figure[id]', chapterDoc).forEach(fig => {
+    $$("figure[id]", chapterDoc).forEach(fig => {
       const id = fig.id;
-      const caption = $('figcaption', fig)?.textContent?.trim() || id;
-      const isTable = fig.querySelector('table') !== null;
-
+      const caption = $("figcaption", fig)?.textContent?.trim() || id;
+      const isTable = fig.querySelector("table") !== null;
       const item = { id, caption, href: buildOpenLink(id) };
       (isTable ? tables : figures).push(item);
     });
-
     return { figures, tables };
   }
 
   function renderRefLists(refs) {
-    figsList.innerHTML = '';
-    tblList .innerHTML = '';
+    if (figsList) figsList.innerHTML = "";
+    if (tblList)  tblList .innerHTML = "";
 
     refs.figures.forEach(f => {
-      const row = document.createElement('div');
-      row.className = 'item';
+      const row = document.createElement("div");
+      row.className = "item";
       row.innerHTML = `
         <label>
           <input type="checkbox" data-id="${f.id}">
@@ -116,12 +150,12 @@
         </label>
         <a class="open" href="${f.href}" target="_blank" rel="noopener">open</a>
       `;
-      figsList.appendChild(row);
+      figsList?.appendChild(row);
     });
 
     refs.tables.forEach(t => {
-      const row = document.createElement('div');
-      row.className = 'item';
+      const row = document.createElement("div");
+      row.className = "item";
       row.innerHTML = `
         <label>
           <input type="checkbox" data-id="${t.id}">
@@ -129,108 +163,116 @@
         </label>
         <a class="open" href="${t.href}" target="_blank" rel="noopener">open</a>
       `;
-      tblList.appendChild(row);
+      tblList?.appendChild(row);
     });
   }
 
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
+  async function previewParagraph(chapterDoc, paraId, usedUrl) {
+    // find requested anchor, or fall back to first osf-*
+    let node = chapterDoc.getElementById(paraId);
+    if (!node) node = chapterDoc.querySelector("[id^='osf-']");
 
-  async function loadChapterDom() {
-    const html = await fetch(chapterUrlAbs, { credentials: 'omit' }).then(r => r.text());
-    return new DOMParser().parseFromString(html, 'text/html');
-  }
-
-  async function previewParagraph(doc, para) {
-    // 1) Find the <pre id="osf-N"> in the chapter DOM
-    const pre = doc.getElementById(para);
-    if (!pre) {
-      previewBox.innerHTML = `<div class="warn">Could not locate <code>#${para}</code> in the chapter.</div>`;
+    if (!node) {
+      previewBox.textContent =
+        "Loaded chapter, but could not find paragraph anchor.\n" +
+        `Anchor: ${paraId || "(missing)"}\nURL: ${usedUrl || "(?)"}`;
       return;
     }
 
-    // 2) Inject a *clone* into the preview
-    previewBox.innerHTML = '';
-    const clone = pre.cloneNode(true);
-    // remove fixed image widths, if any
-    $$('img', clone).forEach(img => img.removeAttribute('width'));
+    const pickedId = node.id || paraId || "osf-?";
+    setBadge(paraNumberFrom(pickedId));
+
+    // choose a readable preview chunk (section/card around the anchor)
+    const container = node.closest("section, article, .osf, .card") || node.parentElement || node;
+
+    // inject clone
+    previewBox.innerHTML = "";
+    const clone = container.cloneNode(true);
+    $$("img", clone).forEach(img => img.removeAttribute("width"));
     previewBox.appendChild(clone);
 
-    // 3) Make relative assets work
+    // fix relative assets + typeset math
     normalisePreviewAssets(previewBox);
-
-    // 4) Typeset math freshly (no duplicate labels)
     await typeset(previewBox);
 
-    // 5) Fill figure/table lists from the chapter
-    const refs = listChapterFiguresAndTables(doc);
-    renderRefLists(refs);
+    // figure/table lists
+    renderRefLists(listChapterFiguresAndTables(chapterDoc));
   }
 
-  // ---------------- Memos (local only) ----------------
+  // ---------- local memos ----------
   function loadMemos() {
-    try { return JSON.parse(localStorage.getItem('ro:memos') || '[]'); }
+    try { return JSON.parse(localStorage.getItem("ro:memos") || "[]"); }
     catch { return []; }
   }
   function saveMemos(list) {
-    localStorage.setItem('ro:memos', JSON.stringify(list));
+    localStorage.setItem("ro:memos", JSON.stringify(list));
   }
-  function renderMemoList() {
+  function renderDrafts() {
     const memos = loadMemos();
-    memoList.innerHTML = '';
+    if (draftsList) draftsList.innerHTML = "";
     memos.slice().reverse().forEach(m => {
-      const row = document.createElement('div');
-      row.className = 'item';
-      row.innerHTML = `<div class="mono" style="opacity:.7">${escapeHtml(m.title)}</div>`;
-      memoList.appendChild(row);
+      const row = document.createElement("div");
+      row.className = "item";
+      row.innerHTML = `<div class="mono" style="opacity:.75">${escapeHtml(m.title)}</div>`;
+      draftsList?.appendChild(row);
     });
   }
-
   function wireMemoButtons() {
-    $('#saveDraft')?.addEventListener('click', () => {
-      const body = memoBody?.value?.trim() || '';
+    btnSaveDraft?.addEventListener("click", () => {
+      const body = memoBody?.value?.trim() || "";
       if (!body) return;
+      const chapterFile = CHAPTER.split("/").pop() || "";
+      const chapterSlug = chapterFile.replace(/\.html$/,"");
       const memos = loadMemos();
-      memos.push({ title: `${chapterSlug} · ${paraId}`, body, ts: Date.now() });
+      memos.push({ title: `${chapterSlug} · ${PARA_ID||"osf-?"}`, body, ts: Date.now() });
       saveMemos(memos);
-      renderMemoList();
+      renderDrafts();
     });
 
-    $('#exportJson')?.addEventListener('click', () => {
+    btnExport?.addEventListener("click", () => {
+      const chapterFile = CHAPTER.split("/").pop() || "";
+      const chapterSlug = chapterFile.replace(/\.html$/,"");
       const payload = {
-        chapter, para: paraId,
-        memo: memoBody?.value || '',
+        chapter: CHAPTER,
+        para: PARA_ID,
+        memo: memoBody?.value || "",
         when: new Date().toISOString()
       };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `${chapterSlug}-${paraId}.memo.json`; a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      const a = document.createElement("a");
+      a.href = url; a.download = `${chapterSlug}-${PARA_ID||"osf"}.memo.json`; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 800);
+    });
+
+    btnDiscord?.addEventListener("click", () => {
+      alert("Wire this to your Discord flow when ready.");
     });
   }
 
-  // ---------------- Init ----------------
+  // ---------- init ----------
   async function init() {
-    if (!paraId || !chapter) {
-      previewBox.innerHTML = `<div class="warn">Missing or invalid query parameters.</div>`;
+    if (!previewBox) return;
+    if (!PARA_ID || !CHAPTER) {
+      previewBox.textContent = "Missing or invalid query parameters (para / chapter).";
       return;
     }
-    setBackLink();
-    setBadge(paraNumberFrom(paraId));
-    copyLink?.addEventListener('click', copyLinkToClipboard, { once: true });
+
+    setBadge(paraNumberFrom(PARA_ID));
 
     try {
-      const chapterDoc = await loadChapterDom();
-      await previewParagraph(chapterDoc, paraId);
-      renderMemoList();
+      const { doc, usedUrl } = await loadChapterDom();
+      await previewParagraph(doc, PARA_ID, usedUrl);
+      renderDrafts();
       wireMemoButtons();
     } catch (err) {
-      console.error('[research-office] failed:', err);
-      previewBox.innerHTML = `<div class="warn">Failed to load the chapter or paragraph preview.</div>`;
+      console.error("[research-office] preview failed:", err);
+      previewBox.textContent =
+        "Failed to load the chapter or paragraph preview.\n" +
+        (err ? String(err) : "");
     }
   }
 
-  if (document.readyState !== 'loading') init();
-  else document.addEventListener('DOMContentLoaded', init);
+  if (document.readyState !== "loading") init();
+  else document.addEventListener("DOMContentLoaded", init);
 })();

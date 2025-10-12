@@ -1,152 +1,221 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <title>Research Office Grid — Smoke Test</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root { color-scheme: dark; }
-    body { font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background: #0d0f12; color: #eaeef2; }
-    header { padding: 16px 20px; border-bottom: 1px solid #1e2430; }
-    main { padding: 16px 20px; display: grid; grid-template-columns: 420px 1fr; gap: 24px; }
-    .panel { background: #11151b; border: 1px solid #1e2430; border-radius: 12px; padding: 12px; }
-    .ok { color: #6ee7a8; }
-    .bad { color: #fca5a5; }
-    ul { margin: 8px 0 0; padding-left: 20px; }
-    code { background: #0b1016; padding: 1px 4px; border-radius: 4px; }
-    .gridArea { padding: 8px; }
-    .ro-toolbar { margin-bottom: 8px; }
-    /* Just so the stage is visible for the test */
-    #stageWrap { border: 1px dashed #263042; border-radius: 10px; padding: 8px; }
-    #ro-stage { min-height: 300px; }
-    /* Toast area */
-    #log { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre-wrap; background:#0b1016; padding:8px; border-radius:8px; border:1px solid #1e2430;}
-  </style>
+    <meta charset="utf-8" />
+    <title>Research Office Grid — Smoke Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+
+        body {
+            font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            margin: 0;
+            background: #0d0f12;
+            color: #eaeef2;
+        }
+
+        header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #1e2430;
+        }
+
+        main {
+            padding: 16px 20px;
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 24px;
+        }
+
+        .panel {
+            background: #11151b;
+            border: 1px solid #1e2430;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .ok {
+            color: #6ee7a8;
+        }
+
+        .bad {
+            color: #fca5a5;
+        }
+
+        ul {
+            margin: 8px 0 0;
+            padding-left: 20px;
+        }
+
+        code {
+            background: #0b1016;
+            padding: 1px 4px;
+            border-radius: 4px;
+        }
+
+        .gridArea {
+            padding: 8px;
+        }
+
+        .ro-toolbar {
+            margin-bottom: 8px;
+        }
+
+        /* Just so the stage is visible for the test */
+        #stageWrap {
+            border: 1px dashed #263042;
+            border-radius: 10px;
+            padding: 8px;
+        }
+
+        #ro-stage {
+            min-height: 300px;
+        }
+
+        /* Toast area */
+        #log {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            white-space: pre-wrap;
+            background: #0b1016;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #1e2430;
+        }
+    </style>
 </head>
+
 <body>
-  <header>
-    <h1 style="margin:0;font-size:18px;">Research Office Grid — Smoke Test</h1>
-    <div style="opacity:.75">Asserts toolbar presence, PDF render (canvas size), overlay/SVG, and physical page size for HUD.</div>
-  </header>
+    <header>
+        <h1 style="margin:0;font-size:18px;">Research Office Grid — Smoke Test</h1>
+        <div style="opacity:.75">Asserts toolbar presence, PDF render (canvas size), overlay/SVG, and physical page size
+            for HUD.</div>
+    </header>
 
-  <main>
-    <div class="panel">
-      <h3 style="margin:4px 0 8px;">Results</h3>
-      <ul id="results"></ul>
-      <h4 style="margin:12px 0 6px;">Debug log</h4>
-      <div id="log"></div>
-      <p style="opacity:.75;margin-top:12px;">
-        Tips: pass <code>?from=53</code> (or any page) and optionally <code>&chapter=…&para=…</code>.
-        Defaults are chosen to just render a page.
-      </p>
-    </div>
-
-    <div class="panel gridArea">
-      <!-- The grid module inserts the toolbar BEFORE this stage node -->
-      <div id="stageWrap">
-        <div id="ro-stage">
-          <!-- grid uses this image slot only for the non-PDF fallback -->
-          <img id="ro-page" alt="source page" style="display:none;" />
+    <main>
+        <div class="panel">
+            <h3 style="margin:4px 0 8px;">Results</h3>
+            <ul id="results"></ul>
+            <h4 style="margin:12px 0 6px;">Debug log</h4>
+            <div id="log"></div>
+            <p style="opacity:.75;margin-top:12px;">
+                Tips: pass <code>?from=53</code> (or any page) and optionally <code>&chapter=…&para=…</code>.
+                Defaults are chosen to just render a page.
+            </p>
         </div>
-      </div>
 
-      <!-- Minimal memo target so token insertion doesn’t fail -->
-      <textarea id="memoBody" style="margin-top:10px;width:100%;height:80px" placeholder="memo sink for token test"></textarea>
-    </div>
-  </main>
+        <div class="panel gridArea">
+            <!-- The grid module inserts the toolbar BEFORE this stage node -->
+            <div id="stageWrap">
+                <div id="ro-stage">
+                    <!-- grid uses this image slot only for the non-PDF fallback -->
+                    <img id="ro-page" alt="source page" style="display:none;" />
+                </div>
+            </div>
 
-  <!-- Your code -->
-  <script type="module">
-    import { initResearchOfficeGrid } from "/js/research-office-grid.js";
+            <!-- Minimal memo target so token insertion doesn’t fail -->
+            <textarea id="memoBody" style="margin-top:10px;width:100%;height:80px"
+                placeholder="memo sink for token test"></textarea>
+        </div>
+    </main>
 
-    // --- tiny helpers
-    const qs = new URLSearchParams(location.search);
-    const from = Number(qs.get("from") || "53"); // default to 'some' valid page
-    const para = qs.get("para") || "osf-test";
-    const chapter = qs.get("chapter") || "notebook/chapter-3-the-primorial-function.html";
+    <!-- Your code -->
+    <script type="module">
+        import { initResearchOfficeGrid } from "/js/research-office-grid.js";
 
-    function log(...a){ document.getElementById('log').textContent += a.join(' ') + '\n'; }
-    function li(ok, msg){
-      const el = document.createElement('li');
-      el.className = ok ? 'ok' : 'bad';
-      el.textContent = (ok ? '✔ ' : '✖ ') + msg;
-      document.getElementById('results').appendChild(el);
-    }
-    const wait = (ms)=> new Promise(r=>setTimeout(r,ms));
-    async function until(fn, {timeout=8000, interval=80}={}) {
-      const t0 = performance.now();
-      for(;;){
-        try { const v = await fn(); if (v) return v; } catch {}
-        if (performance.now()-t0 > timeout) throw new Error('timeout');
-        await wait(interval);
-      }
-    }
+        // --- tiny helpers
+        const qs = new URLSearchParams(location.search);
+        const from = Number(qs.get("from") || "53"); // default to 'some' valid page
+        const para = qs.get("para") || "osf-test";
+        const chapter = qs.get("chapter") || "notebook/chapter-3-the-primorial-function.html";
 
-    // --- init grid
-    initResearchOfficeGrid({
-      para,
-      chapter,
-      fromPage: from,
-      pdfUrl: "/cafes/zeta-zero-cafe/sources/Old_main.pdf",
-      initialZoom: "fit",
-    });
+        function log(...a) { document.getElementById('log').textContent += a.join(' ') + '\n'; }
+        function li(ok, msg) {
+            const el = document.createElement('li');
+            el.className = ok ? 'ok' : 'bad';
+            el.textContent = (ok ? '✔ ' : '✖ ') + msg;
+            document.getElementById('results').appendChild(el);
+        }
+        const wait = (ms) => new Promise(r => setTimeout(r, ms));
+        async function until(fn, { timeout = 8000, interval = 80 } = {}) {
+            const t0 = performance.now();
+            for (; ;) {
+                try { const v = await fn(); if (v) return v; } catch { }
+                if (performance.now() - t0 > timeout) throw new Error('timeout');
+                await wait(interval);
+            }
+        }
 
-    // --- assertions
-    (async () => {
-      try {
-        log('waiting for toolbar…');
-        await until(()=>[
-          'ro-mode-point','ro-mode-box','ro-zoom-out','ro-zoom-fit','ro-zoom-in',
-          'ro-clear','ro-export','ro-units'
-        ].every(id=>document.getElementById(id)));
-
-        li(true, 'Toolbar buttons present');
-      } catch(e){
-        li(false, 'Toolbar buttons missing'); log(e.message);
-      }
-
-      let canvas;
-      try {
-        log('waiting for canvas to render…');
-        canvas = await until(()=>{
-          const c = document.getElementById('ro-page-canvas');
-          return (c && c.width > 0 && c.height > 0) ? c : null;
+        // --- init grid
+        initResearchOfficeGrid({
+            para,
+            chapter,
+            fromPage: from,
+            pdfUrl: "/cafes/zeta-zero-cafe/sources/Old_main.pdf",
+            initialZoom: "fit",
         });
-        li(true, `PDF rendered: ${canvas.width}×${canvas.height}px`);
-      } catch(e){
-        li(false, 'PDF canvas not rendered (width/height = 0)'); log(e.message);
-      }
 
-      try {
-        const overlay = document.querySelector('#ro-stage .ro-overlay');
-        const svg = overlay?.querySelector('svg');
-        li(!!(overlay && svg), 'Overlay + SVG present');
-        if (!overlay || !svg) log('overlay or svg missing');
-      } catch(e){
-        li(false, 'Overlay/SVG missing'); log(e.message);
-      }
+        // --- assertions
+        (async () => {
+            try {
+                log('waiting for toolbar…');
+                await until(() => [
+                    'ro-mode-point', 'ro-mode-box', 'ro-zoom-out', 'ro-zoom-fit', 'ro-zoom-in',
+                    'ro-clear', 'ro-export', 'ro-units'
+                ].every(id => document.getElementById(id)));
 
-      try {
-        const stage = document.getElementById('ro-stage');
-        const w = Number(stage.dataset.pageMmW || 0);
-        const h = Number(stage.dataset.pageMmH || 0);
-        li((w>0 && h>0), `Physical page size reported: ${w.toFixed(1)}mm × ${h.toFixed(1)}mm`);
-        if (!(w>0 && h>0)) log('pageMmW/H not set on #ro-stage');
-      } catch(e){
-        li(false, 'Physical size not exposed for HUD'); log(e.message);
-      }
+                li(true, 'Toolbar buttons present');
+            } catch (e) {
+                li(false, 'Toolbar buttons missing'); log(e.message);
+            }
 
-      // Optional: quick token test by simulating a marker insert (no pointer)
-      try {
-        const tokenInput = document.getElementById('ro-token');
-        li(!!tokenInput, 'Token input present (click-marker copy sink)');
-      } catch { /* non-fatal */ }
+            let canvas;
+            try {
+                log('waiting for canvas to render…');
+                canvas = await until(() => {
+                    const c = document.getElementById('ro-page-canvas');
+                    return (c && c.width > 0 && c.height > 0) ? c : null;
+                });
+                li(true, `PDF rendered: ${canvas.width}×${canvas.height}px`);
+            } catch (e) {
+                li(false, 'PDF canvas not rendered (width/height = 0)'); log(e.message);
+            }
 
-      log('done.');
-    })();
-  </script>
+            try {
+                const overlay = document.querySelector('#ro-stage .ro-overlay');
+                const svg = overlay?.querySelector('svg');
+                li(!!(overlay && svg), 'Overlay + SVG present');
+                if (!overlay || !svg) log('overlay or svg missing');
+            } catch (e) {
+                li(false, 'Overlay/SVG missing'); log(e.message);
+            }
 
-  <!-- HUD sidecar (optional; reads pageMmW/H) -->
-  <script src="/js/research-office-hud.js"></script>
+            try {
+                const stage = document.getElementById('ro-stage');
+                const size = await until(() => {
+                    const w = Number(stage.dataset.pageMmW || 0);
+                    const h = Number(stage.dataset.pageMmH || 0);
+                    return (w > 0 && h > 0) ? { w, h } : null;
+                }, { timeout: 8000, interval: 80 });
+                li(true, `Physical page size reported: ${size.w.toFixed(1)}mm × ${size.h.toFixed(1)}mm`);
+            } catch (e) {
+                li(false, 'Physical size not exposed for HUD'); log(e.message);
+            }
+
+
+            // Optional: quick token test by simulating a marker insert (no pointer)
+            try {
+                const tokenInput = document.getElementById('ro-token');
+                li(!!tokenInput, 'Token input present (click-marker copy sink)');
+            } catch { /* non-fatal */ }
+
+            log('done.');
+        })();
+    </script>
+
+    <!-- HUD sidecar (optional; reads pageMmW/H) -->
+    <script src="/js/research-office-hud.js"></script>
 </body>
+
 </html>

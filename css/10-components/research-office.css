@@ -377,3 +377,37 @@ textarea {
   background: rgba(0,0,0,.8); color: #fff; padding: 8px 12px; border-radius: 8px;
   font: 12px/1.2 system-ui, sans-serif; z-index: 9999;
 }
+/* === Metric grid tone refinement === */
+
+/* Base 1 mm lines — light neutral gray */
+.ro-grid line {
+  stroke: rgba(180, 180, 180, 0.25);
+  vector-effect: non-scaling-stroke;
+}
+
+/* Every 1 cm line (thicker + brighter) */
+.ro-grid line[stroke-width="1.6"] {
+  stroke: rgba(230, 230, 230, 0.45);
+}
+
+/* Optional: reinforce the outer frame of the page */
+.ro-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255,255,255,0.25);
+  pointer-events: none;
+}
+
+/* Maintain clean snap-to-grid visibility */
+.ro-marker circle,
+.ro-marker rect {
+  fill: rgba(255,255,0,0.3);
+  stroke: rgba(255,255,0,0.7);
+  stroke-width: 1;
+}
+/* memo driven .ro-markers */
+.ro-marker.memo circle, .ro-marker.memo rect {
+  fill: rgba(80,200,255,.25);
+  stroke: rgba(80,200,255,.8);
+}
