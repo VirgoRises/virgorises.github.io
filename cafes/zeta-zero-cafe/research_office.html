@@ -1,14 +1,13 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>Research Office</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Your styles -->
   <link rel="stylesheet" href="/css/10-components/research-office.css" />
-  
 </head>
+
 <body>
   <header class="ro-head">
     <h1>Research Office <span class="cafe-tag">— <span id="cafeName">zeta-zero-cafe</span></span></h1>
@@ -17,24 +16,24 @@
 
   <main class="ro-main">
     <div class="row">
-      <!-- LEFT COLUMN -->
+      <!-- LEFT -->
       <div class="col left">
 
-        <!-- ============ OVERLAY AREA (moved up) ============ -->
+        <!-- Overlay first -->
         <div id="stageWrap" class="card">
           <div id="ro-stage">
-            <!-- the grid module will insert toolbar BEFORE this node -->
+            <!-- grid module injects its toolbar before this node -->
             <img id="ro-page" src="" alt="source page" />
           </div>
         </div>
 
-        <!-- ============ PARAGRAPH PREVIEW (now below) ============ -->
+        <!-- Paragraph preview under it -->
         <div class="card">
           <div class="head">
             <strong>Paragraph preview</strong>
             <span id="paraNum" class="tag">#</span>
           </div>
-          <pre id="paraPreview" class="card preview"></pre>
+          <div id="paraPreview" class="card preview"></div>
 
           <div class="split" style="margin-top:12px">
             <div>
@@ -50,24 +49,49 @@
 
       </div>
 
-      <!-- RIGHT COLUMN -->
+      <!-- RIGHT -->
       <div class="col right">
 
         <div class="card">
-          <div class="head"><strong>Memo to self (Markdown/LaTeX)</strong></div>
+          <div class="head"><strong>Memo to self (Markdown + LaTeX)</strong></div>
+
+          <!-- Markdown toolbar -->
+          <div class="mdbar" id="mdbar">
+            <button data-md="**|**" title="Bold">B</button>
+            <button data-md="_|_" title="Italic"><i>I</i></button>
+            <button data-md="`|`" title="Inline code">{ }</button>
+            <button data-md="> |" title="Quote">❝</button>
+            <button data-md="- |" title="List">•</button>
+            <button data-md="[text](url)" data-mode="wrap" title="Link">🔗</button>
+            <span class="sep"></span>
+            <button data-md="\\(|\\)" title="Inline math">\(x\)</button>
+            <button data-md="$$\n|\n$$" title="Block math">∑</button>
+            <span class="sep"></span>
+            <button id="btnPreview" title="Render Markdown + LaTeX">Preview</button>
+          </div>
+
           <textarea id="memoBody" placeholder="State the issue, desired change, and rationale..."></textarea>
+          <div id="memoPreview" class="memo-preview" hidden></div>
 
           <div class="actions">
-            <button id="saveDraft">Save draft (browser)</button>
-            <button id="exportMemo">Export JSON</button>
+            <button id="saveDraft">Save draft</button>
+            <button id="saveVersion">Save version</button> <!-- NEW -->
+            <button id="exportMemo">Export memo JSON</button>
+            <button id="exportAll">Export ALL drafts</button>
+            <label class="filebtn">
+              Import drafts <input type="file" id="importAll" accept="application/json" />
+            </label>
             <button id="openDiscord">Submit via Discord</button>
           </div>
 
           <p class="tips">
-            RFCs are processes, not chats. Draft → step away → revise → then submit.
+            Autosave is ON (on every keystroke + periodically). Draft → step away → revise → submit.
           </p>
         </div>
-
+        <div class="card" id="versionsPanel">
+          <div class="head"><strong>Versions (snapshots for this memo)</strong></div>
+          <div id="versionsList" class="list"></div>
+        </div>
         <div class="card" id="draftsPanel">
           <div class="head"><strong>Recent drafts (this browser)</strong></div>
           <div id="draftsList" class="list"></div>
@@ -77,26 +101,25 @@
     </div>
   </main>
 
-  <!-- App logic (preview/memo/figlists) -->
+  <!-- App logic -->
   <script type="module" src="/js/research.office.js"></script>
 
-  <!-- Grid/HUD scripts -->
+  <!-- Grid/HUD -->
   <script type="module">
     import { initResearchOfficeGrid } from "/js/research-office-grid.js";
 
-    const qs      = new URLSearchParams(location.search);
-    const para    = qs.get("para")    || "osf-1";
+    const qs = new URLSearchParams(location.search);
+    const para = qs.get("para") || "osf-1";
     const chapter = qs.get("chapter") || "";
-    const forced  = Number(qs.get("from") || "0");
+    const forced = Number(qs.get("from") || "0");
 
-    // robust page resolver (overrides first, map fallback)
-    const norm = s => (s||"").replace(/\\/g,"/").replace(/^\/+|\/+$/g,"").toLowerCase();
-    const dropNotebook = s => norm(s).replace(/^notebook\//,"");
+    const norm = s => (s || "").replace(/\\/g, "/").replace(/^\/+|\/+$/g, "").toLowerCase();
+    const dropNotebook = s => norm(s).replace(/^notebook\//, "");
     const onlyFile = s => norm(s).split("/").slice(-1)[0];
 
     function probeChapter(obj, chap) {
       if (!obj || !obj.chapters) return null;
-      const keys = [ norm(chap), dropNotebook(chap), onlyFile(chap) ];
+      const keys = [norm(chap), dropNotebook(chap), onlyFile(chap)];
       return obj.chapters[keys[0]] || obj.chapters[keys[1]] || obj.chapters[keys[2]] || null;
     }
     function probePara(chObj, anchor) {
@@ -105,11 +128,8 @@
     }
     function firstPage(entry) {
       if (!entry) return 0;
-      const candidates = [entry.page, entry.from, entry.start, entry.pdf_from, entry.p];
-      for (const v of candidates) {
-        const n = parseInt(v, 10);
-        if (Number.isFinite(n) && n > 0) return n;
-      }
+      const c = [entry.page, entry.from, entry.start, entry.pdf_from, entry.p];
+      for (const v of c) { const n = parseInt(v, 10); if (Number.isFinite(n) && n > 0) return n; }
       return 0;
     }
     async function resolveFrom(chapterId, anchorId) {
@@ -119,26 +139,18 @@
           fetch(`${base}/Old_main.overrides.json`).then(r => r.ok ? r.json() : {}),
           fetch(`${base}/Old_main.map.json`).then(r => r.ok ? r.json() : {}),
         ]);
-        const oCh = probeChapter(ov, chapterId);
-        const oPg = firstPage(probePara(oCh, anchorId));
+        const oPg = firstPage(probePara(probeChapter(ov, chapterId), anchorId));
         if (oPg) return oPg;
-
-        const mCh = probeChapter(mp, chapterId);
-        const mPg = firstPage(probePara(mCh, anchorId));
+        const mPg = firstPage(probePara(probeChapter(mp, chapterId), anchorId));
         if (mPg) return mPg;
-      } catch (e) {
-        console.warn("resolveFrom failed", e);
-      }
+      } catch (e) { console.warn("resolveFrom failed", e); }
       return 0;
     }
 
     (async () => {
       const fromPage = forced > 0 ? forced : await resolveFrom(chapter, para);
-
       initResearchOfficeGrid({
-        para,
-        chapter,
-        fromPage,
+        para, chapter, fromPage,
         pdfUrl: "/cafes/zeta-zero-cafe/sources/Old_main.pdf",
         initialZoom: "fit",
       });
@@ -146,4 +158,5 @@
   </script>
   <script src="/js/research-office-hud.js"></script>
 </body>
+
 </html>
