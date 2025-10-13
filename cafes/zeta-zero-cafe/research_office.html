@@ -1,162 +1,167 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
-  <title>Research Office</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="/css/10-components/research-office.css" />
+  <title>Research Office — zeta-zero-cafe</title>
+
+  <!-- Only the Research Office stylesheet (scoped to body.ro) -->
+  <!-- <link rel="stylesheet" href="/css/research-office.css" /> -->
+  <!-- css/10-components/research-office.css -->
+  <link rel="stylesheet" href="/css/10-components/research-office.css?v=3" />
+  <!-- MathJax: use the same config as chapter pages, with CDN+fallback -->
+  <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
+  <script>
+    (function ensureMJ(){
+      const ok = window.MathJax && window.MathJax.typesetPromise;
+      if (ok) return;
+      const cdn = document.createElement('script');
+      cdn.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+      cdn.async = true;
+      cdn.onload = cdn.onerror = () => window.MathJax?.typeset?.();
+      document.head.appendChild(cdn);
+    }());
+  </script>
 </head>
 
-<body>
+<body class="ro">
   <header class="ro-head">
-    <h1>Research Office <span class="cafe-tag">— <span id="cafeName">zeta-zero-cafe</span></span></h1>
     <a class="ro-back" href="javascript:history.back()">← Back</a>
+    <h1>Research Office — <span class="mono">zeta-zero-cafe</span></h1>
   </header>
 
   <main class="ro-main">
-    <div class="row">
-      <!-- LEFT -->
-      <div class="col left">
-
-        <!-- Overlay first -->
-        <div id="stageWrap" class="card">
-          <div id="ro-stage">
-            <!-- grid module injects its toolbar before this node -->
-            <img id="ro-page" src="" alt="source page" />
-          </div>
+    <!-- LEFT: stage (thumbnail + SVG overlay + toolbar) -->
+    <section class="ro-left">
+      <div id="stagewrap" class="card">
+        <div id="ro-stage">
+          <img id="ro-page" alt="source page" />
+          <!-- SVG overlay injected by grid module -->
         </div>
 
-        <!-- Paragraph preview under it -->
-        <div class="card">
-          <div class="head">
-            <strong>Paragraph preview</strong>
-            <span id="paraNum" class="tag">#</span>
-          </div>
-          <div id="paraPreview" class="card preview"></div>
-
-          <div class="split" style="margin-top:12px">
-            <div>
-              <div class="head"><strong>Figures</strong></div>
-              <div id="figlist" class="list"></div>
-            </div>
-            <div>
-              <div class="head"><strong>Tables</strong></div>
-              <div id="tbllist" class="list"></div>
-            </div>
-          </div>
+        <div class="ro-toolbar">
+          <button id="toolPoint">Point</button>
+          <button id="toolBox">Box</button>
+          <label>Zoom:
+            <button id="zoomOut">–</button>
+            <button id="zoomFit">Fit</button>
+            <button id="zoomIn">+</button>
+          </label>
+          <label>Units:
+            <select id="unitsSel">
+              <option value="mm" selected>mm</option>
+              <option value="cm">cm</option>
+            </select>
+          </label>
+          <button id="exportJson">Export JSON</button>
+          <input id="tokenSink" type="text" class="mono" placeholder="click marker to copy reference" />
         </div>
-
       </div>
+    </section>
 
-      <!-- RIGHT -->
-      <div class="col right">
-
-        <div class="card">
-          <div class="head"><strong>Memo to self (Markdown + LaTeX)</strong></div>
-
-          <!-- Markdown toolbar -->
-          <div class="mdbar" id="mdbar">
-            <button data-md="**|**" title="Bold">B</button>
-            <button data-md="_|_" title="Italic"><i>I</i></button>
-            <button data-md="`|`" title="Inline code">{ }</button>
-            <button data-md="> |" title="Quote">❝</button>
-            <button data-md="- |" title="List">•</button>
-            <button data-md="[text](url)" data-mode="wrap" title="Link">🔗</button>
-            <span class="sep"></span>
-            <button data-md="\\(|\\)" title="Inline math">\(x\)</button>
-            <button data-md="$$\n|\n$$" title="Block math">∑</button>
-            <span class="sep"></span>
-            <button id="btnPreview" title="Render Markdown + LaTeX">Preview</button>
-          </div>
-
-          <textarea id="memoBody" placeholder="State the issue, desired change, and rationale..."></textarea>
-          <div id="memoPreview" class="memo-preview" hidden></div>
-
-          <div class="actions">
-            <button id="saveDraft">Save draft</button>
-            <button id="saveVersion">Save version</button> <!-- NEW -->
-            <button id="exportMemo">Export memo JSON</button>
-            <button id="exportAll">Export ALL drafts</button>
-            <label class="filebtn">
-              Import drafts <input type="file" id="importAll" accept="application/json" />
-            </label>
-            <button id="openDiscord">Submit via Discord</button>
-          </div>
-
-          <p class="tips">
-            Autosave is ON (on every keystroke + periodically). Draft → step away → revise → submit.
-          </p>
+    <!-- RIGHT: memo editor -->
+    <section class="ro-right">
+      <div class="card">
+        <div class="head"><strong>Memo to self (Markdown + LaTeX)</strong></div>
+        <div class="ro-memo-toolbar">
+          <button data-md="b">B</button>
+          <button data-md="i">I</button>
+          <button data-md="code">{ }</button>
+          <button data-md="link">🔗</button>
+          <button data-md="tex">\(x\)</button>
+          <button id="memoPreviewBtn">Preview</button>
         </div>
-        <div class="card" id="versionsPanel">
-          <div class="head"><strong>Versions (snapshots for this memo)</strong></div>
-          <div id="versionsList" class="list"></div>
-        </div>
-        <div class="card" id="draftsPanel">
-          <div class="head"><strong>Recent drafts (this browser)</strong></div>
-          <div id="draftsList" class="list"></div>
+        <textarea id="memo" placeholder="State the issue, desired change, and rationale..."></textarea>
+        <div id="memoPreview" class="card" style="margin-top:8px; display:none;"></div>
+
+        <div class="ro-memo-actions">
+          <button id="saveDraft">Save draft</button>
+          <button id="saveVersion">Save version</button>
+          <button id="exportMemo">Export memo JSON</button>
+          <button id="exportAll">Export ALL drafts</button>
+          <label><input type="file" id="importMemo" /></label>
+          <button id="submitDiscord">Submit via Discord</button>
         </div>
 
+        <p class="tiny muted">
+          Autosave is ON (on every keystroke + periodically). Draft → step away → revise → submit.
+        </p>
+
+        <div class="head"><strong>Versions (snapshots for this memo)</strong></div>
+        <div id="versions" class="tiny muted">No snapshots yet.</div>
+
+        <div class="head" style="margin-top:12px;"><strong>Recent drafts (this browser)</strong></div>
+        <div id="recentDrafts" class="tiny muted"></div>
       </div>
-    </div>
+    </section>
+
+    <!-- Paragraph preview (chapter/anchor) -->
+    <section class="ro-bottom">
+      <div class="card">
+        <div class="head">
+          <strong>Paragraph preview</strong>
+          <span id="paraNum" class="tag">#</span>
+        </div>
+        <div id="paraPreview" class="mono tiny muted">…</div>
+
+        <div class="split" style="margin-top:12px">
+          <div>
+            <div class="head"><strong>Figures</strong></div>
+            <div id="figlist" class="list"></div>
+          </div>
+          <div>
+            <div class="head"><strong>Tables</strong></div>
+            <div id="tbllist" class="list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- App logic -->
-  <script type="module" src="/js/research.office.js"></script>
-
-  <!-- Grid/HUD -->
+  <!-- JS: grid (module import), thumbs, app logic -->
   <script type="module">
     import { initResearchOfficeGrid } from "/js/research-office-grid.js";
+    import { setThumbPage, thumbUrlFor } from "/js/research-office-thumbs.js";
+    import "/js/research.office.js";           // memo + paragraph preview
 
-    const qs = new URLSearchParams(location.search);
-    const para = qs.get("para") || "osf-1";
-    const chapter = qs.get("chapter") || "";
-    const forced = Number(qs.get("from") || "0");
+    // ------- bootstrap -------
+    const Q = new URLSearchParams(location.search);
+    const PARA    = Q.get("para")     || "osf-1";
+    const CHAPTER = Q.get("chapter")  || "notebook/chapter-1-the-basel-problem.html";
+    const FROM    = parseInt(Q.get("from") || Q.get("page") || "1", 10) || 1;
 
-    const norm = s => (s || "").replace(/\\/g, "/").replace(/^\/+|\/+$/g, "").toLowerCase();
-    const dropNotebook = s => norm(s).replace(/^notebook\//, "");
-    const onlyFile = s => norm(s).split("/").slice(-1)[0];
+    // 1) Put the thumbnail onto the stage immediately
+    setThumbPage(document.getElementById("ro-page"), FROM);
 
-    function probeChapter(obj, chap) {
-      if (!obj || !obj.chapters) return null;
-      const keys = [norm(chap), dropNotebook(chap), onlyFile(chap)];
-      return obj.chapters[keys[0]] || obj.chapters[keys[1]] || obj.chapters[keys[2]] || null;
-    }
-    function probePara(chObj, anchor) {
-      if (!chObj) return null;
-      return (chObj[anchor]) || (chObj.items && chObj.items[anchor]) || null;
-    }
-    function firstPage(entry) {
-      if (!entry) return 0;
-      const c = [entry.page, entry.from, entry.start, entry.pdf_from, entry.p];
-      for (const v of c) { const n = parseInt(v, 10); if (Number.isFinite(n) && n > 0) return n; }
-      return 0;
-    }
-    async function resolveFrom(chapterId, anchorId) {
-      const base = "/data/cafes/zeta-zero-cafe/sources";
-      try {
-        const [ov, mp] = await Promise.all([
-          fetch(`${base}/Old_main.overrides.json`).then(r => r.ok ? r.json() : {}),
-          fetch(`${base}/Old_main.map.json`).then(r => r.ok ? r.json() : {}),
-        ]);
-        const oPg = firstPage(probePara(probeChapter(ov, chapterId), anchorId));
-        if (oPg) return oPg;
-        const mPg = firstPage(probePara(probeChapter(mp, chapterId), anchorId));
-        if (mPg) return mPg;
-      } catch (e) { console.warn("resolveFrom failed", e); }
-      return 0;
-    }
+    // 2) Start the grid overlay in “image mode” (no PDF.js)
+    initResearchOfficeGrid({
+      mode: "image",                  // tell the grid we're using an <img>
+      stageId: "ro-stage",
+      imgId: "ro-page",
+      initialZoom: "fit",
+      unitsSelId: "unitsSel",
+      toolbar: {
+        point: "toolPoint",
+        box: "toolBox",
+        zoomOut: "zoomOut",
+        zoomFit: "zoomFit",
+        zoomIn: "zoomIn",
+        exportJson: "exportJson",
+        tokenSink: "tokenSink"
+      }
+    });
 
-    (async () => {
-      const fromPage = forced > 0 ? forced : await resolveFrom(chapter, para);
-      initResearchOfficeGrid({
-        para, chapter, fromPage,
-        pdfUrl: "/cafes/zeta-zero-cafe/sources/Old_main.pdf",
-        initialZoom: "fit",
-      });
-    })();
+    // 3) Hand parameters to the memo/preview code (already loaded)
+    window.__RO_PARAMS__ = { PARA, CHAPTER, FROM,
+      // also expose where thumbs live (for future jumps)
+      thumbRoot: "/cafes/zeta-zero-cafe/sources/thumbs",
+      thumbUrlFor
+    };
+
+    // 4) Kick paragraph preview (uses ensureMathJax in research.office.js)
+    if (window.loadParagraphPreview) {
+      loadParagraphPreview().catch(console.warn);
+    }
   </script>
-  <script src="/js/research-office-hud.js"></script>
 </body>
-
 </html>

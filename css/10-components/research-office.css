@@ -1,413 +1,64 @@
-:root {
-  color-scheme: dark;
-}
-
-/* ------- Page shell ------- */
-body {
+/* Research Office — scoped styles (only active on body.ro) */
+:root { color-scheme: dark; }
+body.ro {
   margin: 0;
   font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu;
   color: #e7edf3;
   background: #0b1117;
+  --ro-muted:#9aa7b2;
+  --ro-border:#2a2f3a;
 }
 
-.wrap {
-  max-width: 1100px;
-  margin: 28px auto;
-  padding: 0 16px;
+/* Layout */
+.ro-head { padding: 10px 14px; display:flex; gap:10px; align-items:center; }
+.ro-back { color:#9ac7ff; text-decoration:none; }
+.ro-main { display:grid; grid-template-columns: 320px 1fr; gap:16px; padding:12px; }
+.ro-left  .card,
+.ro-right .card,
+.ro-bottom .card {
+  background:#0f1115; border:1px solid var(--ro-border); border-radius:8px; padding:12px;
 }
+.head{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.tag { font-size:12px; padding:2px 8px; border:1px solid var(--ro-border); border-radius:999px; background:#121820; }
 
-h1 {
-  font-size: 22px;
-  margin: 0 0 16px;
-}
+/* Stage */
+#stagewrap{ padding:0; }
+#ro-stage{ position:relative; border-radius:8px; overflow:hidden; background:#0b0f14; }
+#ro-page { display:block; width:100%; height:auto; image-rendering:auto; }
 
-.muted {
-  opacity: .75;
-}
-
-.row,
-.split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.card {
-  background: #121720;
-  border: 1px solid rgba(255, 255, 255, .12);
-  border-radius: 12px;
-  padding: 12px;
-}
-
-.head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.tag {
-  display: inline-block;
-  background: #15202b;
-  border: 1px solid rgba(255, 255, 255, .12);
-  padding: 2px 8px;
-  border-radius: 9999px;
-  font-size: 12px;
-}
-
-.btn {
-  display: inline-block;
-  border: 1px solid rgba(255, 255, 255, .16);
-  background: #0f141a;
-  border-radius: 10px;
-  padding: 8px 12px;
-  color: #e7edf3;
-  text-decoration: none;
-}
-
-.btn:hover {
-  background: #141b24;
-}
-
-.list {
-  display: grid;
-  gap: 8px;
-}
-
-.item {
-  display: flex;
-  gap: 8px;
-  align-items: start;
-}
-
-.item a {
-  color: #81a9ff;
-  text-decoration: none;
-}
-
-.item a:hover {
-  text-decoration: underline;
-}
-
-textarea {
-  width: 100%;
-  min-height: 240px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, .16);
-  background: #0f141a;
-  color: #e7edf3;
-  padding: 10px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-}
-
-.bar {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-
-/* ------- Preview panel ------- */
-#paraPreview {
-  width: 100%;
-  max-width: 100%;
-  min-height: 220px;
-  padding: 14px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, .03);
-  box-sizing: border-box;
-  overflow: auto;
-}
-
-/* Keep imported notebook content tame in the preview panel */
-#paraPreview .osf,
-#paraPreview .osf-block,
-#paraPreview pre,
-#paraPreview figure,
-#paraPreview table,
-#paraPreview blockquote {
-  display: block !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 auto 10px !important;
-  box-sizing: border-box;
-}
-
-#paraPreview pre,
-#paraPreview code,
-#paraPreview .osf {
-  white-space: pre-wrap;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  hyphens: auto;
-  line-height: 1.6;
-}
-
-#paraPreview img,
-#paraPreview svg,
-#paraPreview canvas {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  image-rendering: auto;
-}
-
-#paraPreview figcaption {
-  text-align: center;
-  opacity: .85;
-  margin-top: 6px;
-}
-
-#paraPreview table {
-  border-collapse: collapse;
-}
-
-#paraPreview th,
-#paraPreview td {
-  padding: 4px 6px;
-}
-
-#paraPreview .MathJax {
-  font-size: 1.05rem;
-}
-
-/* ------- Grid + markers ------- */
-#ro-stage {
-  position: relative;
-  max-width: 100%;
-  min-height: 280px;
-}
-
-/* never collapse */
-#ro-stage>img,
-#ro-stage>canvas {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-#ro-stage>img {
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-.ro-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 3;
-}
-
-.ro-overlay svg {
-  width: 100%;
-  height: 100%;
-}
-
-.ro-grid line {
-  stroke: rgba(255, 255, 255, .25);
-  stroke-width: 1;
-}
-
-.ro-grid .label {
-  font: 11px/1.2 ui-sans-serif, system-ui;
-  fill: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
-}
-
-.ro-marker {
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.ro-marker circle {
-  r: 5;
-  fill: #ffd000;
-  stroke: #000;
-  stroke-width: 1;
-}
-
-.ro-marker rect {
-  fill: rgba(255, 208, 0, .2);
-  stroke: #ffd000;
-  stroke-width: 1.5;
-}
-
-.ro-marker:hover circle {
-  fill: #fffbe6;
-}
-
-.ro-toolbar {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin: 10px 0 0;
-  flex-wrap: wrap;
-}
-
-.ro-toolbar button,
-.ro-toolbar select {
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid var(--line, #333);
-  background: var(--ink, #111);
-  color: var(--bg, #fff);
-}
-
-.ro-toolbar input[type="text"] {
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid var(--line, #333);
-  background: #000;
-  color: #fff;
-  width: 260px;
-}
-
-/* Toast */
-.ro-toast {
-  position: fixed;
-  bottom: 12px;
-  right: 12px;
-  background: #111;
-  color: #fff;
-  padding: 6px 8px;
-  border-radius: 8px;
-  font: 12px/1.2 ui-sans-serif;
-  opacity: .95;
-}
-/* === Crosshair styling (Research Office) === */
-.ro-cross {
-  stroke: rgba(255, 255, 0, 0.6); /* soft yellow overlay line */
-  stroke-width: 0.8px;
-  pointer-events: none;           /* don’t block clicks on the page */
-  shape-rendering: crispEdges;
-  opacity: 0;                     /* hidden until mouse enters */
-  transition: opacity 0.15s ease-out;
-}
-
-/* Optional: tweak grid label readability on dark backgrounds */
-.ro-grid text.label {
-  fill: rgba(255, 255, 255, 0.75);
-  font-size: 9px;
-  font-family: monospace;
-  user-select: none;
-}
-/* === Metric grid tone refinement === */
-
-/* Base 1 mm lines — light neutral gray */
-.ro-grid line {
-  stroke: rgba(180, 180, 180, 0.25);
-  vector-effect: non-scaling-stroke;
-}
-
-/* Every 1 cm line (thicker + brighter) */
-.ro-grid line[stroke-width="1.6"] {
-  stroke: rgba(230, 230, 230, 0.45);
-}
-
-/* Optional: reinforce the outer frame of the page */
-.ro-grid::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgba(255,255,255,0.25);
-  pointer-events: none;
-}
-
-/* Maintain clean snap-to-grid visibility */
-.ro-marker circle,
-.ro-marker rect {
-  fill: rgba(255,255,0,0.3);
-  stroke: rgba(255,255,0,0.7);
-  stroke-width: 1;
-}
-.ro-grid, .ro-grid *, .ro-markers, .ro-markers * { pointer-events: none; }
-.ro-overlay.ro-hover { box-shadow: inset 0 0 0 2px rgba(255,255,0,.25); }
-
-.ro-hud {
-  position: absolute; top: 6px; right: 6px;
-  padding: 2px 6px; border-radius: 6px;
-  font: 11px/1.3 monospace; color: #111;
-  background: rgba(255,255,180,.9);
-  pointer-events: none; opacity: 0; transition: opacity .12s ease;
-}
-.ro-hud.show { opacity: 1; }
-/* Grid should not block pointer events on the SVG surface */
-.ro-grid, .ro-grid *, .ro-markers, .ro-markers * { pointer-events: none; }
-
-/* Crosshair look (fallback inline styles also set from JS) */
-.ro-cross {
-  stroke: rgba(255,255,0,.6);
-  stroke-width: .8px;
-  vector-effect: non-scaling-stroke;
-  pointer-events: none;
-}
-
-/* Subtle distinction between 1 mm and 1 cm lines */
-.ro-grid line { stroke: rgba(180,180,180,.25); vector-effect: non-scaling-stroke; }
-.ro-grid line[stroke-width="1.6"] { stroke: rgba(230,230,230,.45); }
-.ro-grid text.label { fill: rgba(255,255,255,.75); font: 9px monospace; user-select: none; }
-
-/* Overlay hover + HUD */
-.ro-overlay.ro-hover { box-shadow: inset 0 0 0 2px rgba(255,255,0,.25); }
-.ro-hud {
-  position: absolute; top: 6px; right: 6px;
-  padding: 2px 6px; border-radius: 6px;
-  font: 11px/1.3 monospace; color: #111;
-  background: rgba(255,255,180,.9);
-  pointer-events: none; opacity: 0; transition: opacity .12s ease;
-}
-.ro-hud.show { opacity: 1; }
-
-/* Markers */
-.ro-marker circle, .ro-marker rect {
-  fill: rgba(255,255,0,.30);
-  stroke: rgba(255,255,0,.70);
-  stroke-width: 1;
-}
+/* Overlay (SVG is injected by the grid module) */
+.ro-overlay{ position:absolute; inset:0; z-index:3; pointer-events:auto; }
+.ro-overlay.ro-hover{ box-shadow:inset 0 0 0 2px rgba(255,255,0,.25); }
 
 /* Toolbar */
-.ro-toolbar {
-  display: flex; gap: 8px; align-items: center;
-  margin-bottom: 8px;
+.ro-toolbar{ display:flex; gap:8px; margin:10px 0 0; flex-wrap:wrap; align-items:center; }
+.ro-toolbar button,.ro-toolbar select,.ro-toolbar input[type="text"]{
+  padding:6px 10px; border-radius:8px; border:1px solid var(--ro-border);
+  background:#10151c; color:#e7edf3;
 }
-.ro-toolbar button.active { outline: 2px solid #ffd54d; }
-.ro-toast {
-  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
-  background: rgba(0,0,0,.8); color: #fff; padding: 8px 12px; border-radius: 8px;
-  font: 12px/1.2 system-ui, sans-serif; z-index: 9999;
-}
-/* === Metric grid tone refinement === */
+.ro-toolbar input[type="text"]{ width:240px; background:#0c1118; }
 
-/* Base 1 mm lines — light neutral gray */
-.ro-grid line {
-  stroke: rgba(180, 180, 180, 0.25);
-  vector-effect: non-scaling-stroke;
+/* Grid / Rulers — fine lines + smaller labels */
+.ro-grid line{ stroke:rgba(180,180,180,.25); vector-effect:non-scaling-stroke; }
+.ro-grid line[data-major="1"]{ stroke:rgba(230,230,230,.45); }
+.ro-ruler text{
+  font-size:3mm; fill:rgba(230,230,230,.70);
+  dominant-baseline:middle; text-anchor:middle;
+  paint-order:stroke; stroke:#0b0f14; stroke-width:.6px;
 }
 
-/* Every 1 cm line (thicker + brighter) */
-.ro-grid line[stroke-width="1.6"] {
-  stroke: rgba(230, 230, 230, 0.45);
+/* Paragraph preview */
+#paraPreview{
+  max-width:100%; max-height:60vh; padding:12px; overflow:auto;
+  background:rgba(255,255,255,.03); border-radius:8px; box-sizing:border-box;
 }
+#paraPreview, #paraPreview *{ white-space:normal; overflow-wrap:anywhere; word-break:break-word; }
+#paraPreview pre, #paraPreview code{ white-space:pre-wrap; overflow-wrap:anywhere; }
+#paraPreview img, #paraPreview table{ max-width:100%; height:auto; }
+#paraPreview mjx-container{ overflow-x:auto; }
 
-/* Optional: reinforce the outer frame of the page */
-.ro-grid::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgba(255,255,255,0.25);
-  pointer-events: none;
-}
+/* Helpers */
+.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+.tiny{ font-size:12px; }
+.muted{ color:var(--ro-muted); }
 
-/* Maintain clean snap-to-grid visibility */
-.ro-marker circle,
-.ro-marker rect {
-  fill: rgba(255,255,0,0.3);
-  stroke: rgba(255,255,0,0.7);
-  stroke-width: 1;
-}
-/* memo driven .ro-markers */
-.ro-marker.memo circle, .ro-marker.memo rect {
-  fill: rgba(80,200,255,.25);
-  stroke: rgba(80,200,255,.8);
-}

@@ -3,17 +3,15 @@ window.MathJax = {
   tex: {
     inlineMath: [['$', '$'], ['\\(', '\\)']],
     displayMath: [['$$','$$'], ['\\[','\\]']],
-    packages: {'[+]': ['ams']},       // enable AMS environments (align, split, etc.)
+    packages: {'[+]': ['ams', 'textmacros']},   // add textmacros so \# etc. work
     processEnvironments: true,
     processEscapes: true
   },
-  loader: { load: ['[tex]/ams'] },     // actually load the AMS component
+  loader: { load: ['[tex]/ams', '[tex]/textmacros'] }, // load both components
   options: {
-    // Let MathJax process <pre>/<code> since your OSF text is verbatim.
-    // (Default skips them; we remove 'pre' and 'code' from the skip list.)
+    // Let MathJax process <pre>/<code> (you asked for this in chapter pages).
     skipHtmlTags: ['script','noscript','style','textarea']
-    // If you prefer to target specific blocks instead, keep default skip list
-    // and add:  processHtmlClass: 'osf'   then put class="osf" on containers to scan.
+    // Alternatively, use processHtmlClass to target specific blocks.
   },
   svg: { fontCache: 'global' }
 };

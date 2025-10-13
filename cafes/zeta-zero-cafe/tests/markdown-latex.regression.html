@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Markdown + LaTeX Regression Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Use the same MathJax config as chapters -->
+  <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
+
+  <style>
+    :root { color-scheme: dark; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background:#0b0f14; color:#e6edf3;}
+    .wrap { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+    .row { display: grid; grid-template-columns: 320px 1fr; gap: 16px; align-items: start; }
+    h1,h2,h3 { margin: 0 0 12px; }
+    .card { background:#0e141b; border:1px solid #1f2730; border-radius:12px; padding:14px 16px; }
+    .muted { color:#9aa7b2; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .ok { color: #4ee27a; }
+    .bad { color: #ff6b6b; }
+    hr { border:0; border-top:1px solid #1f2730; margin: 16px 0; }
+    #out { background:#0b0f14; border:1px dashed #223; border-radius:12px; padding:16px; }
+    pre code { background:#0b0f14; display:block; padding:12px; border:1px solid #1f2730; border-radius:10px; overflow:auto; }
+    ul.checks { list-style:none; padding:0; margin:0; }
+    ul.checks li { padding:6px 0; border-bottom:1px dashed #1a2230; }
+    ul.checks li:last-child{border-bottom:0}
+    .tiny { font-size:.85rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Research Office — Markdown + LaTeX Regression</h1>
+    <div class="row">
+      <div class="card">
+        <h3>Results</h3>
+        <ul class="checks" id="results">
+          <li class="muted">running…</li>
+        </ul>
+        <hr />
+        <div class="card" style="background:#0b0f14">
+          <div class="mono tiny muted" id="debug">debug log…</div>
+        </div>
+        <hr />
+        <div class="tiny muted">
+          Tip: this page loads <span class="mono">tests/math-test.md</span>. Edit and refresh to extend coverage.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Rendered output</h3>
+        <div id="out" aria-live="polite">loading…</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // -------- generic loader (used by fallbacks) --------
+    async function loadScriptOnce(src) {
+      return new Promise((resolve, reject) => {
+        if ([...document.scripts].some(s => s.src === new URL(src, location.href).toString())) {
+          resolve(src); return;
+        }
+        const s = document.createElement("script");
+        s.src = src; s.async = true;
+        s.onload = () => resolve(src);
+        s.onerror = () => reject(new Error("Failed to load " + src));
+        document.head.appendChild(s);
+      });
+    }
+
+    // -------- marked: local → CDN --------
+    async function ensureMarked() {
+      if (window.marked) return "present";
+      try {
+        await loadScriptOnce("/js/marked.min.js");
+        if (!window.marked) throw new Error("no marked after local");
+        return "local";
+      } catch {
+        await loadScriptOnce("https://cdn.jsdelivr.net/npm/marked@12/marked.min.js");
+        if (!window.marked) throw new Error("no marked after CDN");
+        return "cdn";
+      }
+    }
+
+    // -------- MathJax: local candidates → jsDelivr → cdnjs, robust wait --------
+    async function ensureMathJax() {
+      if (window.MathJax?.typesetPromise) return "present";
+      // If chapters didn't provide config, set a minimal one (with \#)
+      if (!window.MathJax) {
+        window.MathJax = {
+          tex: { inlineMath: [['\\(', '\\)'], ['$', '$']], packages: {'[+]':['ams','textmacros']} },
+          loader: { load: ['[tex]/ams','[tex]/textmacros'] },
+        };
+      }
+      const sources = [
+        "/js/mathjax/es5/tex-chtml.js",
+        "/js/mathjax/tex-chtml.js",
+        "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js",
+      ];
+      for (const src of sources) {
+        try {
+          await loadScriptOnce(src);
+          if (window.MathJax?.startup?.promise) await window.MathJax.startup.promise;
+          const t0 = performance.now();
+          while (!window.MathJax?.typesetPromise && performance.now() - t0 < 2000) {
+            await new Promise(r=>setTimeout(r,50));
+          }
+          if (window.MathJax?.typesetPromise) return src;
+        } catch {}
+      }
+      throw new Error("MathJax unavailable");
+    }
+
+    // -------- freeze → Markdown → thaw → MathJax --------
+function normalizeFencedMath(md) {
+  return md.replace(/```\s*math\s*\r?\n([\s\S]+?)\r?\n```/gi, (_, body) => `$$${body}$$`);
+}
+
+async function renderMdLatex(md, outEl, debug) {
+  md = normalizeFencedMath(md);
+
+  // Freeze into DOM placeholders
+  const texStore = [];
+  const place = i => `<span data-tex="${i}"></span>`;
+
+  // Display math
+  md = md.replace(/\$\$([\s\S]+?)\$\$/g, (_, body) => {
+    const i = texStore.length; texStore.push(`$$${body}$$`); return place(i);
+  });
+  // Inline math (not $$)
+  md = md.replace(/(^|[^\$])\$(?!\$)([^$\n]+?)\$(?!\$)/g, (m, pre, body) => {
+    const i = texStore.length; texStore.push(`$${body}$`); return pre + place(i);
+  });
+
+  await ensureMarked();
+  outEl.innerHTML = window.marked.parse(md);
+
+  // Thaw: replace <span data-tex> with the exact raw TeX
+  outEl.querySelectorAll('span[data-tex]').forEach(sp => {
+    const idx = Number(sp.getAttribute('data-tex'));
+    const raw = texStore[idx] || '';
+    const tn = document.createTextNode(raw);
+    sp.replaceWith(tn);
+  });
+
+  // Typeset (robust loader already present)
+  try {
+    await ensureMathJax();
+    if (MathJax.typesetClear) MathJax.typesetClear([outEl]);
+    if (MathJax.texReset) MathJax.texReset();
+    if (MathJax.typesetPromise) await MathJax.typesetPromise([outEl]); else MathJax.typeset([outEl]);
+  } catch(e) {
+    debug(`MathJax unavailable; showing raw TeX. ${e}`);
+  }
+}
+
+
+    // -------- Test runner --------
+    (async function run(){
+      const out = document.getElementById("out");
+      const results = document.getElementById("results");
+      const logEl = document.getElementById("debug");
+      const log = (msg)=>{ logEl.textContent = (logEl.textContent ? logEl.textContent+"\n" : "") + msg; };
+
+      function pass(name){ const li=document.createElement("li"); li.innerHTML = `✅ <span class="ok">${name}</span>`; results.appendChild(li); }
+      function fail(name, why){ const li=document.createElement("li"); li.innerHTML = `❌ <span class="bad">${name}</span> <span class="muted mono">${why||""}</span>`; results.appendChild(li); }
+
+      results.innerHTML="";
+
+      // Load the test content
+      const mdUrl = "math-test.md";
+      let md = "";
+      try {
+        const r = await fetch(mdUrl, {cache:"no-store"});
+        md = await r.text();
+        log("fetched markdown: "+mdUrl);
+      } catch(e) {
+        fail("fetch markdown", "cannot load tests/math-test.md");
+        out.textContent = "Failed to load math-test.md";
+        return;
+      }
+
+      // Render
+      await renderMdLatex(md, out, log);
+
+      // Checks
+      try {
+        // 1. At least one heading present
+        if (out.querySelector("h1,h2,h3")) pass("headings present");
+        else fail("headings present", "no h1/h2/h3");
+
+        // 2. MathJax rendered (mjx-container exists)
+        const mjxCount = out.querySelectorAll("mjx-container").length;
+        if (mjxCount > 0) pass(`MathJax rendered (${mjxCount} blocks)`);
+        else fail("MathJax rendered", "0 mjx-container");
+
+        // 3. Fenced code with $$ NOT typeset
+        const badInCode = [...out.querySelectorAll("pre code")]
+          .some(code => code.innerText.includes("$$") && code.parentElement.querySelector("mjx-container"));
+        if (!badInCode) pass("math not typeset inside code fences");
+        else fail("math not typeset inside code fences", "found mjx inside <pre><code>");
+
+        // 4. No raw TeX markers left
+        const rawLeft = out.innerHTML.includes("@@__TEX_") || out.textContent.includes("@@__TEX_") || out.textContent.includes("$$");
+        if (!rawLeft) pass("no raw TEX tokens remain");
+        else fail("no raw TEX tokens remain", "tokens or $$ still present");
+
+        // 5. Inline \# survives (rendered in math)
+        // We can't trivially assert content, but check at least one inline mjx exists
+        const inlineMJX = [...out.querySelectorAll("mjx-container")].some(m => m.getAttribute("display") !== "true");
+        if (inlineMJX) pass("inline math rendered (e.g., \\# case)");
+        else fail("inline math rendered", "no inline mjx-container");
+
+      } catch (e) {
+        fail("test runner crashed", String(e));
+      }
+
+      log("done.");
+    })();
+  </script>
+</body>
+</html>
