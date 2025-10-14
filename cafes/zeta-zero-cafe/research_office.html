@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Research Office — zeta-zero-cafe</title>
 
-  <!-- Only the Research Office stylesheet (scoped to body.ro) -->
+  <!-- Scoped stylesheet for this page -->
   <link rel="stylesheet" href="/css/10-components/research-office.css"/>
 
-  <!-- MathJax: same config as chapter pages (already working for you) -->
+  <!-- Use the same MathJax config as chapter pages -->
   <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
 </head>
 <body class="ro">
@@ -18,9 +18,8 @@
   </header>
 
   <main class="ro-main">
-    <!-- LEFT: fixed 6cm work area -->
+    <!-- LEFT: fixed 6cm page, toolbar above -->
     <section class="left">
-      <!-- toolbar ABOVE the stage -->
       <div id="ro-toolbar" class="toolbar">
         <div class="btns">
           <button id="toolPoint" type="button">Point</button>
@@ -42,7 +41,6 @@
         </div>
       </div>
 
-      <!-- stage (thumbnail + SVG overlay) -->
       <div id="ro-stage" class="card">
         <div id="ro-inner">
           <img id="ro-page" alt="source page"/>
@@ -50,8 +48,16 @@
         </div>
       </div>
 
-      <!-- token sink (click-marker copy) -->
       <div id="token" class="tiny mono muted">click marker to copy</div>
+    </section>
+
+    <!-- RIGHT: MM thumbnails → paragraph preview → memo -->
+    <section class="right">
+      <!-- Thumbnails extracted from memo [mm|pNN…] -->
+      <div class="card" id="mmThumbsCard">
+        <div class="card-h">Pages referenced in memo</div>
+        <div id="mmThumbs" class="mm-thumbs muted tiny">No page references yet.</div>
+      </div>
 
       <!-- Paragraph preview -->
       <div class="card" id="paraCard">
@@ -63,21 +69,7 @@
         <div id="paraFoot" class="tiny mono muted"></div>
       </div>
 
-      <!-- Figures / Tables (keep for now) -->
-      <div class="meta-rows">
-        <div>
-          <div class="card-h">Figures</div>
-          <div id="figList" class="muted tiny">—</div>
-        </div>
-        <div>
-          <div class="card-h">Tables</div>
-          <div id="tblList" class="muted tiny">—</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- RIGHT: memo, snapshots, drafts -->
-    <section class="right">
+      <!-- Memo -->
       <div class="card">
         <div class="card-h">Memo to self (Markdown + LaTeX)</div>
         <div class="toolbar slim">
@@ -90,7 +82,7 @@
             <button id="memoPreview" type="button">Preview</button>
           </div>
         </div>
-        <textarea id="memo" rows="8" placeholder="State the issue, desired change, and rationale..."></textarea>
+        <textarea id="memo" rows="10" placeholder="State the issue, desired change, and rationale..."></textarea>
         <div class="btnrow">
           <button id="saveDraft">Save draft</button>
           <button id="saveVersion">Save version</button>
@@ -119,11 +111,11 @@
     </section>
   </main>
 
-  <!-- Grid/HUD logic + page plumbing -->
+  <!-- Grid/HUD & page plumbing -->
   <script src="/js/research-office-grid.js"></script>
   <script src="/js/research.office.js"></script>
 
-  <!-- bootstrap: call grid with current URL params and thumbnails base -->
+  <!-- Bootstrap & MM thumbnails logic -->
   <script>
     (async function () {
       const qs = new URLSearchParams(location.search);
@@ -131,20 +123,70 @@
       const chapter  = qs.get('chapter') || '';
       const para     = qs.get('para') || '';
 
-      // Initialize grid: thumbnails, fixed 6cm “zero zoom”
+      // Init grid at fixed 6 cm baseline using thumbnails
       if (window.initResearchOfficeGrid) {
         window.initResearchOfficeGrid({
           fromPage,
           para,
           chapter,
           thumbsBase: '/cafes/zeta-zero-cafe/sources/thumbs',
-          pageMM: { w: 210, h: 297 }, // A4 portrait as default; code flips for landscape
+          pageMM: { w: 210, h: 297 },  // A4 default; grid flips if landscape
           units: 'mm'
         });
       }
 
-      // kick the paragraph preview (your robust resolver lives in research.office.js)
+      // Paragraph preview
       if (window.loadParagraphPreview) window.loadParagraphPreview();
+
+      // Keep right-side blocks aligned to stage height
+      function syncRightHeights () {
+        const st = document.getElementById('ro-stage');
+        if (!st) return;
+        document.documentElement.style.setProperty('--ro-stage-h', st.clientHeight + 'px');
+      }
+      syncRightHeights();
+      new ResizeObserver(syncRightHeights).observe(document.getElementById('ro-stage'));
+
+      // MM thumbnails from memo: [mm|pNN...]
+      const memoEl = document.getElementById('memo');
+      const thumbsEl = document.getElementById('mmThumbs');
+      const base = '/cafes/zeta-zero-cafe/sources/thumbs';
+
+      function pad3(n){return String(n).padStart(3,'0');}
+      function pagesFromMemo(txt){
+        const pages = new Set();
+        const re = /\[mm\|p(\d+)(?::[\d\.,]+(?:;[\d\.,]+)*)?\]/gi;
+        let m; while((m=re.exec(txt))) pages.add(Number(m[1]));
+        return [...pages].sort((a,b)=>a-b);
+      }
+      function renderThumbs(){
+        const pages = pagesFromMemo(memoEl.value || '');
+        if (!pages.length) { thumbsEl.textContent = 'No page references yet.'; return; }
+        thumbsEl.innerHTML = '';
+        for (const p of pages){
+          const a = document.createElement('a');
+          a.className = 'mm-thumb';
+          a.title = 'Go to page '+p;
+          a.href = updateFromInUrl(location.href, p);
+          const img = document.createElement('img');
+          img.loading = 'lazy';
+          img.src = `${base}/page-${pad3(p)}.jpg`;
+          img.alt = `p.${p}`;
+          a.appendChild(img);
+          const cap = document.createElement('div');
+          cap.textContent = `p.${p}`;
+          a.appendChild(cap);
+          thumbsEl.appendChild(a);
+        }
+      }
+      function updateFromInUrl(url, p){
+        const u = new URL(url, location.href);
+        u.searchParams.set('from', String(p));
+        return u.toString();
+      }
+
+      memoEl.addEventListener('input', renderThumbs);
+      renderThumbs();
     })();
   </script>
 </body>
