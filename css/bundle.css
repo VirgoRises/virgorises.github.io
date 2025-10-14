@@ -178,7 +178,7 @@ body.ro{ --bg:#0f141a; --card:#121a23; --ink:#e6eef9; --muted:#9fb2c9; --line:#2
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px}
 .card-h{padding:10px 12px;border-bottom:1px solid var(--line)}
 .card .muted{padding:10px 12px}
-.para-preview{padding:12px; max-height:var(--ro-stage-h); overflow:auto; white-space:normal; word-break:break-word}
+.para-preview{padding:12px; max-height: 6cm; overflow:auto; white-space:normal; word-break:break-word}
 .right textarea{ width:100%;min-height:180px;resize:vertical;background:#0f151c;color:var(--ink); border:1px solid var(--line);border-radius:8px;padding:8px
 }
 .toolbar.slim{padding:8px 12px;border-bottom:1px solid var(--line)}
