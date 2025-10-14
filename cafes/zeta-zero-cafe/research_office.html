@@ -6,162 +6,137 @@
   <title>Research Office — zeta-zero-cafe</title>
 
   <!-- Only the Research Office stylesheet (scoped to body.ro) -->
-  <!-- <link rel="stylesheet" href="/css/research-office.css" /> -->
-  <!-- css/10-components/research-office.css -->
-  <link rel="stylesheet" href="/css/10-components/research-office.css?v=3" />
-  <!-- MathJax: use the same config as chapter pages, with CDN+fallback -->
+  <link rel="stylesheet" href="/css/10-components/research-office.css" />
+
+  <!-- MathJax config (same one chapters use) -->
   <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
-  <script>
-    (function ensureMJ(){
-      const ok = window.MathJax && window.MathJax.typesetPromise;
-      if (ok) return;
-      const cdn = document.createElement('script');
-      cdn.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
-      cdn.async = true;
-      cdn.onload = cdn.onerror = () => window.MathJax?.typeset?.();
-      document.head.appendChild(cdn);
-    }());
-  </script>
 </head>
-
 <body class="ro">
-  <header class="ro-head">
-    <a class="ro-back" href="javascript:history.back()">← Back</a>
-    <h1>Research Office — <span class="mono">zeta-zero-cafe</span></h1>
-  </header>
 
-  <main class="ro-main">
-    <!-- LEFT: stage (thumbnail + SVG overlay + toolbar) -->
-    <section class="ro-left">
-      <div id="stagewrap" class="card">
-        <div id="ro-stage">
+<header class="ro-head">
+  <a class="ro-back" href="javascript:history.back()">← Back</a>
+  <h1>Research Office — <span class="mono">zeta-zero-cafe</span></h1>
+</header>
+
+<main class="ro-main">
+  <!-- LEFT: stage (thumbnail + SVG overlay + toolbar) -->
+  <section class="ro-left">
+    <div id="stagewrap" class="card">
+      <div id="ro-stage">
+        <!-- Everything that must zoom/scroll together lives in #ro-inner -->
+        <div id="ro-inner">
           <img id="ro-page" alt="source page" />
-          <!-- SVG overlay injected by grid module -->
+          <svg id="ro-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
         </div>
+      </div>
 
-        <div class="ro-toolbar">
-          <button id="toolPoint">Point</button>
-          <button id="toolBox">Box</button>
-          <label>Zoom:
-            <button id="zoomOut">–</button>
-            <button id="zoomFit">Fit</button>
-            <button id="zoomIn">+</button>
-          </label>
+      <!-- Toolbar -->
+      <div class="ro-toolbar">
+        <div class="toolrow">
+          <button id="toolPoint" class="btn">Point</button>
+          <button id="toolBox"   class="btn">Box</button>
+          <span class="sep"></span>
+          <span>Zoom:</span>
+          <button id="zoomOut" class="btn">–</button>
+          <button id="zoomFit" class="btn">Fit</button>
+          <button id="zoomIn"  class="btn">+</button>
+          <span class="sep"></span>
           <label>Units:
             <select id="unitsSel">
               <option value="mm" selected>mm</option>
               <option value="cm">cm</option>
             </select>
           </label>
-          <button id="exportJson">Export JSON</button>
-          <input id="tokenSink" type="text" class="mono" placeholder="click marker to copy reference" />
+          <span class="sep"></span>
+          <button id="exportJson" class="btn">Export JSON</button>
+        </div>
+        <div id="token" class="tiny mono muted">click marker to copy</div>
+      </div>
+    </div>
+
+    <!-- Paragraph preview -->
+    <div class="card ro-preview">
+      <div class="row">
+        <strong>Paragraph preview</strong>
+        <span id="paranum" class="tag">#</span>
+      </div>
+      <div id="paraPreview" class="preview-body"></div>
+    </div>
+
+    <div class="row tiny muted">
+      <div>Figures</div><div>Tables</div>
+    </div>
+  </section>
+
+  <!-- RIGHT: memo -->
+  <section class="ro-right">
+    <div class="card">
+      <div class="row">
+        <strong>Memo to self (Markdown + LaTeX)</strong>
+        <div class="mini-toolbar">
+          <button data-md="b"  class="btn mini">B</button>
+          <button data-md="i"  class="btn mini">/</button>
+          <button data-md="cb" class="btn mini">{ }</button>
+          <button data-md="lnk" class="btn mini">🔗</button>
+          <button id="mjBtn"   class="btn mini">\(x\)</button>
+          <button id="previewBtn" class="btn mini">Preview</button>
         </div>
       </div>
-    </section>
+      <textarea id="memo" rows="10" placeholder="State the issue, desired change, and rationale..."></textarea>
+      <div id="memoOut" class="memo-out"></div>
 
-    <!-- RIGHT: memo editor -->
-    <section class="ro-right">
-      <div class="card">
-        <div class="head"><strong>Memo to self (Markdown + LaTeX)</strong></div>
-        <div class="ro-memo-toolbar">
-          <button data-md="b">B</button>
-          <button data-md="i">I</button>
-          <button data-md="code">{ }</button>
-          <button data-md="link">🔗</button>
-          <button data-md="tex">\(x\)</button>
-          <button id="memoPreviewBtn">Preview</button>
-        </div>
-        <textarea id="memo" placeholder="State the issue, desired change, and rationale..."></textarea>
-        <div id="memoPreview" class="card" style="margin-top:8px; display:none;"></div>
-
-        <div class="ro-memo-actions">
-          <button id="saveDraft">Save draft</button>
-          <button id="saveVersion">Save version</button>
-          <button id="exportMemo">Export memo JSON</button>
-          <button id="exportAll">Export ALL drafts</button>
-          <label><input type="file" id="importMemo" /></label>
-          <button id="submitDiscord">Submit via Discord</button>
-        </div>
-
-        <p class="tiny muted">
-          Autosave is ON (on every keystroke + periodically). Draft → step away → revise → submit.
-        </p>
-
-        <div class="head"><strong>Versions (snapshots for this memo)</strong></div>
-        <div id="versions" class="tiny muted">No snapshots yet.</div>
-
-        <div class="head" style="margin-top:12px;"><strong>Recent drafts (this browser)</strong></div>
-        <div id="recentDrafts" class="tiny muted"></div>
+      <div class="toolrow">
+        <button id="saveDraft" class="btn">Save draft</button>
+        <button id="saveVersion" class="btn">Save version</button>
+        <button id="exportMemo" class="btn">Export memo JSON</button>
+        <button id="exportAll"  class="btn">Export ALL drafts</button>
+        <input id="importFile" type="file" />
+        <button id="submitBtn" class="btn">Submit via Discord</button>
       </div>
-    </section>
 
-    <!-- Paragraph preview (chapter/anchor) -->
-    <section class="ro-bottom">
-      <div class="card">
-        <div class="head">
-          <strong>Paragraph preview</strong>
-          <span id="paraNum" class="tag">#</span>
-        </div>
-        <div id="paraPreview" class="mono tiny muted">…</div>
-
-        <div class="split" style="margin-top:12px">
-          <div>
-            <div class="head"><strong>Figures</strong></div>
-            <div id="figlist" class="list"></div>
-          </div>
-          <div>
-            <div class="head"><strong>Tables</strong></div>
-            <div id="tbllist" class="list"></div>
-          </div>
-        </div>
+      <div class="tiny muted">
+        Autosave is ON (on every keystroke + periodically). Draft → step away → revise → submit.
       </div>
-    </section>
-  </main>
 
-  <!-- JS: grid (module import), thumbs, app logic -->
-  <script type="module">
-    import { initResearchOfficeGrid } from "/js/research-office-grid.js";
-    import { setThumbPage, thumbUrlFor } from "/js/research-office-thumbs.js";
-    import "/js/research.office.js";           // memo + paragraph preview
+      <h4>Versions (snapshots for this memo)</h4>
+      <div class="tiny muted">No snapshots yet.</div>
 
-    // ------- bootstrap -------
-    const Q = new URLSearchParams(location.search);
-    const PARA    = Q.get("para")     || "osf-1";
-    const CHAPTER = Q.get("chapter")  || "notebook/chapter-1-the-basel-problem.html";
-    const FROM    = parseInt(Q.get("from") || Q.get("page") || "1", 10) || 1;
+      <h4>Recent drafts (this browser)</h4>
+      <div class="tiny muted">—</div>
+    </div>
+  </section>
+</main>
 
-    // 1) Put the thumbnail onto the stage immediately
-    setThumbPage(document.getElementById("ro-page"), FROM);
+<!-- Grid / overlay logic -->
+<script src="/js/research-office-grid.js"></script>
+<!-- Page logic (params, preview, memo, autosave, MathJax/marked loaders) -->
+<script src="/js/research.office.js"></script>
 
-    // 2) Start the grid overlay in “image mode” (no PDF.js)
-    initResearchOfficeGrid({
-      mode: "image",                  // tell the grid we're using an <img>
-      stageId: "ro-stage",
-      imgId: "ro-page",
-      initialZoom: "fit",
-      unitsSelId: "unitsSel",
-      toolbar: {
-        point: "toolPoint",
-        box: "toolBox",
-        zoomOut: "zoomOut",
-        zoomFit: "zoomFit",
-        zoomIn: "zoomIn",
-        exportJson: "exportJson",
-        tokenSink: "tokenSink"
-      }
-    });
+<script>
+  (async function () {
+    // URL params
+    const u = new URL(location.href);
+    const from    = Number(u.searchParams.get('from') || u.searchParams.get('page') || 0);
+    const chapter = u.searchParams.get('chapter') || '';
+    const para    = u.searchParams.get('para') || '';
 
-    // 3) Hand parameters to the memo/preview code (already loaded)
-    window.__RO_PARAMS__ = { PARA, CHAPTER, FROM,
-      // also expose where thumbs live (for future jumps)
-      thumbRoot: "/cafes/zeta-zero-cafe/sources/thumbs",
-      thumbUrlFor
-    };
-
-    // 4) Kick paragraph preview (uses ensureMathJax in research.office.js)
-    if (window.loadParagraphPreview) {
-      loadParagraphPreview().catch(console.warn);
+    // Initialize the overlay/grid
+    if (window.initResearchOfficeGrid) {
+      window.initResearchOfficeGrid({
+        fromPage: from || 1,
+        units: 'mm',
+        // Default: A4 portrait; we’ll auto-swap to landscape if needed
+        pageMM: { w: 210, h: 297 },
+        // Where thumbnails live
+        thumbsBase: '/cafes/zeta-zero-cafe/sources/thumbs'
+      });
     }
-  </script>
+
+    // Initialize the memo + paragraph preview pipeline
+    if (window.initResearchOffice) {
+      window.initResearchOffice({ chapter, para });
+    }
+  })();
+</script>
 </body>
 </html>

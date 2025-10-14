@@ -26,16 +26,18 @@
 │   ├── package-lock.json
 │   └── package.json
 ├── cafes
-│   ├── css
 │   └── zeta-zero-cafe
 │       ├── brand
 │       ├── css
 │       ├── hot.html
 │       ├── index.html
 │       ├── notebook
+│       ├── overrides-manager.html
 │       ├── research_office.html
 │       ├── source.html
-│       └── sources
+│       ├── sources
+│       └── tests
+├── cafes.txt
 ├── cleanup_empty_pre.py
 ├── cleanup_equations.py
 ├── css
@@ -45,7 +47,9 @@
 │   ├── 10-components
 │   │   ├── memo.css
 │   │   ├── osf.css
-│   │   └── research-office.css
+│   │   ├── overrides-manager.css
+│   │   ├── research-office.css
+│   │   └── source.css
 │   ├── 98-utilities.css
 │   ├── _legacy
 │   │   └── cafes
@@ -71,16 +75,19 @@
 │   ├── hub.widgets.js
 │   ├── memo.compose.js
 │   ├── osf.bundle.js
+│   ├── overrides-manager.js
+│   ├── research-office-grid.js
+│   ├── research-office-hud.js
+│   ├── research-office-thumbs.js
 │   ├── research.office.js
+│   ├── source-page-resolver.js
 │   └── source.viewer.js
 ├── node_modules
 │   ├── @isaacs
 │   │   ├── balanced-match
 │   │   ├── brace-expansion
 │   │   └── cliui
-│   ├── @napi-rs
-│   │   ├── canvas
-│   │   └── canvas-linux-x64-gnu
+│   ├── @mapbox
 │   ├── ansi-regex
 │   │   ├── index.d.ts
 │   │   ├── index.js
@@ -287,21 +294,25 @@
 │   │   ├── README.md
 │   │   ├── dist
 │   │   └── package.json
+│   ├── path2d-polyfill
+│   │   ├── CHANGELOG.md
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── dist
+│   │   └── package.json
 │   ├── pdfjs-dist
 │   │   ├── CODE_OF_CONDUCT.md
 │   │   ├── LICENSE
 │   │   ├── README.md
 │   │   ├── build
 │   │   ├── cmaps
-│   │   ├── iccs
 │   │   ├── image_decoders
 │   │   ├── legacy
 │   │   ├── package.json
 │   │   ├── standard_fonts
 │   │   ├── types
-│   │   ├── wasm
 │   │   ├── web
-│   │   └── webpack.mjs
+│   │   └── webpack.js
 │   ├── safer-buffer
 │   │   ├── LICENSE
 │   │   ├── Porting-Buffer.md
@@ -416,7 +427,9 @@
 │   ├── memos_focus.json
 │   ├── osf_analysis.csv
 │   ├── osf_analysis.json
-│   └── osf_split_suggestions.json
+│   ├── osf_split_suggestions.json
+│   └── pdf
+│       └── Old_main.pages.json
 ├── package-lock.json
 ├── package.json
 ├── project
@@ -432,6 +445,8 @@
 │       ├── js
 │       ├── media
 │       └── subdocs
+├── tests
+│   └── research-office-grid.test.html
 ├── tools
 │   ├── aggregate-memos.mjs
 │   ├── analyze-osf.mjs
@@ -448,4 +463,4 @@
 │   └── rfc-compile.mjs
 └── tree_L_3.txt
 
-170 directories, 279 files
+170 directories, 294 files

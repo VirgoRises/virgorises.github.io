@@ -1,79 +1,92 @@
 /* research.office.js — drop-in
-   - Robust chapter resolver for Paragraph preview
-   - Safe boot that won’t explode if grid init name differs
-   - Tiny MathJax guard (uses site config if already loaded)
+   - Paragraph preview (resilient chapter URL + MathJax typeset)
+   - Memo toolbar (lightweight, id-less)
+   - Weak resolver stub for &from= fallback
 */
 
 (() => {
   // ---------------- URL + DOM handles ----------------
   const Q = new URLSearchParams(location.search);
-  const PARA = Q.get('para') || '';
+  const PARA    = Q.get('para')    || '';
   const CHAPTER = Q.get('chapter') || '';
-  const RETURN = Q.get('return') || '';
+  const RETURN  = Q.get('return')  || '';
 
   const previewBox = document.getElementById('paraPreview');
 
   // ---------------- MathJax guard ----------------
   async function ensureMathJax() {
     if (window.MathJax && MathJax.typesetPromise) return;
-    // If your HTML already loads math/mathconfig.js this will immediately resolve.
-    // Otherwise we noop; preview still renders plain text.
-    await Promise.resolve();
+    await Promise.resolve(); // config is loaded by the page; noop here
   }
-  // boot – call the preview loader after DOM is ready
-  document.addEventListener('DOMContentLoaded', async () => {
-    try {
-      if (window.ROGrid?.init) await window.ROGrid.init();   // grid if present
-    } catch (e) { console.warn('grid init skipped:', e); }
 
-    try {
-      if (typeof loadParagraphPreview === 'function') {
-        await loadParagraphPreview();
-      }
-    } catch (e) {
-      console.error('preview failed:', e);
-    }
-  });
+  // ---------------- Memo toolbar (simple delegation) ----------------
   document.addEventListener('DOMContentLoaded', () => {
     const memo = document.querySelector('#memo, textarea[name="memo"], .memo textarea');
-    const toolbar = memo && memo.closest('.card, .panel, body').querySelector('button, .memo-toolbar')?.parentNode;
     if (!memo) return;
 
-    // Event delegation: react to any <button> in the memo panel
-    memo.closest('.card, body').addEventListener('click', (e) => {
-      const btn = e.target.closest('button');
+    // Toggle preview
+    const previewBtn = document.getElementById('memoPreviewBtn');
+    const previewPane = document.getElementById('memoPreview');
+    if (previewBtn && previewPane) {
+      previewBtn.addEventListener('click', async () => {
+        const showing = previewPane.style.display !== 'none';
+        if (showing) {
+          previewPane.style.display = 'none';
+          return;
+        }
+        // Render Markdown + MathJax
+        const raw = memo.value;
+        previewPane.innerHTML = raw
+          .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+          .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+          .replace(/_(.+?)_/g,'<em>$1</em>')
+          .replace(/`(.+?)`/g,'<code>$1</code>')
+          .replace(/\n/g,'<br>');
+        previewPane.style.display = 'block';
+        try {
+          await ensureMathJax();
+          if (window.MathJax) {
+            if (MathJax.typesetClear) MathJax.typesetClear([previewPane]);
+            if (MathJax.texReset) MathJax.texReset();
+            if (MathJax.typesetPromise) await MathJax.typesetPromise([previewPane]);
+            else MathJax.typeset([previewPane]);
+          }
+        } catch {}
+      });
+    }
+
+    // Simple buttons (B / I / code / link / tex)
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.ro-memo-toolbar button');
       if (!btn) return;
-      const label = btn.textContent.trim();
+      const mode = btn.getAttribute('data-md');
 
       const wrap = (left, right = left) => {
         const t = memo; const s = t.selectionStart ?? 0; const e2 = t.selectionEnd ?? 0;
         const before = t.value.slice(0, s);
-        const sel = t.value.slice(s, e2);
-        const after = t.value.slice(e2);
+        const sel    = t.value.slice(s, e2);
+        const after  = t.value.slice(e2);
         t.value = before + left + sel + right + after;
         const pos = (before + left + sel + right).length;
         t.setSelectionRange(pos, pos);
         t.focus();
-        memo.dispatchEvent(new Event('input')); // keep autosave alive
+        t.dispatchEvent(new Event('input'));
       };
 
-      switch (label) {
-        case 'B': wrap('**'); break;
-        case 'I': wrap('_'); break;
-        case '{}': wrap('**', '**'); break; // you can swap to `{}` if you prefer
-        case '`': wrap('`'); break;
-        case '∑': wrap('$$', '$$'); break;
-        case 'Preview':
-          // trigger the preview button’s native behavior if you already have one
-          if (typeof window.renderMemoPreview === 'function') window.renderMemoPreview();
-          break;
+      switch (mode) {
+        case 'b':    wrap('**'); break;
+        case 'i':    wrap('_'); break;
+        case 'code': wrap('`'); break;
+        case 'link': wrap('[', '](url)'); break;
+        case 'tex':  wrap('\\(', '\\)'); break; // inline math
         default: return;
       }
     });
   });
 
-  // ---------------- Resilient paragraph preview loader ----------------
+  // ---------------- Paragraph preview (resilient) ----------------
   async function loadParagraphPreview() {
+    if (!previewBox) return;
     if (!CHAPTER || !PARA) {
       previewBox.innerHTML = `<div class="muted">Failed to load the chapter or paragraph preview.</div>`;
       return;
@@ -99,29 +112,27 @@
     if (!html) {
       previewBox.innerHTML =
         `<div class="muted">Failed to load the chapter or paragraph preview.<br>
-        <span class="mono tiny">Tried:</span>
-        <div class="tiny mono" style="max-width:100%;overflow:auto">${candidates.map(c => `• ${c}`).join('<br>')}</div>
-        <div class="tiny mono">Last status: ${lastStatus}</div>
-       </div>`;
+          <span class="mono tiny">Tried:</span>
+          <div class="tiny mono" style="max-width:100%;overflow:auto">${candidates.map(c=>`• ${c}`).join('<br>')}</div>
+          <div class="tiny mono">Last status: ${lastStatus}</div>
+         </div>`;
       return;
     }
 
     const doc = new DOMParser().parseFromString(html, 'text/html');
     let anchor = doc.getElementById(PARA) ||
-      doc.querySelector(`[data-source-anchor="${PARA}"], [data-anchor="${PARA}"]`);
-
+                 doc.querySelector(`[data-source-anchor="${PARA}"], [data-anchor="${PARA}"]`);
     if (!anchor) {
       previewBox.innerHTML =
         `<div class="muted">Loaded <span class="mono tiny">${chosenUrl}</span>, but couldn’t find anchor
-        <span class="mono">${PARA}</span>.</div>`;
+          <span class="mono">${PARA}</span>.</div>`;
       return;
     }
 
-    // 1) Prefer the nearest “atomic” block (card/figure/table/paragraph)
+    // prefer an atomic block around the anchor
     let container = anchor.closest('.card, figure, table, .paragraph, .para, .fig, .tbl');
-
-    // 2) If none, slice a minimal section: from a safe start node up to the next anchor-like
     if (!container) {
+      // slice minimal section if no wrapper
       let start = anchor;
       while (start.parentElement && start.parentElement !== doc.body) {
         if (start.previousElementSibling) break;
@@ -131,7 +142,6 @@
       let cur = start;
       const isSectionStart = el =>
         el.matches?.('.card, figure, table, .paragraph, .para, .fig, .tbl, [id^="osf-"], [data-source-anchor], [data-anchor]');
-
       while (cur && cur !== doc.body) {
         if (cur !== start && isSectionStart(cur)) break;
         frag.appendChild(cur.cloneNode(true));
@@ -141,21 +151,21 @@
       container.appendChild(frag);
     }
 
-    // Absolutize URLs relative to the chosen chapter
+    // absolutize asset URLs relative to chapter
     (function absolutizeUrls(root, baseUrl) {
       const base = new URL(baseUrl, location.href);
       root.querySelectorAll('img').forEach(img => {
         const v = img.getAttribute('src'); if (!v) return;
-        try { img.src = new URL(v, base).toString(); } catch { }
+        try { img.src = new URL(v, base).toString(); } catch {}
         img.loading = 'lazy'; img.decoding = 'async'; img.referrerPolicy = 'no-referrer';
       });
       root.querySelectorAll('a').forEach(a => {
         const v = a.getAttribute('href'); if (!v) return;
-        try { a.href = new URL(v, base).toString(); } catch { }
+        try { a.href = new URL(v, base).toString(); } catch {}
       });
     })(container, chosenUrl);
 
-    // Inject & typeset
+    // inject & typeset
     previewBox.innerHTML = '';
     const dbg = document.createElement('div');
     dbg.className = 'tiny muted mono';
@@ -165,13 +175,22 @@
 
     try {
       await ensureMathJax();
-      if (MathJax.typesetClear) MathJax.typesetClear([previewBox]);
-      if (MathJax.texReset) MathJax.texReset();
-      if (MathJax.typesetPromise) await MathJax.typesetPromise([previewBox]);
-      else MathJax.typeset([previewBox]);
+      if (window.MathJax) {
+        if (MathJax.typesetClear) MathJax.typesetClear([previewBox]);
+        if (MathJax.texReset) MathJax.texReset();
+        if (MathJax.typesetPromise) await MathJax.typesetPromise([previewBox]);
+        else MathJax.typeset([previewBox]);
+      }
     } catch (e) {
       console.warn('MathJax not available in paragraph preview.', e);
     }
   }
+
+  // expose for bootstrap
+  window.loadParagraphPreview = loadParagraphPreview;
+
+  // ---------------- Weak resolver (page) ----------------
+  // Replace later with a real chapter/anchor→page lookup
+  window.__roResolveFrom = async (chapter, para) => 0;
 
 })();
