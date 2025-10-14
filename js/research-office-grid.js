@@ -1,3 +1,4 @@
+// /js/research-office-grid.js
 (function () {
   window.initResearchOfficeGrid = function initResearchOfficeGrid(opts) {
     const state = {
@@ -27,9 +28,41 @@
     const tokenOut  = document.getElementById('token');
     const exportBtn = document.getElementById('exportJson');
 
+    // Try to find the memo textarea (support a few ids/selectors)
+    const memoBox =
+      document.getElementById('memoText') ||
+      document.querySelector('#memoText') ||
+      document.querySelector('textarea[name="memo"]') ||
+      document.querySelector('.ro-memo textarea') ||
+      document.querySelector('#memo textarea');
+
     // ---- helpers
     const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
     const fmt = v => (Math.round(v*10)/10).toFixed(1);
+
+    function insertAtCursor(el, text) {
+      if (!el) return;
+      const start = el.selectionStart ?? el.value.length;
+      const end   = el.selectionEnd   ?? el.value.length;
+      const before = el.value.slice(0, start);
+      const after  = el.value.slice(end);
+      // If caret not at line start, prepend a space; ensure newline after.
+      const needsLeadSpace = before && !/\s$/.test(before);
+      const toInsert = (needsLeadSpace ? ' ' : '') + text + '\n';
+      el.value = before + toInsert + after;
+      const newPos = (before + toInsert).length;
+      el.selectionStart = el.selectionEnd = newPos;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
+    function emitToken(s) {
+      // 1) put it in the memo
+      insertAtCursor(memoBox, s);
+      // 2) show a short status
+      if (tokenOut) tokenOut.textContent = s;
+      // 3) copy to clipboard (best-effort)
+      navigator.clipboard?.writeText(s).catch(()=>{});
+    }
 
     function recomputeScale() {
       const wPx = img.clientWidth;
@@ -110,18 +143,30 @@
       return [mmx, mmy];
     }
 
-    // markers
+    // markers → also emit memo tokens
+    function tokenForPoint(mm) {
+      return `[mm|p${state.fromPage}=${fmt(mm[0])},${fmt(mm[1])}]`;
+    }
+    function tokenForBox(a, b) {
+      const mm = [
+        Math.min(a[0],b[0]), Math.min(a[1],b[1]),
+        Math.max(a[0],b[0]), Math.max(a[1],b[1])
+      ];
+      return `[mm|p${state.fromPage}=${fmt(mm[0])},${fmt(mm[1])}:${fmt(mm[2])},${fmt(mm[3])}]`;
+    }
+
     function pushPoint(mm) {
       state.markers.push({t:'p', mm});
-      tokenOut.textContent = `[mm|p${state.fromPage}=${fmt(mm[0])},${fmt(mm[1])}]`;
+      emitToken(tokenForPoint(mm));
       redrawMarkers();
     }
     function pushBox(a, b) {
       const mm = [Math.min(a[0],b[0]), Math.min(a[1],b[1]), Math.max(a[0],b[0]), Math.max(a[1],b[1])];
       state.markers.push({t:'b', mm});
-      tokenOut.textContent = `[mm|p${state.fromPage}=${fmt(mm[0])},${fmt(mm[1])}:${fmt(mm[2])},${fmt(mm[3])}]`;
+      emitToken(tokenForBox(a, b));
       redrawMarkers();
     }
+
     function redrawMarkers() {
       [...svg.querySelectorAll('.mark')].forEach(n=>n.remove());
       const g = (tag, attrs) => {
@@ -157,19 +202,20 @@
     });
 
     // toolbar wiring
-    btnPoint .addEventListener('click', ()=>{ state.tool='point'; });
-    btnBox   .addEventListener('click', ()=>{ state.tool='box';   });
-    btnZoomFit.addEventListener('click', ()=> doZoomFit());
-    btnZoomOut.addEventListener('click', ()=> zoomDelta(-1));
-    btnZoomIn .addEventListener('click', ()=> zoomDelta(+1));
-    unitsSel  .addEventListener('change', ()=>{ /* reserved for future UI */ });
-    exportBtn .addEventListener('click', ()=>{
+    btnPoint && btnPoint.addEventListener('click', ()=>{ state.tool='point'; });
+    btnBox   && btnBox  .addEventListener('click', ()=>{ state.tool='box';   });
+    btnZoomFit&& btnZoomFit.addEventListener('click', ()=> doZoomFit());
+    btnZoomOut&& btnZoomOut.addEventListener('click', ()=> zoomDelta(-1));
+    btnZoomIn && btnZoomIn .addEventListener('click', ()=> zoomDelta(+1));
+    unitsSel  && unitsSel  .addEventListener('change', ()=>{ /* reserved */ });
+    exportBtn && exportBtn .addEventListener('click', ()=>{
       const data = state.markers.map(m=>m.t==='p'
-        ? `[mm|p${state.fromPage}=${fmt(m.mm[0])},${fmt(m.mm[1])}]`
+        ? tokenForPoint(m.mm)
         : `[mm|p${state.fromPage}=${fmt(m.mm[0])},${fmt(m.mm[1])}:${fmt(m.mm[2])},${fmt(m.mm[3])}]`
       ).join('\n');
       navigator.clipboard.writeText(data).catch(()=>{});
-      tokenOut.textContent = 'copied markers to clipboard';
+      if (tokenOut) tokenOut.textContent = 'copied markers to clipboard';
+      insertAtCursor(memoBox, data + '\n');
     });
 
     // load thumbnail and size everything

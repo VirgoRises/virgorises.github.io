@@ -56,7 +56,7 @@ body.ro{
 .card-h{padding:10px 12px;border-bottom:1px solid var(--line)}
 .card .muted{padding:10px 12px}
 
-.para-preview{padding:12px; max-height: 6cm; overflow:auto; white-space:normal; word-break:break-word}
+.para-preview{padding:12px; max-height: 4cm; overflow:auto; white-space:normal; word-break:break-word}
 .right textarea{
   width:100%;min-height:180px;resize:vertical;background:#0f151c;color:var(--ink);
   border:1px solid var(--line);border-radius:8px;padding:8px

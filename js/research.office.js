@@ -185,6 +185,57 @@
       console.warn('MathJax not available in paragraph preview.', e);
     }
   }
+// === MM token → Memo wiring ===============================================
+// Finds the memo textarea in a tolerant way
+function ro_getMemoBox() {
+  return document.querySelector('#memo, #memoText, .memo textarea, .memo-box textarea, textarea#memo-body, textarea');
+}
+
+// Insert token at caret (de-duped). Adds a trailing newline.
+function ro_insertMMToken(token) {
+  if (!token || !/^\[mm\|p\d+/.test(token)) return;
+
+  const memo = ro_getMemoBox();
+  if (!memo) return;
+
+  // de-dupe: don't insert if the exact token already exists
+  if (memo.value.includes(token)) return;
+
+  // insert at caret position
+  const start = memo.selectionStart ?? memo.value.length;
+  const end   = memo.selectionEnd ?? memo.value.length;
+  const before = memo.value.slice(0, start);
+  const after  = memo.value.slice(end);
+  const toInsert = (before && !before.endsWith('\n') ? '\n' : '') + token + '\n';
+
+  memo.value = before + toInsert + after;
+  const pos = (before + toInsert).length;
+  memo.setSelectionRange(pos, pos);
+  memo.dispatchEvent(new Event('input', { bubbles: true })); // keep autosave hooks happy
+}
+
+// Preferred path: listen for custom event from the grid
+window.addEventListener('ro:mm-token', (e) => {
+  const token = e?.detail?.token || '';
+  ro_insertMMToken(token);
+});
+
+// Safety net: watch the "click marker to copy" sink for new tokens
+(function ro_watchTokenSink() {
+  const sink =
+    document.querySelector('#tokenCopy, #tokenSink, input[placeholder*="marker"]')
+    || document.querySelector('input[placeholder*="copy reference"]');
+
+  if (!sink) return; // nothing to watch
+
+  let last = '';
+  setInterval(() => {
+    const v = (sink.value || '').trim();
+    if (!v || v === last) return;
+    last = v;
+    ro_insertMMToken(v);
+  }, 300); // low frequency; cheap + reliable
+})();
 
   // expose for bootstrap
   window.loadParagraphPreview = loadParagraphPreview;
