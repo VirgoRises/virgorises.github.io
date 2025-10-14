@@ -1,13 +1,10 @@
 (function () {
-  // Public entry
   window.initResearchOfficeGrid = function initResearchOfficeGrid(opts) {
     const state = {
-      // inputs
       fromPage: opts.fromPage || 1,
       units: opts.units || 'mm',
       thumbsBase: opts.thumbsBase || '',
       pageMM: opts.pageMM || { w: 210, h: 297 }, // default A4 portrait
-      // derived
       zoom: 1,
       pagePx: { w: 0, h: 0 },
       mmPerPx: { x: 1, y: 1 },
@@ -16,24 +13,24 @@
     };
 
     // --- DOM
-    const stage    = document.getElementById('ro-stage');
-    const inner    = document.getElementById('ro-inner');
-    const img      = document.getElementById('ro-page');
-    const svg      = document.getElementById('ro-svg');
-    const toolPoint= document.getElementById('toolPoint');
-    const toolBox  = document.getElementById('toolBox');
-    const zoomOut  = document.getElementById('zoomOut');
-    const zoomFit  = document.getElementById('zoomFit');
-    const zoomIn   = document.getElementById('zoomIn');
-    const unitsSel = document.getElementById('unitsSel');
-    const tokenOut = document.getElementById('token');
-    const exportBtn= document.getElementById('exportJson');
+    const stage     = document.getElementById('ro-stage');
+    const inner     = document.getElementById('ro-inner');
+    const img       = document.getElementById('ro-page');
+    const svg       = document.getElementById('ro-svg');
+
+    const btnPoint  = document.getElementById('toolPoint');
+    const btnBox    = document.getElementById('toolBox');
+    const btnZoomOut= document.getElementById('zoomOut');
+    const btnZoomFit= document.getElementById('zoomFit');
+    const btnZoomIn = document.getElementById('zoomIn');
+    const unitsSel  = document.getElementById('unitsSel');
+    const tokenOut  = document.getElementById('token');
+    const exportBtn = document.getElementById('exportJson');
 
     // ---- helpers
     const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
     const fmt = v => (Math.round(v*10)/10).toFixed(1);
 
-    // compute px↔mm after image loads or zoom changes
     function recomputeScale() {
       const wPx = img.clientWidth;
       const hPx = img.clientHeight;
@@ -44,7 +41,6 @@
       redrawMarkers();
     }
 
-    // draw faint metric grid + rulers (in px, but computed from mm)
     function drawGrid() {
       const W = state.pagePx.w, H = state.pagePx.h;
       svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
@@ -61,7 +57,6 @@
       const light = '#5d6a7a33';
       const strong= '#8aa4c255';
 
-      // mm grid
       const mmToPxX = mm => mm * (state.pagePx.w / state.pageMM.w);
       const mmToPxY = mm => mm * (state.pagePx.h / state.pageMM.h);
 
@@ -85,28 +80,23 @@
       }
     }
 
-    // zoom controls: we scale the *wrapper* so image & SVG stay glued
+    // zoom: scale the wrapper so image & SVG stay glued
     function applyZoom() {
       inner.style.transform = `scale(${state.zoom})`;
       recomputeScale();
     }
-    function zoomFit() {
-      // fit width into visible area of stage
-      const visW = stage.clientWidth - 16; // padding/scrollbar
-      const baseW = img.naturalWidth ? img.naturalWidth : img.clientWidth;
-      if (baseW) {
-        // inner is initially at scale 1 with CSS width var(--ro-base-w). We compute ratio
-        const currentDisplayed = img.clientWidth * state.zoom;
+    function doZoomFit() {
+      const visW = stage.clientWidth - 16; // padding/scrollbar fudge
+      const currentDisplayed = img.clientWidth * state.zoom;
+      if (currentDisplayed > 0) {
         const fitScale = clamp(visW / currentDisplayed, 0.1, 6);
         state.zoom *= fitScale;
         applyZoom();
-        // scroll back to top-left so page remains visible
         stage.scrollLeft = 0; stage.scrollTop = 0;
       }
     }
     function zoomDelta(d) {
-      const z = clamp(state.zoom * (d>0?1.1:0.9), 0.25, 8);
-      state.zoom = z;
+      state.zoom = clamp(state.zoom * (d>0?1.1:0.9), 0.25, 8);
       applyZoom();
     }
 
@@ -133,7 +123,6 @@
       redrawMarkers();
     }
     function redrawMarkers() {
-      // clear old
       [...svg.querySelectorAll('.mark')].forEach(n=>n.remove());
       const g = (tag, attrs) => {
         const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -159,27 +148,22 @@
     let dragA=null;
     svg.addEventListener('mousedown', (e)=>{
       const mm = clientToMM(e);
-      if (state.tool==='point') {
-        pushPoint(mm);
-      } else {
-        dragA = mm;
-      }
+      if (state.tool==='point') pushPoint(mm);
+      else dragA = mm;
     });
     window.addEventListener('mouseup', (e)=>{
-      if (state.tool==='box' && dragA) {
-        pushBox(dragA, clientToMM(e));
-      }
+      if (state.tool==='box' && dragA) pushBox(dragA, clientToMM(e));
       dragA=null;
     });
 
     // toolbar wiring
-    toolPoint.addEventListener('click', ()=>{ state.tool='point'; });
-    toolBox  .addEventListener('click', ()=>{ state.tool='box';   });
-    zoomFit  .addEventListener('click', ()=> zoomFit());
-    zoomOut  .addEventListener('click', ()=> zoomDelta(-1));
-    zoomIn   .addEventListener('click', ()=> zoomDelta(+1));
-    unitsSel .addEventListener('change', ()=>{ /* reserved if you later show cm labels */ });
-    exportBtn.addEventListener('click', ()=>{
+    btnPoint .addEventListener('click', ()=>{ state.tool='point'; });
+    btnBox   .addEventListener('click', ()=>{ state.tool='box';   });
+    btnZoomFit.addEventListener('click', ()=> doZoomFit());
+    btnZoomOut.addEventListener('click', ()=> zoomDelta(-1));
+    btnZoomIn .addEventListener('click', ()=> zoomDelta(+1));
+    unitsSel  .addEventListener('change', ()=>{ /* reserved for future UI */ });
+    exportBtn .addEventListener('click', ()=>{
       const data = state.markers.map(m=>m.t==='p'
         ? `[mm|p${state.fromPage}=${fmt(m.mm[0])},${fmt(m.mm[1])}]`
         : `[mm|p${state.fromPage}=${fmt(m.mm[0])},${fmt(m.mm[1])}:${fmt(m.mm[2])},${fmt(m.mm[3])}]`
@@ -194,18 +178,12 @@
       img.src = `${state.thumbsBase}/page-${n}.jpg`;
     }
     img.addEventListener('load', ()=>{
-      // set base width to natural; adjust orientation guess for metric conversion
       const portrait = img.naturalHeight >= img.naturalWidth;
-      if (!portrait) {
-        // swap metric dimensions if landscape
-        state.pageMM = { w: 297, h: 210 };
-      }
-      // Make CSS base width follow intrinsic width, so fit behaves well
+      if (!portrait) state.pageMM = { w: 297, h: 210 }; // landscape
       img.style.width = `${img.naturalWidth}px`;
-      // Start at 1×, then fit once
       state.zoom = 1;
       applyZoom();
-      zoomFit();
+      doZoomFit();
     });
 
     setThumbSrc();
