@@ -1,247 +1,241 @@
-/* research.office.js — drop-in
-   - Paragraph preview (resilient chapter URL + MathJax typeset)
-   - Memo toolbar (lightweight, id-less)
-   - Weak resolver stub for &from= fallback
-*/
+/* Research Office — memo toolbar, preview, autosave, and grid bridge */
+(function () {
+  'use strict';
 
-(() => {
-  // ---------------- URL + DOM handles ----------------
-  const Q = new URLSearchParams(location.search);
-  const PARA    = Q.get('para')    || '';
-  const CHAPTER = Q.get('chapter') || '';
-  const RETURN  = Q.get('return')  || '';
+  const $ = (s, r = document) => r.querySelector(s);
 
-  const previewBox = document.getElementById('paraPreview');
+  // ---- locate memo textarea -------------------------------------------------
+  const memoEl =
+    document.getElementById('memo') ||
+    document.getElementById('memoText') ||
+    $('.ro-memo textarea') ||
+    $('textarea[name="memo"]') ||
+    $('textarea');
 
-  // ---------------- MathJax guard ----------------
-  async function ensureMathJax() {
-    if (window.MathJax && MathJax.typesetPromise) return;
-    await Promise.resolve(); // config is loaded by the page; noop here
+  // toolbar root (any container near the memo with buttons)
+  let toolbarEl =
+    document.getElementById('memo-toolbar') ||
+    $('.ro-memo .toolbar') ||
+    (memoEl && memoEl.parentElement?.querySelector('.toolbar'));
+
+  // Preview output pane (created on demand if missing)
+  let previewOut =
+    document.getElementById('memo-preview') ||
+    $('#memo-preview');
+
+  // Public bridge for the grid: insert an [mm|…] token at the caret
+  window.insertMemoMarkup = function insertMemoMarkup(snippet) {
+    if (!memoEl) return;
+    const s = memoEl.selectionStart ?? memoEl.value.length;
+    const e = memoEl.selectionEnd   ?? memoEl.value.length;
+    memoEl.value = memoEl.value.slice(0, s) + snippet + '\n' + memoEl.value.slice(e);
+    const pos = s + snippet.length + 1;
+    memoEl.setSelectionRange(pos, pos);
+    memoEl.focus();
+    memoEl.dispatchEvent(new Event('input', { bubbles: true }));
+  };
+
+  // Also expose current memo text so the grid can re-parse on demand
+  window.roGetMemoText = () => memoEl?.value ?? '';
+
+  if (!memoEl) return; // nothing to wire up
+
+  // ---- autosave (per cafe / chapter / para) --------------------------------
+  const params   = new URLSearchParams(location.search);
+  const PARA     = params.get('para')    || '';
+  const CHAPTER  = params.get('chapter') || '';
+  const CAFE     = location.pathname.split('/').filter(Boolean)[1] || 'zeta-zero-cafe';
+  const draftKey    = `ro:draft:${CAFE}:${CHAPTER}:${PARA}`;
+  const versionsKey = `ro:versions:${CAFE}:${CHAPTER}:${PARA}`;
+
+  function loadDraft() {
+    try {
+      const v = localStorage.getItem(draftKey);
+      if (v != null) memoEl.value = v;
+    } catch {}
+    // let the grid repaint tokens from the memo text
+    window.roRefreshFromMemo?.();
+  }
+  function saveDraft() {
+    try { localStorage.setItem(draftKey, memoEl.value); } catch {}
   }
 
-  // ---------------- Memo toolbar (simple delegation) ----------------
-  document.addEventListener('DOMContentLoaded', () => {
-    const memo = document.querySelector('#memo, textarea[name="memo"], .memo textarea');
-    if (!memo) return;
-
-    // Toggle preview
-    const previewBtn = document.getElementById('memoPreviewBtn');
-    const previewPane = document.getElementById('memoPreview');
-    if (previewBtn && previewPane) {
-      previewBtn.addEventListener('click', async () => {
-        const showing = previewPane.style.display !== 'none';
-        if (showing) {
-          previewPane.style.display = 'none';
-          return;
-        }
-        // Render Markdown + MathJax
-        const raw = memo.value;
-        previewPane.innerHTML = raw
-          .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-          .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-          .replace(/_(.+?)_/g,'<em>$1</em>')
-          .replace(/`(.+?)`/g,'<code>$1</code>')
-          .replace(/\n/g,'<br>');
-        previewPane.style.display = 'block';
-        try {
-          await ensureMathJax();
-          if (window.MathJax) {
-            if (MathJax.typesetClear) MathJax.typesetClear([previewPane]);
-            if (MathJax.texReset) MathJax.texReset();
-            if (MathJax.typesetPromise) await MathJax.typesetPromise([previewPane]);
-            else MathJax.typeset([previewPane]);
-          }
-        } catch {}
-      });
-    }
-
-    // Simple buttons (B / I / code / link / tex)
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest('.ro-memo-toolbar button');
-      if (!btn) return;
-      const mode = btn.getAttribute('data-md');
-
-      const wrap = (left, right = left) => {
-        const t = memo; const s = t.selectionStart ?? 0; const e2 = t.selectionEnd ?? 0;
-        const before = t.value.slice(0, s);
-        const sel    = t.value.slice(s, e2);
-        const after  = t.value.slice(e2);
-        t.value = before + left + sel + right + after;
-        const pos = (before + left + sel + right).length;
-        t.setSelectionRange(pos, pos);
-        t.focus();
-        t.dispatchEvent(new Event('input'));
-      };
-
-      switch (mode) {
-        case 'b':    wrap('**'); break;
-        case 'i':    wrap('_'); break;
-        case 'code': wrap('`'); break;
-        case 'link': wrap('[', '](url)'); break;
-        case 'tex':  wrap('\\(', '\\)'); break; // inline math
-        default: return;
-      }
-    });
+  loadDraft();
+  memoEl.addEventListener('input', () => {
+    saveDraft();
+    window.roRefreshFromMemo?.();
   });
 
-  // ---------------- Paragraph preview (resilient) ----------------
-  async function loadParagraphPreview() {
-    if (!previewBox) return;
-    if (!CHAPTER || !PARA) {
-      previewBox.innerHTML = `<div class="muted">Failed to load the chapter or paragraph preview.</div>`;
-      return;
-    }
-
-    const slug = location.pathname.split('/').filter(Boolean)[1] || 'zeta-zero-cafe';
-    const candidates = [
-      new URL(CHAPTER, location.href).toString(),
-      CHAPTER.startsWith('/') ? CHAPTER : '/' + CHAPTER,
-      `/cafes/${slug}/${CHAPTER.replace(/^\/+/, '')}`,
-      `/cafes/${slug}/notebook/${CHAPTER.split('/').pop()}`
-    ].filter((v, i, a) => v && a.indexOf(v) === i);
-
-    let chosenUrl = null, html = null, lastStatus = null;
-    for (const url of candidates) {
-      try {
-        const res = await fetch(url, { cache: 'no-store' });
-        lastStatus = res.status;
-        if (res.ok) { chosenUrl = url; html = await res.text(); break; }
-      } catch (e) { lastStatus = String(e); }
-    }
-
-    if (!html) {
-      previewBox.innerHTML =
-        `<div class="muted">Failed to load the chapter or paragraph preview.<br>
-          <span class="mono tiny">Tried:</span>
-          <div class="tiny mono" style="max-width:100%;overflow:auto">${candidates.map(c=>`• ${c}`).join('<br>')}</div>
-          <div class="tiny mono">Last status: ${lastStatus}</div>
-         </div>`;
-      return;
-    }
-
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    let anchor = doc.getElementById(PARA) ||
-                 doc.querySelector(`[data-source-anchor="${PARA}"], [data-anchor="${PARA}"]`);
-    if (!anchor) {
-      previewBox.innerHTML =
-        `<div class="muted">Loaded <span class="mono tiny">${chosenUrl}</span>, but couldn’t find anchor
-          <span class="mono">${PARA}</span>.</div>`;
-      return;
-    }
-
-    // prefer an atomic block around the anchor
-    let container = anchor.closest('.card, figure, table, .paragraph, .para, .fig, .tbl');
-    if (!container) {
-      // slice minimal section if no wrapper
-      let start = anchor;
-      while (start.parentElement && start.parentElement !== doc.body) {
-        if (start.previousElementSibling) break;
-        start = start.parentElement;
-      }
-      const frag = doc.createDocumentFragment();
-      let cur = start;
-      const isSectionStart = el =>
-        el.matches?.('.card, figure, table, .paragraph, .para, .fig, .tbl, [id^="osf-"], [data-source-anchor], [data-anchor]');
-      while (cur && cur !== doc.body) {
-        if (cur !== start && isSectionStart(cur)) break;
-        frag.appendChild(cur.cloneNode(true));
-        cur = cur.nextElementSibling;
-      }
-      container = document.createElement('div');
-      container.appendChild(frag);
-    }
-
-    // absolutize asset URLs relative to chapter
-    (function absolutizeUrls(root, baseUrl) {
-      const base = new URL(baseUrl, location.href);
-      root.querySelectorAll('img').forEach(img => {
-        const v = img.getAttribute('src'); if (!v) return;
-        try { img.src = new URL(v, base).toString(); } catch {}
-        img.loading = 'lazy'; img.decoding = 'async'; img.referrerPolicy = 'no-referrer';
-      });
-      root.querySelectorAll('a').forEach(a => {
-        const v = a.getAttribute('href'); if (!v) return;
-        try { a.href = new URL(v, base).toString(); } catch {}
-      });
-    })(container, chosenUrl);
-
-    // inject & typeset
-    previewBox.innerHTML = '';
-    const dbg = document.createElement('div');
-    dbg.className = 'tiny muted mono';
-    dbg.textContent = `preview from: ${chosenUrl}`;
-    previewBox.appendChild(dbg);
-    previewBox.appendChild(container.cloneNode(true));
-
-    try {
-      await ensureMathJax();
-      if (window.MathJax) {
-        if (MathJax.typesetClear) MathJax.typesetClear([previewBox]);
-        if (MathJax.texReset) MathJax.texReset();
-        if (MathJax.typesetPromise) await MathJax.typesetPromise([previewBox]);
-        else MathJax.typeset([previewBox]);
-      }
-    } catch (e) {
-      console.warn('MathJax not available in paragraph preview.', e);
-    }
+  // wire “Save draft / Save version” no matter where their buttons live
+  function findButton(txt) {
+    const want = String(txt).trim().toLowerCase();
+    return Array.from(document.querySelectorAll('button'))
+      .find(b => (b.textContent || '').trim().toLowerCase() === want);
   }
-// === MM token → Memo wiring ===============================================
-// Finds the memo textarea in a tolerant way
-function ro_getMemoBox() {
-  return document.querySelector('#memo, #memoText, .memo textarea, .memo-box textarea, textarea#memo-body, textarea');
-}
+  const btnSaveDraft   = findButton('save draft');
+  const btnSaveVersion = findButton('save version');
 
-// Insert token at caret (de-duped). Adds a trailing newline.
-function ro_insertMMToken(token) {
-  if (!token || !/^\[mm\|p\d+/.test(token)) return;
+  btnSaveDraft && btnSaveDraft.addEventListener('click', (e) => {
+    e.preventDefault(); saveDraft(); flash('Draft saved.');
+  });
 
-  const memo = ro_getMemoBox();
-  if (!memo) return;
+  btnSaveVersion && btnSaveVersion.addEventListener('click', (e) => {
+    e.preventDefault();
+    const versions = JSON.parse(localStorage.getItem(versionsKey) || '[]');
+    versions.push({ ts: new Date().toISOString(), text: memoEl.value });
+    localStorage.setItem(versionsKey, JSON.stringify(versions));
+    flash('Version stored.');
+  });
 
-  // de-dupe: don't insert if the exact token already exists
-  if (memo.value.includes(token)) return;
+  function flash(msg) {
+    let n = document.getElementById('ro-flash');
+    if (!n) {
+      n = document.createElement('div'); n.id = 'ro-flash';
+      Object.assign(n.style, {
+        position: 'fixed', bottom: '10px', right: '10px', zIndex: 9999,
+        background: '#22313d', color: '#cfe8ff', padding: '6px 10px',
+        borderRadius: '8px', transition: 'opacity .7s'
+      });
+      document.body.appendChild(n);
+    }
+    n.textContent = msg; n.style.opacity = '1';
+    setTimeout(() => { n.style.opacity = '0'; }, 900);
+  }
 
-  // insert at caret position
-  const start = memo.selectionStart ?? memo.value.length;
-  const end   = memo.selectionEnd ?? memo.value.length;
-  const before = memo.value.slice(0, start);
-  const after  = memo.value.slice(end);
-  const toInsert = (before && !before.endsWith('\n') ? '\n' : '') + token + '\n';
+  // ---- Markdown + LaTeX preview --------------------------------------------
+  // We keep *chapter’s* MathJax config as the single source of truth.
+  // research_office.html should load:  /cafes/<cafe>/notebook/math/mathconfig.js
+  // Here we only ensure the runtime exists (local path -> CDN fallback).
 
-  memo.value = before + toInsert + after;
-  const pos = (before + toInsert).length;
-  memo.setSelectionRange(pos, pos);
-  memo.dispatchEvent(new Event('input', { bubbles: true })); // keep autosave hooks happy
-}
+  function loadScriptOnce(src) {
+    return new Promise((resolve, reject) => {
+      const abs = new URL(src, location.href).toString();
+      if ([...document.scripts].some(s => s.src === abs)) return resolve(abs);
+      const s = document.createElement('script');
+      s.src = abs; s.async = true;
+      s.onload = () => resolve(abs);
+      s.onerror = () => reject(new Error('Failed to load ' + abs));
+      document.head.appendChild(s);
+    });
+  }
 
-// Preferred path: listen for custom event from the grid
-window.addEventListener('ro:mm-token', (e) => {
-  const token = e?.detail?.token || '';
-  ro_insertMMToken(token);
-});
+  async function ensureMarked() {
+    if (window.marked) return window.marked;
+    try {
+      await loadScriptOnce('/js/marked.min.js');
+    } catch {
+      await loadScriptOnce('https://cdn.jsdelivr.net/npm/marked@12/marked.min.js');
+    }
+    return window.marked;
+  }
 
-// Safety net: watch the "click marker to copy" sink for new tokens
-(function ro_watchTokenSink() {
-  const sink =
-    document.querySelector('#tokenCopy, #tokenSink, input[placeholder*="marker"]')
-    || document.querySelector('input[placeholder*="copy reference"]');
+  async function ensureMathJax() {
+    // If chapter config + engine are already present, we’re done.
+    if (window.MathJax?.typesetPromise) return window.MathJax;
 
-  if (!sink) return; // nothing to watch
+    const candidates = [
+      '/js/mathjax/es5/tex-chtml.js',
+      '/js/mathjax/tex-chtml.js',
+      'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js',
+    ];
+    for (const src of candidates) {
+      try {
+        await loadScriptOnce(src);
+        if (window.MathJax?.startup?.promise) {
+          await window.MathJax.startup.promise;
+        }
+        if (window.MathJax?.typesetPromise) return window.MathJax;
+      } catch { /* try next */ }
+    }
+    throw new Error('MathJax engine could not be loaded');
+  }
 
-  let last = '';
-  setInterval(() => {
-    const v = (sink.value || '').trim();
-    if (!v || v === last) return;
-    last = v;
-    ro_insertMMToken(v);
-  }, 300); // low frequency; cheap + reliable
-})();
+  // Convert ```math fences → $$…$$ so authors can use either
+  function normalizeFencedMath(md) {
+    return md.replace(/```\s*math\s*\r?\n([\s\S]+?)\r?\n```/gi, (_, body) => `$$${body}$$`);
+  }
 
-  // expose for bootstrap
-  window.loadParagraphPreview = loadParagraphPreview;
+  // Freeze TeX so Markdown doesn’t mangle it; thaw, then typeset.
+  async function renderMemoPreview(srcTextarea, outContainer) {
+    let md = srcTextarea.value || '';
+    md = normalizeFencedMath(md);
 
-  // ---------------- Weak resolver (page) ----------------
-  // Replace later with a real chapter/anchor→page lookup
-  window.__roResolveFrom = async (chapter, para) => 0;
+    const stash = [];
+    const tag = i => `<span data-tex="${i}"></span>`;
 
+    // block $$…$$
+    md = md.replace(/\$\$([\s\S]+?)\$\$/g, (_, b) => {
+      const i = stash.length; stash.push(`$$${b}$$`); return tag(i);
+    });
+    // inline $…$ (avoid $$)
+    md = md.replace(/(^|[^\$])\$(?!\$)([^$\n]+?)\$(?!\$)/g, (m, pre, b) => {
+      const i = stash.length; stash.push(`$${b}$`); return pre + tag(i);
+    });
+
+    const marked = await ensureMarked();
+    outContainer.innerHTML = marked.parse(md);
+
+    // thaw TeX
+    outContainer.querySelectorAll('span[data-tex]').forEach(sp => {
+      const raw = stash[Number(sp.getAttribute('data-tex'))] || '';
+      sp.replaceWith(document.createTextNode(raw));
+    });
+
+    // typeset via chapter MathJax config
+    const MJ = await ensureMathJax();
+    MJ.typesetClear?.([outContainer]); MJ.texReset?.();
+    if (MJ.typesetPromise) await MJ.typesetPromise([outContainer]);
+    else MJ.typeset?.([outContainer]);
+  }
+
+  function ensurePreviewPane() {
+    if (previewOut && previewOut.isConnected) return previewOut;
+    previewOut = document.createElement('div');
+    previewOut.id = 'memo-preview';
+    previewOut.className = 'memo-preview';
+    // Insert right after the toolbar (preferred) or after the textarea
+    if (toolbarEl?.parentElement) {
+      toolbarEl.parentElement.insertAdjacentElement('afterend', previewOut);
+    } else {
+      memoEl.insertAdjacentElement('afterend', previewOut);
+    }
+    return previewOut;
+  }
+
+  async function doPreview() {
+    const pane = ensurePreviewPane();
+    await renderMemoPreview(memoEl, pane);
+    pane.scrollIntoView({ block: 'nearest' });
+  }
+
+  // ---- toolbar wiring (bold / italic / code / math / preview) --------------
+  function wrap(left, right = left) {
+    const s = memoEl.selectionStart ?? 0, e = memoEl.selectionEnd ?? 0;
+    const val = memoEl.value, sel = val.slice(s, e);
+    const out = left + sel + right;
+    memoEl.value = val.slice(0, s) + out + val.slice(e);
+    const after = s + left.length + sel.length;
+    memoEl.setSelectionRange(after, after);
+    memoEl.dispatchEvent(new Event('input', { bubbles: true }));
+    memoEl.focus();
+  }
+
+  function bindToolbar() {
+    const root = toolbarEl || memoEl.parentElement || document;
+    root.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('button'); if (!btn) return;
+      const t = (btn.dataset.action || btn.textContent || '').trim().toLowerCase();
+      if (t === 'preview') { ev.preventDefault(); doPreview(); return; }
+      if (t === 'b' || t === 'bold') wrap('**');
+      if (t === '/' || t === 'italic') wrap('*');
+      if (t === '{}' || t === 'code') wrap('`');
+      if (t.includes('\\(x\\)') || t === 'math') wrap('$', '$');
+    });
+    // also hook a button with explicit id (if present)
+    const previewBtn = document.getElementById('memoPreviewBtn');
+    previewBtn && previewBtn.addEventListener('click', (e) => { e.preventDefault(); doPreview(); });
+  }
+
+  bindToolbar();
 })();
