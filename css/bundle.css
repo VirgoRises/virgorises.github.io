@@ -173,12 +173,22 @@ body.ro{ --bg:#0f141a; --card:#121a23; --ink:#e6eef9; --muted:#9fb2c9; --line:#2
 #ro-page{display:block; width:var(--ro-left-page); height:auto; z-index:1}
 #ro-svg{position:absolute; left:0; top:0; z-index:2; pointer-events:auto}
 #ro-svg text{font:11px ui-monospace,monospace; fill:#9fb2c9}
+#ro-stage { position: relative; width: var(--ro-left-stage, 6.8cm); height: calc(100vh - 290px); overflow: auto;
+}
+#ro-inner { position: relative; transform-origin: 0 0; }
+#ro-page { display: block; position: relative; z-index: 0;
+}
+#ro-svg { position: absolute; inset: 0; z-index: 1; pointer-events: auto; background: transparent;
+}
+#ro-overlay line,
+#ro-overlay path { fill: none;
+}
 #token{margin-top:8px}
 .right .card{margin-bottom:16px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px}
 .card-h{padding:10px 12px;border-bottom:1px solid var(--line)}
 .card .muted{padding:10px 12px}
-.para-preview{padding:12px; max-height: 6cm; overflow:auto; white-space:normal; word-break:break-word}
+.para-preview{padding:12px; max-height:var(--ro-stage-h); overflow:auto; white-space:normal; word-break:break-word}
 .right textarea{ width:100%;min-height:180px;resize:vertical;background:#0f151c;color:var(--ink); border:1px solid var(--line);border-radius:8px;padding:8px
 }
 .toolbar.slim{padding:8px 12px;border-bottom:1px solid var(--line)}

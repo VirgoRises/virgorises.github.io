@@ -1,126 +1,102 @@
-// tools/osf-normalize.mjs
-// Normalize notebook/WB HTML for a café:
-//  - ensure <pre class="osf" id="osf-N"> in order
-//  - wrap stray <figure> in <pre class="osf"> blocks
-//  - move figure id="tbl-..." to nested <table id="tbl-..."> (remove from figure)
-//  - add ids to figures when missing (from <img alt> or figcaption)
-//  - never touch commented-out markup
+#!/usr/bin/env node
+/**
+ * tools/osf-normalize.mjs
+ *
+ * Usage:
+ *   node tools/osf-normalize.mjs zeta-zero-cafe
+ *
+ * Outputs (inside cafes/<slug>/):
+ *   - notebook/<chapter>.manifest.json
+ *   - index.json
+ *
+ * Notes:
+ * - If you have (or later add) a csv/json mapping osf-id -> pdf page,
+ *   you can merge that here (see TODO).
+ */
 
-import fs from "fs/promises";
-import path from "path";
-import { glob } from "glob";
-import * as cheerio from "cheerio";
-import slugify from "slugify";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const ROOT = process.cwd();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-function arg(name, def=null){
-  const i = process.argv.indexOf(name);
-  return i > -1 ? (process.argv[i+1] ?? true) : def;
-}
-const SLUG  = arg("--slug", "zeta-zero-cafe");
-const WRITE = !!arg("--write", false);
-const BASE  = path.join(ROOT, "cafes", SLUG);
-const GLOBS = [
-  path.join(BASE, "notebook", "*.html"),
-  path.join(BASE, "whiteboard", "*.html")
-];
-
-const FIG_ID_RE = /^fig(-|$)/i;
-const TBL_ID_RE = /^tbl(-|$)/i;
-
-function uniqueId(proposed, used) {
-  let id = proposed || "auto";
-  id = id.replace(/\s+/g, "-").replace(/[^a-z0-9\-_.:]/gi, "").toLowerCase();
-  if (!id) id = "auto";
-  let k = id, n = 2;
-  while (used.has(k)) { k = `${id}-${n++}`; }
-  used.add(k);
-  return k;
-}
-function idFromAltOrCaption($fig, used, fallbackPrefix="fig") {
-  const alt = $fig.find("img[alt]").first().attr("alt")?.trim() || "";
-  const cap = $fig.find("figcaption").first().text()?.trim() || "";
-  const src = alt || cap || "";
-  // try “Figure 2.01 …” -> fig-2-01
-  const m = src.match(/figure\s+([0-9]+(?:\.[0-9]+)*)/i);
-  if (m) {
-    const num = m[1].replace(/\./g, "-");
-    return uniqueId(`fig-${num}`, used);
-  }
-  const s = slugify(src, { lower:true, strict:true }) || "item";
-  return uniqueId(`${fallbackPrefix}-${s}`, used);
+const slug = process.argv[2];
+if (!slug) {
+  console.error("Usage: node tools/osf-normalize.mjs <cafe-slug>");
+  process.exit(1);
 }
 
-async function processFile(file) {
-  const html = await fs.readFile(file, "utf8");
-  const $ = cheerio.load(html, { decodeEntities:false });
+const cafeDir = path.resolve(__dirname, "..", "cafes", slug);
+const notebookDir = path.join(cafeDir, "notebook");
+const pdfRelative = "sources/Old_main.pdf"; // single source of truth (immutable)
 
-  // Track all IDs to avoid duplicates
-  const used = new Set();
-  $("[id]").each((_, el)=> used.add($(el).attr("id")));
-
-// 1) Wrap stray <figure> (not already inside a pre.osf)
-$("figure").each((_, el)=>{
-  const fig = $(el);
-  if (fig.parents("pre.osf").length) return;
-  fig.wrap('<pre class="osf"></pre>');
-});
-
-// 1b) NEW: wrap stray <blockquote> (not already inside a pre.osf)
-$("blockquote").each((_, el)=>{
-  const q = $(el);
-  if (q.parents("pre.osf").length) return;
-  q.wrap('<pre class="osf"></pre>');
-});
-
-  // 2) Move figure id="tbl-..." to table id
-  $("figure[id]").each((_, el)=>{
-    const fig = $(el);
-    const id = fig.attr("id");
-    if (!TBL_ID_RE.test(id)) return;
-    const tbl = fig.find("table").first();
-    if (tbl.length) {
-      // move id from figure to the table (keep uniqueness)
-      fig.removeAttr("id");
-      const newId = uniqueId(id, used);
-      tbl.attr("id", newId);
-    }
-  });
-
-  // 3) Ensure figures have ids (for selection)
-  $("figure").each((_, el)=>{
-    const fig = $(el);
-    if (fig.attr("id")) return;
-    const id = idFromAltOrCaption(fig, used, "fig");
-    fig.attr("id", id);
-  });
-
-  // 4) Number <pre class="osf"> blocks: id="osf-N" per file (top-to-bottom)
-  const pres = $("pre.osf");
-  pres.each((i, el)=>{
-    const pre = $(el);
-    // skip commented-out blocks — not selected by cheerio anyway
-    const id = `osf-${i+1}`;
-    pre.attr("id", uniqueId(id, used));
-  });
-
-  // Save or preview
-  if (WRITE) {
-    await fs.writeFile(file, $.html(), "utf8");
-    console.log(`✔ normalized ${path.relative(ROOT, file)}  (paras=${pres.length})`);
-  } else {
-    console.log(`→ would normalize ${path.relative(ROOT, file)}  (paras=${pres.length})`);
+async function* walk(dir) {
+  for (const d of await fs.readdir(dir, { withFileTypes: true })) {
+    const entry = path.join(dir, d.name);
+    if (d.isDirectory()) yield* walk(entry);
+    else yield entry;
   }
 }
 
-async function main(){
-  const files = (await Promise.all(GLOBS.map(g=>glob(g)))).flat().sort();
-  if (!files.length) {
-    console.warn(`No files found under ${BASE}/(notebook|whiteboard)/*.html`);
-    return;
-  }
-  console.log(`Café: ${SLUG} — files: ${files.length}  (write=${WRITE})`);
-  for (const f of files) await processFile(f);
+function extractTitle(html) {
+  const m = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) ||
+            html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  return m ? m[1].replace(/\s+/g, " ").trim() : "";
 }
-main().catch(e=>{ console.error(e); process.exit(1); });
+
+function extractOsfIds(html) {
+  // tolerant: any id="osf-123" OR data-anchor etc.
+  const ids = new Set();
+  const idRe = /id\s*=\s*"(osf-\d+)"/gi;
+  const dataRe = /data-(?:source-)?anchor\s*=\s*"(osf-\d+)"/gi;
+  for (const re of [idRe, dataRe]) {
+    let m;
+    while ((m = re.exec(html))) ids.add(m[1]);
+  }
+  return [...ids];
+}
+
+async function buildChapterManifest(chapterPathRel) {
+  const abs = path.join(cafeDir, chapterPathRel);
+  const html = await fs.readFile(abs, "utf8");
+  const title = extractTitle(html);
+  const ids = extractOsfIds(html);
+
+  // TODO: if you have a page map (e.g., JSON keyed by osf-id), merge here.
+  const paras = ids.map(id => ({ id, page: null, hash: null, offset: null }));
+
+  const manifest = {
+    slug,
+    chapter: chapterPathRel.replace(/\\/g, "/"),
+    pdf: pdfRelative,
+    title,
+    paras,
+    figures: [],
+    tables: []
+  };
+
+  const outFile = abs + ".manifest.json";
+  await fs.writeFile(outFile, JSON.stringify(manifest, null, 2), "utf8");
+  return { path: chapterPathRel.replace(/\\/g, "/"), title, paras: ids };
+}
+
+(async () => {
+  const chapters = [];
+  for await (const file of walk(notebookDir)) {
+    if (!file.endsWith(".html")) continue;
+    const rel = path.relative(cafeDir, file);
+    const data = await buildChapterManifest(rel);
+    chapters.push(data);
+  }
+
+  const index = {
+    slug,
+    pdf: pdfRelative,
+    chapters
+  };
+
+  const indexFile = path.join(cafeDir, "index.json");
+  await fs.writeFile(indexFile, JSON.stringify(index, null, 2), "utf8");
+  console.log(`Wrote ${chapters.length} manifests and index.json for ${slug}.`);
+})();
