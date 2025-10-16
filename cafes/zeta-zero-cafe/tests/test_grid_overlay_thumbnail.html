@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Test — grid overlay on thumbnail</title>
+<style>
+  :root{
+    --bg:#0b1116; --panel:#0f1620; --line:#2a3645; --ink:#cfe6ff; --accent:#67b1ff;
+  }
+  html,body{height:100%; background:var(--bg); color:var(--ink); font:14px/1.4 system-ui,Segoe UI,Roboto,Ubuntu,Arial;}
+  .wrap{max-width:1200px; margin:20px auto; padding:0 16px;}
+  .row{display:grid; grid-template-columns: minmax(360px, 480px) 1fr; gap:24px; align-items:start;}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px;}
+  .toolbar{display:flex; gap:8px; align-items:center; margin-bottom:8px;}
+  .toolbar button{background:#0d1a26; border:1px solid var(--line); color:var(--ink); padding:4px 8px; border-radius:6px; cursor:pointer}
+  .toolbar .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; opacity:.8}
+  /* stage */
+  #stage{position:relative; background:#091017; border:1px solid var(--line); border-radius:10px; overflow:auto; height:70vh;}
+  #inner{position:relative; display:inline-block; /* size controlled by JS via --w */
+         width:var(--w, 420px);}
+  #page{display:block; width:100%; height:auto; user-select:none; -webkit-user-drag:none;}
+  svg.overlay{position:absolute; inset:0; width:100%; height:100%; display:block;}
+  /* grid lines */
+  .grid-major{stroke:#3a485d; stroke-width:1;}
+  .grid-minor{stroke:#263141; stroke-width:.5;}
+  .grid-ruler text{fill:#7fa9ff; font:10px ui-monospace,monospace;}
+  /* markers */
+  .marker{fill:rgba(255,180,0,.30); stroke:#ffb400; stroke-width:1;}
+  .dot{fill:#ff6262; stroke:#ffb5b5; stroke-width:1;}
+  /* status line */
+  #status{margin-top:10px; font:12px ui-monospace,monospace; color:#a7c6ff; opacity:.9}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Test — grid overlay on thumbnail</h1>
+
+  <div class="row">
+    <div class="card">
+      <div class="toolbar">
+        <button id="zminus">−</button>
+        <button id="zfit">Fit</button>
+        <button id="zplus">+</button>
+        <span class="mono" id="zw">—</span>
+      </div>
+
+      <div id="stage">
+        <div id="inner" style="--w:420px">
+          <img id="page" alt="thumb" />
+          <svg class="overlay" id="ov" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <!-- grid goes here -->
+            <rect id="hit" x="0" y="0" width="100%" height="100%" fill="transparent" pointer-events="all"></rect>
+          </svg>
+        </div>
+      </div>
+
+      <div id="status">…</div>
+    </div>
+
+    <div class="card">
+      <h3>What this proves</h3>
+      <ul>
+        <li>Thumbnail loads and stays visible.</li>
+        <li>SVG grid overlays exactly (scaled with image).</li>
+        <li>Zoom changes <em>container width</em> only; image + overlay stay locked.</li>
+        <li>Clicks place markers at the right visual location.</li>
+      </ul>
+      <p>When this works, we copy the <strong>size/fit logic</strong> and the <strong>overlay viewBox</strong> bits into Research Office.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // --- config: set a page number that exists in your thumbs dir ---
+  const pageNo = 7; // try any you have
+  const slug   = 'zeta-zero-cafe';
+  const url    = `/cafes/${slug}/sources/thumbs/page-${String(pageNo).padStart(3,'0')}.jpg`;
+
+  const img = document.getElementById('page');
+  const ov  = document.getElementById('ov');
+  const hit = document.getElementById('hit');
+  const inner = document.getElementById('inner');
+  const zw = document.getElementById('zw');
+  const status = document.getElementById('status');
+
+  // simple zoom model = width in px
+  let curW = 420; // initial
+  const clamp = (v,min,max)=>Math.min(max,Math.max(min,v));
+  const applyW = () => { inner.style.setProperty('--w', curW+'px'); zw.textContent = `${Math.round(curW)}px`; };
+
+  // draw grid (in overlay coords = pixels of the image, viewBox will match natural size)
+  function drawGrid(w, h){
+    // clear
+    [...ov.querySelectorAll('.grid, .grid-ruler')].forEach(n=>n.remove());
+
+    const gMinor = document.createElementNS('http://www.w3.org/2000/svg','g');
+    gMinor.classList.add('grid','grid-minor');
+    const gMajor = document.createElementNS('http://www.w3.org/2000/svg','g');
+    gMajor.classList.add('grid','grid-major');
+
+    const stepMinor = Math.round(Math.min(w,h)/40);      // ~40 cells
+    const stepMajor = stepMinor * 5;
+
+    for(let x=0;x<=w;x+=stepMinor){
+      const el = document.createElementNS(ov.namespaceURI,'line');
+      el.setAttribute('x1', x); el.setAttribute('y1', 0);
+      el.setAttribute('x2', x); el.setAttribute('y2', h);
+      (x%stepMajor===0 ? gMajor : gMinor).appendChild(el);
+    }
+    for(let y=0;y<=h;y+=stepMinor){
+      const el = document.createElementNS(ov.namespaceURI,'line');
+      el.setAttribute('x1', 0); el.setAttribute('y1', y);
+      el.setAttribute('x2', w); el.setAttribute('y2', y);
+      (y%stepMajor===0 ? gMajor : gMinor).appendChild(el);
+    }
+    ov.insertBefore(gMinor, hit);
+    ov.insertBefore(gMajor, hit);
+  }
+
+  // place a marker for clicks
+  function placeDot(px,py){
+    const c = document.createElementNS(ov.namespaceURI,'circle');
+    c.setAttribute('cx', px); c.setAttribute('cy', py);
+    c.setAttribute('r', Math.max(6, Math.min(16, ov.viewBox.baseVal.width/60)));
+    c.setAttribute('class','dot');
+    ov.appendChild(c);
+  }
+
+  // image load → set overlay viewBox to natural size and draw grid
+  img.addEventListener('load', ()=>{
+    const w = img.naturalWidth, h = img.naturalHeight;
+    ov.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    drawGrid(w,h);
+    status.textContent = `loaded thumbnail p.${pageNo} — ${w}×${h}px`;
+  });
+
+  // click handling (convert client → SVG coords)
+  hit.addEventListener('click', (e)=>{
+    const pt = ov.createSVGPoint();
+    pt.x = e.clientX; pt.y = e.clientY;
+    const svgP = pt.matrixTransform(ov.getScreenCTM().inverse());
+    placeDot(svgP.x, svgP.y);
+    status.textContent = `click @ ${svgP.x.toFixed(1)}, ${svgP.y.toFixed(1)} (svg pixels)`;
+  });
+
+  // zoom controls
+  document.getElementById('zminus').onclick = ()=>{ curW = clamp(curW*0.9, 240, 1400); applyW(); };
+  document.getElementById('zplus').onclick  = ()=>{ curW = clamp(curW*1.1, 240, 1400); applyW(); };
+  document.getElementById('zfit').onclick   = ()=>{
+    // fit the available width in the scroll area (minus a little padding)
+    const stage = document.getElementById('stage');
+    curW = clamp(stage.clientWidth - 24, 240, 1400); applyW();
+  };
+
+  // boot
+  applyW();
+  img.src = url;
+})();
+</script>
+</body>
+</html>

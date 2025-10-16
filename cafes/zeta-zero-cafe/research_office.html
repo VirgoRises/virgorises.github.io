@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Research Office — zeta-zero-cafe</title>
 
-  <!-- Scoped stylesheet for this page -->
+  <!-- Scoped stylesheet (your existing CSS) -->
   <link rel="stylesheet" href="/css/10-components/research-office.css"/>
 
-  <!-- Use the same MathJax config as chapter pages -->
+  <!-- Use the exact same MathJax config as chapter pages -->
   <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
 </head>
 <body class="ro">
@@ -18,7 +18,7 @@
   </header>
 
   <main class="ro-main">
-    <!-- LEFT: fixed 6cm page, toolbar above -->
+    <!-- LEFT: fixed 6 cm working stage (thumb + SVG overlay) -->
     <section class="left">
       <div id="ro-toolbar" class="toolbar">
         <div class="btns">
@@ -43,23 +43,23 @@
 
       <div id="ro-stage" class="card">
         <div id="ro-inner">
-          <img id="ro-page" alt="source page"/>
+          <!-- image (thumbnail) lives under the SVG overlay -->
+          <img id="ro-page" alt="source page" />
           <svg id="ro-svg" aria-hidden="true"></svg>
         </div>
       </div>
 
       <div id="token" class="tiny mono muted">click marker to copy</div>
+      <div id="ro-status" class="tiny muted mono" aria-live="polite"></div>
     </section>
 
-    <!-- RIGHT: MM thumbnails → paragraph preview → memo -->
+    <!-- RIGHT: references → paragraph preview → memo -->
     <section class="right">
-      <!-- Thumbnails extracted from memo [mm|pNN…] -->
       <div class="card" id="mmThumbsCard">
         <div class="card-h">Pages referenced in memo</div>
         <div id="mmThumbs" class="mm-thumbs muted tiny">No page references yet.</div>
       </div>
 
-      <!-- Paragraph preview -->
       <div class="card" id="paraCard">
         <div class="card-h">
           <strong>Paragraph preview</strong>
@@ -69,7 +69,6 @@
         <div id="paraFoot" class="tiny mono muted"></div>
       </div>
 
-      <!-- Memo -->
       <div class="card">
         <div class="card-h">Memo to self (Markdown + LaTeX)</div>
         <div class="toolbar slim">
@@ -83,6 +82,7 @@
           </div>
         </div>
         <textarea id="memo" rows="10" placeholder="State the issue, desired change, and rationale..."></textarea>
+
         <div class="btnrow">
           <button id="saveDraft">Save draft</button>
           <button id="saveVersion">Save version</button>
@@ -94,6 +94,7 @@
           </label>
           <button id="submitDiscord">Submit via Discord</button>
         </div>
+
         <div class="tiny muted">
           Autosave is ON (on every keystroke + periodically). Draft → step away → revise → submit.
         </div>
@@ -111,11 +112,12 @@
     </section>
   </main>
 
-<script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
-<script src="/js/research-office-grid.js"></script>
-<script src="/js/research.office.js"></script>
+  <!-- Grid/overlay engine (unchanged) -->
+  <script src="/js/research-office-grid.js"></script>
+  <!-- Research Office controller (resolver + preview + memo glue) -->
+  <script src="/js/research.office.js"></script>
 
-  <!-- Bootstrap & MM thumbnails logic -->
+  <!-- Bootstrap: init grid using thumbnails + wire helpers -->
   <script>
     (async function () {
       const qs = new URLSearchParams(location.search);
@@ -123,22 +125,23 @@
       const chapter  = qs.get('chapter') || '';
       const para     = qs.get('para') || '';
 
-      // Init grid at fixed 6 cm baseline using thumbnails
+      // Kick the grid: **thumbnail-first**, with status reporting.
       if (window.initResearchOfficeGrid) {
         window.initResearchOfficeGrid({
           fromPage,
           para,
           chapter,
           thumbsBase: '/cafes/zeta-zero-cafe/sources/thumbs',
-          pageMM: { w: 210, h: 297 },  // A4 default; grid flips if landscape
-          units: 'mm'
+          pageMM: { w: 210, h: 297 },   // A4 default
+          units: 'mm',
+          statusEl: document.getElementById('ro-status')
         });
       }
 
       // Paragraph preview
       if (window.loadParagraphPreview) window.loadParagraphPreview();
 
-      // Keep right-side blocks aligned to stage height
+      // Keep right column visually in sync with the stage height
       function syncRightHeights () {
         const st = document.getElementById('ro-stage');
         if (!st) return;
@@ -147,44 +150,47 @@
       syncRightHeights();
       new ResizeObserver(syncRightHeights).observe(document.getElementById('ro-stage'));
 
-      // MM thumbnails from memo: [mm|pNN...]
-      const memoEl = document.getElementById('memo');
+      // — MM thumbnails parsed from memo text —
+      const memoEl   = document.getElementById('memo');
       const thumbsEl = document.getElementById('mmThumbs');
-      const base = '/cafes/zeta-zero-cafe/sources/thumbs';
+      const base     = '/cafes/zeta-zero-cafe/sources/thumbs';
 
-      function pad3(n){return String(n).padStart(3,'0');}
+      function pad3(n){ return String(n).padStart(3,'0'); }
       function pagesFromMemo(txt){
         const pages = new Set();
         const re = /\[mm\|p(\d+)(?::[\d\.,]+(?:;[\d\.,]+)*)?\]/gi;
-        let m; while((m=re.exec(txt))) pages.add(Number(m[1]));
+        let m; while ((m = re.exec(txt))) pages.add(Number(m[1]));
         return [...pages].sort((a,b)=>a-b);
-      }
-      function renderThumbs(){
-        const pages = pagesFromMemo(memoEl.value || '');
-        if (!pages.length) { thumbsEl.textContent = 'No page references yet.'; return; }
-        thumbsEl.innerHTML = '';
-        for (const p of pages){
-          const a = document.createElement('a');
-          a.className = 'mm-thumb';
-          a.title = 'Go to page '+p;
-          a.href = updateFromInUrl(location.href, p);
-          const img = document.createElement('img');
-          img.loading = 'lazy';
-          img.src = `${base}/page-${pad3(p)}.jpg`;
-          img.alt = `p.${p}`;
-          a.appendChild(img);
-          const cap = document.createElement('div');
-          cap.textContent = `p.${p}`;
-          a.appendChild(cap);
-          thumbsEl.appendChild(a);
-        }
       }
       function updateFromInUrl(url, p){
         const u = new URL(url, location.href);
         u.searchParams.set('from', String(p));
         return u.toString();
       }
+      function renderThumbs(){
+        const pages = pagesFromMemo(memoEl.value || '');
+        if (!pages.length) { thumbsEl.textContent = 'No page references yet.'; return; }
+        thumbsEl.innerHTML = '';
+        for (const p of pages) {
+          const a = document.createElement('a');
+          a.className = 'mm-thumb';
+          a.title = 'Go to page ' + p;
+          a.href  = updateFromInUrl(location.href, p);
 
+          const img = document.createElement('img');
+          img.loading = 'lazy';
+          img.decoding = 'async';
+          img.src = `${base}/page-${pad3(p)}.jpg`;
+          img.alt = `p.${p}`;
+          a.appendChild(img);
+
+          const cap = document.createElement('div');
+          cap.textContent = `p.${p}`;
+          a.appendChild(cap);
+
+          thumbsEl.appendChild(a);
+        }
+      }
       memoEl.addEventListener('input', renderThumbs);
       renderThumbs();
     })();
