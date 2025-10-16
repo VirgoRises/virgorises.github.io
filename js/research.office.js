@@ -1,252 +1,184 @@
-/* Research Office — memo toolbar, preview, autosave, grid bridge, and manifest resolver */
+/* research.office.js  — drop-in
+ * Restores:
+ *  - resolveFrom(chapter, para) via chapter manifest
+ *  - probeThumb(page) under /cafes/<slug>/sources/thumbs/page-XXX.jpg
+ *  - thumbnail-first display; fallback to /source.html (PDF) when missing
+ *  - one-line status via #ro-status (if present)
+ *  - calls your existing initResearchOfficeGrid(...) once the image loads
+ *
+ * Assumes:
+ *  - <img id="ro-page"> exists for the thumbnail
+ *  - /js/research-office-grid.js provides initResearchOfficeGrid(...)
+ */
+
 (function () {
-  'use strict';
+  // ---------- tiny utils ----------
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const qs = new URLSearchParams(location.search);
+  const get = (k) => (qs.has(k) ? qs.get(k) : null);
+  const slugFromPath = () => {
+    // /cafes/<slug>/research_office.html → <slug>
+    const parts = location.pathname.split('/').filter(Boolean);
+    const i = parts.indexOf('cafes');
+    return i >= 0 && parts[i + 1] ? parts[i + 1] : 'zeta-zero-cafe';
+  };
+  const cafeSlug = slugFromPath();
 
-  const $ = (s, r = document) => r.querySelector(s);
+  const statusEl = document.getElementById('ro-status');
+  function setStatus(msg) {
+    if (statusEl) {
+      statusEl.textContent = msg;
+    }
+    // Always mirror to console for debugging.
+    console.log('[RO]', msg);
+  }
 
-  // ---- locate memo textarea -------------------------------------------------
-  const memoEl =
-    document.getElementById('memo') ||
-    document.getElementById('memoText') ||
-    $('.ro-memo textarea') ||
-    $('textarea[name="memo"]') ||
-    $('textarea');
+  function pad3(n) {
+    n = Math.max(0, Number(n) | 0);
+    return String(n).padStart(3, '0');
+  }
 
-  let toolbarEl =
-    document.getElementById('memo-toolbar') ||
-    $('.ro-memo .toolbar') ||
-    (memoEl && memoEl.parentElement?.querySelector('.toolbar'));
+  // ---------- resolver ----------
+  async function resolveFrom(chapter, para) {
+    // Respect explicit ?from
+    const explicit = get('from');
+    if (explicit) {
+      const p = Number(explicit);
+      if (Number.isFinite(p) && p >= 0) {
+        setStatus(`Using ?from=${p}.`);
+        return p;
+      }
+    }
 
-  let previewOut =
-    document.getElementById('memo-preview') ||
-    $('#memo-preview');
+    // Try manifest beside the chapter HTML:
+    // /cafes/<slug>/<chapter>.manifest.json
+    // Example chapter: notebook/chapter-1-the-basel-problem.html
+    const manifestUrl = `/cafes/${cafeSlug}/${chapter}.manifest.json`;
 
-  // ---------------------------------------------------------------------------
-  // Manifest-based resolver for ?para=osf-N → page number
-  // ---------------------------------------------------------------------------
-  window.__roResolveFrom = async function resolveFrom(chapter, para) {
     try {
-      const pathBits = location.pathname.split('/').filter(Boolean);
-      const slug = pathBits[1] || 'zeta-zero-cafe';
+      const res = await fetch(manifestUrl, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
 
-      // try variations of chapter key
-      const candidates = [
-        chapter,
-        chapter.replace(/^\/+/, ''),
-        chapter.replace(/^notebook\//, ''),
-        'notebook/' + chapter.replace(/^notebook\//, ''),
-      ].filter((v, i, a) => v && a.indexOf(v) === i);
+      // Accept both shapes:
+      // 1) { paras: [ { id, page, offset? }, ... ] }
+      // 2) { items: { <id>: { page, offset? }, ... } }  (older)
+      let entry = null;
 
-      let manifest = null, used = null;
-      for (const c of candidates) {
-        const murl = `/cafes/${slug}/${c}.manifest.json`
-          .replace(/\.html\.manifest\.json$/, '.html.manifest.json');
-        try {
-          const res = await fetch(murl, { cache: 'no-store' });
-          if (res.ok) { manifest = await res.json(); used = murl; break; }
-        } catch (_) {}
+      if (Array.isArray(data.paras)) {
+        entry = data.paras.find(p => String(p.id) === String(para)) || null;
+      } else if (data.items && typeof data.items === 'object') {
+        entry = data.items[para] || null;
       }
 
-      if (!manifest || !Array.isArray(manifest.paras)) return 1;
+      if (entry && Number.isFinite(entry.page)) {
+        const base = Number(entry.page) | 0;
+        const off = Number(entry.offset || 0) | 0;
+        const page = base + off;
+        setStatus(`Resolved ${para} ⇒ p.${page} from manifest.`);
+        return page;
+      }
 
-      const hit = manifest.paras.find(p => p.id === para);
-      if (!hit || !Number.isFinite(hit.page)) return 1;
-
-      const base = Number(hit.page) || 1;
-      const off = Number.isFinite(hit.offset) ? Number(hit.offset) : 0;
-      return Math.max(1, base + off);
-    } catch (e) {
-      console.warn('resolveFrom failed:', e);
-      return 1;
+      setStatus(`Manifest loaded but no entry for ${para}; default to p.0`);
+      return 0;
+    } catch (err) {
+      setStatus(`No manifest for ${chapter} (${String(err)}); default to p.0`);
+      return 0;
     }
-  };
+  }
 
-  // ---------------------------------------------------------------------------
-  // Public bridge for the grid: insert an [mm|…] token at the caret
-  // ---------------------------------------------------------------------------
-  window.insertMemoMarkup = function insertMemoMarkup(snippet) {
-    if (!memoEl) return;
-    const s = memoEl.selectionStart ?? memoEl.value.length;
-    const e = memoEl.selectionEnd   ?? memoEl.value.length;
-    memoEl.value = memoEl.value.slice(0, s) + snippet + '\n' + memoEl.value.slice(e);
-    const pos = s + snippet.length + 1;
-    memoEl.setSelectionRange(pos, pos);
-    memoEl.focus();
-    memoEl.dispatchEvent(new Event('input', { bubbles: true }));
-  };
+  // ---------- thumbnail probe ----------
+  function thumbUrlFor(page) {
+    // /cafes/<slug>/sources/thumbs/page-XXX.jpg
+    return `/cafes/${cafeSlug}/sources/thumbs/page-${pad3(page)}.jpg`;
+  }
 
-  window.roGetMemoText = () => memoEl?.value ?? '';
-
-  if (!memoEl) return;
-
-  // ---- autosave (per cafe / chapter / para) --------------------------------
-  const params   = new URLSearchParams(location.search);
-  const PARA     = params.get('para')    || '';
-  const CHAPTER  = params.get('chapter') || '';
-  const CAFE     = location.pathname.split('/').filter(Boolean)[1] || 'zeta-zero-cafe';
-  const draftKey    = `ro:draft:${CAFE}:${CHAPTER}:${PARA}`;
-  const versionsKey = `ro:versions:${CAFE}:${CHAPTER}:${PARA}`;
-
-  function loadDraft() {
+  async function probeThumb(page) {
+    const url = thumbUrlFor(page);
     try {
-      const v = localStorage.getItem(draftKey);
-      if (v != null) memoEl.value = v;
-    } catch {}
-    window.roRefreshFromMemo?.();
-  }
-  function saveDraft() {
-    try { localStorage.setItem(draftKey, memoEl.value); } catch {}
-  }
-
-  loadDraft();
-  memoEl.addEventListener('input', () => {
-    saveDraft();
-    window.roRefreshFromMemo?.();
-  });
-
-  function findButton(txt) {
-    const want = String(txt).trim().toLowerCase();
-    return Array.from(document.querySelectorAll('button'))
-      .find(b => (b.textContent || '').trim().toLowerCase() === want);
-  }
-  const btnSaveDraft   = findButton('save draft');
-  const btnSaveVersion = findButton('save version');
-
-  btnSaveDraft && btnSaveDraft.addEventListener('click', (e) => {
-    e.preventDefault(); saveDraft(); flash('Draft saved.');
-  });
-
-  btnSaveVersion && btnSaveVersion.addEventListener('click', (e) => {
-    e.preventDefault();
-    const versions = JSON.parse(localStorage.getItem(versionsKey) || '[]');
-    versions.push({ ts: new Date().toISOString(), text: memoEl.value });
-    localStorage.setItem(versionsKey, JSON.stringify(versions));
-    flash('Version stored.');
-  });
-
-  function flash(msg) {
-    let n = document.getElementById('ro-flash');
-    if (!n) {
-      n = document.createElement('div'); n.id = 'ro-flash';
-      Object.assign(n.style, {
-        position: 'fixed', bottom: '10px', right: '10px', zIndex: 9999,
-        background: '#22313d', color: '#cfe8ff', padding: '6px 10px',
-        borderRadius: '8px', transition: 'opacity .7s'
-      });
-      document.body.appendChild(n);
+      const res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+      return res.ok ? url : null;
+    } catch {
+      return null;
     }
-    n.textContent = msg; n.style.opacity = '1';
-    setTimeout(() => { n.style.opacity = '0'; }, 900);
   }
 
-  // ---- Markdown + LaTeX preview --------------------------------------------
-  function loadScriptOnce(src) {
-    return new Promise((resolve, reject) => {
-      const abs = new URL(src, location.href).toString();
-      if ([...document.scripts].some(s => s.src === abs)) return resolve(abs);
-      const s = document.createElement('script');
-      s.src = abs; s.async = true;
-      s.onload = () => resolve(abs);
-      s.onerror = () => reject(new Error('Failed to load ' + abs));
-      document.head.appendChild(s);
-    });
+  // ---------- fallback to source viewer ----------
+  function openSourceViewer(chapter, para, page) {
+    // Keep arguments identical to what worked already:
+    // /cafes/<slug>/source.html?pdf=Old_main&para=<para>&chapter=<chapter>&return=<encoded>
+    const ret = encodeURIComponent(location.pathname + location.search);
+    const href =
+      `/cafes/${cafeSlug}/source.html?pdf=Old_main` +
+      `&para=${encodeURIComponent(para)}` +
+      `&chapter=${encodeURIComponent(chapter)}` +
+      `&return=${ret}` +
+      (Number.isFinite(page) ? `&from=${page}` : '');
+    setStatus(`No thumbnail for p.${page} → opening source viewer…`);
+    location.href = href;
   }
 
-  async function ensureMarked() {
-    if (window.marked) return window.marked;
-    try { await loadScriptOnce('/js/marked.min.js'); }
-    catch { await loadScriptOnce('https://cdn.jsdelivr.net/npm/marked@12/marked.min.js'); }
-    return window.marked;
-  }
+  // ---------- bootstrap ----------
+  async function boot() {
+    const chapter = get('chapter');
+    const para = get('para');
 
-  async function ensureMathJax() {
-    if (window.MathJax?.typesetPromise) return window.MathJax;
-    const candidates = [
-      '/cafes/zeta-zero-cafe/notebook/math/mathconfig.js',  // your config
-      '/js/mathjax/es5/tex-chtml.js',
-      'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js'
-    ];
-    for (const src of candidates) {
-      try {
-        await loadScriptOnce(src);
-        if (window.MathJax?.startup?.promise) await window.MathJax.startup.promise;
-        if (window.MathJax?.typesetPromise) return window.MathJax;
-      } catch {}
+    if (!chapter || !para) {
+      setStatus('Missing ?chapter or ?para in URL.');
+      return;
     }
-    throw new Error('MathJax load failed');
-  }
 
-  function normalizeFencedMath(md) {
-    return md.replace(/```\s*math\s*\r?\n([\s\S]+?)\r?\n```/gi, (_, body) => `$$${body}$$`);
-  }
+    const page = await resolveFrom(chapter, para);
+    const thumb = await probeThumb(page);
 
-  async function renderMemoPreview(srcTextarea, outContainer) {
-    let md = srcTextarea.value || '';
-    md = normalizeFencedMath(md);
+    if (!thumb) {
+      openSourceViewer(chapter, para, page);
+      return;
+    }
 
-    const stash = [];
-    const tag = i => `<span data-tex="${i}"></span>`;
+    // Show thumbnail and initialize overlay grid.
+    const img = document.getElementById('ro-page');
+    if (!img) {
+      setStatus('Missing <img id="ro-page"> in DOM.');
+      return;
+    }
 
-    md = md.replace(/\$\$([\s\S]+?)\$\$/g, (_, b) => { const i = stash.length; stash.push(`$$${b}$$`); return tag(i); });
-    md = md.replace(/(^|[^\$])\$(?!\$)([^$\n]+?)\$(?!\$)/g, (m, pre, b) => {
-      const i = stash.length; stash.push(`$${b}$`); return pre + tag(i);
+    // Make sure image is visible and sized by container
+    img.style.display = 'block';
+    img.style.width = '100%';
+    img.style.height = 'auto';
+    img.src = thumb;
+
+    await new Promise((resolve) => {
+      if (img.complete && img.naturalWidth) resolve();
+      else img.addEventListener('load', resolve, { once: true });
     });
 
-    const marked = await ensureMarked();
-    outContainer.innerHTML = marked.parse(md);
+    setStatus(`Loaded thumbnail p.${page}.`);
 
-    outContainer.querySelectorAll('span[data-tex]').forEach(sp => {
-      const raw = stash[Number(sp.getAttribute('data-tex'))] || '';
-      sp.replaceWith(document.createTextNode(raw));
-    });
-
-    const MJ = await ensureMathJax();
-    MJ.typesetClear?.([outContainer]); MJ.texReset?.();
-    if (MJ.typesetPromise) await MJ.typesetPromise([outContainer]);
-    else MJ.typeset?.([outContainer]);
+    // Hand off to the existing grid overlay module.
+    try {
+      if (typeof window.initResearchOfficeGrid === 'function') {
+        window.initResearchOfficeGrid({
+          chapter,
+          para,
+          fromPage: page,
+          // For completeness; the grid only needs page size metrics from the image.
+          thumbsBase: `/cafes/${cafeSlug}/sources/thumbs/`,
+          imgEl: img
+        });
+      } else {
+        setStatus('Grid module not found (initResearchOfficeGrid missing).');
+      }
+    } catch (e) {
+      setStatus(`Grid init failed: ${String(e)}`);
+    }
   }
 
-  function ensurePreviewPane() {
-    if (previewOut && previewOut.isConnected) return previewOut;
-    previewOut = document.createElement('div');
-    previewOut.id = 'memo-preview';
-    previewOut.className = 'memo-preview';
-    if (toolbarEl?.parentElement) toolbarEl.parentElement.insertAdjacentElement('afterend', previewOut);
-    else memoEl.insertAdjacentElement('afterend', previewOut);
-    return previewOut;
+  // run
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
   }
-
-  async function doPreview() {
-    const pane = ensurePreviewPane();
-    await renderMemoPreview(memoEl, pane);
-    pane.scrollIntoView({ block: 'nearest' });
-  }
-
-  function wrap(left, right = left) {
-    const s = memoEl.selectionStart ?? 0, e = memoEl.selectionEnd ?? 0;
-    const val = memoEl.value, sel = val.slice(s, e);
-    const out = left + sel + right;
-    memoEl.value = val.slice(0, s) + out + memoEl.value.slice(e);
-    const after = s + left.length + sel.length;
-    memoEl.setSelectionRange(after, after);
-    memoEl.dispatchEvent(new Event('input', { bubbles: true }));
-    memoEl.focus();
-  }
-
-  function bindToolbar() {
-    const root = toolbarEl || memoEl.parentElement || document;
-    root.addEventListener('click', (ev) => {
-      const btn = ev.target.closest('button'); if (!btn) return;
-      const t = (btn.dataset.action || btn.textContent || '').trim().toLowerCase();
-      if (t === 'preview') { ev.preventDefault(); doPreview(); return; }
-      if (t === 'b' || t === 'bold') wrap('**');
-      if (t === '/' || t === 'italic') wrap('*');
-      if (t === '{}' || t === 'code') wrap('`');
-      if (t.includes('\\(x\\)') || t === 'math') wrap('$', '$');
-    });
-    const previewBtn = document.getElementById('memoPreviewBtn');
-    previewBtn && previewBtn.addEventListener('click', (e) => { e.preventDefault(); doPreview(); });
-  }
-
-  bindToolbar();
 })();
