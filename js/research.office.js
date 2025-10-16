@@ -1,184 +1,167 @@
-/* research.office.js  — drop-in
- * Restores:
- *  - resolveFrom(chapter, para) via chapter manifest
- *  - probeThumb(page) under /cafes/<slug>/sources/thumbs/page-XXX.jpg
- *  - thumbnail-first display; fallback to /source.html (PDF) when missing
- *  - one-line status via #ro-status (if present)
- *  - calls your existing initResearchOfficeGrid(...) once the image loads
- *
- * Assumes:
- *  - <img id="ro-page"> exists for the thumbnail
- *  - /js/research-office-grid.js provides initResearchOfficeGrid(...)
- */
+// research.office.js — minimal, self-contained Markdown + LaTeX preview wiring
+// NOTE: does not touch grid/thumbnail code or layout; only memo preview logic.
 
-(function () {
-  // ---------- tiny utils ----------
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const qs = new URLSearchParams(location.search);
-  const get = (k) => (qs.has(k) ? qs.get(k) : null);
-  const slugFromPath = () => {
-    // /cafes/<slug>/research_office.html → <slug>
-    const parts = location.pathname.split('/').filter(Boolean);
-    const i = parts.indexOf('cafes');
-    return i >= 0 && parts[i + 1] ? parts[i + 1] : 'zeta-zero-cafe';
-  };
-  const cafeSlug = slugFromPath();
+// ---------- tiny utilities ----------
+function $(sel, root = document) { return root.querySelector(sel); }
+function $all(sel, root = document) { return [...root.querySelectorAll(sel)]; }
 
-  const statusEl = document.getElementById('ro-status');
-  function setStatus(msg) {
-    if (statusEl) {
-      statusEl.textContent = msg;
-    }
-    // Always mirror to console for debugging.
-    console.log('[RO]', msg);
+function loadScriptOnce(src) {
+  return new Promise((resolve, reject) => {
+    const abs = new URL(src, location.href).toString();
+    if ([...document.scripts].some(s => s.src === abs)) { resolve(abs); return; }
+    const s = document.createElement('script');
+    s.src = abs; s.async = true;
+    s.onload = () => resolve(abs);
+    s.onerror = () => reject(new Error('Failed to load ' + abs));
+    document.head.appendChild(s);
+  });
+}
+
+// ---------- Marked (Markdown) ----------
+async function ensureMarked() {
+  if (window.marked) return;
+  try {
+    await loadScriptOnce('/js/marked.min.js');         // local, if you keep a copy
+  } catch {
+    /* ignore */
+  }
+  if (!window.marked) {
+    await loadScriptOnce('https://cdn.jsdelivr.net/npm/marked@12/marked.min.js');
+  }
+}
+
+// ---------- MathJax (LaTeX) ----------
+async function ensureMathJax() {
+  // If chapters already loaded /cafes/.../math/mathconfig.js, this is already set.
+  if (window.MathJax?.typesetPromise) return;
+
+  // If a config wasn't provided yet, set a minimal compatible one (keeps \# working).
+  if (!window.MathJax) {
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['$$','$$']],
+        packages: {'[+]': ['ams', 'textmacros']},
+      },
+      loader: { load: ['[tex]/ams','[tex]/textmacros'] },
+    };
   }
 
-  function pad3(n) {
-    n = Math.max(0, Number(n) | 0);
-    return String(n).padStart(3, '0');
-  }
-
-  // ---------- resolver ----------
-  async function resolveFrom(chapter, para) {
-    // Respect explicit ?from
-    const explicit = get('from');
-    if (explicit) {
-      const p = Number(explicit);
-      if (Number.isFinite(p) && p >= 0) {
-        setStatus(`Using ?from=${p}.`);
-        return p;
-      }
-    }
-
-    // Try manifest beside the chapter HTML:
-    // /cafes/<slug>/<chapter>.manifest.json
-    // Example chapter: notebook/chapter-1-the-basel-problem.html
-    const manifestUrl = `/cafes/${cafeSlug}/${chapter}.manifest.json`;
-
+  // Try local, then CDN.
+  const sources = [
+    '/js/mathjax/es5/tex-chtml.js',
+    '/js/mathjax/tex-chtml.js',
+    'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js',
+  ];
+  for (const src of sources) {
     try {
-      const res = await fetch(manifestUrl, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-
-      // Accept both shapes:
-      // 1) { paras: [ { id, page, offset? }, ... ] }
-      // 2) { items: { <id>: { page, offset? }, ... } }  (older)
-      let entry = null;
-
-      if (Array.isArray(data.paras)) {
-        entry = data.paras.find(p => String(p.id) === String(para)) || null;
-      } else if (data.items && typeof data.items === 'object') {
-        entry = data.items[para] || null;
+      await loadScriptOnce(src);
+      if (window.MathJax?.startup?.promise) {
+        await window.MathJax.startup.promise;
       }
-
-      if (entry && Number.isFinite(entry.page)) {
-        const base = Number(entry.page) | 0;
-        const off = Number(entry.offset || 0) | 0;
-        const page = base + off;
-        setStatus(`Resolved ${para} ⇒ p.${page} from manifest.`);
-        return page;
-      }
-
-      setStatus(`Manifest loaded but no entry for ${para}; default to p.0`);
-      return 0;
-    } catch (err) {
-      setStatus(`No manifest for ${chapter} (${String(err)}); default to p.0`);
-      return 0;
-    }
-  }
-
-  // ---------- thumbnail probe ----------
-  function thumbUrlFor(page) {
-    // /cafes/<slug>/sources/thumbs/page-XXX.jpg
-    return `/cafes/${cafeSlug}/sources/thumbs/page-${pad3(page)}.jpg`;
-  }
-
-  async function probeThumb(page) {
-    const url = thumbUrlFor(page);
-    try {
-      const res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
-      return res.ok ? url : null;
+      if (window.MathJax?.typesetPromise) return;
     } catch {
-      return null;
+      /* try next */
     }
   }
+  // If we get here, we’ll still render Markdown; math will remain as raw TeX.
+}
 
-  // ---------- fallback to source viewer ----------
-  function openSourceViewer(chapter, para, page) {
-    // Keep arguments identical to what worked already:
-    // /cafes/<slug>/source.html?pdf=Old_main&para=<para>&chapter=<chapter>&return=<encoded>
-    const ret = encodeURIComponent(location.pathname + location.search);
-    const href =
-      `/cafes/${cafeSlug}/source.html?pdf=Old_main` +
-      `&para=${encodeURIComponent(para)}` +
-      `&chapter=${encodeURIComponent(chapter)}` +
-      `&return=${ret}` +
-      (Number.isFinite(page) ? `&from=${page}` : '');
-    setStatus(`No thumbnail for p.${page} → opening source viewer…`);
-    location.href = href;
+// ---------- Markdown + LaTeX renderer ----------
+function normalizeFencedMath(md) {
+  // Allow ```math ... ``` blocks by converting to $$...$$
+  return md.replace(/```\s*math\s*\r?\n([\s\S]+?)\r?\n```/gi, (_, body) => `$$${body}$$`);
+}
+
+async function renderMdLatex(md, outEl) {
+  await ensureMarked();
+  md = normalizeFencedMath(md);
+
+  // Freeze math into placeholders so Marked won’t escape it.
+  const texStore = [];
+  const place = i => `<span data-tex="${i}"></span>`;
+
+  // Display math
+  md = md.replace(/\$\$([\s\S]+?)\$\$/g, (_, body) => {
+    const i = texStore.length; texStore.push(`$$${body}$$`); return place(i);
+  });
+  // Inline math
+  md = md.replace(/(^|[^\$])\$(?!\$)([^$\n]+?)\$(?!\$)/g, (m, pre, body) => {
+    const i = texStore.length; texStore.push(`$${body}$`); return pre + place(i);
+  });
+
+  outEl.innerHTML = window.marked.parse(md);
+
+  // Thaw: insert raw TeX back so MathJax can see it.
+  outEl.querySelectorAll('span[data-tex]').forEach(sp => {
+    const raw = texStore[Number(sp.getAttribute('data-tex'))] || '';
+    sp.replaceWith(document.createTextNode(raw));
+  });
+
+  // Ask MathJax to typeset (if available)
+  try {
+    await ensureMathJax();
+    if (window.MathJax?.typesetClear) MathJax.typesetClear([outEl]);
+    if (window.MathJax?.texReset) MathJax.texReset();
+    if (window.MathJax?.typesetPromise) await MathJax.typesetPromise([outEl]);
+    else if (window.MathJax?.typeset) MathJax.typeset([outEl]);
+  } catch {
+    // No MathJax—leave raw TeX visible; that’s OK for drafts.
+  }
+}
+
+// ---------- Memo toolbar wiring (Preview button only) ----------
+function findMemoElements() {
+  // We’re intentionally defensive: look inside the “Memo to self” card.
+  const memoCard = $all('.card, .ro-card').find(el =>
+    /Memo to self/i.test(el.textContent || '')
+  ) || document;
+
+  const textarea =
+    $('#memoText', memoCard) ||
+    $('textarea', memoCard); // there’s only one textarea in the memo card
+
+  // Create (or reuse) a preview container right below the textarea
+  let preview = $('#memoPreviewOut', memoCard);
+  if (!preview && textarea) {
+    preview = document.createElement('div');
+    preview.id = 'memoPreviewOut';
+    preview.className = 'ro-memo-preview card';
+    preview.style.marginTop = '10px';
+    preview.style.padding = '12px';
+    preview.style.border = '1px solid var(--line, #1f2730)';
+    preview.style.borderRadius = '10px';
+    preview.style.background = 'var(--panel, #0e141b)';
+    textarea.parentElement.insertAdjacentElement('afterend', preview);
   }
 
-  // ---------- bootstrap ----------
-  async function boot() {
-    const chapter = get('chapter');
-    const para = get('para');
+  // Find the “Preview” button inside the memo toolbar
+  const previewBtn =
+    $('#memoPreview', memoCard) ||
+    $all('button', memoCard).find(b => (b.textContent || '').trim() === 'Preview');
 
-    if (!chapter || !para) {
-      setStatus('Missing ?chapter or ?para in URL.');
-      return;
-    }
+  return { textarea, preview, previewBtn };
+}
 
-    const page = await resolveFrom(chapter, para);
-    const thumb = await probeThumb(page);
+function initMemoPreview() {
+  const { textarea, preview, previewBtn } = findMemoElements();
+  if (!textarea || !preview || !previewBtn) return; // nothing to wire
 
-    if (!thumb) {
-      openSourceViewer(chapter, para, page);
-      return;
-    }
-
-    // Show thumbnail and initialize overlay grid.
-    const img = document.getElementById('ro-page');
-    if (!img) {
-      setStatus('Missing <img id="ro-page"> in DOM.');
-      return;
-    }
-
-    // Make sure image is visible and sized by container
-    img.style.display = 'block';
-    img.style.width = '100%';
-    img.style.height = 'auto';
-    img.src = thumb;
-
-    await new Promise((resolve) => {
-      if (img.complete && img.naturalWidth) resolve();
-      else img.addEventListener('load', resolve, { once: true });
-    });
-
-    setStatus(`Loaded thumbnail p.${page}.`);
-
-    // Hand off to the existing grid overlay module.
+  // Single click handler – render current memo content
+  previewBtn.addEventListener('click', async () => {
+    const md = textarea.value || '';
+    preview.setAttribute('aria-busy', 'true');
+    preview.textContent = 'Rendering preview…';
     try {
-      if (typeof window.initResearchOfficeGrid === 'function') {
-        window.initResearchOfficeGrid({
-          chapter,
-          para,
-          fromPage: page,
-          // For completeness; the grid only needs page size metrics from the image.
-          thumbsBase: `/cafes/${cafeSlug}/sources/thumbs/`,
-          imgEl: img
-        });
-      } else {
-        setStatus('Grid module not found (initResearchOfficeGrid missing).');
-      }
-    } catch (e) {
-      setStatus(`Grid init failed: ${String(e)}`);
+      await renderMdLatex(md, preview);
+    } finally {
+      preview.removeAttribute('aria-busy');
     }
-  }
+  }, { once: false });
+}
 
-  // run
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot, { once: true });
-  } else {
-    boot();
-  }
-})();
+// ---------- boot ----------
+document.addEventListener('DOMContentLoaded', () => {
+  // Only wire the memo preview; all other modules (grid, thumbnails, etc.) are untouched.
+  initMemoPreview();
+});
