@@ -1,13 +1,8 @@
-/* research.office.js — drop-in
- *
- * Restores:
- *  • resolveFrom(chapter, para) via chapter manifest (or ?from=)
- *  • thumbnail probe under /cafes/<slug>/sources/thumbs/page-XXX.jpg
- *  • thumbnail-first display + grid init; PDF fallback to /source.html
- *  • Marked loader (local → CDN), MathJax ensure (uses mathconfig.js, then CDN)
- *  • “Preview” in the memo card: Markdown + LaTeX typeset in-place
- *
- * Safe to paste over the current file.
+/* research.office.js — drop-in with MM de-dup bridge
+ * - Resolver (manifest or ?from=)
+ * - Thumbnail probe → grid init; PDF fallback to /source.html
+ * - Marked + MathJax ensure; memo Preview (Markdown + LaTeX)
+ * - Global roAddMemoToken(token) with de-dup guard to prevent doubles
  */
 
 (function () {
@@ -27,6 +22,40 @@
 
   const pad3 = (n) => String(Math.max(0, n|0)).padStart(3, '0');
 
+  // ---------- MM token bridge (de-dup) ----------
+  // Prevents duplicate MM lines when two listeners fire for the same click.
+  (function installMemoBridgeOnce(){
+    if (window.roAddMemoToken) return; // already installed
+
+    const DEDUP_MS = 400;
+    let last = { token: '', at: 0 };
+
+    function findMemoTextarea() {
+      // be resilient to small markup changes
+      return document.querySelector(
+        '.ro-memo textarea, #ro-memo, textarea[name="memo"], .memo-card textarea, textarea'
+      );
+    }
+
+    window.roAddMemoToken = function roAddMemoToken(token) {
+      try {
+        if (!token || typeof token !== 'string') return;
+        const now = Date.now();
+        if (token === last.token && (now - last.at) < DEDUP_MS) return; // drop duplicate
+        last = { token, at: now };
+
+        const ta = findMemoTextarea();
+        if (!ta) return;
+        const needsNL = ta.value && !ta.value.endsWith('\n');
+        ta.value += (needsNL ? '\n' : '') + token + '\n';
+        // notify any autosave listeners
+        ta.dispatchEvent(new Event('input', { bubbles: true }));
+      } catch (e) {
+        console.warn('roAddMemoToken failed:', e);
+      }
+    };
+  })();
+
   // ---------- resolver (manifest or ?from) ----------
   async function resolveFrom(chapter, para) {
     const explicit = get('from');
@@ -42,8 +71,6 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
-      // Accept either shape:
-      // { paras:[{id,page,offset?},…] }  or  { items:{ id:{page,offset?}, … } }
       let entry = null;
       if (Array.isArray(data.paras)) {
         entry = data.paras.find(p => String(p.id) === String(para)) || null;
@@ -103,27 +130,20 @@
 
   async function ensureMarked() {
     if (window.marked) return;
-    try {
-      await loadScript('/js/marked.min.js');   // local first (if you have it)
-    } catch {
-      await loadScript('https://cdn.jsdelivr.net/npm/marked@12/marked.min.js');
-    }
+    try { await loadScript('/js/marked.min.js'); }
+    catch { await loadScript('https://cdn.jsdelivr.net/npm/marked@12/marked.min.js'); }
   }
 
-  // Try to use *your* MathJax config first (same as chapters).
   async function ensureMathJax() {
     if (window.MathJax) return;
 
-    // Prefer your project’s mathconfig.js
-    const cfg = document.querySelector('script[src*="notebook/math/mathconfig.js"]');
-    if (!cfg) {
-      // inject if missing
-      try {
-        await loadScript(`/cafes/${cafeSlug}/notebook/math/mathconfig.js`);
-      } catch { /* ignore, will try CDN next */ }
+    // Prefer project mathconfig.js (same as chapters)
+    const hasCfg = !!document.querySelector('script[src*="notebook/math/mathconfig.js"]');
+    if (!hasCfg) {
+      try { await loadScript(`/cafes/${cafeSlug}/notebook/math/mathconfig.js`); }
+      catch { /* ignore; will try CDN next */ }
     }
 
-    // If still no MathJax after a tick, inject CDN engine (safe with config).
     await new Promise(r => setTimeout(r, 50));
     if (!window.MathJax) {
       await loadScript('https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js');
@@ -145,7 +165,6 @@
 
   // ---------- Memo preview wiring ----------
   function findMemoElements() {
-    // Be resilient to markup variations.
     const card = document.querySelector('.ro-memo, .memo-card, #ro-memo-card') || document;
     const textarea = card.querySelector('textarea, #ro-memo, textarea[name="memo"]');
     const previewBtn =
@@ -158,7 +177,6 @@
     const { card, textarea, previewBtn } = findMemoElements();
     if (!card || !textarea || !previewBtn) return;
 
-    // Create/locate a sibling preview panel
     let panel = card.querySelector('.memo-preview');
     if (!panel) {
       panel = document.createElement('div');
@@ -168,20 +186,15 @@
       panel.style.border = '1px solid var(--line,#334)';
       panel.style.borderRadius = '8px';
       panel.style.background = 'var(--panel,#0d1217)';
-      // Insert after the textarea (keeps layout stable)
       textarea.parentElement.insertAdjacentElement('afterend', panel);
     }
 
-    // Render function
     async function renderNow() {
       await ensureMarked();
       const src = textarea.value || '';
-      // Let marked render HTML, then MathJax will sweep LaTeX
       const html = window.marked.parse(src, { breaks: true, gfm: true });
       panel.innerHTML = html;
       await typeset(panel);
-      // Optional: scroll preview into view on first render
-      // panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }
 
     previewBtn.addEventListener('click', renderNow);
@@ -194,14 +207,10 @@
 
     if (!chapter || !para) { setStatus('Missing ?chapter or ?para.'); return; }
 
-    // 1) resolve page
     const page = await resolveFrom(chapter, para);
-
-    // 2) probe thumb (or fallback)
     const thumb = await probeThumb(page);
     if (!thumb) { openSourceViewer(chapter, para, page); return; }
 
-    // 3) show image and init overlay grid
     const img = document.getElementById('ro-page');
     if (!img) { setStatus('Missing <img id="ro-page">.'); return; }
     img.style.display = 'block';
@@ -217,7 +226,9 @@
         window.initResearchOfficeGrid({
           chapter, para, fromPage: page,
           thumbsBase: `/cafes/${cafeSlug}/sources/thumbs/`,
-          imgEl: img
+          imgEl: img,
+          // If your grid supports a callback prop, pass it too:
+          onMemoToken: window.roAddMemoToken
         });
       } else {
         setStatus('Grid module not found (initResearchOfficeGrid missing).');
@@ -226,7 +237,6 @@
       setStatus(`Grid init failed: ${String(e)}`);
     }
 
-    // 4) wire memo preview (independent of grid)
     wireMemoPreview();
   }
 
