@@ -1,16 +1,18 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Research Office — zeta-zero-cafe</title>
 
   <!-- Scoped stylesheet (your existing CSS) -->
-  <link rel="stylesheet" href="/css/10-components/research-office.css"/>
+  <link rel="stylesheet" href="/css/10-components/research-office.css" />
 
   <!-- Use the exact same MathJax config as chapter pages -->
   <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
 </head>
+
 <body class="ro">
   <header class="ro-head">
     <a class="ro-back" href="javascript:history.back()">← Back</a>
@@ -23,13 +25,13 @@
       <div id="ro-toolbar" class="toolbar">
         <div class="btns">
           <button id="toolPoint" type="button">Point</button>
-          <button id="toolBox"   type="button">Box</button>
+          <button id="toolBox" type="button">Box</button>
         </div>
         <div class="btns">
           <span>Zoom:</span>
           <button id="zoomOut" type="button">–</button>
           <button id="zoomFit" type="button">Fit</button>
-          <button id="zoomIn"  type="button">+</button>
+          <button id="zoomIn" type="button">+</button>
         </div>
         <div class="btns">
           <label>Units:
@@ -89,7 +91,7 @@
           <button id="exportMemo">Export memo JSON</button>
           <button id="exportAll">Export ALL drafts</button>
           <label class="file">
-            <input id="importMemo" type="file" accept="application/json"/>
+            <input id="importMemo" type="file" accept="application/json" />
             Choose File
           </label>
           <button id="submitDiscord">Submit via Discord</button>
@@ -114,6 +116,7 @@
 
   <!-- Grid/overlay engine (unchanged) -->
   <script src="/js/research-office-grid.js"></script>
+  <script src="/js/ro-grid-gate.js"></script>
   <!-- Research Office controller (resolver + preview + memo glue) -->
   <script src="/js/research.office.js"></script>
 
@@ -122,8 +125,8 @@
     (async function () {
       const qs = new URLSearchParams(location.search);
       const fromPage = Number(qs.get('from') || '0') || 0;
-      const chapter  = qs.get('chapter') || '';
-      const para     = qs.get('para') || '';
+      const chapter = qs.get('chapter') || '';
+      const para = qs.get('para') || '';
 
       // Kick the grid: **thumbnail-first**, with status reporting.
       if (window.initResearchOfficeGrid) {
@@ -142,7 +145,7 @@
       if (window.loadParagraphPreview) window.loadParagraphPreview();
 
       // Keep right column visually in sync with the stage height
-      function syncRightHeights () {
+      function syncRightHeights() {
         const st = document.getElementById('ro-stage');
         if (!st) return;
         document.documentElement.style.setProperty('--ro-stage-h', st.clientHeight + 'px');
@@ -151,23 +154,23 @@
       new ResizeObserver(syncRightHeights).observe(document.getElementById('ro-stage'));
 
       // — MM thumbnails parsed from memo text —
-      const memoEl   = document.getElementById('memo');
+      const memoEl = document.getElementById('memo');
       const thumbsEl = document.getElementById('mmThumbs');
-      const base     = '/cafes/zeta-zero-cafe/sources/thumbs';
+      const base = '/cafes/zeta-zero-cafe/sources/thumbs';
 
-      function pad3(n){ return String(n).padStart(3,'0'); }
-      function pagesFromMemo(txt){
+      function pad3(n) { return String(n).padStart(3, '0'); }
+      function pagesFromMemo(txt) {
         const pages = new Set();
         const re = /\[mm\|p(\d+)(?::[\d\.,]+(?:;[\d\.,]+)*)?\]/gi;
         let m; while ((m = re.exec(txt))) pages.add(Number(m[1]));
-        return [...pages].sort((a,b)=>a-b);
+        return [...pages].sort((a, b) => a - b);
       }
-      function updateFromInUrl(url, p){
+      function updateFromInUrl(url, p) {
         const u = new URL(url, location.href);
         u.searchParams.set('from', String(p));
         return u.toString();
       }
-      function renderThumbs(){
+      function renderThumbs() {
         const pages = pagesFromMemo(memoEl.value || '');
         if (!pages.length) { thumbsEl.textContent = 'No page references yet.'; return; }
         thumbsEl.innerHTML = '';
@@ -175,7 +178,7 @@
           const a = document.createElement('a');
           a.className = 'mm-thumb';
           a.title = 'Go to page ' + p;
-          a.href  = updateFromInUrl(location.href, p);
+          a.href = updateFromInUrl(location.href, p);
 
           const img = document.createElement('img');
           img.loading = 'lazy';
@@ -196,4 +199,5 @@
     })();
   </script>
 </body>
+
 </html>
