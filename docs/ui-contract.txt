@@ -1,0 +1,32 @@
+Research Office — Right Column (UI Contract)
+
+These are the DOM IDs the *production page* must expose so the
+right-column logic (resolver → pages referenced strip ↔ memo tokens)
+can wire up without guessing.
+
+LEFT / VIEWER (testbed only; prod has the real grid)
+- #viewerImg        <img> current page thumbnail (test stub)
+- #btnPrev          ◀
+- #btnPrimary       primary
+- #btnNext          ▶
+- #btnAdd           [Add page]
+- #status           one-line status text
+
+PAGES REFERENCED STRIP
+- #refstrip         container that holds page thumbnails (chips)
+
+PARAGRAPH PREVIEW
+- #paraTag          small “#osf-N” label
+- #paraPreview      paragraph HTML preview surface
+
+MEMO TO SELF
+- #memoTA           <textarea> with the raw memo text
+- #chips            inline chips mirroring memo tokens (test-only emphasis)
+
+OPTIONAL (test-only)
+- #renderOut        shows the raw memo text; not needed in prod
+
+Token grammar (MUST be preserved):
+- live:    [mm|pN=x,y] or [mm|pN=x1,y1:x2,y2]
+- deleted: [del]mm|pN=x,y] or [del]mm|pN=x1,y1:x2,y2]
+  ^ note: the `[del]` prefix sits *before* `mm|…`
