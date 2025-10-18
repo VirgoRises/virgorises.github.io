@@ -4,269 +4,300 @@
   <meta charset="utf-8" />
   <title>Research Office — zeta-zero-cafe (TEST)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="/css/10-components/research-office.css" />
+  <link href="/css/bundle.css?v=1" rel="stylesheet" />
+
+  <!-- Same MathJax config as chapters (for paragraph preview + memo preview if needed later) -->
   <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
+  <script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
   <style>
-    :root { color-scheme: dark; }
-    body { background:#0b0f14; }
-    .wrap { max-width: 1200px; margin: 18px auto; padding: 0 12px; }
-    .muted { color:#9aa7b2; }
+    :root { --thumbW: 110px; --thumbH: 150px; }
+    body { padding: 16px; }
+    .wrap { display: grid; grid-template-columns: 320px 1fr; gap: 18px; }
+    .card { background: var(--card); border:1px solid var(--line); border-radius:10px; padding:12px; }
+    .left .viewer { height: 440px; display:flex; align-items:center; justify-content:center; overflow:auto; background:#0c1217; border-radius:8px; border:1px solid var(--line); }
+    .viewer img { max-width:100%; height:auto; display:block; }
+    .viewer-ctrls { display:flex; gap:8px; justify-content:flex-start; margin-top:10px; }
+    .viewer-ctrls button { min-width:64px; }
 
-    #gridStub { background:#0c1217; border:1px solid var(--line); border-radius:10px; padding:8px; }
-    #gridViewport { width: var(--ro-left-stage, 340px); height: 420px; overflow:auto; background:#0b0f14; border-radius:8px; }
-    #pageImg { width:100%; display:block; }
+    .refstrip { display:flex; gap:12px; overflow-x:auto; padding:6px 2px; }
+    .ref { position:relative; width:var(--thumbW); height:var(--thumbH); border-radius:10px; border:2px solid var(--line); background:#0c1217; display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+    .ref.primary { border:4px solid #f6b73c; } /* thicker orange border */
+    .ref.active  { box-shadow:0 0 0 3px rgba(90,200,255,.35) inset; }
+    .ref img { width:calc(var(--thumbW) - 22px); height:auto; border-radius:6px; }
+    .badge { position:absolute; top:4px; left:6px; background:#111a; color:#fff; font-size:11px; padding:2px 6px; border-radius:6px; }
+    .ref .kill { position:absolute; top:4px; right:4px; background:#2b0d11; border:1px solid #933; color:#f7b; width:20px; height:20px; font-size:12px; border-radius:6px; line-height:18px; text-align:center; cursor:pointer; }
+    .ref.primary .kill { display:none; } /* primary cannot be removed */
 
-    .toolbar-row { display:flex; align-items:center; gap:8px; margin:6px 0 2px; }
-    .tiny { font-size: 12px; }
-    #status { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12px; color:#9aa7b2; margin-top:6px; }
+    .row { display:grid; grid-template-columns: 1fr; gap:12px; }
+    .hdr  { display:flex; align-items:center; gap:10px; }
+    .hdr small { opacity:.6; }
+    .tiny { font-size:12px; opacity:.65; }
 
-    #pagesBar { display:flex; gap:10px; overflow:auto; padding:10px 6px; }
-    .thumb { position:relative; width:96px; height:128px; border:1px solid #26323f; border-radius:10px; background:#0e141b; display:flex; align-items:center; justify-content:center; cursor:pointer; flex: 0 0 auto; }
-    .thumb img { max-width:90%; max-height:90%; display:block; }
-    .thumb .tag { position:absolute; left:6px; top:6px; font-size:12px; background:#0b0f14; padding:1px 6px; border-radius:10px; border:1px solid #26323f; }
-    .thumb .kill { position:absolute; right:6px; top:6px; font-size:12px; background:#40222a; padding:0 6px; border-radius:10px; border:1px solid #70333e; display:none; }
-    .thumb.active { outline: 3px solid #4ea9ff; }
-    .thumb.primary { outline: 4px solid #f1a500; }
-    .thumb:not(.primary) .kill { display:block; }
+    textarea { width:100%; min-height:160px; resize:vertical; }
+    .token-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+    .chip { font-size:12px; border:1px solid var(--line); border-radius:999px; padding:2px 8px; background:#10161d; }
+    .chip.hot { background:#0b2a3a; border-color:#39a0db; color:#cfefff; }
 
-    #memoPreview { background:#0b0f14; border:1px dashed #223; border-radius:10px; padding:12px; margin-top:12px; }
+    #status { font-size:12px; opacity:.7; margin-top:6px; }
+    .controls-inline { display:flex; align-items:center; gap:8px; }
+    select, button { height:28px; }
+    .spaced { margin-top:12px; }
   </style>
 </head>
-<body class="ro">
+<body>
+  <h1>Research Office — zeta-zero-cafe (TEST)</h1>
+
   <div class="wrap">
-    <a class="ro-back" href="javascript:history.back()">← Back</a>
-    <h1>Research Office — <span class="mono">zeta-zero-cafe</span> (TEST)</h1>
+    <!-- LEFT: viewer -->
+    <div class="left card">
+      <div class="hdr"><strong>Grid Stub (page viewer)</strong></div>
+      <div class="viewer">
+        <img id="viewerImg" alt="page thumbnail" />
+      </div>
+      <div class="viewer-ctrls">
+        <button id="btnPrev">◀</button>
+        <button id="btnPrimary">primary</button>
+        <button id="btnNext">▶</button>
+        <button id="btnAdd">[Add page]</button>
+      </div>
+      <div id="status" class="tiny">—</div>
+    </div>
 
-    <main class="ro-main">
-      <section class="left">
-        <div id="ro-stage" class="card">
-          <div id="gridStub">
-            <div id="gridViewport"><img id="pageImg" alt="source page" /></div>
-            <div class="toolbar-row">
-              <button id="btnPrev">◀</button>
-              <button id="btnHome">primary</button>
-              <button id="btnNext">▶</button>
-              <span class="tiny muted" id="gridPageLabel"></span>
-              <div style="flex:1"></div>
-              <button id="btnAdd">[Add page]</button>
-            </div>
-            <div id="status" aria-live="polite"></div>
-          </div>
-        </div>
-      </section>
+    <!-- RIGHT: everything else -->
+    <div class="right row">
+      <!-- Pages referenced in memo -->
+      <div class="card">
+        <div class="hdr"><strong>Pages referenced in memo</strong></div>
+        <div id="refstrip" class="refstrip"></div>
+      </div>
 
-      <section class="right">
-        <div class="card">
-          <h3>Pages referenced in memo</h3>
-          <div id="pagesBar" aria-live="polite"></div>
+      <!-- Paragraph preview -->
+      <div class="card">
+        <div class="hdr">
+          <strong>Paragraph preview</strong>
+          <small id="paraTag">#—</small>
         </div>
+        <div id="paraPreview" class="spaced tiny">Select a chapter/paragraph (mocked here).</div>
+      </div>
 
-        <div class="card">
-          <h3>Paragraph preview <span class="tiny muted" id="paraBadge"></span></h3>
-          <div class="toolbar-row">
-            <label>Chapter:
-              <select id="selChapter"></select>
-            </label>
-            <label>Paragraph:
-              <select id="selPara"></select>
-            </label>
-          </div>
-          <div id="paraPreview" class="mono" style="white-space:pre-wrap; min-height:120px;"></div>
-        </div>
+      <!-- Memo to self -->
+      <div class="card">
+        <div class="hdr"><strong>Memo to self (Markdown + LaTeX)</strong></div>
+        <textarea id="memoTA">[mm|p7=x,y]</textarea>
 
-        <div class="card">
-          <h3>Memo to self (Markdown + LaTeX)</h3>
-          <div class="toolbar-row">
-            <button data-msg="(B)old" class="tiny">B</button>
-            <button data-msg="italic" class="tiny">i</button>
-            <button data-msg="link" class="tiny">🔗</button>
-            <button data-msg="\\(x\\)" class="tiny">\\(x\\)</button>
-            <button id="btnPreview" class="tiny">Preview</button>
-          </div>
-          <textarea id="memoTA" rows="10" class="mono" style="width:100%;">State the issue, desired change, and rationale…</textarea>
-          <div class="toolbar-row">
-            <button class="tiny" data-alert="Saving draft">Save draft</button>
-            <button class="tiny" data-alert="Saving version">Save version</button>
-            <button class="tiny" data-alert="Exporting memo JSON">Export memo JSON</button>
-            <button class="tiny" data-alert="Export ALL drafts">Export ALL drafts</button>
-            <button class="tiny" data-alert="Choosing File">Choose File</button>
-            <button class="tiny" data-alert="Submitting via Discord">Submit via Discord</button>
-          </div>
-          <div id="memoPreview" class="mono tiny"></div>
-        </div>
+        <!-- chips that mirror tokens and highlight current page -->
+        <div id="chips" class="token-chips"></div>
 
-        <div class="card">
-          <h3>Versions (snapshots for this memo)</h3>
-          <div class="tiny muted">No snapshots yet.</div>
+        <div class="spaced controls-inline">
+          <button id="btnSaveDraft">Save draft</button>
+          <button id="btnSaveVersion">Save version</button>
+          <button id="btnExportJSON">Export memo JSON</button>
+          <button id="btnExportAll">Export ALL drafts</button>
+          <button id="btnChoose">Choose File</button>
+          <button id="btnDiscord">Submit via Discord</button>
         </div>
-        <div class="card">
-          <h3>Recent drafts (this browser)</h3>
-          <div class="tiny muted">—</div>
-        </div>
-      </section>
-    </main>
+      </div>
+
+      <!-- Rendered output (test only, not the real preview) -->
+      <div class="card">
+        <div class="hdr"><strong>Rendered output (test-only)</strong></div>
+        <div id="renderOut" class="spaced tiny">—</div>
+      </div>
+    </div>
   </div>
 
   <script>
-    const $ = (s,d=document)=>d.querySelector(s);
-    const $$=(s,d=document)=>Array.from(d.querySelectorAll(s));
-    const pad3 = n => String(n).padStart(3,'0');
-    const zeroPadSrc = p => `/cafes/zeta-zero-cafe/sources/thumbs/page-${pad3(p)}.jpg`;
-    function status(msg){ $('#status').textContent = msg || ''; }
+  // ---------- tiny helpers ----------
+  const $ = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+  const pad3 = n => String(n).padStart(3,'0');
+  const setStatus = (m) => { $('#status').textContent = m; };
 
-    async function loadScriptOnce(src) {
-      return new Promise((res,rej)=>{
-        const url = new URL(src, location.href).toString();
-        if ([...document.scripts].some(s=>s.src===url)) return res();
-        const s=document.createElement('script'); s.src=url; s.async=true;
-        s.onload=res; s.onerror=()=>rej(new Error('failed '+src));
-        document.head.appendChild(s);
+  // ---------- mock chapter/para (fixed) ----------
+  const primaryPage = 7; // pretend resolver concluded p.7
+  let currentPage  = primaryPage;
+
+  // ---------- memo token model ----------
+  // tokens look like: [mm|pN=...]
+  // "deleted" tokens look like: [del]mm|pN=...]
+  const tokenRE = /\[(?<del>del\])?mm\|p(?<page>\d+)\s*=\s*([^\]\n]+)\]/g;
+
+  function parseTokens(text) {
+    tokenRE.lastIndex = 0;
+    const items = [];
+    let m;
+    while ((m = tokenRE.exec(text))) {
+      items.push({
+        raw: m[0],
+        start: m.index,
+        end: m.index + m[0].length,
+        page: Number(m.groups.page),
+        deleted: !!m.groups.del,
       });
     }
-    async function ensureMarked(){
-      if (window.marked) return;
-      try { await loadScriptOnce('/js/marked.min.js'); if (window.marked) return; } catch {}
-      await loadScriptOnce('https://cdn.jsdelivr.net/npm/marked@12/marked.min.js');
-    }
-    async function ensureMathJax(){
-      if (window.MathJax?.typesetPromise) return;
-      if (!window.MathJax) window.MathJax = { tex:{inlineMath:[['\\(','\\)'],['$','$']]}, loader:{load:['[tex]/ams','[tex]/textmacros']} };
-      const srcs = ['/js/mathjax/es5/tex-chtml.js','https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js'];
-      for (const s of srcs){ try { await loadScriptOnce(s); if (MathJax.startup?.promise) await MathJax.startup.promise; if (MathJax.typesetPromise) return; } catch{} }
-    }
-    function normalizeFencedMath(md){
-      return md.replace(/```\s*math\s*\r?\n([\s\S]+?)\r?\n```/gi,(_,b)=>`$$${b}$$`);
-    }
-    async function renderMdLatex(md, out){
-      md = normalizeFencedMath(md);
-      const store=[]; const ph=i=>`<span data-tex="${i}"></span>`;
-      md = md.replace(/\$\$([\s\S]+?)\$\$/g,(_,b)=>{store.push('$$'+b+'$$');return ph(store.length-1);});
-      md = md.replace(/(^|[^\$])\$(?!\$)([^$\n]+?)\$(?!\$)/g,(m,pre,b)=>{store.push('$'+b+'$');return pre+ph(store.length-1);});
-      await ensureMarked(); out.innerHTML = marked.parse(md);
-      out.querySelectorAll('span[data-tex]').forEach(s=>{const i=+s.dataset.tex; s.replaceWith(document.createTextNode(store[i]||''));});
-      await ensureMathJax(); if (MathJax.typesetClear) MathJax.typesetClear([out]); if (MathJax.texReset) MathJax.texReset();
-      if (MathJax.typesetPromise) await MathJax.typesetPromise([out]); else MathJax.typeset([out]);
-    }
+    return items;
+  }
 
-    const STARTS = {
-      "notebook/chapter-1-the-basel-problem.html": 7,
-      "notebook/chapter-2-the-spatial-aspect-of-zet.html": 11,
-      "notebook/chapter-3-the-primorial-function.html": 23,
-      "notebook/chapter-4-the-triangular-numbers.html": 31,
-      "notebook/chapter-5-chords.html": 51,
-      "notebook/chapter-6-a-cartesian-m-brane-monos.html": 63,
-      "notebook/chapter-7-quadrature-geometric-framework.html": 73,
-      "notebook/chapter-8-spectrum-of-volume.html": 109
-    };
-    const CHAPTERS = Object.keys(STARTS).map(p => ({ path:p, title:'Chapter '+p.match(/chapter-(\d+)/)[1]+' — '+p.replace(/^notebook\/chapter-\d+-|\.html$/g,'').replace(/-/g,' ') }));
+  function hasLiveTokenForPage(tokens, page) {
+    return tokens.some(t => t.page === page && !t.deleted);
+  }
 
-    let state = {
-      chapter: CHAPTERS[0].path,
-      paraId: '',
-      primaryPage: STARTS[CHAPTERS[0].path],
-      activePage: STARTS[CHAPTERS[0].path],
-      pages: new Set(),
-      maxPages: 126 // <- numeric navigation range for Prev/Next in this TEST page
-    };
+  function markDeletedForPage(text, page) {
+    // prefix [del] for every LIVE token of this page
+    return text.replace(tokenRE, (full, del, pg) => {
+      const p = Number(pg);
+      if (p === page && !del) return full.replace('[mm|','[del]mm|');
+      return full;
+    });
+  }
 
-    function fillChapters(){
-      $('#selChapter').innerHTML = CHAPTERS.map(c=>`<option value="${c.path}">${c.title}</option>`).join('');
-      $('#selChapter').value = state.chapter;
-    }
+  function reinstateForPage(text, page) {
+    // remove [del] for tokens of this page
+    return text.replace(tokenRE, (full, del, pg) => {
+      const p = Number(pg);
+      if (p === page && del) return full.replace('[del]mm|','[mm|');
+      return full;
+    });
+  }
 
-    async function loadChapterAndFillParas(){
-      $('#selPara').innerHTML = `<option>loading…</option>`;
-      const html = await (await fetch('/cafes/zeta-zero-cafe/'+state.chapter, {cache:'no-store'})).text();
-      const doc = new DOMParser().parseFromString(html,'text/html');
-      const list = Array.from(doc.querySelectorAll('pre.osf'));
-      const opts = list.map((pre,i)=>({ id: pre.id || `osf-${i+1}`, label:`Paragraph ${i+1}`, page:Number(pre.dataset.page||'')||undefined }));
-      $('#selPara').innerHTML = opts.map(o=>`<option value="${o.id}" data-page="${o.page||''}">${o.label}</option>`).join('');
-      state.paraId = opts[0]?.id || ''; $('#selPara').value = state.paraId;
-      state.primaryPage = Number($('#selPara').selectedOptions[0].dataset.page || STARTS[state.chapter] || 1);
-      state.activePage  = state.primaryPage;
-      await showParagraphPreview(doc);
-      updatePrimaryThumb();
-      recomputePagesFromMemo();
+  function addTokenIfNeeded(text, page) {
+    const tokens = parseTokens(text);
+    if (page === primaryPage) return text; // never add primary
+    if (hasLiveTokenForPage(tokens, page)) return text; // already present
+    // if only deleted tokens exist, reinstate them
+    if (tokens.some(t => t.page === page && t.deleted)) {
+      return reinstateForPage(text, page);
     }
-    async function showParagraphPreview(parsedDoc){
-      const doc = parsedDoc || new DOMParser().parseFromString(await (await fetch('/cafes/zeta-zero-cafe/'+state.chapter)).text(),'text/html');
-      const pre = doc.getElementById(state.paraId);
-      $('#paraBadge').textContent = pre ? `#${state.paraId}` : '(not found)';
-      $('#paraPreview').textContent = pre ? pre.textContent.trim() : '(paragraph not found)';
-      await ensureMathJax(); if (MathJax.typesetPromise) await MathJax.typesetPromise([$('#paraPreview')]);
-    }
+    // otherwise append a skeletal token
+    const add = `[mm|p${page}=x,y]`;
+    return (text.endsWith('\n') ? text : text + '\n') + add + '\n';
+  }
 
-    function parsePagesFromMemo(){
-      const text = $('#memoTA').value;
-      const pages = new Set();
-      const re = /\[mm\|p(\d+)=/g; let m;
-      while((m=re.exec(text))) pages.add(Number(m[1]));
-      pages.delete(state.primaryPage);
-      return pages;
+  // ---------- referenced pages strip (primary first, then tokens in encounter order) ----------
+  function pagesFromMemo(text) {
+    const tokens = parseTokens(text);
+    const order = [];
+    const seen = new Set();
+    for (const t of tokens) {
+      if (t.deleted) continue;
+      if (!seen.has(t.page)) { seen.add(t.page); order.push(t.page); }
     }
-    function recomputePagesFromMemo(){
-      state.pages = parsePagesFromMemo(); renderPagesBar();
-    }
-    function renderPagesBar(){
-      const all = [state.primaryPage, ...Array.from(state.pages)];
-      const sorted = Array.from(new Set(all)).sort((a,b)=>a-b);
-      const bar = $('#pagesBar'); bar.innerHTML = '';
-      sorted.forEach(p=>{
-        const div = document.createElement('div');
-        div.className = 'thumb'+(p===state.primaryPage?' primary':'')+(p===state.activePage?' active':'');
-        div.dataset.page = p;
-        div.innerHTML = `<span class="tag">p.${p}</span>${p!==state.primaryPage?'<span class="kill">x</span>':''}`;
-        const img=document.createElement('img'); img.alt=`page ${p}`; img.src=zeroPadSrc(p);
-        img.onerror=()=>img.replaceWith(document.createTextNode('missing'));
-        div.appendChild(img);
-        div.onclick = ev=>{
-          if (ev.target.classList.contains('kill')){
-            const t=$('#memoTA').value;
-            const pruned=t.replace(new RegExp(String.raw`\[mm\|p${p}=.+?\]`,'g'),'');
-            $('#memoTA').value=pruned; state.pages.delete(p);
-            renderPagesBar(); if (state.activePage===p) updateViewerPage(state.primaryPage);
-            return;
-          }
-          state.activePage=p; updateViewerPage(p); renderPagesBar();
-        };
-        bar.appendChild(div);
+    // primary first, then order from tokens (without primary duplication)
+    return [primaryPage, ...order.filter(p => p !== primaryPage)];
+  }
+
+  function renderRefStrip() {
+    const strip = $('#refstrip');
+    strip.innerHTML = '';
+
+    const list = pagesFromMemo($('#memoTA').value).sort((a, b) => a - b);
+    for (const p of list) {
+      const ref = document.createElement('div');
+      ref.className = 'ref' + (p===primaryPage ? ' primary' : '') + (p===currentPage ? ' active' : '');
+      ref.dataset.page = p;
+
+      const img = document.createElement('img');
+      img.alt = `p.${p}`;
+      img.src = `/cafes/zeta-zero-cafe/sources/thumbs/page-${pad3(p)}.jpg`;
+      ref.appendChild(img);
+
+      const badge = document.createElement('div');
+      badge.className = 'badge';
+      badge.textContent = `p.${p}`;
+      ref.appendChild(badge);
+
+      const kill = document.createElement('div');
+      kill.className = 'kill';
+      kill.textContent = '×';
+      kill.title = 'Mark tokens as [del] (page removed from strip)';
+      ref.appendChild(kill);
+
+      // click thumbnail → activate page
+      ref.addEventListener('click', (ev) => {
+        if (ev.target === kill) return; // handled separately
+        setCurrentPage(p);
       });
-      const active=bar.querySelector('.thumb.active'); if(active) active.scrollIntoView({inline:'center',behavior:'smooth'});
+
+      // delete → mark [del] in memo (do NOT prune), then refresh
+      kill.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        if (p === primaryPage) return;
+        const ta = $('#memoTA');
+        ta.value = markDeletedForPage(ta.value, p);
+        onMemoChanged();
+      });
+
+      strip.appendChild(ref);
     }
-    function updatePrimaryThumb(){ updateViewerPage(state.primaryPage); renderPagesBar(); }
-    function updateViewerPage(p){ p=Math.max(1,Math.min(state.maxPages,p)); state.activePage=p; $('#pageImg').src = zeroPadSrc(p); $('#gridPageLabel').textContent = `p.${p}`; }
+    // scroll active into view
+    const active = strip.querySelector('.ref.active');
+    if (active) active.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+  }
 
-    // ---- Prev/Next now step numerically (independent of referenced set) ----
-    $('#btnPrev').onclick = ()=>{ updateViewerPage(state.activePage - 1); renderPagesBar(); };
-    $('#btnNext').onclick = ()=>{ updateViewerPage(state.activePage + 1); renderPagesBar(); };
-    $('#btnHome').onclick = ()=>{ updateViewerPage(state.primaryPage); renderPagesBar(); };
+  // ---------- chips under the memo to emphasise active page tokens ----------
+  function renderChips() {
+    const holder = $('#chips');
+    holder.innerHTML = '';
+    const tokens = parseTokens($('#memoTA').value);
+    for (const t of tokens) {
+      const c = document.createElement('span');
+      c.className = 'chip' + (t.page === currentPage && !t.deleted ? ' hot' : '');
+      c.textContent = (t.deleted ? '[del] ' : '') + `p${t.page}`;
+      holder.appendChild(c);
+    }
+  }
 
-    $('#btnAdd').onclick = ()=>{
-      const p=state.activePage; if (p===state.primaryPage){ status('Primary is always present; no token added.'); return; }
-      if (!$('#memoTA').value.includes(`[mm|p${p}=`)){
-        $('#memoTA').value += ($('#memoTA').value.endsWith('\n')?'':'\n') + `[mm|p${p}=x,y]\n`;
-        state.pages.add(p); renderPagesBar();
-      }
-    };
+  // ---------- viewer + navigation ----------
+  function setCurrentPage(p) {
+    currentPage = Math.max(1, p);
+    const img = $('#viewerImg');
+    img.src = `/cafes/zeta-zero-cafe/sources/thumbs/page-${pad3(currentPage)}.jpg`;
+    img.onload = () => setStatus(`Loaded thumbnail p.${currentPage}.`);
+    img.onerror = () => setStatus(`Missing thumbnail p.${currentPage}.`);
+    renderRefStrip();
+    renderChips();
+  }
 
-    $('#btnPreview').onclick = async()=>{ await renderMdLatex($('#memoTA').value,$('#memoPreview')); };
-    $$('button[data-alert]').forEach(b=>b.addEventListener('click',()=>alert(b.dataset.alert)));
-    $('#memoTA').addEventListener('input',recomputePagesFromMemo);
+  $('#btnPrev').addEventListener('click', () => setCurrentPage(currentPage - 1));
+  $('#btnNext').addEventListener('click', () => setCurrentPage(currentPage + 1));
+  $('#btnPrimary').addEventListener('click', () => setCurrentPage(primaryPage));
+  $('#btnAdd').addEventListener('click', () => {
+    if (currentPage === primaryPage) return; // never tokenise primary
+    const ta = $('#memoTA');
+    ta.value = addTokenIfNeeded(ta.value, currentPage);
+    onMemoChanged();
+  });
 
-    (async function init(){
-      $('#selChapter').innerHTML = Object.keys(STARTS).map(p=>`<option value="${p}">${'Chapter '+p.match(/chapter-(\d+)/)[1]+' — '+p.replace(/^notebook\/chapter-\d+-|\.html$/g,'').replace(/-/g,' ')}</option>`).join('');
-      $('#selChapter').value = state.chapter;
-      await loadChapterAndFillParas();
-      $('#selChapter').onchange = async e=>{ state.chapter=e.target.value; await loadChapterAndFillParas(); };
-      $('#selPara').onchange = async e=>{
-        state.paraId=e.target.value;
-        const pg=Number(e.target.selectedOptions[0].dataset.page||STARTS[state.chapter]||1);
-        state.primaryPage=Number.isFinite(pg)?pg:1; updateViewerPage(state.primaryPage);
-        await showParagraphPreview();
-        recomputePagesFromMemo();
-      };
-      status(`Loaded thumbnail p.${state.primaryPage}.`);
-    })();
+  // ---------- memo handlers ----------
+  function onMemoChanged() {
+    renderRefStrip();
+    renderChips();
+    // simple rendered echo for test visibility
+    $('#renderOut').textContent = $('#memoTA').value.trim() || '—';
+  }
+  $('#memoTA').addEventListener('input', onMemoChanged);
+
+  // ---------- fake buttons (message boxes) ----------
+  const ping = (m) => alert(m);
+  $('#btnSaveDraft').addEventListener('click', () => ping('Saving draft'));
+  $('#btnSaveVersion').addEventListener('click', () => ping('Saving version'));
+  $('#btnExportJSON').addEventListener('click', () => ping('Exporting memo JSON'));
+  $('#btnExportAll').addEventListener('click', () => ping('Export ALL drafts'));
+  $('#btnChoose').addEventListener('click', () => ping('Choosing File'));
+  $('#btnDiscord').addEventListener('click', () => ping('Submitting via Discord'));
+
+  // ---------- bootstrap ----------
+  (function init() {
+    // viewer on primary
+    setCurrentPage(primaryPage);
+    // ensure memo exists & reflect
+    onMemoChanged();
+    // fake paragraph preview content (math to confirm MathJax path is fine)
+    $('#paraTag').textContent = '#osf-1';
+    $('#paraPreview').textContent = 'The focus in this document is on the classic Basel problem...';
+    if (window.MathJax?.typesetPromise) window.MathJax.typesetPromise();
+  })();
   </script>
 </body>
 </html>
