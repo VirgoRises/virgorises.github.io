@@ -13,8 +13,6 @@
 
   <!-- MathJax v3 (SVG) for TeX in previews -->
   <script>
-    // Allow $...$ and \( ... \) inline; $$...$$ and \[ ... ] display.
-    // Keep previews render-safe.
     window.MathJax = {
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
@@ -40,89 +38,97 @@
       <a id="backLink" class="btn" href="#">← Back</a>
     </div>
 
+    <!-- GRID: 25% (left) / 75% (right) -->
     <div class="row">
-      <!-- LEFT: Paragraph preview + Figure/Table pickers -->
-      <div class="card">
-        <div class="head">
-          <strong>Paragraph preview</strong>
-          <span id="paraNum" class="tag">#</span>
-        </div>
-        <pre id="paraPreview" class="card preview"></pre>
-
-        <div class="split" style="margin-top:12px">
-          <div>
-            <div class="head"><strong>Figures</strong></div>
-            <div id="figList" class="list"></div>
-          </div>
-          <div>
-            <div class="head"><strong>Tables</strong></div>
-            <div id="tblList" class="list"></div>
-          </div>
-        </div>
-
-        <div class="bar">
-          <button id="copyLink" class="btn">Copy link</button>
-        </div>
-        <div class="muted" style="margin-top:8px">
-          Tip: toggle “member” in any chapter popover to show/hide the app button.
-        </div>
-      </div>
-
-      <!-- RIGHT: Page viewer + Memo -->
+      <!-- LEFT (25%): Resolver & Page Viewer ONLY -->
       <div class="card">
         <div class="head"><strong>Resolver & Page Viewer</strong></div>
 
-        <!-- Status line (Resolver → paths, primary page, errors) -->
+        <!-- Viewer (future grid/zoom hooks go here) -->
+        <div class="viewer">
+          <img id="pageImg" alt="Active page preview" />
+        </div>
+      </div>
+
+      <!-- RIGHT (75%): stacked cards -->
+      <div class="right-col">
+        <!-- Status line -->
         <div id="roStatus" class="status mono"></div>
 
-        <!-- Chips driven solely by memo tokens -->
+        <!-- Chips -->
         <div class="head" style="margin-top:8px">
           <strong>Pages referenced in memo</strong>
           <span class="muted">(primary in orange)</span>
         </div>
         <div id="pageChips" class="chips"></div>
 
-        <!-- Thumb / viewer -->
-        <div class="viewer">
-          <img id="pageImg" alt="Active page preview" />
+        <!-- Card A: Paragraph preview -->
+        <div class="card">
+          <div class="head">
+            <strong>Paragraph preview</strong>
+            <span id="paraNum" class="tag">#</span>
+          </div>
+          <pre id="paraPreview" class="card preview"></pre>
         </div>
 
-        <!-- Memo editor + live preview -->
-        <div class="head" style="margin-top:12px"><strong>Memo to self (Markdown/LaTeX)</strong></div>
-        <textarea id="memoBody" placeholder="State the issue, desired change, and rationale...&#10;Use tokens like [mm|p12=‘caption or note’]."></textarea>
+        <!-- Card B: Memo to self -->
+        <div class="card">
+          <div class="head"><strong>Memo to self (Markdown/LaTeX)</strong></div>
+          <textarea id="memoBody" placeholder="State the issue, desired change, and rationale...&#10;Use tokens like [mm|p12=…] or [mm|p10=x,y:x,y:&quot;label&quot;]."></textarea>
 
-        <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
-        <div id="memoPreview" class="preview-md"></div>
+          <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
+          <div id="memoPreview" class="preview-md"></div>
 
-        <div class="bar">
-          <button id="saveDraft" class="btn">Save draft (browser)</button>
-          <button id="exportJson" class="btn">Export JSON</button>
-          <button id="submitDiscord" class="btn">Submit via Discord</button>
+          <div class="bar">
+            <button id="saveDraft" class="btn">Save draft (browser)</button>
+            <button id="exportJson" class="btn">Export JSON</button>
+            <button id="submitDiscord" class="btn">Submit via Discord</button>
+          </div>
+
+          <div class="muted" style="margin-top:8px">
+            RFCs are processes, not chats. Draft → step away → revise → then submit.
+          </div>
         </div>
 
-        <div class="muted" style="margin-top:8px">
-          RFCs are processes, not chats. Draft → step away → revise → then submit.
+        <!-- Card C: Figures / Tables / Copy link -->
+        <div class="card">
+          <div class="split">
+            <div>
+              <div class="head"><strong>Figures</strong></div>
+              <div id="figList" class="list"></div>
+            </div>
+            <div>
+              <div class="head"><strong>Tables</strong></div>
+              <div id="tblList" class="list"></div>
+            </div>
+          </div>
+          <div class="bar" style="margin-top:12px">
+            <button id="copyLink" class="btn">Copy link</button>
+          </div>
+          <div class="muted" style="margin-top:8px">
+            Tip: toggle “member” in any chapter popover to show/hide the app button.
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- Recent drafts spans full width below -->
     <div class="card" style="margin-top:16px">
       <div class="head"><strong>Recent drafts (this browser)</strong></div>
       <div id="memoList" class="list"></div>
     </div>
   </div>
 
-  <!-- App logic (cache-bust as you wish) -->
+  <!-- App logic -->
   <script defer src="/js/research.office.js?v=2025-10-19a"></script>
 
-  <!-- Marked (Markdown) with local fallback if CDN fails) -->
+  <!-- Marked (Markdown) with local fallback -->
   <script>
     (function loadMarked(){
       const s = document.createElement('script');
       s.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
       s.defer = true;
       s.onerror = function(){
-        // ultra-tiny fallback: convert newlines and **bold** only
         window.marked = { parse: (t) => String(t)
           .replace(/&/g,'&amp;').replace(/</g,'&lt;')
           .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
@@ -131,5 +137,9 @@
       document.head.appendChild(s);
     })();
   </script>
+
+  <style>
+    .right-col{ display:flex; flex-direction:column; gap:16px; }
+  </style>
 </body>
 </html>

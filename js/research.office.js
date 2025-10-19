@@ -45,7 +45,9 @@
     paraNum: null,
     primaryPage: null,
     referencedPages: new Set(), // from memo tokens
-    activePage: null
+    activePage: null,
+    // optional future index: page -> [{coords,label,textOffset}]
+    tokenMeta: new Map()
   };
 
   // ---- Utilities ------------------------------------------------------------
@@ -56,7 +58,7 @@
   function paraNumberFrom(para) {
     const m = String(para).match(/osf-(\d+)/);
     return m ? Number(m[1]) : null;
-    }
+  }
 
   function escapeHtml(s){ return String(s)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -73,7 +75,6 @@
   }
 
   function buildOpenLink(anchorId) {
-    // open link points back into the chapter
     const url = new URL(`${chapterUrlAbs}#${anchorId}`, location.origin);
     return url.toString();
   }
@@ -113,7 +114,7 @@
       log('anchors.json missing or malformed', e);
     }
 
-    // 3) starts[chapter] fallback (page 1 if unknown)
+    // 3) fallback
     const fallback = 1;
 
     const chosen = inHtml || fromManifest || fallback;
@@ -131,13 +132,10 @@
     statusLine.innerHTML = bits.map(b => `<span class="tag">${b}</span>`).join(' ');
   }
 
-  // ---- Paragraph preview + refs (existing left column) ----------------------
+  // ---- Paragraph preview + refs --------------------------------------------
   function normalisePreviewAssets(container) {
-    // Make relative assets (figures etc.) resolve relative to chapter file
     const base = document.getElementById('ro-base');
     base?.setAttribute('href', chapterUrlAbs.replace(/\/[^/]*$/,'/'));
-
-    // Scale images down to panel
     $$('img', container).forEach(img => {
       img.style.maxWidth = '100%';
       img.style.height = 'auto';
@@ -197,7 +195,7 @@
     });
   }
 
-  async function previewParagraph(doc, _section, _anchorId) {
+  async function previewParagraph(doc) {
     const pre = doc.querySelector(`pre.osf#${CSS.escape(paraId)}`);
     if (!pre) {
       previewBox.innerHTML = `<div class="warn">Paragraph not found in chapter.</div>`;
@@ -224,7 +222,6 @@
 
   // ---- Thumbs / Viewer (B) --------------------------------------------------
   function thumbUrlForPage(n) {
-    // Your convention: /cafes/<slug>/sources/thumbs/page-###.jpg
     return `${cafeBase}/sources/thumbs/page-${pad3(n)}.jpg`;
   }
 
@@ -247,7 +244,6 @@
     const all = new Set(STATE.referencedPages);
     if (STATE.primaryPage) all.add(STATE.primaryPage);
 
-    // order: primary first, then ascending
     const ordered = Array.from(all).sort((a,b) => {
       if (a === STATE.primaryPage) return -1;
       if (b === STATE.primaryPage) return  1;
@@ -261,58 +257,68 @@
       chip.textContent = `p${n}`;
       chip.title = (n === STATE.primaryPage ? 'Primary ' : '') + `page ${n}`;
       chip.addEventListener('click', () => setActivePage(n, 'chip'));
-      // “Delete” action: mark the token as deleted, don’t actually remove it
+
       const del = document.createElement('span');
       del.className = 'chip-x';
       del.textContent = '×';
-      del.title = 'Mark this page token as [del] in the memo';
-      del.addEventListener('click', (e) => { e.stopPropagation(); markTokenDeleted(n); });
+      del.title = 'Invalidate ALL tokens for this page in the memo';
+      del.addEventListener('click', (e) => { e.stopPropagation(); invalidateAllTokensForPage(n); });
       chip.appendChild(del);
+
       chipsEl.appendChild(chip);
     });
   }
 
   // ---- Memo tokens (C) ------------------------------------------------------
-  // Token grammar (live parsing):
-  //   [mm|p12=Some note]    // references page 12
-  //   [del][mm|p12=…]       // ignored (soft-deleted)
-  // We gather referenced pages from non-[del] tokens.
-  const TOKEN_RE = /\[mm\|p(\d+)=([^\]]*)\]/g;         // base token
-  const DEL_PREFIX_RE = /\[del\]\s*\[mm\|p(\d+)=/;     // deleted prefix
+  // Accept:
+  //   [mm|p12=...]
+  //   [mm|page12=...]
+  //   [mm|p10=x,y:x,y]
+  //   [mm|p10=x,y:x,y:"label"]
+  //
+  // IMPORTANT: invalidation turns "[mm|page14=…]" into "[del]mm|page14=…]" (drop the opening '[').
+  //            These invalidated sequences will no longer match TOKEN_RE.
+  const TOKEN_RE = /\[mm\|\s*(?:p|page)(\d+)\s*=[^\]]*?\]/g;
 
   function parseReferencedPages(text) {
     const pages = new Set();
+    STATE.tokenMeta.clear();
+
+    // Only non-invalidated tokens match TOKEN_RE (because they start with "[mm|")
     for (const m of text.matchAll(TOKEN_RE)) {
-      // ensure not preceded by [del]
-      const before = text.slice(0, m.index);
-      if (before.match(/\[del\]\s*$/)) continue;
-      pages.add(Number(m[1]));
+      const full = m[0];
+      const page = Number(m[1]);
+
+      // Collect basic meta for future index (label parsing optional)
+      let label = null;
+      const labelMatch = full.match(/:"([^"]*)"\]\s*$/);
+      if (labelMatch) label = labelMatch[1];
+
+      if (!STATE.tokenMeta.has(page)) STATE.tokenMeta.set(page, []);
+      STATE.tokenMeta.get(page).push({ label });
+
+      pages.add(page);
     }
     return pages;
   }
 
-  function markTokenDeleted(pageN) {
+  function invalidateAllTokensForPage(pageN) {
     const text = memoTa.value;
-    // Find the first non-[del] token for pN and prefix [del]
-    // We do a simple scan; robust enough for memo usage.
-    let idx = 0;
-    while (idx < text.length) {
-      const m = TOKEN_RE.exec(text);
-      if (!m) break;
-      const start = m.index;
-      const end   = start + m[0].length;
-      const n     = Number(m[1]);
-      if (n === pageN) {
-        // check not already [del]
-        const prefix = text.slice(Math.max(0, start-6), start);
-        if (!/\[del\]\s*$/.test(prefix)) {
-          const updated = text.slice(0, start) + '[del]' + text.slice(start);
-          memoTa.value = updated;
-          onMemoChange();
-          return;
-        }
-      }
-      idx = end;
+    // Replace ALL matching tokens for that page, both pN and pageN, IF not already invalidated
+    // We need to ensure the char just before the match is NOT the trailing "l" of "[del]"
+    const replacer = (match, num, offset, whole) => {
+      if (Number(num) !== pageN) return match;
+      const before = whole.slice(Math.max(0, offset - 6), offset); // check for "[del]"
+      if (/\[del\]\s*$/.test(before)) return match; // already invalidated nearby (rare edge)
+      // True invalidation: change leading "[" to "[del]"
+      return match.replace(/^\[/, '[del]');
+    };
+
+    // Two passes (p and page) are covered by one regex; use replace with callback
+    const updated = text.replace(TOKEN_RE, replacer);
+    if (updated !== text) {
+      memoTa.value = updated;
+      onMemoChange();
     }
   }
 
@@ -320,9 +326,10 @@
     const text = memoTa.value;
     STATE.referencedPages = parseReferencedPages(text);
     renderChips();
-    // Keep viewer synced: if active is null, show primary; else if token matches, follow newest token
+
     if (STATE.activePage == null) {
-      setActivePage(STATE.primaryPage ?? Array.from(STATE.referencedPages)[0] ?? STATE.primaryPage, 'memo-init');
+      const next = STATE.primaryPage ?? Array.from(STATE.referencedPages)[0] ?? STATE.primaryPage;
+      if (next != null) setActivePage(next, 'memo-init');
     }
     renderMemoPreview(text);
     persistDraftDraftlist();
@@ -351,7 +358,6 @@
         body: memoTa.value
       };
       const arr = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
-      // store/replace last for this chapter+para
       const idx = arr.findIndex(x => x.chapter === chapter && x.paraId === paraId);
       if (idx >= 0) arr[idx] = payload; else arr.unshift(payload);
       localStorage.setItem(LS_KEY, JSON.stringify(arr.slice(0, 50)));
@@ -401,22 +407,17 @@
       const doc = await loadChapterDom();
       STATE.chapterDoc = doc;
 
-      // Resolver (A)
       const res = await resolvePrimaryPage(doc);
       STATE.primaryPage = res.chosen;
       setStatus(res);
 
-      // Left side preview & refs
-      await previewParagraph(doc, null, paraId);
+      await previewParagraph(doc);
 
-      // Right side initial viewer (B)
       setActivePage(STATE.primaryPage, 'resolver');
 
-      // Memo wiring (C, E)
       memoTa.addEventListener('input', onMemoChange);
-      onMemoChange(); // initialize chips + preview + drafts
+      onMemoChange();
 
-      // Export / Save UI
       $('#saveDraft')?.addEventListener('click', () => {
         persistDraftDraftlist();
         const btn = $('#saveDraft');
