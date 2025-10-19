@@ -1,32 +1,27 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <title>Research Office</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
-  <!-- Will be rewritten to the chapter directory by JS when needed -->
   <base id="ro-base" href="/">
 
-  <!-- Styles -->
   <link rel="stylesheet" href="/css/10-components/research-office.css" />
 
-  <!-- MathJax v3 (SVG) for TeX in previews -->
+  <!-- MathJax -->
   <script>
     window.MathJax = {
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        displayMath: [['$$','$$'], ['\\[','\\]']],
         tags: 'ams',
         processEscapes: true,
-        packages: { '[+]': ['noerrors'] },
+        packages: {'[+]': ['noerrors']},
       },
-      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'code'] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','code'] },
       svg: { fontCache: 'global' }
     };
   </script>
-  
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
 
@@ -42,29 +37,48 @@
 
     <!-- GRID: 25% (left) / 75% (right) -->
     <div class="row">
-      <!-- LEFT (25%): Resolver & Page Viewer ONLY -->
+      <!-- LEFT (25%): Page tools + Viewer -->
       <div class="card">
         <div class="head"><strong>Resolver & Page Viewer</strong></div>
 
-        <!-- Viewer (future grid/zoom hooks go here) -->
-        <div class="viewer">
-          <img id="pageImg" alt="Active page preview" />
+        <!-- Tools -->
+        <div class="viewer-tools">
+          <div class="tool-group">
+            <button id="toolPan"   class="btn btn-sm" data-tool="pan">Pan</button>
+            <button id="toolPoint" class="btn btn-sm" data-tool="point">Point</button>
+            <button id="toolBox"   class="btn btn-sm" data-tool="box">Box</button>
+          </div>
+          <div class="tool-group">
+            <label class="mono muted">Zoom
+              <input id="zoomSlider" type="range" min="1" max="4" step="0.05" value="1">
+              <span id="zoomRead" class="tag">1.00×</span>
+            </label>
+            <button id="zoomFit" class="btn btn-sm">Fit</button>
+            <button id="zoom100" class="btn btn-sm">100%</button>
+          </div>
+        </div>
+
+        <!-- Viewer stage -->
+        <div id="viewer" class="viewer">
+          <div id="stage" class="stage">
+            <img id="pageImg" alt="Active page preview" />
+            <!-- overlay for grid + markers -->
+            <canvas id="overlay" class="overlay" aria-hidden="true"></canvas>
+          </div>
         </div>
       </div>
 
-      <!-- RIGHT (75%): stacked cards -->
+      <!-- RIGHT (75%): status + thumbs + preview + memo + refs -->
       <div class="right-col">
-        <!-- Status line -->
         <div id="roStatus" class="status mono"></div>
 
-        <!-- Chips -->
         <div class="head" style="margin-top:8px">
           <strong>Pages referenced in memo</strong>
           <span class="muted">(primary in orange)</span>
         </div>
-        <div id="pageChips" class="chips"></div>
+        <div id="pageChips" class="thumbs"></div>
 
-        <!-- Card A: Paragraph preview -->
+        <!-- Paragraph preview -->
         <div class="card">
           <div class="head">
             <strong>Paragraph preview</strong>
@@ -73,11 +87,10 @@
           <pre id="paraPreview" class="card preview"></pre>
         </div>
 
-        <!-- Card B: Memo to self -->
+        <!-- Memo -->
         <div class="card">
           <div class="head"><strong>Memo to self (Markdown/LaTeX)</strong></div>
-          <textarea id="memoBody"
-            placeholder="State the issue, desired change, and rationale...&#10;Use tokens like [mm|p12=…] or [mm|p10=x,y:x,y:&quot;label&quot;]."></textarea>
+          <textarea id="memoBody" placeholder="Use tokens like [mm|p12=10,15] or [mm|p12=10,15:40,35:&quot;label&quot;]."></textarea>
 
           <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
           <div id="memoPreview" class="preview-md"></div>
@@ -93,7 +106,7 @@
           </div>
         </div>
 
-        <!-- Card C: Figures / Tables / Copy link -->
+        <!-- Figures / Tables -->
         <div class="card">
           <div class="split">
             <div>
@@ -115,41 +128,28 @@
       </div>
     </div>
 
-    <!-- Recent drafts spans full width below -->
     <div class="card" style="margin-top:16px">
       <div class="head"><strong>Recent drafts (this browser)</strong></div>
       <div id="memoList" class="list"></div>
     </div>
   </div>
 
-  <!-- App logic -->
-  <script defer src="/js/research.office.js?v=2025-10-19a"></script>
+  <script defer src="/js/research.office.js?v=2025-10-19d"></script>
 
   <!-- Marked (Markdown) with local fallback -->
   <script>
-    (function loadMarked() {
+    (function loadMarked(){
       const s = document.createElement('script');
       s.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
       s.defer = true;
-      s.onerror = function () {
-        window.marked = {
-          parse: (t) => String(t)
-            .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\n/g, '<br>')
-        };
+      s.onerror = function(){
+        window.marked = { parse: (t) => String(t)
+          .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+          .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+          .replace(/\n/g,'<br>') };
       };
       document.head.appendChild(s);
     })();
   </script>
-
-  <style>
-    .right-col {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-  </style>
 </body>
-
 </html>

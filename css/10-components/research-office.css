@@ -11,13 +11,11 @@ body{
 h1{ font-size:22px; margin:0 0 16px; }
 .muted{ opacity:.75; }
 
-/* 25% / 75% layout — viewer (left) narrow; work area (right) wide */
-.row{ display:grid; grid-template-columns:25% 75%; gap:16px; }
+/* 25% / 75% layout */
+.row{ display:grid; grid-template-columns:35% 65%; gap:16px; }
 .right-col{ display:flex; flex-direction:column; gap:16px; }
 
-/* inner split (figures/tables) stays 50/50 */
-.split{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-
+/* Cards & basics */
 .card{
   background:#121720;
   border:1px solid rgba(255,255,255,.12);
@@ -32,18 +30,21 @@ h1{ font-size:22px; margin:0 0 16px; }
 }
 .tag.warn{ background:#2b1b15; border-color:#ffb347; color:#ffb347; }
 .btn{
-  display:inline-block; border:1px solid rgba(255,255,255,.16);
+  display:inline-inline; border:1px solid rgba(255,255,255,.16);
   background:#0f141a; border-radius:10px; padding:8px 12px;
   color:#e7edf3; text-decoration:none; cursor:pointer;
 }
 .btn:hover{ background:#141b24; }
 .btn.ok{ outline:2px solid #2faa72; outline-offset:2px; }
+.btn-sm{ padding:6px 10px; border-radius:8px; font-size:12px; }
 
+.status{ display:flex; gap:6px; flex-wrap:wrap; min-height:24px; }
 .list{ display:grid; gap:8px; }
 .item{ display:flex; gap:8px; align-items:start; }
 .item a{ color:#81a9ff; text-decoration:none; }
 .item a:hover{ text-decoration:underline; }
 
+/* Memo */
 textarea{
   width:100%; min-height:300px;
   border-radius:10px; border:1px solid rgba(255,255,255,.16);
@@ -52,6 +53,7 @@ textarea{
 }
 .bar{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
 
+/* Paragraph preview */
 .preview{
   width:100%;
   min-height:160px;
@@ -63,48 +65,21 @@ textarea{
   box-sizing:border-box;
   overflow:auto;
 }
-
-/* Notebook content in preview */
-#paraPreview .osf,
-#paraPreview .osf-block,
-#paraPreview pre,
-#paraPreview figure,
-#paraPreview table,
-#paraPreview blockquote{
-  display:block !important;
-  width:100% !important;
-  max-width:100% !important;
-  margin:0 auto 10px !important;
-  box-sizing:border-box;
+#paraPreview .osf, #paraPreview .osf-block, #paraPreview pre,
+#paraPreview figure, #paraPreview table, #paraPreview blockquote{
+  display:block !important; width:100% !important; max-width:100% !important;
+  margin:0 auto 10px !important; box-sizing:border-box;
 }
-
-/* Wrap aggressively even inside <pre> */
-#paraPreview pre,
-#paraPreview code,
-#paraPreview .osf{
-  white-space:pre-wrap;
-  word-break:break-word;
-  overflow-wrap:anywhere;
-  hyphens:auto;
-  line-height:1.6;
+#paraPreview pre, #paraPreview code, #paraPreview .osf{
+  white-space:pre-wrap; word-break:break-word; overflow-wrap:anywhere;
+  hyphens:auto; line-height:1.6;
 }
-
-/* Table polish */
-#paraPreview table{
-  width:100% !important; border-collapse:collapse;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:10px; overflow:hidden;
-}
-#paraPreview th,#paraPreview td{ border:1px solid rgba(255,255,255,.12); }
-#paraPreview th,#paraPreview td{ padding:4px 6px; }
+#paraPreview table{ width:100% !important; border-collapse:collapse;
+  border:1px solid rgba(255,255,255,.12); border-radius:10px; overflow:hidden; }
+#paraPreview th,#paraPreview td{ border:1px solid rgba(255,255,255,.12); padding:4px 6px; }
 #paraPreview .MathJax{ font-size:1.05rem; }
 
-.mono{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace; }
-
-/* Status line */
-.status{ display:flex; gap:6px; flex-wrap:wrap; min-height:24px; }
-
-/* ---------- Pages referenced in memo: THUMB STRIP ---------- */
+/* ---------- Thumbnails strip ---------- */
 .thumbs{
   display:flex; gap:10px; align-items:center;
   overflow:auto; padding:6px; border:1px dashed rgba(255,255,255,.12);
@@ -112,24 +87,16 @@ textarea{
   scrollbar-width:thin;
 }
 .thumb{
-  position:relative;
-  flex:0 0 auto;
-  width:cm; height:3cm;             /* exact size request */
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:8px; overflow:hidden;
-  background:#0f141a;
-  cursor:pointer;
-  box-shadow:0 0 0 0 rgba(0,0,0,0);
-  transition:box-shadow .15s ease, transform .06s ease;
+  position:relative; flex:0 0 auto;
+  width:2cm; height:3cm; border:1px solid rgba(255,255,255,.18);
+  border-radius:8px; overflow:hidden; background:#0f141a; cursor:pointer;
+  box-shadow:0 0 0 0 rgba(0,0,0,0); transition:box-shadow .15s ease, transform .06s ease;
 }
 .thumb:hover{ transform:translateY(-1px); }
 .thumb.primary{ box-shadow:0 0 0 2px rgba(255,179,71,.35) inset; border-color:#ffb347; }
 .thumb.active{ box-shadow:0 0 0 2px rgba(129,169,255,.45) inset; }
 .thumb.missing{ background:repeating-linear-gradient(45deg,#1a222c,#1a222c 6px,#0f141a 6px,#0f141a 12px); }
-
-.thumb img{
-  width:100%; height:100%; object-fit:cover; display:block;
-}
+.thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 .thumb .thumb-tag{
   position:absolute; left:6px; bottom:6px;
   background:rgba(0,0,0,.55); padding:2px 6px; border-radius:9999px;
@@ -139,37 +106,30 @@ textarea{
   position:absolute; top:4px; right:4px;
   width:20px; height:20px; border-radius:50%;
   border:1px solid rgba(255,255,255,.25);
-  background:#1a2430; color:#e7edf3; cursor:pointer;
-  font-weight:700; line-height:18px; text-align:center;
+  background:#1a2430; color:#e7edf3; cursor:pointer; font-weight:700; line-height:18px; text-align:center;
 }
 .thumb .thumb-x:hover{ background:#223248; }
 
-/* Viewer */
+/* ---------- Viewer + overlay ---------- */
 .viewer{
   margin-top:8px;
   border:1px solid rgba(255,255,255,.16);
   border-radius:12px;
-  min-height:260px;
-  display:flex; align-items:center; justify-content:center;
+  min-height:360px;
   background:rgba(255,255,255,.03);
-  overflow:hidden;
+  overflow:hidden; position:relative;
 }
-.viewer img{ max-width:100%; height:auto; display:block; }
-.viewer img.primary{ outline:3px solid #ffb347; outline-offset:2px; }
+.stage{ position:absolute; left:0; top:0; transform-origin:0 0; will-change:transform; }
+.stage img{ display:block; user-select:none; -webkit-user-drag:none; }
+.overlay{ position:absolute; left:0; top:0; pointer-events:none; }
+.viewer.cursor-cross{ cursor:crosshair; }
 
-/* Memo preview */
-.preview-md{
-  border:1px dashed rgba(255,255,255,.16);
-  background:rgba(255,255,255,.03);
-  border-radius:12px;
-  padding:10px;
-  min-height:140px;
-  max-height:420px;
-  overflow:auto;
-}
-.preview-md .MathJax{ font-size:1.05rem; }
+/* Viewer tools */
+.viewer-tools{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+.viewer-tools .tool-group{ display:flex; gap:8px; align-items:center; }
+.btn.active{ outline:2px solid #81a9ff; outline-offset:1px; }
 
-/* Stack on very narrow screens */
+/* Stack on small screens */
 @media (max-width: 920px){
   .row{ grid-template-columns:1fr; }
 }
