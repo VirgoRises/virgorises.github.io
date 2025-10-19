@@ -1,18 +1,14 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Research Office — zeta-zero-cafe</title>
 
-  <!-- Scoped stylesheet (your existing CSS) -->
   <link rel="stylesheet" href="/css/10-components/research-office.css" />
-
   <!-- Use the exact same MathJax config as chapter pages -->
   <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
 </head>
-
 <body class="ro">
   <header class="ro-head">
     <a class="ro-back" href="javascript:history.back()">← Back</a>
@@ -20,7 +16,7 @@
   </header>
 
   <main class="ro-main">
-    <!-- LEFT: fixed 6 cm working stage (thumb + SVG overlay) -->
+    <!-- LEFT -->
     <section class="left">
       <div id="ro-toolbar" class="toolbar">
         <div class="btns">
@@ -45,7 +41,6 @@
 
       <div id="ro-stage" class="card">
         <div id="ro-inner">
-          <!-- image (thumbnail) lives under the SVG overlay -->
           <img id="ro-page" alt="source page" />
           <svg id="ro-svg" aria-hidden="true"></svg>
         </div>
@@ -55,7 +50,7 @@
       <div id="ro-status" class="tiny muted mono" aria-live="polite"></div>
     </section>
 
-    <!-- RIGHT: references → paragraph preview → memo -->
+    <!-- RIGHT -->
     <section class="right">
       <div class="card" id="mmThumbsCard">
         <div class="card-h">Pages referenced in memo</div>
@@ -114,90 +109,131 @@
     </section>
   </main>
 
-  <!-- Grid/overlay engine (unchanged) -->
+  <!-- Grid/overlay (unchanged) -->
   <script src="/js/research-office-grid.js"></script>
   <script src="/js/ro-grid-gate.js"></script>
+
   <!-- Research Office controller (resolver + preview + memo glue) -->
   <script src="/js/research.office.js"></script>
 
-  <!-- Bootstrap: init grid using thumbnails + wire helpers -->
-  <script>
-    (async function () {
-      const qs = new URLSearchParams(location.search);
-      const fromPage = Number(qs.get('from') || '0') || 0;
-      const chapter = qs.get('chapter') || '';
-      const para = qs.get('para') || '';
+  <!-- Bootstrap -->
+<script>
+(async function () {
+  const qs = new URLSearchParams(location.search);
+  const chapter = qs.get('chapter') || '';
+  const para    = qs.get('para')    || '';
+  const urlFrom = Number(qs.get('from') || '0') || 0;
 
-      // Kick the grid: **thumbnail-first**, with status reporting.
-      if (window.initResearchOfficeGrid) {
-        window.initResearchOfficeGrid({
-          fromPage,
-          para,
-          chapter,
-          thumbsBase: '/cafes/zeta-zero-cafe/sources/thumbs',
-          pageMM: { w: 210, h: 297 },   // A4 default
-          units: 'mm',
-          statusEl: document.getElementById('ro-status')
-        });
-      }
+  // derive café base: /cafes/zeta-zero-cafe
+  const cafeBase = location.pathname.replace(/\/[^/]*$/, '');
 
-      // Paragraph preview
-      if (window.loadParagraphPreview) window.loadParagraphPreview();
+  // ---------- 1) Resolve start page (manifest/html → &from → 1) ----------
+  async function resolveStartPage() {
+    // if a resolver exists (from research.office.js), try it first
+    if (window.resolveStartPage) {
+      try {
+        const p = await window.resolveStartPage({ chapter, para, cafeBase });
+        if (Number.isFinite(p) && p > 0) return p;
+      } catch {}
+    }
+    // manifest at the correct café path
+    try {
+      const mfUrl = `${cafeBase}/${chapter}.manifest.json`;
+      const mf = await (await fetch(mfUrl)).json();
+      const hit = (mf.paras || []).find(x => x.id === para);
+      const p = hit && Number(hit.page);
+      if (Number.isFinite(p) && p > 0) return p;
+    } catch {}
+    return urlFrom || 1;
+  }
 
-      // Keep right column visually in sync with the stage height
-      function syncRightHeights() {
-        const st = document.getElementById('ro-stage');
-        if (!st) return;
-        document.documentElement.style.setProperty('--ro-stage-h', st.clientHeight + 'px');
-      }
-      syncRightHeights();
-      new ResizeObserver(syncRightHeights).observe(document.getElementById('ro-stage'));
+  const primaryPage = await resolveStartPage();
+  window.__primaryPage = primaryPage;
 
-      // — MM thumbnails parsed from memo text —
-      const memoEl = document.getElementById('memo');
-      const thumbsEl = document.getElementById('mmThumbs');
-      const base = '/cafes/zeta-zero-cafe/sources/thumbs';
+  // ---------- 2) Init grid at the correct page ----------
+  if (window.initResearchOfficeGrid) {
+    window.initResearchOfficeGrid({
+      fromPage: primaryPage,
+      para,
+      chapter,
+      thumbsBase: `${cafeBase}/sources/thumbs`,
+      pageMM: { w:210, h:297 },
+      units: 'mm',
+      statusEl: document.getElementById('ro-status')
+    });
+  }
 
-      function pad3(n) { return String(n).padStart(3, '0'); }
-      function pagesFromMemo(txt) {
-        const pages = new Set();
-        const re = /\[mm\|p(\d+)(?::[\d\.,]+(?:;[\d\.,]+)*)?\]/gi;
-        let m; while ((m = re.exec(txt))) pages.add(Number(m[1]));
-        return [...pages].sort((a, b) => a - b);
-      }
-      function updateFromInUrl(url, p) {
-        const u = new URL(url, location.href);
-        u.searchParams.set('from', String(p));
-        return u.toString();
-      }
-      function renderThumbs() {
-        const pages = pagesFromMemo(memoEl.value || '');
-        if (!pages.length) { thumbsEl.textContent = 'No page references yet.'; return; }
-        thumbsEl.innerHTML = '';
-        for (const p of pages) {
-          const a = document.createElement('a');
-          a.className = 'mm-thumb';
-          a.title = 'Go to page ' + p;
-          a.href = updateFromInUrl(location.href, p);
+  // ---------- 3) Right column: keep a stable primary chip + auto-click ----------
+  const memoEl  = document.getElementById('memo');
+  const stripEl = document.getElementById('mmThumbs');
+  const pad3    = n => String(n).padStart(3,'0');
+  const thumbs  = `${cafeBase}/sources/thumbs`;
 
-          const img = document.createElement('img');
-          img.loading = 'lazy';
-          img.decoding = 'async';
-          img.src = `${base}/page-${pad3(p)}.jpg`;
-          img.alt = `p.${p}`;
-          a.appendChild(img);
+  function pagesFromMemo(txt) {
+    const re = /\[mm\|p(\d+)(?::[\d\.,]+(?:;[\d\.,]+)*)?\]/gi;
+    const set = new Set(); let m;
+    while ((m = re.exec(txt))) set.add(Number(m[1]));
+    return [...set];
+  }
 
-          const cap = document.createElement('div');
-          cap.textContent = `p.${p}`;
-          a.appendChild(cap);
+  function renderStrip() {
+    const keep = new Set(pagesFromMemo(memoEl?.value || ''));
+    keep.add(primaryPage);                           // primary always present
+    const pages = [...keep].sort((a,b)=>a-b);
 
-          thumbsEl.appendChild(a);
-        }
-      }
-      memoEl.addEventListener('input', renderThumbs);
-      renderThumbs();
-    })();
-  </script>
+    stripEl.innerHTML = '';
+    for (const p of pages) {
+      const a = document.createElement('a');
+      a.className = 'mm-thumb' + (p === primaryPage ? ' primary' : '');
+      a.href = '#';
+      a.dataset.page = String(p);
+
+      const img = document.createElement('img');
+      img.src = `${thumbs}/page-${pad3(p)}.jpg`;
+      img.alt = `p.${p}`;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      a.appendChild(img);
+
+      const cap = document.createElement('div');
+      cap.textContent = `p.${p}`;
+      a.appendChild(cap);
+
+      a.addEventListener('click',(ev)=>{
+        ev.preventDefault();
+        const page = Number(a.dataset.page);
+        if (window.goToPage) window.goToPage(page);
+        [...stripEl.querySelectorAll('.mm-thumb')].forEach(el=>el.classList.remove('active'));
+        a.classList.add('active');
+      });
+
+      stripEl.appendChild(a);
+    }
+  }
+
+  renderStrip();
+  memoEl?.addEventListener('input', renderStrip);
+
+  // nudge the grid: click the primary chip once after it exists
+  requestAnimationFrame(()=> {
+    requestAnimationFrame(()=> {
+      stripEl.querySelector('.mm-thumb.primary')?.dispatchEvent(
+        new Event('click', { bubbles:true })
+      );
+    });
+  });
+
+  // keep right column heights in step with stage
+  function syncRightHeights() {
+    const st = document.getElementById('ro-stage');
+    if (!st) return;
+    document.documentElement.style.setProperty('--ro-stage-h', st.clientHeight + 'px');
+  }
+  syncRightHeights();
+  new ResizeObserver(syncRightHeights).observe(document.getElementById('ro-stage'));
+})();
+</script>
+
+
 </body>
-
 </html>
