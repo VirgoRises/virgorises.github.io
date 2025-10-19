@@ -2,238 +2,134 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Research Office — zeta-zero-cafe</title>
+  <title>Research Office</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+  <!-- Will be rewritten to the chapter directory by JS when needed -->
+  <base id="ro-base" href="/">
+
+  <!-- Styles -->
   <link rel="stylesheet" href="/css/10-components/research-office.css" />
-  <!-- Use the exact same MathJax config as chapter pages -->
-  <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
+
+  <!-- MathJax v3 (SVG) for TeX in previews -->
+  <script>
+    // Allow $...$ and \( ... \) inline; $$...$$ and \[ ... ] display.
+    // Keep previews render-safe.
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$','$$'], ['\\[','\\]']],
+        tags: 'ams',
+        processEscapes: true,
+        packages: {'[+]': ['noerrors']},
+      },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','code'] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
-<body class="ro">
-  <header class="ro-head">
-    <a class="ro-back" href="javascript:history.back()">← Back</a>
-    <h1>Research Office — <span class="mono">zeta-zero-cafe</span></h1>
-  </header>
 
-  <main class="ro-main">
-    <!-- LEFT -->
-    <section class="left">
-      <div id="ro-toolbar" class="toolbar">
-        <div class="btns">
-          <button id="toolPoint" type="button">Point</button>
-          <button id="toolBox" type="button">Box</button>
-        </div>
-        <div class="btns">
-          <span>Zoom:</span>
-          <button id="zoomOut" type="button">–</button>
-          <button id="zoomFit" type="button">Fit</button>
-          <button id="zoomIn" type="button">+</button>
-        </div>
-        <div class="btns">
-          <label>Units:
-            <select id="unitsSel">
-              <option value="mm" selected>mm</option>
-            </select>
-          </label>
-          <button id="exportJson" type="button">Export JSON</button>
-        </div>
-      </div>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <h1 class="ro-title" style="margin:0;">
+        Research Office — <span id="cafeName" class="tag"></span>
+        <span id="chapName" class="muted ro-sub" style="margin-left:.5rem"></span>
+      </h1>
+      <a id="backLink" class="btn" href="#">← Back</a>
+    </div>
 
-      <div id="ro-stage" class="card">
-        <div id="ro-inner">
-          <img id="ro-page" alt="source page" />
-          <svg id="ro-svg" aria-hidden="true"></svg>
-        </div>
-      </div>
-
-      <div id="token" class="tiny mono muted">click marker to copy</div>
-      <div id="ro-status" class="tiny muted mono" aria-live="polite"></div>
-    </section>
-
-    <!-- RIGHT -->
-    <section class="right">
-      <div class="card" id="mmThumbsCard">
-        <div class="card-h">Pages referenced in memo</div>
-        <div id="mmThumbs" class="mm-thumbs muted tiny">No page references yet.</div>
-      </div>
-
-      <div class="card" id="paraCard">
-        <div class="card-h">
+    <div class="row">
+      <!-- LEFT: Paragraph preview + Figure/Table pickers -->
+      <div class="card">
+        <div class="head">
           <strong>Paragraph preview</strong>
           <span id="paraNum" class="tag">#</span>
         </div>
-        <div id="paraPreview" class="para-preview"></div>
-        <div id="paraFoot" class="tiny mono muted"></div>
-      </div>
+        <pre id="paraPreview" class="card preview"></pre>
 
-      <div class="card">
-        <div class="card-h">Memo to self (Markdown + LaTeX)</div>
-        <div class="toolbar slim">
-          <div class="btns">
-            <button data-md="**|**"><b>B</b></button>
-            <button data-md="_|_"><i>i</i></button>
-            <button data-md="`|`">{}</button>
-            <button data-md="[|]()">🔗</button>
-            <button data-md="$$|$$">\\(x\\)</button>
-            <button id="memoPreview" type="button">Preview</button>
+        <div class="split" style="margin-top:12px">
+          <div>
+            <div class="head"><strong>Figures</strong></div>
+            <div id="figList" class="list"></div>
+          </div>
+          <div>
+            <div class="head"><strong>Tables</strong></div>
+            <div id="tblList" class="list"></div>
           </div>
         </div>
-        <textarea id="memo" rows="10" placeholder="State the issue, desired change, and rationale..."></textarea>
 
-        <div class="btnrow">
-          <button id="saveDraft">Save draft</button>
-          <button id="saveVersion">Save version</button>
-          <button id="exportMemo">Export memo JSON</button>
-          <button id="exportAll">Export ALL drafts</button>
-          <label class="file">
-            <input id="importMemo" type="file" accept="application/json" />
-            Choose File
-          </label>
-          <button id="submitDiscord">Submit via Discord</button>
+        <div class="bar">
+          <button id="copyLink" class="btn">Copy link</button>
         </div>
-
-        <div class="tiny muted">
-          Autosave is ON (on every keystroke + periodically). Draft → step away → revise → submit.
+        <div class="muted" style="margin-top:8px">
+          Tip: toggle “member” in any chapter popover to show/hide the app button.
         </div>
       </div>
 
+      <!-- RIGHT: Page viewer + Memo -->
       <div class="card">
-        <div class="card-h">Versions (snapshots for this memo)</div>
-        <div id="versions" class="tiny muted">No snapshots yet.</div>
+        <div class="head"><strong>Resolver & Page Viewer</strong></div>
+
+        <!-- Status line (Resolver → paths, primary page, errors) -->
+        <div id="roStatus" class="status mono"></div>
+
+        <!-- Chips driven solely by memo tokens -->
+        <div class="head" style="margin-top:8px">
+          <strong>Pages referenced in memo</strong>
+          <span class="muted">(primary in orange)</span>
+        </div>
+        <div id="pageChips" class="chips"></div>
+
+        <!-- Thumb / viewer -->
+        <div class="viewer">
+          <img id="pageImg" alt="Active page preview" />
+        </div>
+
+        <!-- Memo editor + live preview -->
+        <div class="head" style="margin-top:12px"><strong>Memo to self (Markdown/LaTeX)</strong></div>
+        <textarea id="memoBody" placeholder="State the issue, desired change, and rationale...&#10;Use tokens like [mm|p12=‘caption or note’]."></textarea>
+
+        <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
+        <div id="memoPreview" class="preview-md"></div>
+
+        <div class="bar">
+          <button id="saveDraft" class="btn">Save draft (browser)</button>
+          <button id="exportJson" class="btn">Export JSON</button>
+          <button id="submitDiscord" class="btn">Submit via Discord</button>
+        </div>
+
+        <div class="muted" style="margin-top:8px">
+          RFCs are processes, not chats. Draft → step away → revise → then submit.
+        </div>
       </div>
+    </div>
 
-      <div class="card">
-        <div class="card-h">Recent drafts (this browser)</div>
-        <div id="recentDrafts" class="tiny muted">—</div>
-      </div>
-    </section>
-  </main>
+    <div class="card" style="margin-top:16px">
+      <div class="head"><strong>Recent drafts (this browser)</strong></div>
+      <div id="memoList" class="list"></div>
+    </div>
+  </div>
 
-  <!-- Grid/overlay (unchanged) -->
-  <script src="/js/research-office-grid.js"></script>
-  <script src="/js/ro-grid-gate.js"></script>
+  <!-- App logic (cache-bust as you wish) -->
+  <script defer src="/js/research.office.js?v=2025-10-19a"></script>
 
-  <!-- Research Office controller (resolver + preview + memo glue) -->
-  <script src="/js/research.office.js"></script>
-
-  <!-- Bootstrap -->
-<script>
-(async function () {
-  const qs = new URLSearchParams(location.search);
-  const chapter = qs.get('chapter') || '';
-  const para    = qs.get('para')    || '';
-  const urlFrom = Number(qs.get('from') || '0') || 0;
-
-  // derive café base: /cafes/zeta-zero-cafe
-  const cafeBase = location.pathname.replace(/\/[^/]*$/, '');
-
-  // ---------- 1) Resolve start page (manifest/html → &from → 1) ----------
-  async function resolveStartPage() {
-    // if a resolver exists (from research.office.js), try it first
-    if (window.resolveStartPage) {
-      try {
-        const p = await window.resolveStartPage({ chapter, para, cafeBase });
-        if (Number.isFinite(p) && p > 0) return p;
-      } catch {}
-    }
-    // manifest at the correct café path
-    try {
-      const mfUrl = `${cafeBase}/${chapter}.manifest.json`;
-      const mf = await (await fetch(mfUrl)).json();
-      const hit = (mf.paras || []).find(x => x.id === para);
-      const p = hit && Number(hit.page);
-      if (Number.isFinite(p) && p > 0) return p;
-    } catch {}
-    return urlFrom || 1;
-  }
-
-  const primaryPage = await resolveStartPage();
-  window.__primaryPage = primaryPage;
-
-  // ---------- 2) Init grid at the correct page ----------
-  if (window.initResearchOfficeGrid) {
-    window.initResearchOfficeGrid({
-      fromPage: primaryPage,
-      para,
-      chapter,
-      thumbsBase: `${cafeBase}/sources/thumbs`,
-      pageMM: { w:210, h:297 },
-      units: 'mm',
-      statusEl: document.getElementById('ro-status')
-    });
-  }
-
-  // ---------- 3) Right column: keep a stable primary chip + auto-click ----------
-  const memoEl  = document.getElementById('memo');
-  const stripEl = document.getElementById('mmThumbs');
-  const pad3    = n => String(n).padStart(3,'0');
-  const thumbs  = `${cafeBase}/sources/thumbs`;
-
-  function pagesFromMemo(txt) {
-    const re = /\[mm\|p(\d+)(?::[\d\.,]+(?:;[\d\.,]+)*)?\]/gi;
-    const set = new Set(); let m;
-    while ((m = re.exec(txt))) set.add(Number(m[1]));
-    return [...set];
-  }
-
-  function renderStrip() {
-    const keep = new Set(pagesFromMemo(memoEl?.value || ''));
-    keep.add(primaryPage);                           // primary always present
-    const pages = [...keep].sort((a,b)=>a-b);
-
-    stripEl.innerHTML = '';
-    for (const p of pages) {
-      const a = document.createElement('a');
-      a.className = 'mm-thumb' + (p === primaryPage ? ' primary' : '');
-      a.href = '#';
-      a.dataset.page = String(p);
-
-      const img = document.createElement('img');
-      img.src = `${thumbs}/page-${pad3(p)}.jpg`;
-      img.alt = `p.${p}`;
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      a.appendChild(img);
-
-      const cap = document.createElement('div');
-      cap.textContent = `p.${p}`;
-      a.appendChild(cap);
-
-      a.addEventListener('click',(ev)=>{
-        ev.preventDefault();
-        const page = Number(a.dataset.page);
-        if (window.goToPage) window.goToPage(page);
-        [...stripEl.querySelectorAll('.mm-thumb')].forEach(el=>el.classList.remove('active'));
-        a.classList.add('active');
-      });
-
-      stripEl.appendChild(a);
-    }
-  }
-
-  renderStrip();
-  memoEl?.addEventListener('input', renderStrip);
-
-  // nudge the grid: click the primary chip once after it exists
-  requestAnimationFrame(()=> {
-    requestAnimationFrame(()=> {
-      stripEl.querySelector('.mm-thumb.primary')?.dispatchEvent(
-        new Event('click', { bubbles:true })
-      );
-    });
-  });
-
-  // keep right column heights in step with stage
-  function syncRightHeights() {
-    const st = document.getElementById('ro-stage');
-    if (!st) return;
-    document.documentElement.style.setProperty('--ro-stage-h', st.clientHeight + 'px');
-  }
-  syncRightHeights();
-  new ResizeObserver(syncRightHeights).observe(document.getElementById('ro-stage'));
-})();
-</script>
-
-
+  <!-- Marked (Markdown) with local fallback if CDN fails) -->
+  <script>
+    (function loadMarked(){
+      const s = document.createElement('script');
+      s.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
+      s.defer = true;
+      s.onerror = function(){
+        // ultra-tiny fallback: convert newlines and **bold** only
+        window.marked = { parse: (t) => String(t)
+          .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+          .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+          .replace(/\n/g,'<br>') };
+      };
+      document.head.appendChild(s);
+    })();
+  </script>
 </body>
 </html>
