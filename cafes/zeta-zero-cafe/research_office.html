@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>Research Office</title>
@@ -16,15 +17,16 @@
     window.MathJax = {
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$','$$'], ['\\[','\\]']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
         tags: 'ams',
         processEscapes: true,
-        packages: {'[+]': ['noerrors']},
+        packages: { '[+]': ['noerrors'] },
       },
-      options: { skipHtmlTags: ['script','noscript','style','textarea','code'] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'code'] },
       svg: { fontCache: 'global' }
     };
   </script>
+  
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
 
@@ -74,7 +76,8 @@
         <!-- Card B: Memo to self -->
         <div class="card">
           <div class="head"><strong>Memo to self (Markdown/LaTeX)</strong></div>
-          <textarea id="memoBody" placeholder="State the issue, desired change, and rationale...&#10;Use tokens like [mm|p12=…] or [mm|p10=x,y:x,y:&quot;label&quot;]."></textarea>
+          <textarea id="memoBody"
+            placeholder="State the issue, desired change, and rationale...&#10;Use tokens like [mm|p12=…] or [mm|p10=x,y:x,y:&quot;label&quot;]."></textarea>
 
           <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
           <div id="memoPreview" class="preview-md"></div>
@@ -124,22 +127,29 @@
 
   <!-- Marked (Markdown) with local fallback -->
   <script>
-    (function loadMarked(){
+    (function loadMarked() {
       const s = document.createElement('script');
       s.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
       s.defer = true;
-      s.onerror = function(){
-        window.marked = { parse: (t) => String(t)
-          .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-          .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-          .replace(/\n/g,'<br>') };
+      s.onerror = function () {
+        window.marked = {
+          parse: (t) => String(t)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br>')
+        };
       };
       document.head.appendChild(s);
     })();
   </script>
 
   <style>
-    .right-col{ display:flex; flex-direction:column; gap:16px; }
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
   </style>
 </body>
+
 </html>

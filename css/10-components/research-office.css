@@ -11,8 +11,9 @@ body{
 h1{ font-size:22px; margin:0 0 16px; }
 .muted{ opacity:.75; }
 
-/* 25% / 75% layout — viewer (left) is narrow; work area (right) is wide */
+/* 25% / 75% layout — viewer (left) narrow; work area (right) wide */
 .row{ display:grid; grid-template-columns:25% 75%; gap:16px; }
+.right-col{ display:flex; flex-direction:column; gap:16px; }
 
 /* inner split (figures/tables) stays 50/50 */
 .split{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
@@ -103,23 +104,45 @@ textarea{
 /* Status line */
 .status{ display:flex; gap:6px; flex-wrap:wrap; min-height:24px; }
 
-/* Chips */
-.chips{ display:flex; gap:6px; flex-wrap:wrap; }
-.chip{
+/* ---------- Pages referenced in memo: THUMB STRIP ---------- */
+.thumbs{
+  display:flex; gap:10px; align-items:center;
+  overflow:auto; padding:6px; border:1px dashed rgba(255,255,255,.12);
+  border-radius:12px; background:rgba(255,255,255,.03);
+  scrollbar-width:thin;
+}
+.thumb{
   position:relative;
-  display:inline-flex; align-items:center; gap:6px;
-  padding:4px 10px; border-radius:9999px;
-  background:#1a2430; border:1px solid rgba(255,255,255,.16);
-  cursor:pointer; user-select:none;
+  flex:0 0 auto;
+  width:cm; height:3cm;             /* exact size request */
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:8px; overflow:hidden;
+  background:#0f141a;
+  cursor:pointer;
+  box-shadow:0 0 0 0 rgba(0,0,0,0);
+  transition:box-shadow .15s ease, transform .06s ease;
 }
-.chip.primary{
-  border-color:#ffb347; box-shadow:0 0 0 2px rgba(255,179,71,.25) inset;
+.thumb:hover{ transform:translateY(-1px); }
+.thumb.primary{ box-shadow:0 0 0 2px rgba(255,179,71,.35) inset; border-color:#ffb347; }
+.thumb.active{ box-shadow:0 0 0 2px rgba(129,169,255,.45) inset; }
+.thumb.missing{ background:repeating-linear-gradient(45deg,#1a222c,#1a222c 6px,#0f141a 6px,#0f141a 12px); }
+
+.thumb img{
+  width:100%; height:100%; object-fit:cover; display:block;
 }
-.chip .chip-x{
-  font-weight:700; opacity:.8; cursor:pointer;
-  margin-left:6px; padding:0 2px;
+.thumb .thumb-tag{
+  position:absolute; left:6px; bottom:6px;
+  background:rgba(0,0,0,.55); padding:2px 6px; border-radius:9999px;
+  font-size:12px; color:#e7edf3; border:1px solid rgba(255,255,255,.18);
 }
-.chip .chip-x:hover{ opacity:1; }
+.thumb .thumb-x{
+  position:absolute; top:4px; right:4px;
+  width:20px; height:20px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.25);
+  background:#1a2430; color:#e7edf3; cursor:pointer;
+  font-weight:700; line-height:18px; text-align:center;
+}
+.thumb .thumb-x:hover{ background:#223248; }
 
 /* Viewer */
 .viewer{
@@ -131,15 +154,8 @@ textarea{
   background:rgba(255,255,255,.03);
   overflow:hidden;
 }
-.viewer img{
-  max-width:100%;
-  height:auto;
-  display:block;
-}
-.viewer img.primary{
-  outline:3px solid #ffb347;
-  outline-offset:2px;
-}
+.viewer img{ max-width:100%; height:auto; display:block; }
+.viewer img.primary{ outline:3px solid #ffb347; outline-offset:2px; }
 
 /* Memo preview */
 .preview-md{
@@ -153,7 +169,7 @@ textarea{
 }
 .preview-md .MathJax{ font-size:1.05rem; }
 
-/* Optional: stack on very narrow screens */
+/* Stack on very narrow screens */
 @media (max-width: 920px){
   .row{ grid-template-columns:1fr; }
 }
