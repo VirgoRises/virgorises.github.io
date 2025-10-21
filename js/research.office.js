@@ -33,7 +33,8 @@
 
   const statusLine = $('#roStatus');
   const thumbsWrap = $('#pageChips'); // thumbnails container
-
+  // near the top, after obtaining thumbsWrap:
+  thumbsWrap.classList.add('thumbs');
   const viewer = $('#viewer');
   const stage = $('#stage');
   const pageImg = $('#pageImg');
@@ -657,7 +658,8 @@
 
       // parse memo initially (in case existing tokens)
       indexTokens(memoTa.value);
-
+      // ⬇️ ensure the thumbnail strip is present immediately
+      renderThumbs();
       setActivePage(STATE.primaryPage, 'resolver');
 
       memoTa.addEventListener('input', onMemoChange);
