@@ -35,9 +35,9 @@
       <a id="backLink" class="btn" href="#">← Back</a>
     </div>
 
-    <!-- GRID: 25% (left) / 75% (right) -->
+    <!-- GRID: 35% (left) / 65% (right) -->
     <div class="row">
-      <!-- LEFT (25%): Page tools + Viewer -->
+      <!-- LEFT: Page tools + Viewer -->
       <div class="card">
         <div class="head"><strong>Resolver & Page Viewer</strong></div>
 
@@ -48,13 +48,22 @@
             <button id="toolPoint" class="btn btn-sm" data-tool="point">Point</button>
             <button id="toolBox"   class="btn btn-sm" data-tool="box">Box</button>
           </div>
+
           <div class="tool-group">
             <label class="mono muted">Zoom
-              <input id="zoomSlider" type="range" min="1" max="4" step="0.05" value="1">
+              <!-- –4 … 4 slider @ step .01; mapped to 0.25× … 4.00× -->
+              <input id="zoomSlider" type="range" min="-4" max="4" step="0.01" value="0">
               <span id="zoomRead" class="tag">1.00×</span>
             </label>
             <button id="zoomFit" class="btn btn-sm">Fit</button>
             <button id="zoom100" class="btn btn-sm">100%</button>
+          </div>
+
+          <div class="tool-group">
+            <button id="pagePrev" class="btn btn-sm" title="Previous page">« – –</button>
+            <button id="pagePrimary" class="btn btn-sm" title="Go to primary page">Primary</button>
+            <button id="pageNext" class="btn btn-sm" title="Next page">++ »</button>
+            <button id="pageAddRef" class="btn btn-sm" title="Insert page reference token into memo">[Add page]</button>
           </div>
         </div>
 
@@ -62,13 +71,12 @@
         <div id="viewer" class="viewer">
           <div id="stage" class="stage">
             <img id="pageImg" alt="Active page preview" />
-            <!-- overlay for grid + markers -->
             <canvas id="overlay" class="overlay" aria-hidden="true"></canvas>
           </div>
         </div>
       </div>
 
-      <!-- RIGHT (75%): status + thumbs + preview + memo + refs -->
+      <!-- RIGHT: status + thumbs + preview + memo + refs -->
       <div class="right-col">
         <div id="roStatus" class="status mono"></div>
 
@@ -134,7 +142,7 @@
     </div>
   </div>
 
-  <script defer src="/js/research.office.js?v=2025-10-19d"></script>
+  <script defer src="/js/research.office.js?v=2025-10-21a"></script>
 
   <!-- Marked (Markdown) with local fallback -->
   <script>
