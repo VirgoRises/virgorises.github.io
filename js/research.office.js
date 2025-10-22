@@ -3,6 +3,7 @@
    ++ mm grid + token markers (memo is source of truth)
    ++ Zoom slider -4..4 (step .01) mapped to 0.25x..4x, starts at 1.00x
    ++ Prev / Primary / Next / [Add page]
+   ++ Robust autosave + restore for the Memo drawer
 */
 (() => {
   const $  = (sel, el = document) => el.querySelector(sel);
@@ -79,17 +80,16 @@
   };
 
   // ---- Zoom mapping (slider value ↔ scale) ----------------------------------
-  // slider v ∈ [-4,4]; center (0) => 1.00x; right side zooms in to 4.00x; left side zooms out to 0.25x
   const MIN_SCALE = 0.25, MAX_SCALE = 4;
   function sliderToScale(v){
     const vv = Number(v);
-    if (vv >= 0) return 1 + (MAX_SCALE - 1) * (vv / 4);      // 0..4 -> 1..4
-    return 1 / (1 + (MAX_SCALE - 1) * ((-vv) / 4));           // -4..0 -> 0.25..1
+    if (vv >= 0) return 1 + (MAX_SCALE - 1) * (vv / 4);
+    return 1 / (1 + (MAX_SCALE - 1) * ((-vv) / 4));
   }
   function scaleToSlider(s){
     const ss = Number(s);
-    if (ss >= 1) return ((ss - 1) / (MAX_SCALE - 1)) * 4;     // 1..4 -> 0..4
-    return - ((1/ss - 1) / (MAX_SCALE - 1)) * 4;              // 0.25..1 -> -4..0
+    if (ss >= 1) return ((ss - 1) / (MAX_SCALE - 1)) * 4;
+    return - ((1/ss - 1) / (MAX_SCALE - 1)) * 4;
   }
   function updateZoomUI(){
     zoomRead.textContent = `${STATE.scale.toFixed(2)}×`;
@@ -100,6 +100,8 @@
   const log  = (...a) => rodebug && console.debug('[RO]', ...a);
   const pad3 = n => String(n).padStart(3,'0');
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const now = () => Date.now();
+  const fmtWhen = (ts) => new Date(ts).toLocaleString();
 
   function paraNumberFrom(para) {
     const m = String(para).match(/osf-(\d+)/);
@@ -291,7 +293,6 @@
       if (!STATE.tokensByPage.has(page)) STATE.tokensByPage.set(page, []);
       STATE.tokensByPage.get(page).push(entry);
     }
-    // update referenced pages set
     STATE.referencedPages = new Set([...STATE.tokensByPage.keys()]);
   }
 
@@ -309,6 +310,10 @@
   }
 
   function onMemoChange() {
+    // ==== AUTOSAVE: schedule and mark dirty
+    autosaveMarkDirty();
+    autosaveSchedule();
+
     indexTokens(memoTa.value);
     renderThumbs();
     drawGrid();
@@ -323,7 +328,7 @@
     catch { memoPrev.innerHTML = `<div class="warn">Preview failed to render.</div>`; }
   }
 
-  // ---- Drafts ---------------------------------------------------------------
+  // ---- Drafts (manual list; separate from autosave) -------------------------
   const LS_KEY = 'ro:memos';
   function persistDraftDraftlist() {
     try {
@@ -338,7 +343,7 @@
   function renderDraftList(arr){
     memoList.innerHTML=''; arr.filter(x=>x.chapter===chapter && x.paraId===paraId).forEach(x=>{
       const div=document.createElement('div'); div.className='item';
-      const when = new Date(x.ts).toLocaleString();
+      const when = fmtWhen(x.ts);
       div.innerHTML = `<div><div class="mono muted">${escapeHtml(when)}</div><div class="mono">${escapeHtml((x.body||'').slice(0,120))}${x.body.length>120?'…':''}</div></div>`;
       memoList.appendChild(div);
     });
@@ -459,7 +464,7 @@
     const ix = (mx - STATE.tx) / STATE.scale;
     const iy = (my - STATE.ty) / STATE.scale;
 
-    const delta = (ev.deltaY < 0 ? -0.1 : 0.1); // wheel granularity
+    const delta = (ev.deltaY < 0 ? -0.1 : 0.1);
     const nextScale = clamp(STATE.scale + delta, MIN_SCALE, MAX_SCALE);
 
     STATE.tx = mx - ix * nextScale;
@@ -571,6 +576,86 @@
     el.focus();
   }
 
+  // ---- ==== AUTOSAVE: resilient memo protection -----------------------------
+  const AS_KEY = (chapter && paraId) ? `ro:autosave:${chapter}|${paraId}` : 'ro:autosave';
+  let   AS_last = { ts: 0, body: '' };
+  let   AS_dirty = false;
+  let   AS_timer = null;
+
+  function autosaveNow(){
+    try{
+      const payload = { ts: now(), chapter, paraId, body: memoTa.value };
+      localStorage.setItem(AS_KEY, JSON.stringify(payload));
+      sessionStorage.setItem(AS_KEY, JSON.stringify(payload)); // shadow for multi-tab
+      AS_last = { ts: payload.ts, body: payload.body };
+      AS_dirty = false;
+      setAutosaveBadge(`Saved ${fmtWhen(payload.ts)}`);
+    }catch(e){ console.warn('autosave failed', e); }
+  }
+  function autosaveSchedule(){
+    clearTimeout(AS_timer);
+    AS_timer = setTimeout(autosaveNow, 400); // fast debounce
+  }
+  function autosaveMarkDirty(){ AS_dirty = true; setAutosaveBadge('Typing…'); }
+
+  // periodic snapshot (belt & suspenders)
+  setInterval(() => { if (AS_dirty) autosaveNow(); }, 15000);
+
+  // restore UI
+  function setAutosaveBadge(text){
+    // place a small badge after the memo preview heading (no HTML changes needed)
+    let badge = document.getElementById('memoAutoBadge');
+    if (!badge){
+      badge = document.createElement('span');
+      badge.id = 'memoAutoBadge';
+      badge.className = 'tag';
+      const hdrs = $$('.head');
+      const memoHdr = hdrs.find(h => h.textContent?.toLowerCase().includes('preview'));
+      (memoHdr || statusLine)?.appendChild(badge);
+    }
+    badge.textContent = text;
+  }
+  function showRestoreBanner(saved){
+    // If textarea is empty or different, offer restore
+    if (!saved?.body) return;
+    const shouldOffer = memoTa.value.trim() === '' || memoTa.value.trim() !== saved.body.trim();
+    if (!shouldOffer) return;
+
+    let bar = document.getElementById('restoreBar');
+    if (bar) return;
+    bar = document.createElement('div');
+    bar.id = 'restoreBar';
+    bar.className = 'notice';
+    bar.innerHTML = `
+      <div class="notice-body">
+        <strong>Autosave found</strong> — ${escapeHtml(fmtWhen(saved.ts))}
+      </div>
+      <div class="notice-actions">
+        <button id="btnRestore" class="btn btn-sm">Restore draft</button>
+        <button id="btnDismiss" class="btn btn-sm">Dismiss</button>
+      </div>`;
+    // Insert just above the memo textarea
+    memoTa.parentElement.insertBefore(bar, memoTa);
+
+    $('#btnRestore').addEventListener('click', () => {
+      memoTa.value = saved.body;
+      onMemoChange();
+      bar.remove();
+      setAutosaveBadge(`Restored ${fmtWhen(saved.ts)}`);
+    });
+    $('#btnDismiss').addEventListener('click', () => bar.remove());
+  }
+
+  // leave-page guard
+  window.addEventListener('beforeunload', (e) => {
+    const latest = (localStorage.getItem(AS_KEY) && JSON.parse(localStorage.getItem(AS_KEY))) || { body:'' };
+    const dirty = memoTa.value !== latest.body;
+    if (dirty){
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
   // ---- UX -------------------------------------------------------------------
   function warn(msg){
     const tag=document.createElement('span'); tag.className='tag warn'; tag.textContent=msg;
@@ -585,9 +670,8 @@
 
     if (!paraId || !chapter) { previewBox.innerHTML = `<div class="warn">Missing or invalid query parameters.</div>`; return; }
 
-    // tool wiring
+    // tools
     setTool('pan');
-
     toolPanBtn .addEventListener('click', () => setTool('pan'));
     toolPointBtn.addEventListener('click', () => setTool('point'));
     toolBoxBtn  .addEventListener('click', () => setTool('box'));
@@ -623,12 +707,26 @@
       onMemoChange();
     });
 
-    // refit on layout/window change (robustness with 35/65 split)
+    // refit on layout/window change
     const refit = () => { if (pageImg?.naturalWidth) fitToViewer(); };
     const ro = new ResizeObserver(refit);
     if (viewer) ro.observe(viewer);
     window.addEventListener('resize', refit);
 
+    // ==== AUTOSAVE: load prior snapshot and offer restore
+    try {
+      const raw = localStorage.getItem(AS_KEY) || sessionStorage.getItem(AS_KEY);
+      if (raw) {
+        const saved = JSON.parse(raw);
+        AS_last = { ts: saved.ts||0, body: saved.body||'' };
+        showRestoreBanner(saved);
+        setAutosaveBadge(`Loaded ${fmtWhen(saved.ts)}`);
+      } else {
+        setAutosaveBadge('No autosave yet');
+      }
+    } catch { setAutosaveBadge('Autosave unavailable'); }
+
+    // main flow
     try {
       const doc = await loadChapterDom(); STATE.chapterDoc = doc;
       const res = await resolvePrimaryPage(doc); STATE.primaryPage = res.chosen; setStatus(res);
@@ -641,6 +739,7 @@
 
       setActivePage(STATE.primaryPage, 'resolver');
 
+      // hook memo input AFTER first render to avoid double work
       memoTa.addEventListener('input', onMemoChange);
 
       $('#saveDraft')?.addEventListener('click', () => {
@@ -664,3 +763,4 @@
   if (document.readyState !== 'loading') init();
   else document.addEventListener('DOMContentLoaded', init);
 })();
+

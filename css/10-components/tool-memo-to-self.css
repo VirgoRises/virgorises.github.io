@@ -1,0 +1,17 @@
+.crop{
+  width: 200px;              /* your given width */
+  aspect-ratio: 1 / 1;       /* choose your viewport shape; 1:1 shown here */
+  overflow: hidden;
+  position: relative;
+}
+
+/* Show the bottom-right quarter */
+.crop img{
+  position: absolute;
+  right: 0;                  /* anchor to bottom-right */
+  bottom: 0;
+  width: 200%;               /* zoom so 1/4 of the image fills the box */
+  height: 200%;
+  object-fit: cover;         /* harmless here; absolute sizing controls the crop */
+  display: block;
+}
