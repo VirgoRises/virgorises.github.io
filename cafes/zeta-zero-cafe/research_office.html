@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>Research Office</title>
@@ -13,12 +14,12 @@
     window.MathJax = {
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$','$$'], ['\\[','\\]']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
         tags: 'ams',
         processEscapes: true,
-        packages: {'[+]': ['noerrors']},
+        packages: { '[+]': ['noerrors'] },
       },
-      options: { skipHtmlTags: ['script','noscript','style','textarea','code'] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'code'] },
       svg: { fontCache: 'global' }
     };
   </script>
@@ -44,9 +45,9 @@
         <!-- Tools -->
         <div class="viewer-tools">
           <div class="tool-group">
-            <button id="toolPan"   class="btn btn-sm" data-tool="pan">Pan</button>
+            <button id="toolPan" class="btn btn-sm" data-tool="pan">Pan</button>
             <button id="toolPoint" class="btn btn-sm" data-tool="point">Point</button>
-            <button id="toolBox"   class="btn btn-sm" data-tool="box">Box</button>
+            <button id="toolBox" class="btn btn-sm" data-tool="box">Box</button>
           </div>
 
           <div class="tool-group">
@@ -72,6 +73,25 @@
           <div id="stage" class="stage">
             <img id="pageImg" alt="Active page preview" />
             <canvas id="overlay" class="overlay" aria-hidden="true"></canvas>
+          </div>
+        </div>
+        <!-- Figures / Tables -->
+        <div class="card">
+          <div class="split">
+            <div>
+              <div class="head"><strong>Figures</strong></div>
+              <div id="figList" class="list"></div>
+            </div>
+            <div>
+              <div class="head"><strong>Tables</strong></div>
+              <div id="tblList" class="list"></div>
+            </div>
+          </div>
+          <div class="bar" style="margin-top:12px">
+            <button id="copyLink" class="btn">Copy link</button>
+          </div>
+          <div class="muted" style="margin-top:8px">
+            Tip: toggle “member” in any chapter popover to show/hide the app button.
           </div>
         </div>
       </div>
@@ -102,17 +122,14 @@
           <!-- Inline autosave status (calm, timestamped) -->
           <div id="memoStatus" class="memo-status mono muted">No edits yet</div>
 
-          <textarea id="memoBody" placeholder="Use tokens like [mm|p12=10,15] or [mm|p12=10,15:40,35:&quot;label&quot;]."></textarea>
+          <textarea id="memoBody"
+            placeholder="Use tokens like [mm|p12=10,15] or [mm|p12=10,15:40,35:&quot;label&quot;]."></textarea>
 
           <!-- History (ring buffer) -->
           <details id="histToggle" class="history">
             <summary>History (last 10 autosaves)</summary>
             <div id="histList" class="history-list"></div>
           </details>
-
-          <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
-          <div id="memoPreview" class="preview-md"></div>
-
           <div class="bar">
             <button id="saveDraft" class="btn">Save draft (browser)</button>
             <button id="exportJson" class="btn">Export JSON</button>
@@ -123,28 +140,10 @@
             RFCs are processes, not chats. Draft → step away → revise → then submit.
           </div>
         </div>
-
-        <!-- Figures / Tables -->
-        <div class="card">
-          <div class="split">
-            <div>
-              <div class="head"><strong>Figures</strong></div>
-              <div id="figList" class="list"></div>
-            </div>
-            <div>
-              <div class="head"><strong>Tables</strong></div>
-              <div id="tblList" class="list"></div>
-            </div>
-          </div>
-          <div class="bar" style="margin-top:12px">
-            <button id="copyLink" class="btn">Copy link</button>
-          </div>
-          <div class="muted" style="margin-top:8px">
-            Tip: toggle “member” in any chapter popover to show/hide the app button.
-          </div>
-        </div>
       </div>
     </div>
+    <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
+    <div id="memoPreview" class="preview-md"></div>
 
     <div class="card" style="margin-top:16px">
       <div class="head"><strong>Recent drafts (this browser)</strong></div>
@@ -156,18 +155,21 @@
 
   <!-- Marked (Markdown) with local fallback -->
   <script>
-    (function loadMarked(){
+    (function loadMarked() {
       const s = document.createElement('script');
       s.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
       s.defer = true;
-      s.onerror = function(){
-        window.marked = { parse: (t) => String(t)
-          .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-          .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-          .replace(/\n/g,'<br>') };
+      s.onerror = function () {
+        window.marked = {
+          parse: (t) => String(t)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br>')
+        };
       };
       document.head.appendChild(s);
     })();
   </script>
 </body>
+
 </html>
