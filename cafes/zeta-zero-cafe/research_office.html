@@ -98,7 +98,17 @@
         <!-- Memo -->
         <div class="card">
           <div class="head"><strong>Memo to self (Markdown/LaTeX)</strong></div>
+
+          <!-- Inline autosave status (calm, timestamped) -->
+          <div id="memoStatus" class="memo-status mono muted">No edits yet</div>
+
           <textarea id="memoBody" placeholder="Use tokens like [mm|p12=10,15] or [mm|p12=10,15:40,35:&quot;label&quot;]."></textarea>
+
+          <!-- History (ring buffer) -->
+          <details id="histToggle" class="history">
+            <summary>History (last 10 autosaves)</summary>
+            <div id="histList" class="history-list"></div>
+          </details>
 
           <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
           <div id="memoPreview" class="preview-md"></div>
@@ -142,7 +152,7 @@
     </div>
   </div>
 
-  <script defer src="/js/research.office.js?v=2025-10-21a"></script>
+  <script defer src="/js/research.office.js?v=2025-10-23-smoothflow"></script>
 
   <!-- Marked (Markdown) with local fallback -->
   <script>

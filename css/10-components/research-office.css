@@ -145,3 +145,7 @@ textarea{
 @media (max-width: 920px){
   .row{ grid-template-columns:1fr; }
 }
+/* Zen Flow additions (optional) */
+#memoStatus { opacity: .92; transition: opacity .25s ease; }
+#memoStatus.saving { opacity: .6; }
+#historyList .item { display:flex; justify-content:space-between; }
