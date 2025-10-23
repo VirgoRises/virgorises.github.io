@@ -6,7 +6,7 @@ import { getAllDrafts } from '/js/ro/drafts.js';
 let previewWin = null;
 let previewDlg = null;
 
-function buildHTML(baseHref){
+function buildHTML(baseHref) {
   const CSS = `
     :root{color-scheme: dark} *{box-sizing:border-box} html,body{height:100%}
     body{margin:0;font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:#0B1117;color:#E6EDF3}
@@ -29,14 +29,38 @@ function buildHTML(baseHref){
 
   // Use the canonical MathJax config + core that chapters use
   const mjConfigPath = '/cafes/zeta-zero-cafe/notebook/math/mathconfig.js';
-  const mjCorePath   = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+
+  // multiple fallbacks for the MathJax core (CDN → CDNJS → UNPKG)
+  // keep order; first one usually succeeds, others are safety nets
+  const MJ_SOURCES = [
+    'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js',
+    'https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js'
+  ];
 
   return `<!doctype html><html><head><meta charset="utf-8"/>
-<base href="${baseHref}"><title>Live Preview</title><style>${CSS}</style>
-<!-- MathJax config (must come BEFORE MathJax itself) -->
+<base href="${baseHref}">
+<title>Live Preview</title>
+<style>${CSS}</style>
+
+<!-- 1) Your canonical MathJax config -->
 <script src="${mjConfigPath}"></script>
-<!-- MathJax core -->
-<script id="MathJax-script" defer src="${mjCorePath}"></script>
+
+<!-- 2) Robust loader: try multiple CDNs until one works -->
+<script>
+(function(){
+  const srcs = ${JSON.stringify(MJ_SOURCES)};
+  function load(i){
+    if(i >= srcs.length){ console.error('[RO] MathJax failed to load from all sources'); return; }
+    var s = document.createElement('script');
+    s.defer = true; s.src = srcs[i];
+    s.onload = function(){ /* ok */ };
+    s.onerror = function(){ console.warn('[RO] MathJax failed:', srcs[i]); load(i+1); };
+    document.head.appendChild(s);
+  }
+  load(0);
+})();
+</script>
 </head>
 <body>
   <header><strong>Live Preview</strong><span class="mono" id="stamp"></span></header>
@@ -57,19 +81,28 @@ function buildHTML(baseHref){
     const tabs = { current: $('#tab-current'), autosaves: $('#tab-autosaves'), drafts: $('#tab-drafts') };
 
     async function typesetReady(){
-      try {
-        if (window.MathJax?.startup?.promise) { await window.MathJax.startup.promise; }
-      } catch(_) {}
+  // wait until MathJax is fully initialised (config + core)
+  for (let i = 0; i < 60; i++) {                   // up to ~6s
+    if (window.MathJax?.startup?.promise) break;
+    await new Promise(r => setTimeout(r, 100));
+  }
+  try { await window.MathJax?.startup?.promise; } catch(_) {}
+}
+
+async function typeset(c){
+  if (!c || !window.MathJax) return;
+  await typesetReady();
+  try {
+    window.MathJax.typesetClear?.([c]);
+    window.MathJax.texReset?.();
+    if (window.MathJax.typesetPromise) {
+      await window.MathJax.typesetPromise([c]);
+    } else {
+      window.MathJax.typeset?.([c]);   // optional if present
     }
-    async function typeset(c){
-      try{
-        if (!window.MathJax) return;
-        await typesetReady();
-        window.MathJax.typesetClear?.([c]); window.MathJax.texReset?.();
-        if (window.MathJax.typesetPromise) { await window.MathJax.typesetPromise([c]); }
-        else { window.MathJax.typeset?.([c]); }
-      } catch(_) {}
-    }
+  } catch(_) {}
+}
+
 
     let PAYLOAD = null;
 
@@ -164,7 +197,7 @@ function buildHTML(baseHref){
 </body></html>`;
 }
 
-export function ensurePopPreviewButton(){
+export function ensurePopPreviewButton() {
   const head = STATE.dom.memoPrev?.previousElementSibling?.classList.contains('head')
     ? STATE.dom.memoPrev.previousElementSibling
     : STATE.dom.memoPrev?.parentElement?.previousElementSibling?.classList.contains('head')
@@ -173,32 +206,32 @@ export function ensurePopPreviewButton(){
 
   const addBtn = (target) => {
     if (target.querySelector('#popPreviewBtn')) return;
-    const btn=document.createElement('button'); btn.id='popPreviewBtn'; btn.className='btn btn-sm'; btn.textContent='Pop-out Preview';
-    btn.style.marginLeft='8px'; btn.title='Click: window · Shift+Click: in-page modal';
+    const btn = document.createElement('button'); btn.id = 'popPreviewBtn'; btn.className = 'btn btn-sm'; btn.textContent = 'Pop-out Preview';
+    btn.style.marginLeft = '8px'; btn.title = 'Click: window · Shift+Click: in-page modal';
     btn.addEventListener('click', openPreview); target.appendChild(btn);
   };
   if (head) addBtn(head);
   else {
     if (!document.getElementById('popPreviewBtn')) {
-      const btn=document.createElement('button'); btn.id='popPreviewBtn'; btn.className='btn btn-sm'; btn.textContent='Pop-out Preview';
-      btn.style.cssText='position:sticky; left:100%; transform:translateX(-100%); margin:-8px 0 8px 0;'; btn.title='Click: window · Shift+Click: modal';
+      const btn = document.createElement('button'); btn.id = 'popPreviewBtn'; btn.className = 'btn btn-sm'; btn.textContent = 'Pop-out Preview';
+      btn.style.cssText = 'position:sticky; left:100%; transform:translateX(-100%); margin:-8px 0 8px 0;'; btn.title = 'Click: window · Shift+Click: modal';
       btn.addEventListener('click', openPreview); STATE.dom.memoPrev?.parentElement?.insertBefore(btn, STATE.dom.memoPrev);
     }
   }
 }
 
-function buildPayload(){
-  const hist = (getHistory()||[]).slice(0, 20).map(s => ({
+function buildPayload() {
+  const hist = (getHistory() || []).slice(0, 20).map(s => ({
     ts: s.ts,
     body: s.body,
-    html: window.marked?.parse ? window.marked.parse(s.body) : `<pre>${(s.body||'').replace(/[&<>]/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;' }[m]))}</pre>`
+    html: window.marked?.parse ? window.marked.parse(s.body) : `<pre>${(s.body || '').replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]))}</pre>`
   }));
-  const draftsRaw = (getAllDrafts()||[]).slice(0, 50);
+  const draftsRaw = (getAllDrafts() || []).slice(0, 50);
   const drafts = draftsRaw.map(d => ({
     ts: d.ts, chapter: d.chapter, paraId: d.paraId,
     isCurrent: d.chapter === STATE.params.chapter && d.paraId === STATE.params.paraId,
     body: d.body,
-    html: window.marked?.parse ? window.marked.parse(d.body||'') : `<pre>${(d.body||'').replace(/[&<>]/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;' }[m]))}</pre>`
+    html: window.marked?.parse ? window.marked.parse(d.body || '') : `<pre>${(d.body || '').replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]))}</pre>`
   }));
   return {
     kind: 'ro_preview',
@@ -211,27 +244,27 @@ function buildPayload(){
   };
 }
 
-function openPreview(ev){
+function openPreview(ev) {
   if (ev && ev.shiftKey) { openDialog(); return; }
-  const baseHref = (STATE._chapterUrlResolved || location.href).replace(/\/[^/]*$/,'/');
-  let w=null; try { w=window.open('about:blank','ro_live_preview','width=920,height=980'); } catch{}
-  if (!w){
+  const baseHref = (STATE._chapterUrlResolved || location.href).replace(/\/[^/]*$/, '/');
+  let w = null; try { w = window.open('about:blank', 'ro_live_preview', 'width=920,height=980'); } catch { }
+  if (!w) {
     try {
-      const html=buildHTML(baseHref); const blob=new Blob([html],{type:'text/html'}); const url=URL.createObjectURL(blob);
-      const a=document.createElement('a'); a.href=url; a.target='ro_live_preview'; a.rel='noopener'; document.body.appendChild(a); a.click(); a.remove();
-      w=window.open('','ro_live_preview');
-    } catch {}
+      const html = buildHTML(baseHref); const blob = new Blob([html], { type: 'text/html' }); const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.target = 'ro_live_preview'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
+      w = window.open('', 'ro_live_preview');
+    } catch { }
     if (!w) { openDialog(); return; }
   }
-  if (w.document && !w.document.body.childElementCount){ w.document.open(); w.document.write(buildHTML(baseHref)); w.document.close(); }
+  if (w.document && !w.document.body.childElementCount) { w.document.open(); w.document.write(buildHTML(baseHref)); w.document.close(); }
   previewWin = w; push();
 }
 
-function openDialog(){
-  if (!previewDlg){
-    const baseHref = (STATE._chapterUrlResolved || location.href).replace(/\/[^/]*$/,'/');
+function openDialog() {
+  if (!previewDlg) {
+    const baseHref = (STATE._chapterUrlResolved || location.href).replace(/\/[^/]*$/, '/');
     previewDlg = document.createElement('dialog');
-    previewDlg.id='roLivePreviewDlg'; previewDlg.style.cssText='width:min(1100px,calc(100vw - 48px)); max-height:90vh; padding:0; border:none; border-radius:12px; overflow:hidden; background:#0B1117; color:#E6EDF3;';
+    previewDlg.id = 'roLivePreviewDlg'; previewDlg.style.cssText = 'width:min(1100px,calc(100vw - 48px)); max-height:90vh; padding:0; border:none; border-radius:12px; overflow:hidden; background:#0B1117; color:#E6EDF3;';
     previewDlg.innerHTML = buildHTML(baseHref);
     document.body.appendChild(previewDlg);
   }
@@ -239,10 +272,10 @@ function openDialog(){
   push();
 }
 
-function push(){
+function push() {
   const payload = buildPayload();
-  try { if (previewWin && !previewWin.closed) previewWin.postMessage(payload, '*'); } catch {}
-  if (previewDlg && previewDlg.open){
+  try { if (previewWin && !previewWin.closed) previewWin.postMessage(payload, '*'); } catch { }
+  if (previewDlg && previewDlg.open) {
     // same-document HTML; simulate the pop-out message handler by dispatching to window
     window.dispatchEvent(new MessageEvent('message', { data: payload }));
     // Also update the dialog’s stamp if present
@@ -254,7 +287,7 @@ function push(){
     try {
       MathJax?.typesetClear?.([container]); MathJax?.texReset?.();
       (MathJax?.typesetPromise ? MathJax.typesetPromise([container]) : MathJax?.typeset?.([container]));
-    } catch {}
+    } catch { }
   }
 }
 
