@@ -4,17 +4,16 @@ import { initParams, initDom, STATE, setBadge, setBackLink } from '/js/ro/state.
 import { loadChapterDom, resolvePrimaryPage, previewParagraph } from '/js/ro/resolver.js';
 import { bootViewer, setActivePage, renderThumbs } from '/js/ro/viewer.js';
 import { indexTokens, onMemoChange } from '/js/ro/tokens.js';
-import { bootAutosave, restoreCaret, setStatus, renderHistoryUI } from '/js/ro/autosave.js';
+import { bootAutosave, renderHistoryUI, setStatus } from '/js/ro/autosave.js';
 import { bootDrafts, renderDraftList, persistDraftDraftlist } from '/js/ro/drafts.js';
 import { ensurePopPreviewButton } from '/js/ro/preview-popout.js';
 
 async function init() {
-  initParams();         // fills STATE.params etc
-  initDom();            // caches DOM references
+  initParams();
+  initDom();
   setBackLink();
   setBadge((() => { const m = String(STATE.params.paraId||'').match(/osf-(\d+)/); return m ? Number(m[1]) : null; })());
 
-  // Boot viewer/tools + autosave + drafts manager
   bootViewer();
   bootAutosave();
   bootDrafts();
@@ -29,17 +28,16 @@ async function init() {
     await previewParagraph(doc);
     ensurePopPreviewButton();
 
+    // Index tokens from current memo and build UI
     indexTokens(STATE.dom.memoTa.value);
     renderThumbs();
     setActivePage(STATE.primaryPage, 'resolver');
 
-    // Wire memo
+    // Wire memo change
     STATE.dom.memoTa.addEventListener('input', onMemoChange);
-    // caret save (guarded inside autosave module)
-    if (STATE.saveCaret) {
-      STATE.dom.memoTa.addEventListener('keyup', STATE.saveCaret);
-      STATE.dom.memoTa.addEventListener('click', STATE.saveCaret);
-    }
+
+    // Initial preview render (so both previews show immediately)
+    onMemoChange();
 
     renderDraftList();
     $('#saveDraft')?.addEventListener('click', () => {
@@ -61,7 +59,7 @@ async function init() {
     });
     $('#submitDiscord')?.addEventListener('click', () => alert('Discord submission wiring is stubbed here.'));
 
-    renderHistoryUI(); // show “History” affordance
+    renderHistoryUI();
 
   } catch (err) {
     console.error('[RO] init failed:', err);
@@ -70,6 +68,15 @@ async function init() {
     setStatus('Resolver failed.');
   }
 }
+
+// Accept “Use this version” from Pop-out → replace memo text and re-render
+window.addEventListener('message', (ev) => {
+  const d = ev.data || {};
+  if (d.kind === 'ro_set_memo' && typeof d.body === 'string') {
+    STATE.dom.memoTa.value = d.body;
+    onMemoChange();
+  }
+});
 
 if (document.readyState !== 'loading') init();
 else document.addEventListener('DOMContentLoaded', init);

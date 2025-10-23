@@ -1,4 +1,4 @@
-// /cafes/zeta-zero-cafe/js/ro/drafts.js
+// /js/ro/drafts.js
 import { STATE } from './state.js';
 import { escapeHtml } from './util.js';
 
@@ -10,7 +10,8 @@ export function bootDrafts(){
   const wrap=document.createElement('div'); wrap.id='draftsControls'; wrap.className='bar';
   const a=document.createElement('button'); a.className='btn btn-sm'; a.textContent='Show all drafts';
   const b=document.createElement('button'); b.className='btn btn-sm'; b.textContent='Show only this paragraph';
-  const s=document.createElement('input'); s.type='search'; s.placeholder='Filter drafts… (text / chapter / para)'; s.className='mono'; s.style.cssText='flex:1; min-width:220px; padding:6px 8px; border-radius:8px; border:1px solid rgba(255,255,255,.16); background:#0f141a; color:#e7edf3;';
+  const s=document.createElement('input'); s.type='search'; s.placeholder='Filter drafts… (text / chapter / para)'; s.className='mono';
+  s.style.cssText='flex:1; min-width:220px; padding:6px 8px; border-radius:8px; border:1px solid rgba(255,255,255,.16); background:#0f141a; color:#e7edf3;';
   const c=document.createElement('span'); c.className='tag draft-count'; c.style.marginLeft='auto';
   list.parentElement.insertBefore(wrap, list); wrap.append(a,b,s,c);
 
@@ -23,6 +24,8 @@ export function bootDrafts(){
 
 function loadAll(){ try { return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); } catch { return []; } }
 function saveAll(arr){ try { localStorage.setItem(LS_KEY, JSON.stringify(arr.slice(0, 200))); } catch{} }
+
+export function getAllDrafts(){ return loadAll(); }
 
 export function persistDraftDraftlist(){
   const arr = loadAll();
