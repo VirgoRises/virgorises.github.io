@@ -1,9 +1,8 @@
 // /js/ro/preview-popout.js
-import { STATE } from './state.js';
-import { getHistory } from './autosave.js';
-import { getAllDrafts } from './drafts.js';
+import { STATE } from '/js/ro/state.js';
+import { getHistory } from '/js/ro/autosave.js';
+import { getAllDrafts } from '/js/ro/drafts.js';
 
-// Pop-out (window) and in-page modal (dialog)
 let previewWin = null;
 let previewDlg = null;
 
@@ -12,29 +11,33 @@ function buildHTML(baseHref){
     :root{color-scheme: dark} *{box-sizing:border-box} html,body{height:100%}
     body{margin:0;font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:#0B1117;color:#E6EDF3}
     header{position:sticky;top:0;padding:10px 14px;background:#0F141A;border-bottom:1px solid #1f2a36;display:flex;justify-content:space-between;align-items:center;z-index:10}
-    #wrap{display:grid;grid-template-columns:280px 1fr;min-height:100%}
-    #side{border-right:1px solid #1f2a36;background:#0F141A;min-height:0;display:flex;flex-direction:column}
+    #wrap{display:grid;grid-template-columns:280px 1fr;min-height:100%;min-width:0}
+    #side{border-right:1px solid #1f2a36;background:#0F141A;min-height:0;display:flex;flex-direction:column;min-width:0}
     #tabs{display:flex;gap:6px;padding:8px;border-bottom:1px solid #1f2a36}
     #tabs button{all:unset;padding:6px 10px;border-radius:8px;border:1px solid #273341;cursor:pointer}
     #tabs button.active{background:#182231}
-    #lists{flex:1;overflow:auto;padding:8px}
+    #lists{flex:1;overflow:auto;padding:8px;min-width:0}
     .item{padding:8px;border:1px solid #1f2a36;border-radius:8px;margin:6px 0}
     .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:12px;opacity:.9}
-    #container{padding:16px;max-width:980px;margin:0 auto}
+    #container{padding:16px;max-width:980px;margin:0 auto;min-width:0}
     h1{font-size:28px;line-height:1.25;margin:16px 0 6px} h2{font-size:22px;margin:14px 0 6px} h3{font-size:18px;margin:12px 0 6px}
     p{margin:8px 0} img,video,canvas,svg{display:block;max-width:100%;height:auto}
     table{width:100%;border-collapse:collapse;margin:10px 0} th,td{border:1px solid #273341;padding:6px 8px;vertical-align:top}
     pre{background:#0F141A;border:1px solid #1f2a36;padding:12px;border-radius:8px;overflow:auto}
     code,pre,tt,kbd,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:12.5px} pre code{white-space:pre}
   `;
-  const mjScript = document.getElementById('mathjax-script');
-  const mjPath   = mjScript ? mjScript.getAttribute('src') : '/js/vendor/MathJax/tex-mml-chtml.js';
-  const mjCfgEl  = document.getElementById('mathjax-config');
-  const mjCfg    = mjCfgEl ? mjCfgEl.textContent : 'window.MathJax = { tex: { inlineMath: [[\'$\',\'$\'], [\'\\\\(\',\'\\\\)\']] } }';
+
+  // Use the canonical MathJax config + core that chapters use
+  const mjConfigPath = '/cafes/zeta-zero-cafe/notebook/math/mathconfig.js';
+  const mjCorePath   = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
 
   return `<!doctype html><html><head><meta charset="utf-8"/>
 <base href="${baseHref}"><title>Live Preview</title><style>${CSS}</style>
-<script id="mathjax-config">${mjCfg}</script><script src="${mjPath}"></script></head>
+<!-- MathJax config (must come BEFORE MathJax itself) -->
+<script src="${mjConfigPath}"></script>
+<!-- MathJax core -->
+<script id="MathJax-script" defer src="${mjCorePath}"></script>
+</head>
 <body>
   <header><strong>Live Preview</strong><span class="mono" id="stamp"></span></header>
   <div id="wrap">
@@ -49,10 +52,24 @@ function buildHTML(baseHref){
     <main id="container"></main>
   </div>
   <script>
-    function typeset(c){ try{ MathJax.typesetClear?.([c]); MathJax.texReset?.(); }catch(_){} return (MathJax.typesetPromise?MathJax.typesetPromise([c]):MathJax.typeset([c])); }
     const $ = (s,el=document)=>el.querySelector(s);
     const lists = $('#lists'), container = $('#container'), stamp = $('#stamp');
     const tabs = { current: $('#tab-current'), autosaves: $('#tab-autosaves'), drafts: $('#tab-drafts') };
+
+    async function typesetReady(){
+      try {
+        if (window.MathJax?.startup?.promise) { await window.MathJax.startup.promise; }
+      } catch(_) {}
+    }
+    async function typeset(c){
+      try{
+        if (!window.MathJax) return;
+        await typesetReady();
+        window.MathJax.typesetClear?.([c]); window.MathJax.texReset?.();
+        if (window.MathJax.typesetPromise) { await window.MathJax.typesetPromise([c]); }
+        else { window.MathJax.typeset?.([c]); }
+      } catch(_) {}
+    }
 
     let PAYLOAD = null;
 
@@ -74,7 +91,6 @@ function buildHTML(baseHref){
         btn.addEventListener('click', ()=> parent.postMessage({kind:'ro_set_memo', body: PAYLOAD.currentBodyPlain}, '*'));
         d.appendChild(btn);
         lists.appendChild(d);
-        // show current in main
         container.innerHTML = PAYLOAD.html;
         typeset(container);
         stamp.textContent = new Date(PAYLOAD.ts).toLocaleTimeString();
@@ -95,11 +111,11 @@ function buildHTML(baseHref){
               </div>\`;
             lists.appendChild(row);
           });
-          lists.addEventListener('click', (ev)=>{
+          lists.addEventListener('click', async (ev)=>{
             const t=ev.target; if (!(t instanceof HTMLElement)) return;
             const i = Number(t.dataset.i); if (Number.isNaN(i)) return;
             const h = PAYLOAD.history[i];
-            if (t.dataset.act==='preview'){ container.innerHTML = h.html; typeset(container); stamp.textContent = new Date(h.ts).toLocaleTimeString(); }
+            if (t.dataset.act==='preview'){ container.innerHTML = h.html; await typeset(container); stamp.textContent = new Date(h.ts).toLocaleTimeString(); }
             if (t.dataset.act==='use'){ parent.postMessage({kind:'ro_set_memo', body: h.body}, '*'); }
           }, { once:true });
         }
@@ -122,11 +138,11 @@ function buildHTML(baseHref){
               </div>\`;
             lists.appendChild(row);
           });
-          lists.addEventListener('click', (ev)=>{
+          lists.addEventListener('click', async (ev)=>{
             const t=ev.target; if (!(t instanceof HTMLElement)) return;
             const i = Number(t.dataset.i); if (Number.isNaN(i)) return;
             const d = PAYLOAD.drafts[i];
-            if (t.dataset.act==='preview'){ container.innerHTML = d.html; typeset(container); stamp.textContent = new Date(d.ts).toLocaleTimeString(); }
+            if (t.dataset.act==='preview'){ container.innerHTML = d.html; await typeset(container); stamp.textContent = new Date(d.ts).toLocaleTimeString(); }
             if (t.dataset.act==='use'){ parent.postMessage({kind:'ro_set_memo', body: d.body}, '*'); }
             if (t.dataset.act==='open'){ parent.location.href = \`\${location.origin}\${location.pathname}?chapter=\${encodeURIComponent(d.chapter)}&para=\${encodeURIComponent(d.paraId)}\`; }
           }, { once:true });
@@ -134,15 +150,13 @@ function buildHTML(baseHref){
       }
     }
 
-    // Receive payload from parent
     window.addEventListener('message', async (ev) => {
       const d = ev.data || {}; if (d.kind !== 'ro_preview') return;
       PAYLOAD = d;
-      // Default tab: Current
+      // Show current on first load
       setTab('current');
     });
 
-    // Wire tabs
     tabs.current.addEventListener('click', ()=>setTab('current'));
     tabs.autosaves.addEventListener('click', ()=>setTab('autosaves'));
     tabs.drafts.addEventListener('click', ()=>setTab('drafts'));
@@ -174,11 +188,9 @@ export function ensurePopPreviewButton(){
 }
 
 function buildPayload(){
-  const baseHref = (STATE._chapterUrlResolved || location.href).replace(/\/[^/]*$/,'/');
   const hist = (getHistory()||[]).slice(0, 20).map(s => ({
     ts: s.ts,
     body: s.body,
-    // pre-render in parent so pop-out doesn't need marked()
     html: window.marked?.parse ? window.marked.parse(s.body) : `<pre>${(s.body||'').replace(/[&<>]/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;' }[m]))}</pre>`
   }));
   const draftsRaw = (getAllDrafts()||[]).slice(0, 50);
@@ -191,11 +203,11 @@ function buildPayload(){
   return {
     kind: 'ro_preview',
     ts: Date.now(),
-    html: STATE.dom.memoPrev.innerHTML,            // current rendered HTML
-    currentBodyPlain: STATE.dom.memoTa.value,      // current raw markdown
+    html: STATE.dom.memoPrev.innerHTML,
+    currentBodyPlain: STATE.dom.memoTa.value,
     history: hist,
     drafts: drafts,
-    meta: { chapter: STATE.params.chapter, paraId: STATE.params.paraId, baseHref }
+    meta: { chapter: STATE.params.chapter, paraId: STATE.params.paraId }
   };
 }
 
@@ -212,14 +224,14 @@ function openPreview(ev){
     if (!w) { openDialog(); return; }
   }
   if (w.document && !w.document.body.childElementCount){ w.document.open(); w.document.write(buildHTML(baseHref)); w.document.close(); }
-  previewWin = w; push();   // send initial
+  previewWin = w; push();
 }
 
 function openDialog(){
   if (!previewDlg){
+    const baseHref = (STATE._chapterUrlResolved || location.href).replace(/\/[^/]*$/,'/');
     previewDlg = document.createElement('dialog');
     previewDlg.id='roLivePreviewDlg'; previewDlg.style.cssText='width:min(1100px,calc(100vw - 48px)); max-height:90vh; padding:0; border:none; border-radius:12px; overflow:hidden; background:#0B1117; color:#E6EDF3;';
-    const baseHref = (STATE._chapterUrlResolved || location.href).replace(/\/[^/]*$/,'/');
     previewDlg.innerHTML = buildHTML(baseHref);
     document.body.appendChild(previewDlg);
   }
@@ -227,24 +239,23 @@ function openDialog(){
   push();
 }
 
-// Push current preview + autosaves + drafts to pop-out/modal
 function push(){
   const payload = buildPayload();
   try { if (previewWin && !previewWin.closed) previewWin.postMessage(payload, '*'); } catch {}
   if (previewDlg && previewDlg.open){
-    // Re-initialize the dialog document each push
-    const iframeDoc = previewDlg.querySelector('iframe')?.contentDocument;
-    // Our dialog uses inline HTML; find the message receiver via dispatchEvent
-    // Simpler: rebuild the content by replacing the <dialog>'s innerHTML on first open was already set,
-    // so we just call the pop-out handler by simulating a message on its window (dialog is same document).
-    // We'll just manually inject into the nodes:
-    const lists = previewDlg.querySelector('#lists');
-    if (lists) {
-      // trigger the same logic by sending a real message event to window
-      window.dispatchEvent(new MessageEvent('message', { data: payload }));
-    }
+    // same-document HTML; simulate the pop-out message handler by dispatching to window
+    window.dispatchEvent(new MessageEvent('message', { data: payload }));
+    // Also update the dialog’s stamp if present
+    const stamp = previewDlg.querySelector('#stamp');
+    if (stamp) stamp.textContent = new Date(payload.ts).toLocaleTimeString();
+    const container = previewDlg.querySelector('#container');
+    if (container) container.innerHTML = payload.html;
+    // MathJax is already loaded on the main page; typeset directly
+    try {
+      MathJax?.typesetClear?.([container]); MathJax?.texReset?.();
+      (MathJax?.typesetPromise ? MathJax.typesetPromise([container]) : MathJax?.typeset?.([container]));
+    } catch {}
   }
 }
 
-// Keep pop-out in sync as memo / preview updates
 window.addEventListener('ro:previewPush', push);
