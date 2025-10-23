@@ -1,11 +1,12 @@
-// /cafes/zeta-zero-cafe/js/research.office.js
-import { $, initParams, initDom, STATE, setBadge, setBackLink } from '/cafes/zeta-zero-cafe/js/ro/state.js';
-import { loadChapterDom, resolvePrimaryPage, previewParagraph } from '/cafes/zeta-zero-cafe/js/ro/resolver.js';
-import { bootViewer, setActivePage, renderThumbs } from '/cafes/zeta-zero-cafe/js/ro/viewer.js';
-import { indexTokens, onMemoChange } from '/cafes/zeta-zero-cafe/js/ro/tokens.js';
-import { bootAutosave, restoreCaret, setStatus, renderHistoryUI } from '/cafes/zeta-zero-cafe/js/ro/autosave.js';
-import { bootDrafts, renderDraftList, persistDraftDraftlist } from '/cafes/zeta-zero-cafe/js/ro/drafts.js';
-import { ensurePopPreviewButton } from '/cafes/zeta-zero-cafe/js/ro/preview-popout.js';
+// /js/research.office.js
+import { $, initParams, initDom, STATE, setBadge, setBackLink } from '/js/ro/state.js';
+import { loadChapterDom, resolvePrimaryPage, previewParagraph } from '/js/ro/resolver.js';
+import { bootViewer, setActivePage, renderThumbs } from '/js/ro/viewer.js';
+import { indexTokens, onMemoChange } from '/js/ro/tokens.js';
+import { bootAutosave, restoreCaret, setStatus, renderHistoryUI } from '/js/ro/autosave.js';
+import { bootDrafts, renderDraftList, persistDraftDraftlist } from '/js/ro/drafts.js';
+import { ensurePopPreviewButton } from '/js/ro/preview-popout.js';
+
 // …rest of the file unchanged…
 
 async function init() {
