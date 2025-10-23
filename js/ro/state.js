@@ -1,4 +1,4 @@
-// /cafes/zeta-zero-cafe/js/ro/state.js
+// /js/ro/state.js
 import { $, escapeHtml } from './util.js';
 
 export const STATE = {
@@ -16,10 +16,11 @@ export const STATE = {
   dragging: false, dragStart: {x:0,y:0},
   tool: 'pan', boxStart: null,
   pageMM: { w:210, h:297, standard:'A4' },
-  dom: {}
+  dom: {},
+  autosave: null,
+  saveCaret: null,
+  renderHistoryUI: null,
 };
-
-export function $(sel, el){ return document.querySelector(sel); }
 
 export function initParams(){
   const params = new URLSearchParams(location.search);
@@ -78,16 +79,11 @@ export function setBackLink(){
   STATE.dom.backBtn?.addEventListener('click', e => { e.preventDefault(); location.href = href; });
 }
 
-export function paraNumFromId(id){
-  const m = String(id).match(/osf-(\d+)/);
-  return m ? Number(m[1]) : null;
-}
 export function setBadge(n){
   if (!STATE.dom.numBadge) return;
   STATE.dom.numBadge.textContent = n!=null ? `#${n}` : '#';
   STATE.dom.numBadge.title = n!=null ? `Paragraph ${n}` : '';
 }
-export const paraNum = paraNumFromId(STATE.params?.paraId);
 
 export function statusTags(o){
   const bits = [
