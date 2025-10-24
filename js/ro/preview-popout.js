@@ -43,16 +43,43 @@ function buildHTMLWindow(baseHref) {
 <!-- Single source of truth config -->
 <script src="${mjConfigPath}"></script>
 
-<!-- Robust MathJax core loader with fallbacks -->
-<script>(function(){
-  const srcs=${JSON.stringify(MJ_SOURCES)};
-  (function load(i){
-    if(i>=srcs.length){console.error('[RO] MathJax failed to load');return;}
-    var s=document.createElement('script'); s.defer=true; s.src=srcs[i];
-    s.onerror=function(){console.warn('[RO] MathJax failed:',srcs[i]);load(i+1)};
+<!-- Robust MathJax core loader with fallbacks and double-load guard -->
+<script>
+(function(){
+  // If MathJax core is already present in this window, do nothing.
+  // (window.MathJax is created by config, but version/startup only exist after the core.)
+  if (window.MathJax && (window.MathJax.version || window.MathJax.startup)) {
+    console.info('[RO] MathJax core already present — skipping load');
+    return;
+  }
+
+  var sources = [
+    'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js',
+    'https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js'
+  ];
+  var loaded = false;
+
+  function load(i){
+    if (loaded || i >= sources.length) return;
+    var s = document.createElement('script');
+    s.defer = true;
+    s.src = sources[i];
+    s.onload = function(){
+      // Mark loaded and prevent any subsequent attempts
+      loaded = true;
+      // Helpful in debugging; safe to remove:
+      console.info('[RO] MathJax loaded:', sources[i]);
+    };
+    s.onerror = function(){
+      console.warn('[RO] MathJax failed:', sources[i]);
+      load(i+1);
+    };
     document.head.appendChild(s);
-  })(0);
-})();</script>
+  }
+  load(0);
+})();
+</script>
 </head>
 <body>
   <header><strong>Live Preview</strong><span class="mono" id="stamp"></span></header>
