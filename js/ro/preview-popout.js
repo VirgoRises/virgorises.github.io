@@ -54,10 +54,10 @@ function buildHTMLWindow(baseHref) {
   }
 
   var sources = [
-    'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js',
-    'https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js'
-  ];
+  'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml-full.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml-full.min.js',
+  'https://unpkg.com/mathjax@3/es5/tex-mml-chtml-full.js'
+];
   var loaded = false;
 
   function load(i){
