@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RO Snippets Sandbox</title>
+
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; font:14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; background:#0B1117; color:#E6EDF3; }
+  header { padding:10px 14px; border-bottom:1px solid #1f2a36; background:#0F141A; display:flex; gap:12px; align-items:center; }
+  header .title { font-weight:600; }
+  main { display:grid; grid-template-columns: 40% 60%; gap:12px; padding:12px; }
+  .card { background:#0F141A; border:1px solid #1f2a36; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; min-height:0; }
+  .card .head { padding:10px 12px; border-bottom:1px solid #1f2a36; font-weight:600; display:flex; align-items:center; justify-content:space-between; }
+  .card .body { padding:10px 12px; overflow:auto; min-height:0; }
+  .toolbar { display:flex; flex-wrap:wrap; gap:6px; }
+  .btn { all:unset; cursor:pointer; padding:6px 10px; border:1px solid #273341; border-radius:8px; background:#111a24; }
+  .btn:hover { background:#162234; }
+  .btn.primary { border-color:#2f6feb; }
+  .btn.warn { border-color:#d29922; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:12px; }
+
+  textarea { width:100%; min-height:220px; resize:vertical; border-radius:8px; border:1px solid #273341; background:#0B1117; color:#E6EDF3; padding:10px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+  .split { display:grid; grid-template-columns: 1fr; gap:10px; }
+
+  /* Preview typographic base */
+  .preview { max-width:900px; margin:0 auto; }
+  .preview h1 { font-size:26px; margin:.8rem 0 .3rem; }
+  .preview h2 { font-size:22px; margin:.8rem 0 .3rem; }
+  .preview h3 { font-size:18px; margin:.8rem 0 .3rem; }
+  .preview p { margin:.5rem 0; }
+  .preview table { width:100%; border-collapse:collapse; margin:.6rem 0; }
+  .preview th, .preview td { border:1px solid #273341; padding:6px 8px; vertical-align:top; }
+
+  /* Snippet rendering in preview (for visual comfort) */
+  .snip { border:1px solid #273341; border-left:4px solid #2f6feb; background:#0B1219; padding:10px 12px; border-radius:8px; margin:10px 0; }
+  .snip.observation { border-left-color:#238636; }
+  .snip.hypothesis  { border-left-color:#2f6feb; }
+  .snip.evidence    { border-left-color:#d29922; }
+  .snip .snip-hdr { font-weight:600; margin-bottom:.4rem; display:flex; gap:.5rem; align-items:center; }
+  .snip .tag { font-size:11px; padding:2px 6px; border:1px solid #273341; border-radius:999px; opacity:.9; }
+  .snip .body { padding:0; }
+
+  /* Navigator */
+  .navlist { display:flex; flex-direction:column; gap:6px; }
+  .navitem { display:flex; align-items:center; gap:8px; padding:6px 8px; border:1px solid #273341; border-radius:8px; cursor:pointer; }
+  .navitem:hover { background:#111a24; }
+  .navitem .ttl { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .navitem.active { outline:2px solid #2f6feb; }
+
+  /* Tiny helper badges */
+  .badge { padding:2px 6px; font-size:11px; border-radius:999px; border:1px solid #273341; }
+  .type-obs { background:#0b1a10; }
+  .type-hyp { background:#0b1426; }
+  .type-evd { background:#1a1408; }
+</style>
+
+<!-- MathJax config (simple; your canonical config also works here) -->
+<script>
+  window.MathJax = {
+    tex: { tags: 'ams', inlineMath: [['\\(','\\)'], ['\\[\\[','\\]\\]']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml-full.js"></script>
+<!-- Marked for Markdown -->
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+</head>
+
+<body>
+<header>
+  <div class="title">Snippets sandbox (one RFC = one memo)</div>
+  <div class="toolbar">
+    <button class="btn" data-snippet="observation">+ Observation</button>
+    <button class="btn" data-snippet="hypothesis">+ Hypothesis</button>
+    <button class="btn" data-snippet="evidence">+ Evidence</button>
+    <button class="btn" id="btnInsertMM" title="Insert an mm marker at caret">Insert MM at caret</button>
+    <button class="btn" id="btnReparse">Reparse</button>
+  </div>
+</header>
+
+<main>
+  <!-- Left: Navigator + Preview -->
+  <section class="card">
+    <div class="head">Navigator</div>
+    <div class="body" id="nav" style="height:200px;">
+      <div class="navlist" id="navlist"></div>
+    </div>
+    <div class="head">Preview</div>
+    <div class="body">
+      <div id="preview" class="preview"></div>
+    </div>
+  </section>
+
+  <!-- Right: Memo -->
+  <section class="card">
+    <div class="head">Memo (single source of truth) <span class="mono" id="status"></span></div>
+    <div class="body split">
+      <textarea id="memo" spellcheck="false" placeholder="Your memo, one RFC at a time…"></textarea>
+    </div>
+  </section>
+</main>
+
+<script>
+/* --------------------- Utilities --------------------- */
+const $ = (s, el=document)=>el.querySelector(s);
+const $$ = (s, el=document)=>Array.from(el.querySelectorAll(s));
+
+function uid(prefix='s') { return prefix + '-' + Math.random().toString(36).slice(2,8); }
+
+function escapeHtml(s){ return String(s).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+
+async function mjTypeset(el){
+  if (!window.MathJax || !el) return;
+  try {
+    if (MathJax.startup?.promise) await MathJax.startup.promise;
+    MathJax.typesetClear?.([el]); MathJax.texReset?.();
+    if (MathJax.typesetPromise) await MathJax.typesetPromise([el]);
+    else MathJax.typeset?.([el]);
+  } catch {}
+}
+
+/* ----------------- Snippet model & parser -----------------
+   Snippets are fenced with HTML comments to remain robust inside Markdown:
+
+   <!-- SNIP type=hypothesis id=s-abc title="My thought" -->
+   (markdown body…)
+   <!-- /SNIP -->
+
+   We parse these blocks for navigation and for safe caret insertion.
+----------------------------------------------------------- */
+
+const SNIP_RE = /<!--\s*SNIP\s+([^>]*)-->([\s\S]*?)<!--\s*\/SNIP\s*-->/g;
+
+function parseAttrs(s){
+  // parse key=value (value can be "quoted" or bare)
+  const out={};
+  s.replace(/([\w-]+)\s*=\s*(?:"([^"]*)"|([^\s"']+))/g, (_,k,a,b)=>{ out[k]=a??b; return ''; });
+  return out;
+}
+
+function parseSnippets(memoText){
+  const snippets=[]; let m;
+  while ((m = SNIP_RE.exec(memoText))){
+    const attrs = parseAttrs(m[1]||'');
+    const body = m[2]||'';
+    snippets.push({
+      type: (attrs.type||'unknown').toLowerCase(),
+      id: attrs.id || uid('s'),
+      title: attrs.title || '',
+      start: m.index,
+      end: m.index + m[0].length,
+      bodyStart: m.index + m[0].indexOf('>') + 1, // not exact; we recompute for insertion
+      raw: m[0],
+      body
+    });
+  }
+  return snippets;
+}
+
+function buildSnippetBlock(type, title=''){
+  const id = uid('s');
+  const nice = {
+    observation: 'Observation',
+    hypothesis: 'Hypothesis',
+    evidence: 'Evidence'
+  }[type] || 'Snippet';
+  // Blank “body” starter line to encourage typing on its own line.
+  return `<!-- SNIP type=${type} id=${id} title="${title}" -->
+### ${nice}
+(Write here…)
+
+<!-- /SNIP -->\n\n`;
+}
+
+/* ----------------- Caret & insertion ----------------- */
+function getSelectionInTextarea(el){
+  return { start: el.selectionStart ?? 0, end: el.selectionEnd ?? 0 };
+}
+
+function setCaret(el, pos){
+  el.focus(); el.setSelectionRange(pos, pos);
+}
+
+function insertText(el, text){
+  const {start, end} = getSelectionInTextarea(el);
+  const v = el.value;
+  const nv = v.slice(0,start) + text + v.slice(end);
+  el.value = nv;
+  const newPos = start + text.length;
+  setCaret(el, newPos);
+  return nv;
+}
+
+function findSnippetAt(memoText, pos){
+  const arr = parseSnippets(memoText);
+  return arr.find(sn => pos >= sn.start && pos <= sn.end) || null;
+}
+
+function insertMMAtCaret(mmText){
+  const ta = $('#memo');
+  const pos = getSelectionInTextarea(ta).start;
+  const v = ta.value;
+  const sn = findSnippetAt(v, pos);
+
+  if (sn){
+    // Insert inside snippet body; try to keep neat line separation
+    const before = v.slice(0,pos);
+    const after  = v.slice(pos);
+    const ins = (before.endsWith('\n') ? '' : '\n') + mmText + (after.startsWith('\n') ? '' : '\n');
+    ta.value = before + ins + after;
+    setCaret(ta, (before + ins).length);
+  } else {
+    // No snippet at caret → append to last snippet if any, else create Scratchpad
+    const list = parseSnippets(v);
+    if (list.length){
+      const last = list[list.length-1];
+      const insertPos = last.end - '<!-- /SNIP -->'.length - 1; // just before close fence
+      ta.value = v.slice(0, insertPos) + '\n' + mmText + '\n' + v.slice(insertPos);
+      setCaret(ta, insertPos + mmText.length + 2);
+    } else {
+      // Create scratchpad snippet to house the mm
+      const block = buildSnippetBlock('observation', 'Scratchpad') + mmText + '\n';
+      ta.value = v + (v.endsWith('\n')?'':'\n') + block;
+      setCaret(ta, ta.value.length);
+    }
+  }
+  refresh();
+}
+
+/* --------------- Rendering & Navigator --------------- */
+function renderPreview(){
+  const md = $('#memo').value;
+  const html = marked.parse(md);
+  const out = $('#preview');
+  out.innerHTML = html;
+
+  // decorate snippets in the preview for visual comfort
+  // (purely presentational; the memo remains unchanged)
+  const walker = document.createTreeWalker(out, NodeFilter.SHOW_COMMENT, null);
+  const commentNodes=[];
+  while (walker.nextNode()) commentNodes.push(walker.currentNode);
+
+  // Wrap each SNIP block in a div.snip
+  commentNodes.forEach((c)=>{
+    const m = c.nodeValue.match(/^\s*SNIP\s+(.+)$/);
+    if (!m) return;
+    const attrs = parseAttrs(m[1]);
+    // find the matching closing comment
+    const nodes = [];
+    let n = c.nextSibling;
+    while (n && !(n.nodeType===8 && /^\s*\/SNIP/.test(n.nodeValue))) { nodes.push(n); n = n.nextSibling; }
+    if (!n) return; // malformed
+    // wrap
+    const wrapper = document.createElement('div');
+    wrapper.className = 'snip ' + (attrs.type||'');
+    const hdr = document.createElement('div');
+    hdr.className = 'snip-hdr';
+    const tag = document.createElement('span'); tag.className='tag'; tag.textContent = (attrs.type||'snippet');
+    const title = document.createElement('span'); title.textContent = attrs.title || '';
+    hdr.append(tag, title);
+    const body = document.createElement('div'); body.className='body';
+    nodes.forEach(node => body.appendChild(node.cloneNode(true)));
+    wrapper.append(hdr, body);
+
+    // replace original range
+    const parent = c.parentNode;
+    parent.insertBefore(wrapper, c);
+    // remove original nodes (between comments and the close comment)
+    nodes.forEach(node => parent.removeChild(node));
+  });
+
+  mjTypeset(out);
+}
+
+function renderNav(){
+  const v = $('#memo').value;
+  const list = parseSnippets(v);
+  const nav = $('#navlist');
+  nav.innerHTML = '';
+  list.forEach((sn, idx)=>{
+    const div = document.createElement('div');
+    div.className='navitem';
+    div.dataset.start = sn.start;
+    let badge = document.createElement('span'); badge.className='badge ' + (sn.type==='observation'?'type-obs': sn.type==='hypothesis'?'type-hyp':'type-evd');
+    badge.textContent = sn.type || 'snippet';
+    let ttl = document.createElement('span'); ttl.className='ttl'; ttl.textContent = sn.title || `(untitled #${idx+1})`;
+    let goto = document.createElement('button'); goto.className='btn'; goto.textContent='Go'; goto.addEventListener('click', ()=>{
+      $('#memo').focus(); setCaret($('#memo'), Number(div.dataset.start)+1); // into the block
+    });
+    div.append(badge, ttl, goto);
+    nav.appendChild(div);
+  });
+}
+
+function refresh(){
+  renderNav();
+  renderPreview();
+  $('#status').textContent = 'updated ' + new Date().toLocaleTimeString();
+}
+
+/* ----------------- Boot & events ----------------- */
+const ta = $('#memo');
+
+// Seed with a couple of example snippets
+ta.value = `<!-- SNIP type=observation id=s-1 title="Ladder up the wall" -->
+We see a family of ratios that look like roots of fractions.
+
+<!-- /SNIP -->
+
+<!-- SNIP type=hypothesis id=s-2 title="√n/(n+1) relationship" -->
+It appears that
+\\[
+  r_q = \\forall n\\, \\sqrt{\\frac{n}{n+1}} \\to
+  \\left\\{ \\sqrt{\\tfrac{1}{2}} , \\sqrt{\\tfrac{2}{3}} , \\sqrt{\\tfrac{3}{4}} , \\dots \\right\\} \\tag{05:01}
+\\]
+<!-- /SNIP -->
+
+<!-- SNIP type=evidence id=s-3 title="Figure crop + table" -->
+<table style="width:100%; table-layout:fixed; border-collapse:collapse;">
+  <colgroup><col style="width:120px;"><col></colgroup>
+  <tbody><tr>
+    <td style="padding:0; vertical-align:top;">
+      <div style="--x:.4; --y:0; width:100%; aspect-ratio:1/1; position:relative; overflow:hidden; border-radius:4px;">
+        <img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
+             alt="" style="position:absolute; display:block; width:280%; height:280%; left:calc(-1 * var(--x) * 10%); top:calc(-1 * var(--y) * 10%);" />
+      </div>
+    </td>
+    <td style="padding:8px 9px; vertical-align:top;">
+      <table style="width:100%; border-collapse:collapse; margin:0;">
+        <thead><tr>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">n</th>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">math</th>
+        </tr></thead>
+        <tbody><tr>
+          <td style="border:1px solid #273341; padding:6px 8px;">1</td>
+          <td style="border:1px solid #273341; padding:6px 8px;">
+            \\[ r_q = \\forall n\\, \\sqrt{\\frac{n}{n+1}} \\to
+                \\left\\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\ldots \\right\\} \\tag{05:01} \\]
+          </td>
+        </tr></tbody>
+      </table>
+    </td>
+  </tr></tbody>
+</table>
+<!-- /SNIP -->
+`;
+
+refresh();
+
+// Toolbar actions
+$('.toolbar').addEventListener('click', (ev)=>{
+  const btn = ev.target.closest('button');
+  if (!btn) return;
+  const t = btn.dataset.snippet;
+  if (!t) return;
+  const block = buildSnippetBlock(t, '');
+  insertText($('#memo'), block);
+  refresh();
+});
+
+// Insert an MM marker safely
+$('#btnInsertMM').addEventListener('click', ()=>{
+  // demo MM marker; in RO you’d build this from the grid selection
+  const mm = `[mm|p54=60,129:104,169:"F5.03 Triangular numbers-chord density"]`;
+  insertMMAtCaret(mm);
+});
+
+// Reparse
+$('#btnReparse').addEventListener('click', refresh);
+
+// Live preview while typing (debounced)
+let tmr=null;
+$('#memo').addEventListener('input', ()=>{
+  clearTimeout(tmr);
+  tmr = setTimeout(refresh, 200);
+});
+</script>
+</body>
+</html>
