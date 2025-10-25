@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RO Snippets v2 — Structured Flow Editor</title>
+
+<style>
+:root{color-scheme:dark}
+body{margin:0;background:#0B1117;color:#E6EDF3;font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+header{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:#0F141A;border-bottom:1px solid #1f2a36}
+header .title{font-weight:600;margin-right:auto}
+.btn{all:unset;cursor:pointer;border:1px solid #273341;border-radius:8px;background:#111a24;padding:6px 10px}
+.btn:hover{background:#162234}
+.btn.danger{border-color:#f85149}
+.btn.primary{border-color:#2f6feb}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:12px}
+main{display:grid;grid-template-columns: 48% 52%;gap:12px;padding:12px}
+.card{background:#0F141A;border:1px solid #1f2a36;border-radius:10px;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.card .head{padding:10px 12px;border-bottom:1px solid #1f2a36;display:flex;align-items:center;gap:8px;font-weight:600}
+.card .head .right{margin-left:auto;display:flex;gap:6px}
+.card .body{padding:10px 12px;overflow:auto}
+.grid{display:flex;flex-direction:column;gap:10px}
+.snip{border:1px solid #273341;border-radius:10px;background:#0B1219;overflow:hidden}
+.snip.active{outline:2px solid #2f6feb}
+.snip .bar{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #1f2a36}
+.snip .bar .drag{cursor:grab;opacity:.8}
+.snip .bar .type{font-size:12px;border:1px solid #273341;border-radius:999px;padding:2px 8px;text-transform:capitalize}
+.snip.observation{border-left:4px solid #238636}
+.snip.hypothesis{border-left:4px solid #2f6feb}
+.snip.evidence{border-left:4px solid #d29922}
+.snip .title{font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.snip .tools{display:flex;gap:6px}
+.snip .body{padding:10px}
+.preview{max-width:980px;margin:0 auto}
+.preview h1{font-size:26px;margin:.8rem 0 .4rem}
+.preview h2{font-size:22px;margin:.7rem 0 .3rem}
+.preview h3{font-size:18px;margin:.6rem 0 .2rem}
+.preview table{width:100%;border-collapse:collapse;margin:.6rem 0}
+.preview th,.preview td{border:1px solid #273341;padding:6px 8px;vertical-align:top}
+
+/* modal */
+dialog{border:none;border-radius:12px;max-width:720px;width:calc(100vw - 48px);background:#0B1117;color:#E6EDF3}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+.modal-head{padding:12px 14px;border-bottom:1px solid #1f2a36;font-weight:600}
+.modal-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.modal-foot{padding:12px 14px;border-top:1px solid #1f2a36;display:flex;gap:8px;justify-content:flex-end}
+input[type="text"],textarea{width:100%;border:1px solid #273341;border-radius:8px;background:#0B1117;color:#E6EDF3;padding:8px 10px}
+textarea{min-height:160px;resize:vertical}
+.small{font-size:12px;opacity:.85}
+</style>
+
+<!-- Markdown -->
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script>
+  // Safer options for math content
+  marked.setOptions({
+    breaks: true,
+    mangle: false,
+    headerIds: false
+  });
+</script>
+
+<!-- Use the SAME MathJax config as chapters (your single source of truth) -->
+<!-- MathJax config must come BEFORE MathJax core -->
+<script src="cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<!-- Drag & drop -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.3/Sortable.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="title">Snippets v2 — Structured Flow Editor</div>
+  <button class="btn" data-add="observation">+ Observation</button>
+  <button class="btn" data-add="hypothesis">+ Hypothesis</button>
+  <button class="btn" data-add="evidence">+ Evidence</button>
+  <button class="btn" id="btnInsertMM" title="Insert an MM token into the active snippet">Insert MM</button>
+  <button class="btn" id="exportMemo">Export memo</button>
+  <span class="mono" id="status"></span>
+</header>
+
+<main>
+  <section class="card">
+    <div class="head">Snippets <span class="mono" id="count"></span><div class="right"><span class="mono" id="hint">drag ↕ to reorder</span></div></div>
+    <div class="body"><div id="list" class="grid"></div></div>
+  </section>
+
+  <section class="card">
+    <div class="head">Live Preview (combined)</div>
+    <div class="body"><div id="preview" class="preview"></div></div>
+  </section>
+</main>
+
+<!-- modal -->
+<dialog id="modal">
+  <div class="modal-head" id="modalTitle">Edit snippet</div>
+  <div class="modal-body">
+    <label class="small">Title</label>
+    <input type="text" id="fTitle" placeholder="Short label / claim"/>
+    <label class="small">Body (Markdown + LaTeX)</label>
+    <textarea id="fBody" spellcheck="false" placeholder="Write here…"></textarea>
+    <div class="small mono">Tip: use <code>\\( ... \\)</code> or <code>\\[ ... \\]</code> for math. Type <code>[split]</code> to split this snippet into two.</div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn" id="btnCancel">Cancel</button>
+    <button class="btn" id="btnSplit">Split at [split]</button>
+    <button class="btn primary" id="btnSave">Save</button>
+  </div>
+</dialog>
+
+<script>
+/* -------------------- utilities -------------------- */
+const $=(s,e=document)=>e.querySelector(s);
+const uid=(p='s')=>p+'-'+Math.random().toString(36).slice(2,8);
+const status=t=>$('#status').textContent=t;
+
+function escapeHtml(s){return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
+function escapeAttr(s){return String(s||'').replace(/"/g,'&quot;')}
+
+function insertAtCaret(textarea, text){
+  const s = textarea.selectionStart ?? 0;
+  const e = textarea.selectionEnd ?? s;
+  const v = textarea.value;
+  textarea.value = v.slice(0, s) + text + v.slice(e);
+  const pos = s + text.length;
+  textarea.focus();
+  textarea.setSelectionRange(pos, pos);
+}
+
+async function typeset(target){
+  // typeset a specific node (card or preview)
+  if(!window.MathJax || !target) return;
+  try{
+    if (MathJax.startup?.promise) await MathJax.startup.promise;
+    MathJax.typesetClear?.([target]); MathJax.texReset?.();
+    if (MathJax.typesetPromise) await MathJax.typesetPromise([target]); else MathJax.typeset?.([target]);
+  }catch{}
+}
+
+/* -------------------- model -------------------- */
+const LSKEY='ro:snip:v2:'+location.pathname;
+let SNIPS=[]; // {id,type,title,body}
+let ACTIVE_ID = null; // active card id
+let sortableInst = null;
+
+function save(){ localStorage.setItem(LSKEY, JSON.stringify(SNIPS)); status('saved · '+new Date().toLocaleTimeString()); }
+function load(){
+  const raw=localStorage.getItem(LSKEY);
+  if(raw){ try{ SNIPS=JSON.parse(raw)||[] }catch{} }
+  if(!SNIPS.length){
+    SNIPS=[
+      {id:uid(), type:'observation', title:'Ladder up the wall', body:'We see a family of ratios that look like roots of fractions.'},
+      {id:uid(), type:'hypothesis',  title:'√n/(n+1) relationship', body:'It appears that \\[ r_q=\\forall n\\,\\sqrt{\\frac{n}{n+1}} \\to \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\dots \\} \\tag{05:01} \\]'},
+      {id:uid(), type:'evidence',    title:'Figure crop + table', body:`<table style="width:100%; table-layout:fixed; border-collapse:collapse;">
+  <colgroup><col style="width:120px;"><col></colgroup>
+  <tbody><tr>
+    <td style="padding:0; vertical-align:top;">
+      <div style="--x:.4; --y:0; width:100%; aspect-ratio:1/1; position:relative; overflow:hidden; border-radius:4px;">
+        <img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
+             alt="" style="position:absolute; display:block; width:280%; height:280%; left:calc(-1 * var(--x) * 10%); top:calc(-1 * var(--y) * 10%);" />
+      </div>
+    </td>
+    <td style="padding:8px 9px; vertical-align:top;">
+      <table style="width:100%; border-collapse:collapse; margin:0;">
+        <thead><tr>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">n</th>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">math</th>
+        </tr></thead>
+        <tbody><tr>
+          <td style="border:1px solid #273341; padding:6px 8px;">1</td>
+          <td style="border:1px solid #273341; padding:6px 8px;">
+            \\[ r_q = \\forall n\\, \\sqrt{\\frac{n}{n+1}} \\to
+               \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\ldots \\} \\tag{05:01} \\]
+          </td>
+        </tr></tbody>
+      </table>
+    </td>
+  </tr></tbody>
+</table>`}
+    ];
+  }
+  if (!ACTIVE_ID && SNIPS.length) ACTIVE_ID = SNIPS[0].id;
+}
+
+/* -------------- serialize to memo (fences) -------------- */
+function toMemo(){
+  return SNIPS.map(s => `<!-- SNIP type=${s.type} id=${s.id} title="${escapeAttr(s.title)}" -->\n${s.body}\n<!-- /SNIP -->`).join('\n\n');
+}
+
+/* -------------------- merge helpers -------------------- */
+function baseTitle(t){ return (t||'').replace(/\s*\(part\s*[12]\)\s*$/i,'').trim(); }
+function mergePrev(idx){
+  if (idx <= 0) return;
+  const cur = SNIPS[idx], prev = SNIPS[idx-1];
+  if (!cur || !prev || cur.type !== prev.type) return;
+  const merged = {
+    ...prev,
+    title: baseTitle(prev.title) || baseTitle(cur.title) || '',
+    body:  (prev.body||'').trim() + '\n\n' + (cur.body||'').trim()
+  };
+  SNIPS[idx-1] = merged;
+  SNIPS.splice(idx, 1);
+  ACTIVE_ID = merged.id;
+  save(); renderAll();
+}
+function mergeNext(idx){
+  if (idx >= SNIPS.length-1) return;
+  const cur = SNIPS[idx], next = SNIPS[idx+1];
+  if (!cur || !next || cur.type !== next.type) return;
+  const merged = {
+    ...cur,
+    title: baseTitle(cur.title) || baseTitle(next.title) || '',
+    body:  (cur.body||'').trim() + '\n\n' + (next.body||'').trim()
+  };
+  SNIPS[idx] = merged;
+  SNIPS.splice(idx+1, 1);
+  ACTIVE_ID = merged.id;
+  save(); renderAll();
+}
+
+/* -------------------- rendering -------------------- */
+async function renderList(){
+  const list = $('#list'); list.innerHTML = '';
+  $('#count').textContent = SNIPS.length + ' items';
+
+  SNIPS.forEach((sn, idx)=>{
+    const prev = SNIPS[idx-1], next = SNIPS[idx+1];
+    const canMergePrev = !!(prev && prev.type === sn.type);
+    const canMergeNext = !!(next && next.type === sn.type);
+
+    const div = document.createElement('div');
+    div.className = 'snip ' + sn.type + (sn.id === ACTIVE_ID ? ' active' : '');
+    div.dataset.id = sn.id;
+    div.dataset.idx = idx;
+
+    div.innerHTML = `
+      <div class="bar">
+        <span class="drag">↕</span>
+        <span class="type">${sn.type}</span>
+        <span class="title">${sn.title ? escapeHtml(sn.title) : '(untitled)'}</span>
+        <div class="tools">
+          <button class="btn" data-act="merge-prev" title="Merge with previous" ${canMergePrev?'':'disabled'}>◀ Merge</button>
+          <button class="btn" data-act="merge-next" title="Merge with next" ${canMergeNext?'':'disabled'}>Merge ▶</button>
+          <button class="btn" data-act="edit" title="Edit">✏️</button>
+          <button class="btn" data-act="dup" title="Duplicate">📄</button>
+          <button class="btn danger" data-act="del" title="Delete">🗑️</button>
+        </div>
+      </div>
+      <div class="body">${marked.parse(sn.body||'')}</div>
+    `;
+
+    // clicking a card (outside tool buttons) makes it active
+    div.addEventListener('click', (ev)=>{
+      if (ev.target.closest('.tools') || ev.target.closest('button,.drag')) return;
+      ACTIVE_ID = sn.id;
+      renderAll();
+    });
+
+    list.appendChild(div);
+  });
+
+  // Typeset math inside the list (all cards)
+  await typeset(list);
+
+  // init / re-init drag
+  if (sortableInst) { try { sortableInst.destroy(); } catch{} }
+  sortableInst = new Sortable(list,{
+    animation:120,
+    handle:'.drag',
+    ghostClass:'ghost',
+    onEnd: (e)=>{
+      const from=e.oldIndex, to=e.newIndex;
+      if(from===to || from==null || to==null) return;
+      const [moved]=SNIPS.splice(from,1); SNIPS.splice(to,0,moved);
+      save(); renderAll();
+    }
+  });
+}
+
+// single delegated click handler
+$('#list').addEventListener('click', function onListClick(ev){
+  const btn = ev.target.closest('button'); if(!btn) return;
+  if (btn.hasAttribute('disabled')) return;
+
+  const card = ev.target.closest('.snip'); if(!card) return;
+  const id   = card.dataset.id;
+  const idx  = Number(card.dataset.idx);
+  const act  = btn.dataset.act;
+  const i    = SNIPS.findIndex(x=>x.id===id);
+  if (i < 0) return;
+
+  if (act==='merge-prev') { mergePrev(i); return; }
+  if (act==='merge-next') { mergeNext(i); return; }
+  if (act==='edit')       { openModal(SNIPS[i]); return; }
+  if (act==='dup')        { const copy={...SNIPS[i], id:uid(), title:(SNIPS[i].title||'')+' (copy)'}; SNIPS.splice(i+1,0,copy); ACTIVE_ID=copy.id; save(); renderAll(); return; }
+  if (act==='del')        { if(confirm('Delete this snippet?')){ const wasActive = (ACTIVE_ID===SNIPS[i].id); SNIPS.splice(i,1); if(wasActive){ ACTIVE_ID = SNIPS[i]?.id || SNIPS[i-1]?.id || null; } save(); renderAll(); } return; }
+});
+
+async function renderPreview(){
+  const html = marked.parse(toMemo());
+  const out = $('#preview'); out.innerHTML = html;
+  await typeset(out);
+}
+function renderAll(){ renderList(); renderPreview(); }
+
+/* -------------------- modal (edit/split/save) -------------------- */
+const MOD = $('#modal'),
+      FT = $('#fTitle'),
+      FB = $('#fBody'),
+      MTitle = $('#modalTitle');
+let EDITING = null;
+
+function openModal(sn){
+  ACTIVE_ID = sn.id;
+  EDITING = sn;
+  MTitle.textContent = 'Edit ' + sn.type;
+  FT.value = sn.title || '';
+  FB.value = sn.body || '';
+  MOD.showModal();
+}
+
+$('#btnCancel').addEventListener('click', () => {
+  if (!EDITING) return;
+  if (FB.value.includes('[split]')) FB.value = FB.value.replace(/\[split\]/g, '');
+  MOD.close();
+});
+
+$('#btnSave').addEventListener('click', () => {
+  if (!EDITING) return;
+  const cleanedBody = FB.value.replace(/\[split\]/g, '');
+  EDITING.title = FT.value.trim();
+  EDITING.body  = cleanedBody;
+  save();
+  MOD.close();
+  renderAll();
+});
+
+$('#btnSplit').addEventListener('click', () => {
+  if (!EDITING) return;
+  const body = FB.value;
+  if (!body.includes('[split]')) {
+    alert('Insert [split] at the position you like to split the contents.');
+    return;
+  }
+  const parts = body.split('[split]');
+  if (parts.length !== 2) { alert('Please use exactly one [split] marker.'); return; }
+  const [part1, part2] = parts.map(s=>s.trim());
+  if (!part1 || !part2) { alert('Make sure both sides of [split] contain content.'); return; }
+
+  const idx = SNIPS.findIndex(s => s.id === EDITING.id);
+  if (idx === -1) return;
+
+  const newSnip = { id: uid(), type: EDITING.type, title: (EDITING.title || '') + ' (part 2)', body: part2 };
+  EDITING.body = part1;
+  EDITING.title = (EDITING.title || '') + ' (part 1)';
+  SNIPS.splice(idx + 1, 0, newSnip);
+  ACTIVE_ID = newSnip.id;
+
+  save(); MOD.close(); renderAll();
+});
+
+/* -------------------- add buttons -------------------- */
+document.querySelectorAll('button[data-add]').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const type=b.dataset.add;
+    const sn={id:uid(), type, title:'', body:''};
+    SNIPS.push(sn); ACTIVE_ID = sn.id; save(); renderAll(); openModal(sn);
+  });
+});
+
+/* -------------------- Insert MM wiring -------------------- */
+function insertMM(mmText){
+  if (typeof MOD?.open==='boolean' && MOD.open) {
+    const token = (FB.value && !FB.value.endsWith('\n') ? '\n' : '') + mmText + '\n';
+    insertAtCaret(FB, token);
+    return;
+  }
+  if (!ACTIVE_ID) { alert('Select a card first (click it), then try Insert MM again.'); return; }
+  const i = SNIPS.findIndex(s=>s.id===ACTIVE_ID);
+  if (i < 0) { alert('Active card not found.'); return; }
+  const b = SNIPS[i].body || '';
+  const sep = b && !b.endsWith('\n') ? '\n' : '';
+  SNIPS[i].body = b + sep + mmText + '\n';
+  save(); renderAll();
+}
+window.RO_insertMM = insertMM;
+
+$('#btnInsertMM').addEventListener('click', ()=>{
+  const sample = `[mm|p54=60,129:104,169:"sample label"]`;
+  insertMM(sample);
+});
+
+/* -------------------- export -------------------- */
+$('#exportMemo').addEventListener('click', ()=>{
+  const text = toMemo();
+  const a=document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text],{type:'text/plain'}));
+  a.download = 'memo-snippets.txt';
+  a.click(); URL.revokeObjectURL(a.href);
+});
+
+/* -------------------- boot -------------------- */
+load(); renderAll(); status('ready · autosave active');
+</script>
+</body>
+</html>
