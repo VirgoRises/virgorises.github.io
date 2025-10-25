@@ -22,8 +22,10 @@ main{display:grid;grid-template-columns: 48% 52%;gap:12px;padding:12px}
 .card .head .right{margin-left:auto;display:flex;gap:6px}
 .card .body{padding:10px 12px;overflow:auto}
 .grid{display:flex;flex-direction:column;gap:10px}
-.snip{border:1px solid #273341;border-radius:10px;background:#0B1219;overflow:hidden}
-.snip.active{outline:2px solid #2f6feb}
+
+/* snippet cards */
+.snip{border:1px solid #273341;border-radius:10px;background:#0B1219;overflow:hidden;transition:box-shadow .15s ease}
+.snip.active{outline:2px solid #2f6feb; box-shadow:0 0 0 3px rgba(47,111,235,.25) inset}
 .snip .bar{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #1f2a36}
 .snip .bar .drag{cursor:grab;opacity:.8}
 .snip .bar .type{font-size:12px;border:1px solid #273341;border-radius:999px;padding:2px 8px;text-transform:capitalize}
@@ -32,7 +34,14 @@ main{display:grid;grid-template-columns: 48% 52%;gap:12px;padding:12px}
 .snip.evidence{border-left:4px solid #d29922}
 .snip .title{font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .snip .tools{display:flex;gap:6px}
+
+/* harmonica / collapsible */
 .snip .body{padding:10px}
+.snip.collapsed .body{display:none}
+.snip.collapsed:hover .body{display:block}
+.snip.collapsed:hover .bar{border-bottom-color:#273341}
+
+/* preview pane */
 .preview{max-width:980px;margin:0 auto}
 .preview h1{font-size:26px;margin:.8rem 0 .4rem}
 .preview h2{font-size:22px;margin:.7rem 0 .3rem}
@@ -40,31 +49,44 @@ main{display:grid;grid-template-columns: 48% 52%;gap:12px;padding:12px}
 .preview table{width:100%;border-collapse:collapse;margin:.6rem 0}
 .preview th,.preview td{border:1px solid #273341;padding:6px 8px;vertical-align:top}
 
+/* preview section mapping */
+.pv-snip{padding:12px;border:1px solid #223041;border-radius:10px;margin:10px 0;background:#0b1219}
+.pv-snip.active{outline:2px solid #2f6feb; box-shadow:0 0 0 3px rgba(47,111,235,.25) inset}
+.pv-snip .pv-head{font-weight:600;margin-bottom:6px;display:flex;gap:8px;align-items:baseline}
+.pv-snip .pv-type{font-size:12px;border:1px solid #273341;border-radius:999px;padding:2px 8px;text-transform:capitalize;opacity:.9}
+
 /* modal */
-dialog{border:none;border-radius:12px;max-width:720px;width:calc(100vw - 48px);background:#0B1117;color:#E6EDF3}
-dialog::backdrop{background:rgba(0,0,0,.45)}
-.modal-head{padding:12px 14px;border-bottom:1px solid #1f2a36;font-weight:600}
-.modal-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
-.modal-foot{padding:12px 14px;border-top:1px solid #1f2a36;display:flex;gap:8px;justify-content:flex-end}
-input[type="text"],textarea{width:100%;border:1px solid #273341;border-radius:8px;background:#0B1117;color:#E6EDF3;padding:8px 10px}
-textarea{min-height:160px;resize:vertical}
+dialog{border:none;border-radius:12px;width:min(960px, 96vw);height:min(80vh, 92vh);background:#0B1117;color:#E6EDF3;padding:0;display:flex;flex-direction:column}
+dialog::backdrop{background:rgba(0,0,0,.48)}
+.modal-head{position:sticky;top:0;z-index:2;padding:12px 14px;border-bottom:1px solid #1f2a36;font-weight:600;display:flex;align-items:center;gap:10px}
+.modal-head .sub{font-weight:400;opacity:.8}
+.modal-head .grow{flex:1}
+.modal-head .iconbtn{all:unset;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid #273341;border-radius:8px;background:#121a24;cursor:pointer}
+.modal-body{min-height:0;flex:1;overflow:auto;padding:12px 14px;display:grid;grid-template-rows:auto 1fr;gap:10px}
+.modal-row{display:grid;grid-template-columns:80px 1fr;gap:10px;align-items:center}
+.modal-row input{width:100%;border:1px solid #273341;border-radius:8px;background:#0B1117;color:#E6EDF3;padding:8px 10px}
+.modal-editor{display:grid;grid-template-columns:80px 1fr;gap:10px;min-height:0}
+.modal-editor textarea{width:100%;height:100%;min-height:280px;border:1px solid #273341;border-radius:8px;background:#0B0F14;color:#E6EDF3;padding:10px 12px;resize:vertical;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+.modal-foot{position:sticky;bottom:0;z-index:2;padding:12px 14px;border-top:1px solid #1f2a36;display:flex;gap:8px;justify-content:flex-end;background:#0B1117}
 .small{font-size:12px;opacity:.85}
+
+/* split indicator */
+.split-ind{margin-right:auto;display:flex;align-items:center;gap:8px}
+.split-pill{font-size:12px;border:1px solid #273341;border-radius:999px;padding:2px 8px}
+.split-pill.ok{border-color:#2ea043;color:#c2f7d1}
+.split-pill.warn{border-color:#f0883e;color:#ffd8b5}
+.split-pill.err{border-color:#f85149;color:#ffd1d1}
+
+/* fullscreen modal */
+dialog.full{width:min(1200px, 98vw);height:min(92vh, 98vh)}
 </style>
 
 <!-- Markdown -->
 <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
-<script>
-  // Safer options for math content
-  marked.setOptions({
-    breaks: true,
-    mangle: false,
-    headerIds: false
-  });
-</script>
+<script>marked.setOptions({ breaks:true, mangle:false, headerIds:false });</script>
 
-<!-- Use the SAME MathJax config as chapters (your single source of truth) -->
-<!-- MathJax config must come BEFORE MathJax core -->
-<script src="cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
+<!-- MathJax config from chapter (single source of truth) -->
+<script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
 <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <!-- Drag & drop -->
@@ -83,9 +105,9 @@ textarea{min-height:160px;resize:vertical}
 </header>
 
 <main>
-  <section class="card">
-    <div class="head">Snippets <span class="mono" id="count"></span><div class="right"><span class="mono" id="hint">drag ↕ to reorder</span></div></div>
-    <div class="body"><div id="list" class="grid"></div></div>
+  <section class="card" id="leftPanel">
+    <div class="head">Snippets <span class="mono" id="count"></span><div class="right"><span class="mono" id="hint">collapsed · hover or select to open · drag ↕ to reorder</span></div></div>
+    <div class="body" id="listWrap"><div id="list" class="grid"></div></div>
   </section>
 
   <section class="card">
@@ -96,18 +118,32 @@ textarea{min-height:160px;resize:vertical}
 
 <!-- modal -->
 <dialog id="modal">
-  <div class="modal-head" id="modalTitle">Edit snippet</div>
-  <div class="modal-body">
-    <label class="small">Title</label>
-    <input type="text" id="fTitle" placeholder="Short label / claim"/>
-    <label class="small">Body (Markdown + LaTeX)</label>
-    <textarea id="fBody" spellcheck="false" placeholder="Write here…"></textarea>
-    <div class="small mono">Tip: use <code>\\( ... \\)</code> or <code>\\[ ... \\]</code> for math. Type <code>[split]</code> to split this snippet into two.</div>
+  <div class="modal-head">
+    <span id="modalTitle">Edit snippet</span>
+    <span class="sub" id="modalType"></span>
+    <span class="grow"></span>
+    <button title="Toggle full screen (F11)" class="iconbtn" id="modalFull">⤢</button>
   </div>
+
+  <div class="modal-body">
+    <div class="modal-row">
+      <label class="small">Title</label>
+      <input type="text" id="fTitle" placeholder="Short label / claim"/>
+    </div>
+    <div class="modal-editor">
+      <label class="small">Body</label>
+      <textarea id="fBody" spellcheck="false" placeholder="Markdown + LaTeX. Use \\( ... \\) or \\[ ... \\]. Type [split] to split."></textarea>
+    </div>
+    <div class="small mono">Tip: Ctrl+Enter = Save · Ctrl+Shift+S = Split · Esc = Cancel.</div>
+  </div>
+
   <div class="modal-foot">
+    <div class="split-ind">
+      <span class="split-pill" id="splitInfo">[split] markers: 0</span>
+    </div>
     <button class="btn" id="btnCancel">Cancel</button>
-    <button class="btn" id="btnSplit">Split at [split]</button>
-    <button class="btn primary" id="btnSave">Save</button>
+    <button class="btn" id="btnSplit" title="Split at [split]">Split at [split]</button>
+    <button class="btn primary" id="btnSave" title="Save (Ctrl+Enter)">Save</button>
   </div>
 </dialog>
 
@@ -120,18 +156,14 @@ const status=t=>$('#status').textContent=t;
 function escapeHtml(s){return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
 function escapeAttr(s){return String(s||'').replace(/"/g,'&quot;')}
 
-function insertAtCaret(textarea, text){
-  const s = textarea.selectionStart ?? 0;
-  const e = textarea.selectionEnd ?? s;
-  const v = textarea.value;
-  textarea.value = v.slice(0, s) + text + v.slice(e);
-  const pos = s + text.length;
-  textarea.focus();
-  textarea.setSelectionRange(pos, pos);
+function normalizeTeX(src){
+  // Forgiving rendering: treat \\[ as \[ etc. (rendering only)
+  src = src.replace(/\\\\(?=[\[\]\(\){}])/g, '\\');
+  src = src.replace(/\\\\(frac|sqrt|tag|label|to|forall|dots|ldots)/g, '\\$1');
+  return src;
 }
 
 async function typeset(target){
-  // typeset a specific node (card or preview)
   if(!window.MathJax || !target) return;
   try{
     if (MathJax.startup?.promise) await MathJax.startup.promise;
@@ -140,10 +172,22 @@ async function typeset(target){
   }catch{}
 }
 
+/* scroll helpers */
+function scrollCardNearTop(el){
+  const wrap = $('#listWrap'); if(!wrap || !el) return;
+  const top = el.offsetTop - 16;
+  wrap.scrollTo({ top, behavior:'smooth' });
+}
+function scrollPreviewTo(id){
+  const pv = $('#preview'); const sec = pv?.querySelector(`.pv-snip[data-id="${id}"]`);
+  if (!pv || !sec) return;
+  pv.parentElement.scrollTo({ top: sec.offsetTop - 16, behavior:'smooth' });
+}
+
 /* -------------------- model -------------------- */
 const LSKEY='ro:snip:v2:'+location.pathname;
 let SNIPS=[]; // {id,type,title,body}
-let ACTIVE_ID = null; // active card id
+let ACTIVE_ID = null;
 let sortableInst = null;
 
 function save(){ localStorage.setItem(LSKEY, JSON.stringify(SNIPS)); status('saved · '+new Date().toLocaleTimeString()); }
@@ -185,12 +229,12 @@ function load(){
   if (!ACTIVE_ID && SNIPS.length) ACTIVE_ID = SNIPS[0].id;
 }
 
-/* -------------- serialize to memo (fences) -------------- */
+/* memo export */
 function toMemo(){
   return SNIPS.map(s => `<!-- SNIP type=${s.type} id=${s.id} title="${escapeAttr(s.title)}" -->\n${s.body}\n<!-- /SNIP -->`).join('\n\n');
 }
 
-/* -------------------- merge helpers -------------------- */
+/* merge helpers */
 function baseTitle(t){ return (t||'').replace(/\s*\(part\s*[12]\)\s*$/i,'').trim(); }
 function mergePrev(idx){
   if (idx <= 0) return;
@@ -232,7 +276,8 @@ async function renderList(){
     const canMergeNext = !!(next && next.type === sn.type);
 
     const div = document.createElement('div');
-    div.className = 'snip ' + sn.type + (sn.id === ACTIVE_ID ? ' active' : '');
+    const isActive = sn.id === ACTIVE_ID;
+    div.className = 'snip ' + sn.type + (isActive ? ' active' : ' collapsed');
     div.dataset.id = sn.id;
     div.dataset.idx = idx;
 
@@ -249,28 +294,22 @@ async function renderList(){
           <button class="btn danger" data-act="del" title="Delete">🗑️</button>
         </div>
       </div>
-      <div class="body">${marked.parse(sn.body||'')}</div>
+      <div class="body">${marked.parse(normalizeTeX(sn.body||''))}</div>
     `;
 
-    // clicking a card (outside tool buttons) makes it active
     div.addEventListener('click', (ev)=>{
       if (ev.target.closest('.tools') || ev.target.closest('button,.drag')) return;
-      ACTIVE_ID = sn.id;
-      renderAll();
+      ACTIVE_ID = sn.id; renderAll(); scrollCardNearTop(div);
     });
 
     list.appendChild(div);
   });
 
-  // Typeset math inside the list (all cards)
   await typeset(list);
 
-  // init / re-init drag
   if (sortableInst) { try { sortableInst.destroy(); } catch{} }
   sortableInst = new Sortable(list,{
-    animation:120,
-    handle:'.drag',
-    ghostClass:'ghost',
+    animation:120, handle:'.drag', ghostClass:'ghost',
     onEnd: (e)=>{
       const from=e.oldIndex, to=e.newIndex;
       if(from===to || from==null || to==null) return;
@@ -278,18 +317,18 @@ async function renderList(){
       save(); renderAll();
     }
   });
+
+  const activeEl = list.querySelector('.snip.active');
+  if (activeEl) scrollCardNearTop(activeEl);
 }
 
-// single delegated click handler
 $('#list').addEventListener('click', function onListClick(ev){
   const btn = ev.target.closest('button'); if(!btn) return;
   if (btn.hasAttribute('disabled')) return;
-
   const card = ev.target.closest('.snip'); if(!card) return;
   const id   = card.dataset.id;
-  const idx  = Number(card.dataset.idx);
-  const act  = btn.dataset.act;
   const i    = SNIPS.findIndex(x=>x.id===id);
+  const act  = btn.dataset.act;
   if (i < 0) return;
 
   if (act==='merge-prev') { mergePrev(i); return; }
@@ -300,9 +339,22 @@ $('#list').addEventListener('click', function onListClick(ev){
 });
 
 async function renderPreview(){
-  const html = marked.parse(toMemo());
-  const out = $('#preview'); out.innerHTML = html;
-  await typeset(out);
+  const pv = $('#preview'); pv.innerHTML = '';
+  SNIPS.forEach(sn=>{
+    const sec = document.createElement('section');
+    sec.className = 'pv-snip' + (sn.id===ACTIVE_ID ? ' active':'');
+    sec.dataset.id = sn.id;
+    sec.innerHTML = `
+      <div class="pv-head">
+        <span class="pv-type">${sn.type}</span>
+        <span>${escapeHtml(sn.title||'')}</span>
+      </div>
+      <div class="pv-body">${marked.parse(normalizeTeX(sn.body||''))}</div>
+    `;
+    pv.appendChild(sec);
+  });
+  await typeset(pv);
+  if (ACTIVE_ID) scrollPreviewTo(ACTIVE_ID);
 }
 function renderAll(){ renderList(); renderPreview(); }
 
@@ -310,46 +362,56 @@ function renderAll(){ renderList(); renderPreview(); }
 const MOD = $('#modal'),
       FT = $('#fTitle'),
       FB = $('#fBody'),
-      MTitle = $('#modalTitle');
+      MTitle = $('#modalTitle'),
+      MType = $('#modalType'),
+      MFull = $('#modalFull'),
+      SplitInfo = $('#splitInfo'),
+      BtnSplit = $('#btnSplit'),
+      BtnSave = $('#btnSave'),
+      BtnCancel = $('#btnCancel');
+
 let EDITING = null;
+let wantFull = false;
+
+function updateSplitState(){
+  const cnt = (FB.value.match(/\[split\]/g) || []).length;
+  SplitInfo.textContent = `[split] markers: ${cnt}`;
+  SplitInfo.className = 'split-pill ' + (cnt===1 ? 'ok' : cnt===0 ? 'warn' : 'err');
+  BtnSplit.disabled = (cnt!==1);
+}
 
 function openModal(sn){
   ACTIVE_ID = sn.id;
   EDITING = sn;
-  MTitle.textContent = 'Edit ' + sn.type;
+  MTitle.textContent = 'Edit';
+  MType.textContent = `— ${sn.type}`;
   FT.value = sn.title || '';
   FB.value = sn.body || '';
+  updateSplitState();
+  if (wantFull) MOD.classList.add('full'); else MOD.classList.remove('full');
   MOD.showModal();
+  setTimeout(()=>FB.focus(), 0);
 }
 
-$('#btnCancel').addEventListener('click', () => {
+BtnCancel.addEventListener('click', () => {
   if (!EDITING) return;
-  if (FB.value.includes('[split]')) FB.value = FB.value.replace(/\[split\]/g, '');
+  FB.value = FB.value.replace(/\[split\]/g,'');
   MOD.close();
 });
 
-$('#btnSave').addEventListener('click', () => {
+BtnSave.addEventListener('click', () => {
   if (!EDITING) return;
-  const cleanedBody = FB.value.replace(/\[split\]/g, '');
+  const cleaned = FB.value.replace(/\[split\]/g,'');
   EDITING.title = FT.value.trim();
-  EDITING.body  = cleanedBody;
-  save();
-  MOD.close();
-  renderAll();
+  EDITING.body  = cleaned;
+  save(); MOD.close(); renderAll();
 });
 
-$('#btnSplit').addEventListener('click', () => {
+BtnSplit.addEventListener('click', () => {
   if (!EDITING) return;
-  const body = FB.value;
-  if (!body.includes('[split]')) {
-    alert('Insert [split] at the position you like to split the contents.');
-    return;
-  }
-  const parts = body.split('[split]');
-  if (parts.length !== 2) { alert('Please use exactly one [split] marker.'); return; }
+  const parts = FB.value.split('[split]');
+  if (parts.length !== 2) return; // guarded by disabled state
   const [part1, part2] = parts.map(s=>s.trim());
-  if (!part1 || !part2) { alert('Make sure both sides of [split] contain content.'); return; }
-
   const idx = SNIPS.findIndex(s => s.id === EDITING.id);
   if (idx === -1) return;
 
@@ -360,6 +422,21 @@ $('#btnSplit').addEventListener('click', () => {
   ACTIVE_ID = newSnip.id;
 
   save(); MOD.close(); renderAll();
+});
+
+MFull.addEventListener('click', ()=>{
+  wantFull = !wantFull;
+  MOD.classList.toggle('full', wantFull);
+});
+
+/* live split indicator while typing */
+FB.addEventListener('input', updateSplitState);
+
+/* keyboard shortcuts inside modal */
+MOD.addEventListener('keydown', (e)=>{
+  if (e.key==='Escape') { e.preventDefault(); BtnCancel.click(); }
+  if (e.key==='Enter' && (e.ctrlKey||e.metaKey)) { e.preventDefault(); BtnSave.click(); }
+  if ((e.ctrlKey||e.metaKey) && e.shiftKey && (e.key==='S' || e.key==='s')) { e.preventDefault(); BtnSplit.click(); }
 });
 
 /* -------------------- add buttons -------------------- */
@@ -375,7 +452,10 @@ document.querySelectorAll('button[data-add]').forEach(b=>{
 function insertMM(mmText){
   if (typeof MOD?.open==='boolean' && MOD.open) {
     const token = (FB.value && !FB.value.endsWith('\n') ? '\n' : '') + mmText + '\n';
-    insertAtCaret(FB, token);
+    const s = FB.selectionStart ?? FB.value.length;
+    FB.setRangeText(token, s, FB.selectionEnd ?? s, 'end');
+    FB.focus();
+    updateSplitState();
     return;
   }
   if (!ACTIVE_ID) { alert('Select a card first (click it), then try Insert MM again.'); return; }
@@ -407,3 +487,4 @@ load(); renderAll(); status('ready · autosave active');
 </script>
 </body>
 </html>
+
