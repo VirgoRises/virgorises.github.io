@@ -79,6 +79,9 @@ dialog::backdrop{background:rgba(0,0,0,.48)}
 
 /* fullscreen modal */
 dialog.full{width:min(1200px, 98vw);height:min(92vh, 98vh)}
+
+/* Optional: hide snippet type/title in preview cards */
+.preview .pv-snip header, .preview .pv-snip .pv-meta { display: none !important; }
 </style>
 
 <!-- Markdown -->
@@ -132,6 +135,15 @@ dialog.full{width:min(1200px, 98vw);height:min(92vh, 98vh)}
     </div>
     <div class="modal-editor">
       <label class="small">Body</label>
+      <!-- Compact smart-insert toolbar (MODAL) -->
+      <div id="modal-toolbar" class="toolbar" style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px;">
+        <button type="button" class="btn" data-insert="meta">🧱 Header info</button>
+        <button type="button" class="btn" data-insert="discord">📊 Discord stats</button>
+        <button type="button" class="btn" data-insert="logic">🧩 Logic skeleton</button>
+        <button type="button" class="btn" data-insert="math-inline">🧮 Inline math</button>
+        <button type="button" class="btn" data-insert="math-block">🧾 Block math</button>
+        <button type="button" class="btn" data-insert="figure">📸 Image/Table</button>
+      </div>
       <textarea id="fBody" spellcheck="false" placeholder="Markdown + LaTeX. Use \\( ... \\) or \\[ ... \\]. Type [split] to split."></textarea>
     </div>
     <div class="small mono">Tip: Ctrl+Enter = Save · Ctrl+Shift+S = Split · Esc = Cancel.</div>
@@ -156,8 +168,8 @@ const status=t=>$('#status').textContent=t;
 function escapeHtml(s){return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
 function escapeAttr(s){return String(s||'').replace(/"/g,'&quot;')}
 
+/* forgiving TeX normalizer: allow \\[ .. \\] and \\( .. \\) in memo */
 function normalizeTeX(src){
-  // Forgiving rendering: treat \\[ as \[ etc. (rendering only)
   src = src.replace(/\\\\(?=[\[\]\(\){}])/g, '\\');
   src = src.replace(/\\\\(frac|sqrt|tag|label|to|forall|dots|ldots)/g, '\\$1');
   return src;
@@ -167,9 +179,11 @@ async function typeset(target){
   if(!window.MathJax || !target) return;
   try{
     if (MathJax.startup?.promise) await MathJax.startup.promise;
-    MathJax.typesetClear?.([target]); MathJax.texReset?.();
-    if (MathJax.typesetPromise) await MathJax.typesetPromise([target]); else MathJax.typeset?.([target]);
-  }catch{}
+    MathJax.typesetClear?.([target]);
+    MathJax.texReset?.();
+    if (MathJax.typesetPromise) await MathJax.typesetPromise([target]);
+    else MathJax.typeset?.([target]);
+  }catch{/* no-op */}
 }
 
 /* scroll helpers */
@@ -373,8 +387,41 @@ const MOD = $('#modal'),
 let EDITING = null;
 let wantFull = false;
 
+/* Smart-insert toolbar wiring (modal only) */
+(function wireToolbar(){
+  const tb = $('#modal-toolbar'); if(!tb) return;
+
+  const INSERTS = {
+    meta:      'chapter:[notebook/] chapter-5-chords.html para: osf-1 primary: 51 author-id (Discord …)',
+    discord:   'Rank r out of n (rfc) -- [#dissent] ++ [#concur] [Active|Dormant|Retracted]',
+    logic:     '**Logic construct:**\nPremise 1: If it\\\'s raining, then it\\\'s cloudy.\nPremise 2: It\\\'s raining.\nConclusion: It\\\'s cloudy.',
+    'math-inline': '\\( x^2 + y^2 = z^2 \\)',
+    'math-block' : '\\[ E = mc^2 \\]',
+    figure:
+      '<table style="width:100%;border-collapse:collapse;"><tr>' +
+      '<td style="width:120px;vertical-align:top;">' +
+      '<div style="aspect-ratio:1/1;overflow:hidden;position:relative;border-radius:4px;">' +
+      '<img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG" alt="" style="position:absolute;display:block;width:280%;height:280%;left:calc(-1 * 0.4 * 10%);top:0;">' +
+      '</div></td><td style="padding:8px 9px;vertical-align:top;">\\[\\text{formula}\\]</td></tr></table>'
+  };
+
+  function insertAtCaret(textarea, text){
+    const s = textarea.selectionStart ?? 0;
+    const e = textarea.selectionEnd ?? s;
+    textarea.setRangeText(text, s, e, 'end');
+    textarea.focus();
+  }
+
+  tb.querySelectorAll('button[data-insert]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      insertAtCaret(FB, INSERTS[b.dataset.insert] || '');
+      updateSplitState();
+    });
+  });
+})();
+
 function updateSplitState(){
-  const cnt = (FB.value.match(/\[split\]/g) || []).length;
+  const cnt = (FB.value.match(/\[split\]/g)||[]).length;
   SplitInfo.textContent = `[split] markers: ${cnt}`;
   SplitInfo.className = 'split-pill ' + (cnt===1 ? 'ok' : cnt===0 ? 'warn' : 'err');
   BtnSplit.disabled = (cnt!==1);
@@ -388,55 +435,48 @@ function openModal(sn){
   FT.value = sn.title || '';
   FB.value = sn.body || '';
   updateSplitState();
-  if (wantFull) MOD.classList.add('full'); else MOD.classList.remove('full');
+  MOD.classList.toggle('full', wantFull);
   MOD.showModal();
-  setTimeout(()=>FB.focus(), 0);
+  setTimeout(()=>FB.focus(),0);
 }
 
-BtnCancel.addEventListener('click', () => {
-  if (!EDITING) return;
+BtnCancel.addEventListener('click', ()=>{
+  if(!EDITING) return;
   FB.value = FB.value.replace(/\[split\]/g,'');
   MOD.close();
 });
 
-BtnSave.addEventListener('click', () => {
-  if (!EDITING) return;
+BtnSave.addEventListener('click', ()=>{
+  if(!EDITING) return;
   const cleaned = FB.value.replace(/\[split\]/g,'');
   EDITING.title = FT.value.trim();
   EDITING.body  = cleaned;
   save(); MOD.close(); renderAll();
 });
 
-BtnSplit.addEventListener('click', () => {
-  if (!EDITING) return;
+BtnSplit.addEventListener('click', ()=>{
+  if(!EDITING) return;
   const parts = FB.value.split('[split]');
-  if (parts.length !== 2) return; // guarded by disabled state
+  if(parts.length!==2) return;
   const [part1, part2] = parts.map(s=>s.trim());
-  const idx = SNIPS.findIndex(s => s.id === EDITING.id);
-  if (idx === -1) return;
-
-  const newSnip = { id: uid(), type: EDITING.type, title: (EDITING.title || '') + ' (part 2)', body: part2 };
-  EDITING.body = part1;
-  EDITING.title = (EDITING.title || '') + ' (part 1)';
-  SNIPS.splice(idx + 1, 0, newSnip);
+  const idx = SNIPS.findIndex(s=>s.id===EDITING.id);
+  if(idx<0) return;
+  const newSnip = {id:uid(), type:EDITING.type, title:(EDITING.title||'')+' (part 2)', body:part2};
+  EDITING.body = part1; EDITING.title=(EDITING.title||'')+' (part 1)';
+  SNIPS.splice(idx+1,0,newSnip);
   ACTIVE_ID = newSnip.id;
-
   save(); MOD.close(); renderAll();
 });
 
-MFull.addEventListener('click', ()=>{
-  wantFull = !wantFull;
-  MOD.classList.toggle('full', wantFull);
-});
+MFull.addEventListener('click', ()=>{ wantFull=!wantFull; MOD.classList.toggle('full', wantFull); });
 
-/* live split indicator while typing */
 FB.addEventListener('input', updateSplitState);
 
 /* keyboard shortcuts inside modal */
 MOD.addEventListener('keydown', (e)=>{
-  if (e.key==='Escape') { e.preventDefault(); BtnCancel.click(); }
-  if (e.key==='Enter' && (e.ctrlKey||e.metaKey)) { e.preventDefault(); BtnSave.click(); }
-  if ((e.ctrlKey||e.metaKey) && e.shiftKey && (e.key==='S' || e.key==='s')) { e.preventDefault(); BtnSplit.click(); }
+  if(e.key==='Escape'){ e.preventDefault(); BtnCancel.click(); }
+  if((e.ctrlKey||e.metaKey) && e.key==='Enter'){ e.preventDefault(); BtnSave.click(); }
+  if((e.ctrlKey||e.metaKey) && e.shiftKey && /s/i.test(e.key)){ e.preventDefault(); BtnSplit.click(); }
 });
 
 /* -------------------- add buttons -------------------- */
@@ -444,7 +484,7 @@ document.querySelectorAll('button[data-add]').forEach(b=>{
   b.addEventListener('click', ()=>{
     const type=b.dataset.add;
     const sn={id:uid(), type, title:'', body:''};
-    SNIPS.push(sn); ACTIVE_ID = sn.id; save(); renderAll(); openModal(sn);
+    SNIPS.push(sn); ACTIVE_ID=sn.id; save(); renderAll(); openModal(sn);
   });
 });
 
@@ -458,9 +498,8 @@ function insertMM(mmText){
     updateSplitState();
     return;
   }
-  if (!ACTIVE_ID) { alert('Select a card first (click it), then try Insert MM again.'); return; }
-  const i = SNIPS.findIndex(s=>s.id===ACTIVE_ID);
-  if (i < 0) { alert('Active card not found.'); return; }
+  if(!ACTIVE_ID){ alert('Select a card first (click it), then try Insert MM again.'); return; }
+  const i = SNIPS.findIndex(s=>s.id===ACTIVE_ID); if(i<0) return;
   const b = SNIPS[i].body || '';
   const sep = b && !b.endsWith('\n') ? '\n' : '';
   SNIPS[i].body = b + sep + mmText + '\n';
@@ -487,4 +526,3 @@ load(); renderAll(); status('ready · autosave active');
 </script>
 </body>
 </html>
-
