@@ -1,224 +1,201 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>RO Snippets v2 — Structured Flow Editor</title>
 
+<!-- ---------- Theme ---------- -->
 <style>
-:root{color-scheme:dark}
-body{margin:0;background:#0B1117;color:#E6EDF3;font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
-header{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:#0F141A;border-bottom:1px solid #1f2a36}
-header .title{font-weight:600;margin-right:auto}
-.btn{all:unset;cursor:pointer;border:1px solid #273341;border-radius:8px;background:#111a24;padding:6px 10px}
-.btn:hover{background:#162234}
-.btn.danger{border-color:#f85149}
-.btn.primary{border-color:#2f6feb}
-.btn[disabled]{opacity:.45;cursor:not-allowed}
-.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:12px}
-main{display:grid;grid-template-columns: 48% 52%;gap:12px;padding:12px}
-.card{background:#0F141A;border:1px solid #1f2a36;border-radius:10px;min-height:0;display:flex;flex-direction:column;overflow:hidden}
-.card .head{padding:10px 12px;border-bottom:1px solid #1f2a36;display:flex;align-items:center;gap:8px;font-weight:600}
-.card .head .right{margin-left:auto;display:flex;gap:6px}
-.card .body{padding:10px 12px;overflow:auto}
-.grid{display:flex;flex-direction:column;gap:10px}
+:root { color-scheme: dark; }
+html,body{margin:0;padding:0;background:#0f141a;color:#deedf7;font:14px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif}
+a{color:#8ecbff;text-decoration:none}
+a:hover{text-decoration:underline}
+.mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+button{cursor:pointer}
+.btn{border:1px solid #273341;background:#0b1219;color:#deedf7;border-radius:8px;padding:6px 10px}
+.btn:hover{background:#101a24}
+.btn.primary{background:#0e5da7;border-color:#0e5da7}
+.btn.primary:hover{background:#0c5498}
+.btn.danger{background:#3b0f14;border-color:#5e1a22}
+.btn.icon{padding:4px 8px}
+.pill{border:1px solid #334355;border-radius:999px;padding:2px 8px}
+.badge{border:1px solid #334355;border-radius:6px;padding:2px 6px;font-size:12px;opacity:.9}
+.muted{opacity:.75}
 
-/* snippet cards */
-.snip{border:1px solid #273341;border-radius:10px;background:#0B1219;overflow:hidden;transition:box-shadow .15s ease}
-.snip.active{outline:2px solid #2f6feb; box-shadow:0 0 0 3px rgba(47,111,235,.25) inset}
-.snip .bar{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid #1f2a36}
-.snip .bar .drag{cursor:grab;opacity:.8}
-.snip .bar .type{font-size:12px;border:1px solid #273341;border-radius:999px;padding:2px 8px;text-transform:capitalize}
-.snip.observation{border-left:4px solid #238636}
-.snip.hypothesis{border-left:4px solid #2f6feb}
-.snip.evidence{border-left:4px solid #d29922}
-.snip .title{font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.snip .tools{display:flex;gap:6px}
+.wrap{max-width:1280px;margin:0 auto;padding:12px}
+.head{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:8px}
+.head .sp{flex:1 1 auto}
 
-/* harmonica / collapsible */
-.snip .body{padding:10px}
-.snip.collapsed .body{display:none}
-.snip.collapsed:hover .body{display:block}
-.snip.collapsed:hover .bar{border-bottom-color:#273341}
+.grid{display:grid;grid-template-columns:48% 52%;gap:12px}
+.card{background:#0b1219;border:1px solid #273341;border-radius:10px;overflow:hidden}
+.card .head{border-bottom:1px solid #1f2a36;padding:10px 12px;margin:0}
+.card .body{padding:12px}
+#list .snip{border:1px solid #273341;border-radius:10px;margin:10px 10px 0 10px;overflow:hidden}
+#list .snip.active{outline:2px solid #1fa2d6}
+#list .bar{display:flex;align-items:center;gap:10px;padding:8px 10px;background:#0b1219;border-bottom:1px solid #1f2a36}
+#list .bar .left{display:flex;align-items:center;gap:6px}
+#list .bar .tools{margin-left:auto;display:flex;gap:6px;align-items:center}
+#list .title{font-weight:600}
+#list .body{padding:10px}
+#list .collapsed .body{display:none}
+.snip .type.badge{min-width:92px;text-align:center}
 
-/* preview pane */
-.preview{max-width:980px;margin:0 auto}
-.preview h1{font-size:26px;margin:.8rem 0 .4rem}
-.preview h2{font-size:22px;margin:.7rem 0 .3rem}
-.preview h3{font-size:18px;margin:.6rem 0 .2rem}
-.preview table{width:100%;border-collapse:collapse;margin:.6rem 0}
-.preview th,.preview td{border:1px solid #273341;padding:6px 8px;vertical-align:top}
+.preview .pv-snip{border:1px solid #273341;border-radius:10px;margin:10px;overflow:hidden}
+.preview .pv-head{display:none !important;}  /* hide type/title in preview */
+.preview .pv-body{padding:12px}
+.preview table{border-collapse:collapse}
+.preview th,.preview td{border:1px solid #273341;padding:6px 8px}
 
-/* preview section mapping */
-.pv-snip{padding:12px;border:1px solid #223041;border-radius:10px;margin:10px 0;background:#0b1219}
-.pv-snip.active{outline:2px solid #2f6feb; box-shadow:0 0 0 3px rgba(47,111,235,.25) inset}
-.pv-snip .pv-head{font-weight:600;margin-bottom:6px;display:flex;gap:8px;align-items:baseline}
-.pv-snip .pv-type{font-size:12px;border:1px solid #273341;border-radius:999px;padding:2px 8px;text-transform:capitalize;opacity:.9}
+.drag-hint{opacity:.5}
 
-/* modal */
-dialog{border:none;border-radius:12px;width:min(960px, 96vw);height:min(80vh, 92vh);background:#0B1117;color:#E6EDF3;padding:0;display:flex;flex-direction:column}
-dialog::backdrop{background:rgba(0,0,0,.48)}
-.modal-head{position:sticky;top:0;z-index:2;padding:12px 14px;border-bottom:1px solid #1f2a36;font-weight:600;display:flex;align-items:center;gap:10px}
-.modal-head .sub{font-weight:400;opacity:.8}
-.modal-head .grow{flex:1}
-.modal-head .iconbtn{all:unset;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid #273341;border-radius:8px;background:#121a24;cursor:pointer}
-.modal-body{min-height:0;flex:1;overflow:auto;padding:12px 14px;display:grid;grid-template-rows:auto 1fr;gap:10px}
-.modal-row{display:grid;grid-template-columns:80px 1fr;gap:10px;align-items:center}
-.modal-row input{width:100%;border:1px solid #273341;border-radius:8px;background:#0B1117;color:#E6EDF3;padding:8px 10px}
-.modal-editor{display:grid;grid-template-columns:80px 1fr;gap:10px;min-height:0}
-.modal-editor textarea{width:100%;height:100%;min-height:280px;border:1px solid #273341;border-radius:8px;background:#0B0F14;color:#E6EDF3;padding:10px 12px;resize:vertical;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
-.modal-foot{position:sticky;bottom:0;z-index:2;padding:12px 14px;border-top:1px solid #1f2a36;display:flex;gap:8px;justify-content:flex-end;background:#0B1117}
-.small{font-size:12px;opacity:.85}
-
-/* split indicator */
-.split-ind{margin-right:auto;display:flex;align-items:center;gap:8px}
-.split-pill{font-size:12px;border:1px solid #273341;border-radius:999px;padding:2px 8px}
-.split-pill.ok{border-color:#2ea043;color:#c2f7d1}
-.split-pill.warn{border-color:#f0883e;color:#ffd8b5}
-.split-pill.err{border-color:#f85149;color:#ffd1d1}
-
-/* fullscreen modal */
-dialog.full{width:min(1200px, 98vw);height:min(92vh, 98vh)}
-
-/* Optional: hide snippet type/title in preview cards */
-.preview .pv-snip header, .preview .pv-snip .pv-meta { display: none !important; }
+/* ---------- Modal ---------- */
+.editor-modal::backdrop{background:rgba(0,0,0,.55)}
+.editor-modal{border:1px solid #273341;border-radius:10px;padding:0;width:min(980px,92vw)}
+.modal-shell{display:flex;flex-direction:column;gap:10px;padding:12px}
+.modal-head{display:flex;align-items:center;gap:8px}
+.modal-head .muted{opacity:.7;font-size:.9em}
+.modal-head .btn.icon{margin-left:auto}
+.lbl{display:flex;flex-direction:column;gap:6px}
+.input{border:1px solid #273341;background:#0b1219;color:#deedf7;border-radius:8px;padding:8px}
+.editor{min-height:240px;border:1px solid #273341;background:#0b1219;color:#deedf7;border-radius:8px;padding:10px;font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+.toolbar{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.modal-foot{display:flex;align-items:center;gap:8px}
+.split-warn{color:#ffcc88}
 </style>
 
-<!-- Markdown -->
-<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
-<script>marked.setOptions({ breaks:true, mangle:false, headerIds:false });</script>
-
-<!-- MathJax config from chapter (single source of truth) -->
+<!-- ---------- MathJax (same config as chapters) ---------- -->
 <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
 <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-<!-- Drag & drop -->
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.3/Sortable.min.js"></script>
+<!-- ---------- marked ---------- -->
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
 </head>
 <body>
+<div class="wrap">
 
-<header>
-  <div class="title">Snippets v2 — Structured Flow Editor</div>
-  <button class="btn" data-add="observation">+ Observation</button>
-  <button class="btn" data-add="hypothesis">+ Hypothesis</button>
-  <button class="btn" data-add="evidence">+ Evidence</button>
-  <button class="btn" id="btnInsertMM" title="Insert an MM token into the active snippet">Insert MM</button>
-  <button class="btn" id="exportMemo">Export memo</button>
-  <span class="mono" id="status"></span>
-</header>
-
-<main>
-  <section class="card" id="leftPanel">
-    <div class="head">Snippets <span class="mono" id="count"></span><div class="right"><span class="mono" id="hint">collapsed · hover or select to open · drag ↕ to reorder</span></div></div>
-    <div class="body" id="listWrap"><div id="list" class="grid"></div></div>
-  </section>
-
-  <section class="card">
-    <div class="head">Live Preview (combined)</div>
-    <div class="body"><div id="preview" class="preview"></div></div>
-  </section>
-</main>
-
-<!-- modal -->
-<dialog id="modal">
-  <div class="modal-head">
-    <span id="modalTitle">Edit snippet</span>
-    <span class="sub" id="modalType"></span>
-    <span class="grow"></span>
-    <button title="Toggle full screen (F11)" class="iconbtn" id="modalFull">⤢</button>
+  <div class="head">
+    <strong>Snippets v2 — Structured Flow Editor</strong>
+    <span class="sp"></span>
+    <button class="btn" id="btnAddObs">+ Observation</button>
+    <button class="btn" id="btnAddHyp">+ Hypothesis</button>
+    <button class="btn" id="btnAddEv">+ Evidence</button>
+    <button class="btn" id="btnInsertMM">Insert MM</button>
+    <button class="btn" id="btnExport">Export memo</button>
+    <span class="muted" id="autosaveBadge">ready • autosave active</span>
   </div>
 
-  <div class="modal-body">
-    <div class="modal-row">
-      <label class="small">Title</label>
-      <input type="text" id="fTitle" placeholder="Short label / claim"/>
-    </div>
-    <div class="modal-editor">
-      <label class="small">Body</label>
-      <!-- Compact smart-insert toolbar (MODAL) -->
-      <div id="modal-toolbar" class="toolbar" style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px;">
-        <button type="button" class="btn" data-insert="meta">🧱 Header info</button>
-        <button type="button" class="btn" data-insert="discord">📊 Discord stats</button>
-        <button type="button" class="btn" data-insert="logic">🧩 Logic skeleton</button>
-        <button type="button" class="btn" data-insert="math-inline">🧮 Inline math</button>
-        <button type="button" class="btn" data-insert="math-block">🧾 Block math</button>
-        <button type="button" class="btn" data-insert="figure">📸 Image/Table</button>
+  <div class="grid">
+    <!-- left: list -->
+    <div class="card">
+      <div class="head">
+        <strong>Snippets</strong>
+        <span class="muted">collapsed • hover or select to open • drag ↑ to reorder</span>
       </div>
-      <textarea id="fBody" spellcheck="false" placeholder="Markdown + LaTeX. Use \\( ... \\) or \\[ ... \\]. Type [split] to split."></textarea>
+      <div class="body" id="list"></div>
     </div>
-    <div class="small mono">Tip: Ctrl+Enter = Save · Ctrl+Shift+S = Split · Esc = Cancel.</div>
-  </div>
 
-  <div class="modal-foot">
-    <div class="split-ind">
-      <span class="split-pill" id="splitInfo">[split] markers: 0</span>
+    <!-- right: live preview -->
+    <div class="card">
+      <div class="head">
+        <strong>Live Preview (combined)</strong>
+        <span class="sp"></span>
+        <button class="btn icon" id="btnPop" title="Pop-out Preview">⤢</button>
+      </div>
+      <div class="body preview" id="preview"></div>
     </div>
-    <button class="btn" id="btnCancel">Cancel</button>
-    <button class="btn" id="btnSplit" title="Split at [split]">Split at [split]</button>
-    <button class="btn primary" id="btnSave" title="Save (Ctrl+Enter)">Save</button>
   </div>
+</div>
+
+<!-- ---------- Edit dialog (hidden on load) ---------- -->
+<dialog id="modal" class="editor-modal">
+  <form method="dialog" class="modal-shell" id="modalForm">
+    <header class="modal-head">
+      <strong>Edit</strong>
+      <span id="mType" class="muted"></span>
+      <button type="button" class="btn icon" id="btnClose" aria-label="Close">✕</button>
+    </header>
+
+    <label class="lbl">Title
+      <input id="FT" class="input" placeholder="Short label / claim" />
+    </label>
+
+    <div id="modal-toolbar" class="toolbar">
+      <button type="button" class="btn" data-insert="header">🪪 Header info</button>
+      <button type="button" class="btn" data-insert="discord">💬 Discord stats</button>
+      <button type="button" class="btn" data-insert="logic">🧩 Logic skeleton</button>
+      <button type="button" class="btn" data-insert="inline">∗ Inline math</button>
+      <button type="button" class="btn" data-insert="block">∎ Block math</button>
+      <button type="button" class="btn" data-insert="figure">🖼️ Image/Table</button>
+    </div>
+
+    <label class="lbl">Body
+      <textarea id="FB" class="editor" spellcheck="false"
+        placeholder="Markdown + LaTeX. Use \\( ... \\) or \\[ ... \\]. Type [split] to split."></textarea>
+    </label>
+
+    <div class="modal-foot">
+      <span id="splitInfo" class="pill">[split] markers: 0</span>
+      <span class="muted" id="splitTip"></span>
+      <span class="sp"></span>
+      <button type="button" class="btn" id="btnSplit">Split at [split]</button>
+      <button type="button" class="btn" id="btnCancel">Cancel</button>
+      <button type="button" class="btn primary" id="btnSave">Save</button>
+    </div>
+  </form>
 </dialog>
 
 <script>
-/* -------------------- utilities -------------------- */
-const $=(s,e=document)=>e.querySelector(s);
-const uid=(p='s')=>p+'-'+Math.random().toString(36).slice(2,8);
-const status=t=>$('#status').textContent=t;
+/* =========================
+   Small state + utilities
+   ========================= */
+const $ = (q,root=document)=>root.querySelector(q);
+const $$= (q,root=document)=>Array.from(root.querySelectorAll(q));
+const storageKey = 'ro_snips_v2';
+const id = ()=>'s'+Math.random().toString(36).slice(2,9);
 
-function escapeHtml(s){return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
-function escapeAttr(s){return String(s||'').replace(/"/g,'&quot;')}
+let SNIPS = [];              // {id,type,title,body}
+let ACTIVE_ID = null;        // selected card
+let EDITING   = null;        // current snippet in modal
 
-/* forgiving TeX normalizer: allow \\[ .. \\] and \\( .. \\) in memo */
-function normalizeTeX(src){
-  src = src.replace(/\\\\(?=[\[\]\(\){}])/g, '\\');
-  src = src.replace(/\\\\(frac|sqrt|tag|label|to|forall|dots|ldots)/g, '\\$1');
-  return src;
-}
+const TYPES = ['Observation','Hypothesis','Evidence'];
+const typeColor = t => t==='Observation' ? '#2e8369' : t==='Hypothesis' ? '#3683c8' : '#c7703b';
 
-async function typeset(target){
-  if(!window.MathJax || !target) return;
-  try{
-    if (MathJax.startup?.promise) await MathJax.startup.promise;
-    MathJax.typesetClear?.([target]);
-    MathJax.texReset?.();
-    if (MathJax.typesetPromise) await MathJax.typesetPromise([target]);
-    else MathJax.typeset?.([target]);
-  }catch{/* no-op */}
-}
+const MOD   = $('#modal'), FT = $('#FT'), FB = $('#FB'), MType = $('#mType');
+const SplitInfo = $('#splitInfo'), SplitTip = $('#splitTip');
 
-/* scroll helpers */
-function scrollCardNearTop(el){
-  const wrap = $('#listWrap'); if(!wrap || !el) return;
-  const top = el.offsetTop - 16;
-  wrap.scrollTo({ top, behavior:'smooth' });
-}
-function scrollPreviewTo(id){
-  const pv = $('#preview'); const sec = pv?.querySelector(`.pv-snip[data-id="${id}"]`);
-  if (!pv || !sec) return;
-  pv.parentElement.scrollTo({ top: sec.offsetTop - 16, behavior:'smooth' });
-}
-
-/* -------------------- model -------------------- */
-const LSKEY='ro:snip:v2:'+location.pathname;
-let SNIPS=[]; // {id,type,title,body}
-let ACTIVE_ID = null;
-let sortableInst = null;
-
-function save(){ localStorage.setItem(LSKEY, JSON.stringify(SNIPS)); status('saved · '+new Date().toLocaleTimeString()); }
+/* Load / Save */
 function load(){
-  const raw=localStorage.getItem(LSKEY);
-  if(raw){ try{ SNIPS=JSON.parse(raw)||[] }catch{} }
-  if(!SNIPS.length){
-    SNIPS=[
-      {id:uid(), type:'observation', title:'Ladder up the wall', body:'We see a family of ratios that look like roots of fractions.'},
-      {id:uid(), type:'hypothesis',  title:'√n/(n+1) relationship', body:'It appears that \\[ r_q=\\forall n\\,\\sqrt{\\frac{n}{n+1}} \\to \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\dots \\} \\tag{05:01} \\]'},
-      {id:uid(), type:'evidence',    title:'Figure crop + table', body:`<table style="width:100%; table-layout:fixed; border-collapse:collapse;">
+  try{
+    const raw = localStorage.getItem(storageKey);
+    SNIPS = raw ? JSON.parse(raw) : seed();
+  }catch{ SNIPS = seed(); }
+}
+function save(){
+  localStorage.setItem(storageKey, JSON.stringify(SNIPS));
+  $('#autosaveBadge').textContent = 'saved • autosave active';
+  setTimeout(()=>$('#autosaveBadge').textContent='ready • autosave active',800);
+}
+function seed(){
+  return [
+    {id:id(), type:'Observation', title:'LaTeX test', body:String.raw`# Document X
+
+\\[
+\zeta\left(2\right)=\frac{\pi^2}{6}
+\\]
+`},
+    {id:id(), type:'Observation', title:'Ladder up the wall', body:'We see a family of ratios that look like roots of fractions.'},
+    {id:id(), type:'Hypothesis', title:'√n/(n+1) relationship', body:String.raw`It appears that
+
+\\[ r_q=\forall n\,\sqrt{\frac{n}{n+1}} \to \{ \sqrt{\tfrac{1}{2}}, \sqrt{\tfrac{2}{3}}, \sqrt{\tfrac{3}{4}}, \dots \} \tag{05:01} \\]`},
+    {id:id(), type:'Evidence', title:'Figure crop + table', body:String.raw`<table style="width:100%; table-layout:fixed; border-collapse:collapse;">
   <colgroup><col style="width:120px;"><col></colgroup>
   <tbody><tr>
     <td style="padding:0; vertical-align:top;">
       <div style="--x:.4; --y:0; width:100%; aspect-ratio:1/1; position:relative; overflow:hidden; border-radius:4px;">
         <img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
-             alt="" style="position:absolute; display:block; width:280%; height:280%; left:calc(-1 * var(--x) * 10%); top:calc(-1 * var(--y) * 10%);" />
+             alt="" style="position:absolute; display:block; width:280%; height:280%;
+             left:calc(-1 * var(--x) * 10%); top:calc(-1 * var(--y) * 10%);" />
       </div>
     </td>
     <td style="padding:8px 9px; vertical-align:top;">
@@ -230,139 +207,54 @@ function load(){
         <tbody><tr>
           <td style="border:1px solid #273341; padding:6px 8px;">1</td>
           <td style="border:1px solid #273341; padding:6px 8px;">
-            \\[ r_q = \\forall n\\, \\sqrt{\\frac{n}{n+1}} \\to
-               \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\ldots \\} \\tag{05:01} \\]
+            \\[ r_q=\forall n\,\sqrt{\frac{n}{n+1}} \to \{ \sqrt{\tfrac{1}{2}}, \sqrt{\tfrac{2}{3}}, \sqrt{\tfrac{3}{4}}, \dots \} \tag{05:01} \\]
           </td>
         </tr></tbody>
       </table>
     </td>
   </tr></tbody>
 </table>`}
-    ];
-  }
-  if (!ACTIVE_ID && SNIPS.length) ACTIVE_ID = SNIPS[0].id;
+  ];
 }
 
-/* memo export */
-function toMemo(){
-  return SNIPS.map(s => `<!-- SNIP type=${s.type} id=${s.id} title="${escapeAttr(s.title)}" -->\n${s.body}\n<!-- /SNIP -->`).join('\n\n');
-}
-
-/* merge helpers */
-function baseTitle(t){ return (t||'').replace(/\s*\(part\s*[12]\)\s*$/i,'').trim(); }
-function mergePrev(idx){
-  if (idx <= 0) return;
-  const cur = SNIPS[idx], prev = SNIPS[idx-1];
-  if (!cur || !prev || cur.type !== prev.type) return;
-  const merged = {
-    ...prev,
-    title: baseTitle(prev.title) || baseTitle(cur.title) || '',
-    body:  (prev.body||'').trim() + '\n\n' + (cur.body||'').trim()
-  };
-  SNIPS[idx-1] = merged;
-  SNIPS.splice(idx, 1);
-  ACTIVE_ID = merged.id;
-  save(); renderAll();
-}
-function mergeNext(idx){
-  if (idx >= SNIPS.length-1) return;
-  const cur = SNIPS[idx], next = SNIPS[idx+1];
-  if (!cur || !next || cur.type !== next.type) return;
-  const merged = {
-    ...cur,
-    title: baseTitle(cur.title) || baseTitle(next.title) || '',
-    body:  (cur.body||'').trim() + '\n\n' + (next.body||'').trim()
-  };
-  SNIPS[idx] = merged;
-  SNIPS.splice(idx+1, 1);
-  ACTIVE_ID = merged.id;
-  save(); renderAll();
-}
-
-/* -------------------- rendering -------------------- */
-async function renderList(){
+/* =========================
+   Rendering
+   ========================= */
+function renderList(){
   const list = $('#list'); list.innerHTML = '';
-  $('#count').textContent = SNIPS.length + ' items';
-
-  SNIPS.forEach((sn, idx)=>{
-    const prev = SNIPS[idx-1], next = SNIPS[idx+1];
-    const canMergePrev = !!(prev && prev.type === sn.type);
-    const canMergeNext = !!(next && next.type === sn.type);
-
+  SNIPS.forEach((sn,i)=>{
     const div = document.createElement('div');
-    const isActive = sn.id === ACTIVE_ID;
-    div.className = 'snip ' + sn.type + (isActive ? ' active' : ' collapsed');
+    div.className = 'snip collapsed' + (sn.id===ACTIVE_ID ? ' active':'');
     div.dataset.id = sn.id;
-    div.dataset.idx = idx;
-
+    div.draggable = true;
     div.innerHTML = `
-      <div class="bar">
-        <span class="drag">↕</span>
-        <span class="type">${sn.type}</span>
-        <span class="title">${sn.title ? escapeHtml(sn.title) : '(untitled)'}</span>
+      <div class="bar" style="border-left:6px solid ${typeColor(sn.type)}">
+        <div class="left">
+          <span class="type badge">${sn.type}</span>
+          <span class="title">${escapeHtml(sn.title||'')}</span>
+        </div>
         <div class="tools">
-          <button class="btn" data-act="merge-prev" title="Merge with previous" ${canMergePrev?'':'disabled'}>◀ Merge</button>
-          <button class="btn" data-act="merge-next" title="Merge with next" ${canMergeNext?'':'disabled'}>Merge ▶</button>
+          <button class="btn" data-act="merge-prev">◀ Merge</button>
+          <button class="btn" data-act="merge-next">Merge ▶</button>
           <button class="btn" data-act="edit" title="Edit">✏️</button>
           <button class="btn" data-act="dup" title="Duplicate">📄</button>
           <button class="btn danger" data-act="del" title="Delete">🗑️</button>
         </div>
       </div>
-      <div class="body">${marked.parse(normalizeTeX(sn.body||''))}</div>
+      <div class="body mono">${escapeHtml(sn.body||'')}</div>
     `;
-
-    div.addEventListener('click', (ev)=>{
-      if (ev.target.closest('.tools') || ev.target.closest('button,.drag')) return;
-      ACTIVE_ID = sn.id; renderAll(); scrollCardNearTop(div);
-    });
-
     list.appendChild(div);
   });
-
-  await typeset(list);
-
-  if (sortableInst) { try { sortableInst.destroy(); } catch{} }
-  sortableInst = new Sortable(list,{
-    animation:120, handle:'.drag', ghostClass:'ghost',
-    onEnd: (e)=>{
-      const from=e.oldIndex, to=e.newIndex;
-      if(from===to || from==null || to==null) return;
-      const [moved]=SNIPS.splice(from,1); SNIPS.splice(to,0,moved);
-      save(); renderAll();
-    }
-  });
-
-  const activeEl = list.querySelector('.snip.active');
-  if (activeEl) scrollCardNearTop(activeEl);
 }
-
-$('#list').addEventListener('click', function onListClick(ev){
-  const btn = ev.target.closest('button'); if(!btn) return;
-  if (btn.hasAttribute('disabled')) return;
-  const card = ev.target.closest('.snip'); if(!card) return;
-  const id   = card.dataset.id;
-  const i    = SNIPS.findIndex(x=>x.id===id);
-  const act  = btn.dataset.act;
-  if (i < 0) return;
-
-  if (act==='merge-prev') { mergePrev(i); return; }
-  if (act==='merge-next') { mergeNext(i); return; }
-  if (act==='edit')       { openModal(SNIPS[i]); return; }
-  if (act==='dup')        { const copy={...SNIPS[i], id:uid(), title:(SNIPS[i].title||'')+' (copy)'}; SNIPS.splice(i+1,0,copy); ACTIVE_ID=copy.id; save(); renderAll(); return; }
-  if (act==='del')        { if(confirm('Delete this snippet?')){ const wasActive = (ACTIVE_ID===SNIPS[i].id); SNIPS.splice(i,1); if(wasActive){ ACTIVE_ID = SNIPS[i]?.id || SNIPS[i-1]?.id || null; } save(); renderAll(); } return; }
-});
 
 async function renderPreview(){
   const pv = $('#preview'); pv.innerHTML = '';
   SNIPS.forEach(sn=>{
     const sec = document.createElement('section');
-    sec.className = 'pv-snip' + (sn.id===ACTIVE_ID ? ' active':'');
+    sec.className = 'pv-snip' + (sn.id===ACTIVE_ID?' active':'');
     sec.dataset.id = sn.id;
     sec.innerHTML = `
-      <div class="pv-head">
-        <span class="pv-type">${sn.type}</span>
-        <span>${escapeHtml(sn.title||'')}</span>
-      </div>
+      <div class="pv-head"><span class="badge">${sn.type}</span> <strong>${escapeHtml(sn.title||'')}</strong></div>
       <div class="pv-body">${marked.parse(normalizeTeX(sn.body||''))}</div>
     `;
     pv.appendChild(sec);
@@ -370,159 +262,279 @@ async function renderPreview(){
   await typeset(pv);
   if (ACTIVE_ID) scrollPreviewTo(ACTIVE_ID);
 }
-function renderAll(){ renderList(); renderPreview(); }
 
-/* -------------------- modal (edit/split/save) -------------------- */
-const MOD = $('#modal'),
-      FT = $('#fTitle'),
-      FB = $('#fBody'),
-      MTitle = $('#modalTitle'),
-      MType = $('#modalType'),
-      MFull = $('#modalFull'),
-      SplitInfo = $('#splitInfo'),
-      BtnSplit = $('#btnSplit'),
-      BtnSave = $('#btnSave'),
-      BtnCancel = $('#btnCancel');
-
-let EDITING = null;
-let wantFull = false;
-
-/* Smart-insert toolbar wiring (modal only) */
-(function wireToolbar(){
-  const tb = $('#modal-toolbar'); if(!tb) return;
-
-  const INSERTS = {
-    meta:      'chapter:[notebook/] chapter-5-chords.html para: osf-1 primary: 51 author-id (Discord …)',
-    discord:   'Rank r out of n (rfc) -- [#dissent] ++ [#concur] [Active|Dormant|Retracted]',
-    logic:     '**Logic construct:**\nPremise 1: If it\\\'s raining, then it\\\'s cloudy.\nPremise 2: It\\\'s raining.\nConclusion: It\\\'s cloudy.',
-    'math-inline': '\\( x^2 + y^2 = z^2 \\)',
-    'math-block' : '\\[ E = mc^2 \\]',
-    figure:
-      '<table style="width:100%;border-collapse:collapse;"><tr>' +
-      '<td style="width:120px;vertical-align:top;">' +
-      '<div style="aspect-ratio:1/1;overflow:hidden;position:relative;border-radius:4px;">' +
-      '<img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG" alt="" style="position:absolute;display:block;width:280%;height:280%;left:calc(-1 * 0.4 * 10%);top:0;">' +
-      '</div></td><td style="padding:8px 9px;vertical-align:top;">\\[\\text{formula}\\]</td></tr></table>'
-  };
-
-  function insertAtCaret(textarea, text){
-    const s = textarea.selectionStart ?? 0;
-    const e = textarea.selectionEnd ?? s;
-    textarea.setRangeText(text, s, e, 'end');
-    textarea.focus();
-  }
-
-  tb.querySelectorAll('button[data-insert]').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      insertAtCaret(FB, INSERTS[b.dataset.insert] || '');
-      updateSplitState();
-    });
-  });
-})();
-
-function updateSplitState(){
-  const cnt = (FB.value.match(/\[split\]/g)||[]).length;
-  SplitInfo.textContent = `[split] markers: ${cnt}`;
-  SplitInfo.className = 'split-pill ' + (cnt===1 ? 'ok' : cnt===0 ? 'warn' : 'err');
-  BtnSplit.disabled = (cnt!==1);
+function normalizeTeX(s){
+  // leave user escapes as-is; marked handles HTML; MathJax picks \\(...\\) and \\[...\\]
+  return s;
 }
+
+function scrollPreviewTo(id){
+  const el = $(`.pv-snip[data-id="${id}"]`, $('#preview'));
+  if (el) el.scrollIntoView({block:'start',behavior:'smooth'});
+}
+
+function escapeHtml(s){
+  return s.replace(/[&<>"]/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[m]));
+}
+
+/* =========================
+   Events (list)
+   ========================= */
+$('#list').addEventListener('click', (ev)=>{
+  const btn = ev.target.closest('button'); if(!btn) {
+    // select/open card on bar/body click
+    const card = ev.target.closest('.snip'); if(!card) return;
+    ACTIVE_ID = card.dataset.id;
+    // toggle collapsed on hover/selection
+    $$('.snip').forEach(s=>s.classList.add('collapsed'));
+    card.classList.remove('collapsed');
+    renderList(); renderPreview(); save();
+    return;
+  }
+  const act = btn.dataset.act;
+  const card = btn.closest('.snip'); if(!card) return;
+  const idx = SNIPS.findIndex(s=>s.id===card.dataset.id); if(idx<0) return;
+  const sn = SNIPS[idx];
+
+  if (act==='edit'){ openModal(sn); return; }
+  if (act==='dup'){
+    const cp = {...sn, id:id()};
+    SNIPS.splice(idx+1,0,cp);
+    ACTIVE_ID = cp.id; save(); renderList(); renderPreview(); return;
+  }
+  if (act==='del'){
+    if (!confirm('Delete snippet?')) return;
+    SNIPS.splice(idx,1);
+    if (ACTIVE_ID===sn.id) ACTIVE_ID = SNIPS[idx]?.id || SNIPS[idx-1]?.id || null;
+    save(); renderList(); renderPreview(); return;
+  }
+  if (act==='merge-prev' || act==='merge-next'){
+    const j = act==='merge-prev' ? idx-1 : idx+1;
+    if (j<0 || j>=SNIPS.length) return;
+    if (SNIPS[j].type !== sn.type) { alert('Can only merge snippets of the same type.'); return; }
+    const keep = act==='merge-prev' ? j : idx;
+    const del  = act==='merge-prev' ? idx : j;
+    SNIPS[keep].body = (SNIPS[keep].body||'') + '\n\n' + (SNIPS[del].body||'');
+    SNIPS.splice(del,1);
+    ACTIVE_ID = SNIPS[keep].id;
+    save(); renderList(); renderPreview(); return;
+  }
+});
+
+let dragIndex = -1;
+$('#list').addEventListener('dragstart', e=>{
+  const card = e.target.closest('.snip'); if(!card) return;
+  dragIndex = SNIPS.findIndex(s=>s.id===card.dataset.id);
+  card.classList.add('drag-hint');
+  e.dataTransfer.effectAllowed='move';
+});
+$('#list').addEventListener('dragend', ()=>$$('.snip').forEach(s=>s.classList.remove('drag-hint')));
+$('#list').addEventListener('dragover', e=>{
+  e.preventDefault();
+  const tgt = e.target.closest('.snip'); if(!tgt) return;
+  const over = SNIPS.findIndex(s=>s.id===tgt.dataset.id);
+  if (dragIndex<0 || over<0 || over===dragIndex) return;
+  const [it] = SNIPS.splice(dragIndex,1);
+  SNIPS.splice(over,0,it);
+  dragIndex = over;
+  save(); renderList();  // light refresh; preview later
+});
+
+/* =========================
+   Modal
+   ========================= */
+$('#btnClose').onclick = $('#btnCancel').onclick = closeModal;
+$('#btnSave').onclick  = saveModal;
+$('#btnSplit').onclick = splitAtMarker;
+
+$('#modal-toolbar').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  insertAtCaret(FB, buildInsert(b.dataset.insert));
+  updateSplitState();
+});
 
 function openModal(sn){
   ACTIVE_ID = sn.id;
   EDITING = sn;
-  MTitle.textContent = 'Edit';
-  MType.textContent = `— ${sn.type}`;
+  MType.textContent = '— ' + sn.type.toLowerCase();
   FT.value = sn.title || '';
-  FB.value = sn.body || '';
+  FB.value = sn.body  || '';
   updateSplitState();
-  MOD.classList.toggle('full', wantFull);
+  if (MOD.hasAttribute('open')) MOD.close();
   MOD.showModal();
   setTimeout(()=>FB.focus(),0);
 }
-
-BtnCancel.addEventListener('click', ()=>{
+function closeModal(){ EDITING=null; MOD.close(); }
+function updateSplitState(){
+  const n = (FB.value.match(/\[split\]/g)||[]).length;
+  SplitInfo.textContent = `[split] markers: ${n}`;
+  SplitTip.textContent = n ? '' : 'Tip: insert [split] where you want to cut.';
+}
+function splitAtMarker(){
   if(!EDITING) return;
-  FB.value = FB.value.replace(/\[split\]/g,'');
-  MOD.close();
-});
-
-BtnSave.addEventListener('click', ()=>{
-  if(!EDITING) return;
-  const cleaned = FB.value.replace(/\[split\]/g,'');
-  EDITING.title = FT.value.trim();
-  EDITING.body  = cleaned;
-  save(); MOD.close(); renderAll();
-});
-
-BtnSplit.addEventListener('click', ()=>{
-  if(!EDITING) return;
-  const parts = FB.value.split('[split]');
-  if(parts.length!==2) return;
-  const [part1, part2] = parts.map(s=>s.trim());
-  const idx = SNIPS.findIndex(s=>s.id===EDITING.id);
-  if(idx<0) return;
-  const newSnip = {id:uid(), type:EDITING.type, title:(EDITING.title||'')+' (part 2)', body:part2};
-  EDITING.body = part1; EDITING.title=(EDITING.title||'')+' (part 1)';
-  SNIPS.splice(idx+1,0,newSnip);
-  ACTIVE_ID = newSnip.id;
-  save(); MOD.close(); renderAll();
-});
-
-MFull.addEventListener('click', ()=>{ wantFull=!wantFull; MOD.classList.toggle('full', wantFull); });
-
-FB.addEventListener('input', updateSplitState);
-
-/* keyboard shortcuts inside modal */
-MOD.addEventListener('keydown', (e)=>{
-  if(e.key==='Escape'){ e.preventDefault(); BtnCancel.click(); }
-  if((e.ctrlKey||e.metaKey) && e.key==='Enter'){ e.preventDefault(); BtnSave.click(); }
-  if((e.ctrlKey||e.metaKey) && e.shiftKey && /s/i.test(e.key)){ e.preventDefault(); BtnSplit.click(); }
-});
-
-/* -------------------- add buttons -------------------- */
-document.querySelectorAll('button[data-add]').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    const type=b.dataset.add;
-    const sn={id:uid(), type, title:'', body:''};
-    SNIPS.push(sn); ACTIVE_ID=sn.id; save(); renderAll(); openModal(sn);
-  });
-});
-
-/* -------------------- Insert MM wiring -------------------- */
-function insertMM(mmText){
-  if (typeof MOD?.open==='boolean' && MOD.open) {
-    const token = (FB.value && !FB.value.endsWith('\n') ? '\n' : '') + mmText + '\n';
-    const s = FB.selectionStart ?? FB.value.length;
-    FB.setRangeText(token, s, FB.selectionEnd ?? s, 'end');
-    FB.focus();
-    updateSplitState();
+  if(!/\[split\]/.test(FB.value)){
+    SplitTip.textContent = 'Insert [split] where you want to split.';
+    SplitInfo.classList.add('split-warn');
+    setTimeout(()=>SplitInfo.classList.remove('split-warn'),1200);
     return;
   }
-  if(!ACTIVE_ID){ alert('Select a card first (click it), then try Insert MM again.'); return; }
-  const i = SNIPS.findIndex(s=>s.id===ACTIVE_ID); if(i<0) return;
-  const b = SNIPS[i].body || '';
-  const sep = b && !b.endsWith('\n') ? '\n' : '';
-  SNIPS[i].body = b + sep + mmText + '\n';
-  save(); renderAll();
+  const parts = FB.value.split(/\[split\]/);
+  const i = SNIPS.findIndex(s=>s.id===EDITING.id);
+  SNIPS[i].title = FT.value.trim();
+  SNIPS[i].body  = parts[0].trim();
+  parts.slice(1).forEach(p=>{
+    SNIPS.splice(i+1,0,{...SNIPS[i], id:id(), body:p.trim()});
+  });
+  save(); renderList(); renderPreview(); closeModal();
 }
-window.RO_insertMM = insertMM;
+function saveModal(){
+  if(!EDITING) return;
+  EDITING.title = FT.value.trim();
+  EDITING.body  = FB.value.replace(/\[split\]/g,'');
+  save(); renderList(); renderPreview(); closeModal();
+}
 
-$('#btnInsertMM').addEventListener('click', ()=>{
-  const sample = `[mm|p54=60,129:104,169:"sample label"]`;
-  insertMM(sample);
-});
+/* =========================
+   Toolbar snippets
+   ========================= */
+function buildInsert(kind){
+  if(kind==='header'){
+    return `chapter: [notebook/] chapter-5-chords.html  •  para: osf-1  •  primary: 51  •  author-id: (Discord …)\n`;
+  }
+  if(kind==='discord'){
+    return `discord: Rank r of n (rfc)  —  #[dissent]  ++  #[concur]  —  [Active|Dormant|Retracted]\n`;
+  }
+  if(kind==='logic'){
+    return `**Logic construct — syllogism**\nPremise 1: If it's raining, then it's cloudy.\nPremise 2: It's raining.\nConclusion: It's cloudy.\n`;
+  }
+  if(kind==='inline'){
+    return ` \\\\( x^2 \\ge y^2 \\\\) `;
+  }
+  if(kind==='block'){
+    return `\\[ E = mc^2 \\]\n`;
+  }
+  if(kind==='figure'){
+    return String.raw`<table style="width:100%; table-layout:fixed; border-collapse:collapse;">
+  <colgroup><col style="width:120px;"><col></colgroup>
+  <tbody><tr>
+    <td style="padding:0; vertical-align:top;">
+      <div style="--x:.4; --y:0; width:100%; aspect-ratio:1/1; position:relative; overflow:hidden; border-radius:4px;">
+        <img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
+             alt="" style="position:absolute; display:block; width:280%; height:280%;
+             left:calc(-1 * var(--x) * 10%); top:calc(-1 * var(--y) * 10%);" />
+      </div>
+    </td>
+    <td style="padding:8px 9px; vertical-align:top;">
+      <table style="width:100%; border-collapse:collapse; margin:0;">
+        <thead><tr>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">n</th>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">math</th>
+        </tr></thead>
+        <tbody><tr>
+          <td style="border:1px solid #273341; padding:6px 8px;">1</td>
+          <td style="border:1px solid #273341; padding:6px 8px;">\\[ r_q=\forall n\,\sqrt{\frac{n}{n+1}} \to \{ \sqrt{\tfrac{1}{2}}, \sqrt{\tfrac{2}{3}}, \sqrt{\tfrac{3}{4}}, \dots \} \\]</td>
+        </tr></tbody>
+      </table>
+    </td>
+  </tr></tbody>
+</table>\n`;
+  }
+  return '';
+}
 
-/* -------------------- export -------------------- */
-$('#exportMemo').addEventListener('click', ()=>{
-  const text = toMemo();
-  const a=document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([text],{type:'text/plain'}));
-  a.download = 'memo-snippets.txt';
-  a.click(); URL.revokeObjectURL(a.href);
-});
+function insertAtCaret(textarea, text){
+  const el=textarea, [s,e]=[el.selectionStart, el.selectionEnd];
+  const v=el.value; el.value = v.slice(0,s)+text+v.slice(e);
+  const p = s + text.length; el.selectionStart=el.selectionEnd=p; el.focus();
+}
 
-/* -------------------- boot -------------------- */
-load(); renderAll(); status('ready · autosave active');
+/* =========================
+   Buttons (add, MM, export)
+   ========================= */
+$('#btnAddObs').onclick = ()=>add('Observation');
+$('#btnAddHyp').onclick = ()=>add('Hypothesis');
+$('#btnAddEv').onclick  = ()=>add('Evidence');
+
+function add(type){
+  const sn = {id:id(), type, title:'', body:''};
+  SNIPS.push(sn); ACTIVE_ID = sn.id; save(); renderList(); renderPreview();
+  openModal(sn);
+}
+
+$('#btnInsertMM').onclick = ()=>{
+  const token = `[mm|p54=60,129:104,169:"sample label"]`;
+  if (MOD.open) { insertAtCaret(FB, token); updateSplitState(); return; }
+  // otherwise: append to active card
+  const i = SNIPS.findIndex(s=>s.id===ACTIVE_ID);
+  if (i>=0){ SNIPS[i].body += (SNIPS[i].body ? '\n' : '') + token; save(); renderList(); renderPreview(); }
+};
+
+$('#btnExport').onclick = ()=>{
+  const body = SNIPS.map(s=>`<!-- ${s.type}:${s.title||''} -->\n${s.body||''}`).join('\n\n');
+  const blob = new Blob([body],{type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'memo.txt';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),500);
+};
+
+$('#btnPop').onclick = ()=>{
+  const w = window.open('about:blank','preview','width=1024,height=800');
+  if(!w) return;
+  w.document.write(`<!doctype html><meta charset="utf-8"><title>Live Preview</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <style>
+    :root{color-scheme:dark}
+    body{background:#0f141a;color:#deedf7;font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;margin:0}
+    .wrap{max-width:960px;margin:0 auto;padding:18px}
+    .pv-snip{border:1px solid #273341;border-radius:10px;margin:12px 0;overflow:hidden}
+    .pv-head{display:none}
+    .pv-body{padding:12px}
+    table{border-collapse:collapse}
+    th,td{border:1px solid #273341;padding:6px 8px}
+  </style>
+  <div class="wrap" id="root"></div>
+  <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"><\/script>
+  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"><\/script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"><\/script>
+  <script>
+    const root=document.getElementById('root');
+    function render(items){
+      root.innerHTML='';
+      items.forEach(sn=>{
+        const sec=document.createElement('section');
+        sec.className='pv-snip';
+        sec.innerHTML='<div class="pv-head"></div><div class="pv-body">'+marked.parse(sn.body||'')+'</div>';
+        root.appendChild(sec);
+      });
+      if(window.MathJax&&MathJax.typesetPromise) MathJax.typesetPromise([root]);
+    }
+    window.addEventListener('message',e=>{
+      if(e.data && e.data.kind==='render') render(e.data.items);
+    });
+  <\/script>`);
+  // push current content
+  w.postMessage({kind:'render', items:SNIPS}, '*');
+};
+
+/* =========================
+   MathJax helper
+   ========================= */
+function typeset(root){
+  if (window.MathJax && MathJax.typesetPromise) {
+    return MathJax.typesetPromise([root]);
+  }
+  return Promise.resolve();
+}
+
+/* =========================
+   Init
+   ========================= */
+load(); renderList(); renderPreview();
+
+/* keep dialog closed on load (in case browser persisted state) */
+if (MOD.hasAttribute('open')) MOD.close();
 </script>
 </body>
 </html>
