@@ -333,6 +333,13 @@ function renderList(){
       </div>
       <div class="body"></div>
     `;
+      
+  // prevent drag from starting on toolbar buttons/icons
+  div.querySelectorAll('.tools button').forEach(b=>{
+    b.setAttribute('draggable','false');
+    b.style.webkitUserDrag = 'none';
+  });
+
 
     // For cards (except Dock), show rendered preview in the card body
     if (!isDock) {
@@ -405,35 +412,89 @@ function escapeHtml(s){
    Events (list)
    ========================= */
 $('#list').addEventListener('click', (ev)=>{
-  const btn  = ev.target.closest('button'); 
-  const card = ev.target.closest('.snip'); 
-  if(!card) return;
+  const card = ev.target.closest('.snip');
+  if (!card) return;
 
-  const idx  = SNIPS.findIndex(s=>s.id===card.dataset.id); 
-  if(idx<0) return;
+  const btn = ev.target.closest('[data-act]');
+  const id  = card.dataset.id;
+  const idx = SNIPS.findIndex(s=>s.id===id);
+  if (idx < 0) return;
 
-  if (!btn) { /* handled above for select */ return; }
+  // If a toolbar button/icon was clicked: handle it and stop bubbling
+  if (btn) {
+    ev.stopPropagation();
+    const act = btn.dataset.act;
+    const sn  = SNIPS[idx];
 
-  const act = btn.dataset.act;
-  const sn  = SNIPS[idx];
+    if (act === 'edit') {
+      openModal(sn);                      // your modal editor
+      return;
+    }
+    if (act === 'dup') {
+      const copy = { ...sn, id: uid() };
+      SNIPS.splice(idx+1, 0, copy);
+      save(); renderList(); renderPreview();
+      return;
+    }
+    if (act === 'del') {
+      if (confirm('Delete this snippet?')) {
+        SNIPS.splice(idx, 1);
+        if (ACTIVE_ID === id) ACTIVE_ID = SNIPS[idx]?.id || SNIPS[idx-1]?.id || null;
+        save(); renderList(); renderPreview();
+      }
+      return;
+    }
+    if (act === 'merge-prev') {
+      if (idx > 0 && SNIPS[idx-1].type === sn.type && sn.type !== 'Dock') {
+        SNIPS[idx-1].body = (SNIPS[idx-1].body||'') + '\n\n' + (sn.body||'');
+        SNIPS.splice(idx,1);
+        ACTIVE_ID = SNIPS[idx-1].id;
+        save(); renderList(); renderPreview();
+      }
+      return;
+    }
+    if (act === 'merge-next') {
+      if (idx < SNIPS.length-1 && SNIPS[idx+1].type === sn.type && sn.type !== 'Dock') {
+        sn.body = (sn.body||'') + '\n\n' + (SNIPS[idx+1].body||'');
+        SNIPS.splice(idx+1,1);
+        ACTIVE_ID = sn.id;
+        save(); renderList(); renderPreview();
+      }
+      return;
+    }
 
-  if (act === 'dock-toggle' && sn.type === 'Dock') {
-    const s = GROUPS[sn.id] ||= { collapsed:false };
-    s.collapsed = !s.collapsed;
-    saveGroups();
-    renderList(); renderPreview();
-    return;
+    if (act === 'dock-toggle' && sn.type === 'Dock') {
+      const s = GROUPS[sn.id] ||= { collapsed:false };
+      s.collapsed = !s.collapsed;
+      saveGroups(); renderList(); renderPreview();
+      return;
+    }
+
+    return; // unknown action
   }
+
+  // Otherwise: select/open the card (not a toolbar click)
+  ACTIVE_ID = id;
+  $$('.snip').forEach(s=>s.classList.add('collapsed'));
+  card.classList.remove('collapsed');
+  renderList(); renderPreview(); save();
 });
 
+
 let dragIndex = -1;
-$('#list').addEventListener('dragstart', e=>{
+
+$('#list').addEventListener('dragstart', (e)=>{
+  if (e.target.closest('.tools')) { e.preventDefault(); return; }  // <- guard
   const card = e.target.closest('.snip'); if(!card) return;
   dragIndex = SNIPS.findIndex(s=>s.id===card.dataset.id);
   card.classList.add('drag-hint');
-  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', card.dataset.id);
 });
+
+
 $('#list').addEventListener('dragend', ()=>$$('.snip').forEach(s=>s.classList.remove('drag-hint')));
+
 $('#list').addEventListener('dragover', e=>{
   e.preventDefault();
   const tgt = e.target.closest('.snip'); if(!tgt) return;
