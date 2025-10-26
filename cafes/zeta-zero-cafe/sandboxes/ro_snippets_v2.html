@@ -38,7 +38,12 @@ button{cursor:pointer}
 #list .bar .tools{margin-left:auto;display:flex;gap:6px;align-items:center}
 #list .title{font-weight:600}
 #list .body{padding:10px}
-#list .collapsed .body{display:none}
+/* collapsed by default */
+#list .snip.collapsed .body{display:none}
+
+/* “hover to open” */
+#list .snip.collapsed:hover .body{display:block}
+#list .snip.collapsed:hover .bar{background:#121b25}
 .snip .type.badge{min-width:92px;text-align:center}
 
 .preview .pv-snip{border:1px solid #273341;border-radius:10px;margin:10px;overflow:hidden}
@@ -62,6 +67,20 @@ button{cursor:pointer}
 .toolbar{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
 .modal-foot{display:flex;align-items:center;gap:8px}
 .split-warn{color:#ffcc88}
+/* Live Preview blocks */
+.preview .pv-snip{
+  border:1px solid #273341;
+  border-radius:10px;
+  margin:10px;
+  overflow:hidden;
+}
+
+/* Match the left-column active highlight */
+.preview .pv-snip.active{
+  outline:2px solid #1fa2d6;       /* blue ring like the left cards */
+  border-color:#1fa2d6;
+}
+
 </style>
 
 <!-- ---------- MathJax (same config as chapters) ---------- -->
@@ -224,25 +243,31 @@ function renderList(){
   const list = $('#list'); list.innerHTML = '';
   SNIPS.forEach((sn,i)=>{
     const div = document.createElement('div');
-    div.className = 'snip collapsed' + (sn.id===ACTIVE_ID ? ' active':'');
+    div.className = 'snip' + (sn.id===ACTIVE_ID ? ' active' : ' collapsed');
     div.dataset.id = sn.id;
     div.draggable = true;
-    div.innerHTML = `
-      <div class="bar" style="border-left:6px solid ${typeColor(sn.type)}">
-        <div class="left">
-          <span class="type badge">${sn.type}</span>
-          <span class="title">${escapeHtml(sn.title||'')}</span>
-        </div>
-        <div class="tools">
-          <button class="btn" data-act="merge-prev">◀ Merge</button>
-          <button class="btn" data-act="merge-next">Merge ▶</button>
-          <button class="btn" data-act="edit" title="Edit">✏️</button>
-          <button class="btn" data-act="dup" title="Duplicate">📄</button>
-          <button class="btn danger" data-act="del" title="Delete">🗑️</button>
-        </div>
-      </div>
-      <div class="body mono">${escapeHtml(sn.body||'')}</div>
-    `;
+div.innerHTML = `
+  <div class="bar" style="border-left:6px solid ${typeColor(sn.type)}">
+    <div class="left">
+      <span class="type badge">${sn.type}</span>
+      <span class="title">${escapeHtml(sn.title||'')}</span>
+    </div>
+    <div class="tools">
+      <button class="btn" data-act="merge-prev">◀ Merge</button>
+      <button class="btn" data-act="merge-next">Merge ▶</button>
+      <button class="btn" data-act="edit" title="Edit">✏️</button>
+      <button class="btn" data-act="dup" title="Duplicate">📄</button>
+      <button class="btn danger" data-act="del" title="Delete">🗑️</button>
+    </div>
+  </div>
+  <div class="body"></div>
+`;
+
+// fill body with rendered HTML, then typeset math
+const bodyEl = div.querySelector('.body');
+bodyEl.innerHTML = marked.parse(normalizeTeX(sn.body || ''));
+typeset(bodyEl);
+
     list.appendChild(div);
   });
 }
