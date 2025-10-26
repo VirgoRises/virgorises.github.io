@@ -80,7 +80,34 @@ button{cursor:pointer}
   outline:2px solid #1fa2d6;       /* blue ring like the left cards */
   border-color:#1fa2d6;
 }
+/* Dock header snippet styling */
+.snip.dock .bar {
+  background: #0c1520;
+  border-left: 6px solid #788197; /* neutral */
+}
+.snip.dock .title {
+  font-weight: 700;
+  letter-spacing: .2px;
+}
 
+/* When a group is collapsed, hide its members (in list & preview) */
+.snip.group-member.hidden { display: none !important; }
+.preview .pv-snip.group-member.hidden { display: none !important; }
+
+/* Dock controls */
+.snip.dock .tools .dock-toggle {
+  border-color: #3a4556;
+}
+.snip.dock.collapsed .tools .dock-toggle::after {
+  content: ' (collapsed)';
+  opacity: .7;
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+  /* … existing styles … */
+  #list .snip .bar{ cursor: grab; }
+  #list .snip.drag-hint{ opacity:.6 }
 </style>
 
 <!-- ---------- MathJax (same config as chapters) ---------- -->
@@ -101,6 +128,7 @@ button{cursor:pointer}
     <button class="btn" id="btnAddEv">+ Evidence</button>
     <button class="btn" id="btnInsertMM">Insert MM</button>
     <button class="btn" id="btnExport">Export memo</button>
+    <button class="btn" id="btnAddDock">+ Dock</button>
     <span class="muted" id="autosaveBadge">ready • autosave active</span>
   </div>
 
@@ -171,19 +199,35 @@ button{cursor:pointer}
 const $ = (q,root=document)=>root.querySelector(q);
 const $$= (q,root=document)=>Array.from(root.querySelectorAll(q));
 const storageKey = 'ro_snips_v2';
+const groupKey = storageKey + ':groups';
+let GROUPS = {}; // { dockId: { collapsed: boolean } }
+
 const id = ()=>'s'+Math.random().toString(36).slice(2,9);
 
 let SNIPS = [];              // {id,type,title,body}
 let ACTIVE_ID = null;        // selected card
 let EDITING   = null;        // current snippet in modal
 
-const TYPES = ['Observation','Hypothesis','Evidence'];
-const typeColor = t => t==='Observation' ? '#2e8369' : t==='Hypothesis' ? '#3683c8' : '#c7703b';
+const TYPES = ['Observation','Hypothesis','Evidence','Dock'];
+const typeColor = t =>
+  t==='Observation' ? '#2e8369' :
+  t==='Hypothesis'  ? '#3683c8' :
+  t==='Evidence'    ? '#c7703b' :
+  /* Dock */          '#788197';
 
 const MOD   = $('#modal'), FT = $('#FT'), FB = $('#FB'), MType = $('#mType');
 const SplitInfo = $('#splitInfo'), SplitTip = $('#splitTip');
 
 /* Load / Save */
+function loadGroups(){
+  try { GROUPS = JSON.parse(localStorage.getItem(groupKey) || '{}'); }
+  catch { GROUPS = {}; }
+}
+
+function saveGroups(){
+  localStorage.setItem(groupKey, JSON.stringify(GROUPS));
+}
+
 function load(){
   try{
     const raw = localStorage.getItem(storageKey);
@@ -241,32 +285,75 @@ function seed(){
    ========================= */
 function renderList(){
   const list = $('#list'); list.innerHTML = '';
-  SNIPS.forEach((sn,i)=>{
-    const div = document.createElement('div');
-    div.className = 'snip' + (sn.id===ACTIVE_ID ? ' active' : ' collapsed');
-    div.dataset.id = sn.id;
-    div.draggable = true;
-div.innerHTML = `
-  <div class="bar" style="border-left:6px solid ${typeColor(sn.type)}">
-    <div class="left">
-      <span class="type badge">${sn.type}</span>
-      <span class="title">${escapeHtml(sn.title||'')}</span>
-    </div>
-    <div class="tools">
-      <button class="btn" data-act="merge-prev">◀ Merge</button>
-      <button class="btn" data-act="merge-next">Merge ▶</button>
-      <button class="btn" data-act="edit" title="Edit">✏️</button>
-      <button class="btn" data-act="dup" title="Duplicate">📄</button>
-      <button class="btn danger" data-act="del" title="Delete">🗑️</button>
-    </div>
-  </div>
-  <div class="body"></div>
-`;
 
-// fill body with rendered HTML, then typeset math
-const bodyEl = div.querySelector('.body');
-bodyEl.innerHTML = marked.parse(normalizeTeX(sn.body || ''));
-typeset(bodyEl);
+  // Pass 1: compute group membership by scanning Dock headers
+  let currentDockId = null;
+  const membership = SNIPS.map((sn, idx) => {
+    if (sn.type === 'Dock') { currentDockId = sn.id; }
+    return { idx, id: sn.id, type: sn.type, dockId: currentDockId };
+  });
+
+  // Pass 2: render
+  SNIPS.forEach((sn, idx) => {
+    const isActive = sn.id === ACTIVE_ID;
+    const isDock   = sn.type === 'Dock';
+    const dockId   = membership[idx].dockId;
+    const dockCollapsed = dockId && GROUPS[dockId]?.collapsed;
+
+    const div = document.createElement('div');
+    div.className = 'snip' + (isActive ? ' active' : ' collapsed') + (isDock ? ' dock' : '');
+    div.dataset.id = sn.id;
+    div.dataset.idx = idx;
+    /* NEW: allow drag */
+    div.draggable = true;                       // <-- critical
+    div.addEventListener('dragstart', e => {    // optional: Firefox-friendly
+      e.dataTransfer.setData('text/plain', sn.id);
+    })
+    
+    // If this is a non-dock and its group is collapsed, hide in list
+    if (!isDock && dockCollapsed) div.classList.add('group-member', 'hidden');
+
+    div.innerHTML = `
+      <div class="bar" style="border-left:6px solid ${typeColor(sn.type)}">
+        <div class="left">
+          <span class="type badge">${sn.type}</span>
+          <span class="title">${escapeHtml(sn.title||'')}</span>
+        </div>
+        <div class="tools">
+          ${isDock ? `
+            <button class="btn dock-toggle" data-act="dock-toggle">${GROUPS[sn.id]?.collapsed ? 'Expand' : 'Collapse'}</button>
+          ` : `
+            <button class="btn" data-act="merge-prev">◀ Merge</button>
+            <button class="btn" data-act="merge-next">Merge ▶</button>
+            <button class="btn" data-act="edit" title="Edit">✏️</button>
+            <button class="btn" data-act="dup" title="Duplicate">📄</button>
+            <button class="btn danger" data-act="del" title="Delete">🗑️</button>
+          `}
+        </div>
+      </div>
+      <div class="body"></div>
+    `;
+
+    // For cards (except Dock), show rendered preview in the card body
+    if (!isDock) {
+      const bodyEl = div.querySelector('.body');
+      bodyEl.innerHTML = marked.parse(normalizeTeX(sn.body || ''));
+      // typeset just this card to keep it snappy
+      typeset(bodyEl);
+    } else {
+      // mark dock collapsed state on the element (for CSS text hint)
+      if (GROUPS[sn.id]?.collapsed) div.classList.add('collapsed');
+      else div.classList.remove('collapsed');
+    }
+
+    // select/open card by clicking outside tools
+    div.addEventListener('click', (ev)=>{
+      if (ev.target.closest('.tools') || ev.target.closest('button')) return;
+      ACTIVE_ID = sn.id;
+      $$('.snip').forEach(s=>s.classList.add('collapsed'));
+      div.classList.remove('collapsed');
+      renderList(); renderPreview(); save();
+    });
 
     list.appendChild(div);
   });
@@ -274,16 +361,28 @@ typeset(bodyEl);
 
 async function renderPreview(){
   const pv = $('#preview'); pv.innerHTML = '';
+
+  // Compute group membership (same pass as in list)
+  let currentDockId = null;
   SNIPS.forEach(sn=>{
+    if (sn.type === 'Dock') {
+      currentDockId = sn.id;
+      // render a dock header in preview
+      const dock = document.createElement('section');
+      dock.className = 'pv-snip dock';
+      dock.dataset.id = sn.id;
+      dock.innerHTML = `<div class="pv-body"><h3 style="margin:0">${escapeHtml(sn.title||'')}</h3></div>`;
+      pv.appendChild(dock);
+      return;
+    }
     const sec = document.createElement('section');
-    sec.className = 'pv-snip' + (sn.id===ACTIVE_ID?' active':'');
+    const collapsed = currentDockId && GROUPS[currentDockId]?.collapsed;
+    sec.className = 'pv-snip group-member' + (collapsed ? ' hidden' : '') + (sn.id===ACTIVE_ID?' active':'');
     sec.dataset.id = sn.id;
-    sec.innerHTML = `
-      <div class="pv-head"><span class="badge">${sn.type}</span> <strong>${escapeHtml(sn.title||'')}</strong></div>
-      <div class="pv-body">${marked.parse(normalizeTeX(sn.body||''))}</div>
-    `;
+    sec.innerHTML = `<div class="pv-body">${marked.parse(normalizeTeX(sn.body||''))}</div>`;
     pv.appendChild(sec);
   });
+
   await typeset(pv);
   if (ACTIVE_ID) scrollPreviewTo(ACTIVE_ID);
 }
@@ -306,43 +405,24 @@ function escapeHtml(s){
    Events (list)
    ========================= */
 $('#list').addEventListener('click', (ev)=>{
-  const btn = ev.target.closest('button'); if(!btn) {
-    // select/open card on bar/body click
-    const card = ev.target.closest('.snip'); if(!card) return;
-    ACTIVE_ID = card.dataset.id;
-    // toggle collapsed on hover/selection
-    $$('.snip').forEach(s=>s.classList.add('collapsed'));
-    card.classList.remove('collapsed');
-    renderList(); renderPreview(); save();
-    return;
-  }
-  const act = btn.dataset.act;
-  const card = btn.closest('.snip'); if(!card) return;
-  const idx = SNIPS.findIndex(s=>s.id===card.dataset.id); if(idx<0) return;
-  const sn = SNIPS[idx];
+  const btn  = ev.target.closest('button'); 
+  const card = ev.target.closest('.snip'); 
+  if(!card) return;
 
-  if (act==='edit'){ openModal(sn); return; }
-  if (act==='dup'){
-    const cp = {...sn, id:id()};
-    SNIPS.splice(idx+1,0,cp);
-    ACTIVE_ID = cp.id; save(); renderList(); renderPreview(); return;
-  }
-  if (act==='del'){
-    if (!confirm('Delete snippet?')) return;
-    SNIPS.splice(idx,1);
-    if (ACTIVE_ID===sn.id) ACTIVE_ID = SNIPS[idx]?.id || SNIPS[idx-1]?.id || null;
-    save(); renderList(); renderPreview(); return;
-  }
-  if (act==='merge-prev' || act==='merge-next'){
-    const j = act==='merge-prev' ? idx-1 : idx+1;
-    if (j<0 || j>=SNIPS.length) return;
-    if (SNIPS[j].type !== sn.type) { alert('Can only merge snippets of the same type.'); return; }
-    const keep = act==='merge-prev' ? j : idx;
-    const del  = act==='merge-prev' ? idx : j;
-    SNIPS[keep].body = (SNIPS[keep].body||'') + '\n\n' + (SNIPS[del].body||'');
-    SNIPS.splice(del,1);
-    ACTIVE_ID = SNIPS[keep].id;
-    save(); renderList(); renderPreview(); return;
+  const idx  = SNIPS.findIndex(s=>s.id===card.dataset.id); 
+  if(idx<0) return;
+
+  if (!btn) { /* handled above for select */ return; }
+
+  const act = btn.dataset.act;
+  const sn  = SNIPS[idx];
+
+  if (act === 'dock-toggle' && sn.type === 'Dock') {
+    const s = GROUPS[sn.id] ||= { collapsed:false };
+    s.collapsed = !s.collapsed;
+    saveGroups();
+    renderList(); renderPreview();
+    return;
   }
 });
 
@@ -479,7 +559,7 @@ function insertAtCaret(textarea, text){
 $('#btnAddObs').onclick = ()=>add('Observation');
 $('#btnAddHyp').onclick = ()=>add('Hypothesis');
 $('#btnAddEv').onclick  = ()=>add('Evidence');
-
+$('#btnAddDock').onclick = ()=>add('Dock');
 function add(type){
   const sn = {id:id(), type, title:'', body:''};
   SNIPS.push(sn); ACTIVE_ID = sn.id; save(); renderList(); renderPreview();
@@ -556,7 +636,7 @@ function typeset(root){
 /* =========================
    Init
    ========================= */
-load(); renderList(); renderPreview();
+load(); loadGroups(); renderList(); renderPreview();
 
 /* keep dialog closed on load (in case browser persisted state) */
 if (MOD.hasAttribute('open')) MOD.close();
