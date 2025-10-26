@@ -362,7 +362,7 @@ $('#list').addEventListener('dragover', e=>{
   const [it] = SNIPS.splice(dragIndex,1);
   SNIPS.splice(over,0,it);
   dragIndex = over;
-  save(); renderList();  // light refresh; preview later
+  save(); renderList(); renderPreview(); // keep preview in sync after reorder
 });
 
 /* =========================
