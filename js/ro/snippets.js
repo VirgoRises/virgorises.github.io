@@ -1,266 +1,231 @@
 // /js/ro/snippets.js
-// Orchestrates: state, list rendering, drag/sort, selection, dock groups,
-// preview compilation, and persistence.
+// Core list/preview rendering + tiny modal editor.
+// Relies on: snippets-compile.js
 
-import { TPL } from '/js/ro/snippets-templates.js';
-import { openEditorFor, closeEditor, isEditorOpen, setEditorHandlers, getEditorValue, setEditorValue } from '/js/ro/snippets-modal.js';
-import { compileSnippets, queueTypeset, mdToHtml } from '/js/ro/snippets-compile.js?v=7';
+import { mdToHtml, queueTypeset } from '/js/ro/snippets-compile.js';
 
-const LS_KEY = 'ro.snips.v3';          // sandbox-only key
-const $ = (s, r=document)=>r.querySelector(s);
-const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
+// ---------------------------------
+// state + utils
+// ---------------------------------
+const STORE_KEY = 'ro_snips_v3';
+let SNIPS = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+let ACTIVE_ID = SNIPS[0]?.id || null;
 
-export const STATE = {
-  snips: [],
-  activeId: null,
-  groups: {},          // {dockId: {collapsed:boolean}}
-};
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const uid = () => Math.random().toString(36).slice(2, 9);
+const save = () => localStorage.setItem(STORE_KEY, JSON.stringify(SNIPS));
+const escapeHtml = s => (s||'').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 
-// ---------- persistence ----------
-function save() {
-  localStorage.setItem(LS_KEY, JSON.stringify({
-    snips: STATE.snips,
-    activeId: STATE.activeId,
-    groups: STATE.groups
-  }));
-}
-function load() {
-  const raw = localStorage.getItem(LS_KEY);
-  if (!raw) return false;
-  try {
-    const o = JSON.parse(raw);
-    STATE.snips = Array.isArray(o.snips)? o.snips : [];
-    STATE.activeId = o.activeId || null;
-    STATE.groups = o.groups || {};
-    return true;
-  } catch(_){ return false; }
-}
+// seed so the page isn’t empty
+function ensureSeed() {
+  if (SNIPS.length) return;
+  SNIPS = [
+    { id: uid(), type: 'Observation', title: 'LaTeX test',
+      body: '\\[ \\zeta(2)=\\tfrac{\\pi^2}{6} \\]' },
 
-// ---------- ID helpers ----------
-function uid() { return 'id'+Math.random().toString(36).slice(2,9); }
-function byId(id){ return STATE.snips.find(s=>s.id===id); }
-function idxById(id){ return STATE.snips.findIndex(s=>s.id===id); }
-function typeColor(t){ return ({Observation:'#238636',Hypothesis:'#2f81f7',Evidence:'#f0b429',Dock:'#6e7681'})[t]||'#6e7681'; }
+    { id: uid(), type: 'Observation', title: 'Ladder up the wall',
+      body: 'We see a family of ratios that look like roots of fractions.' },
 
-// ---------- membership (dock grouping) ----------
-function computeMembership(){
-  let currentDock = null;
-  return STATE.snips.map(sn=>{
-    if (sn.type==='Dock'){ currentDock=sn.id; return {id:sn.id, type:'Dock', dockId:null}; }
-    return {id:sn.id, type:sn.type, dockId:currentDock};
-  });
-}
+    { id: uid(), type: 'Hypothesis', title: '√n/(n+1) relationship',
+      body: 'It appears that \\[ r_q = \\forall n\\,\\sqrt{\\frac{n}{n+1}} \\to \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\dots \\} \\tag{05:01} \\]' },
 
-// ---------- rendering ----------
-export function renderAll(){
-  renderList();
-  renderPreview();
+    { id: uid(), type: 'Evidence', title: 'Figure crop + table', body: `
+<table style="width:100%; table-layout:fixed; border-collapse:collapse;">
+  <colgroup><col style="width:120px;"><col></colgroup>
+  <tbody><tr>
+    <td style="padding:0;vertical-align:top;">
+      <div style="--x:.4;--y:0;width:100%;aspect-ratio:1/1;position:relative;overflow:hidden;border-radius:4px;">
+        <img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
+             alt="" style="position:absolute;display:block;width:280%;height:280%;left:calc(-1*var(--x)*10%);top:calc(-1*var(--y)*10%);">
+      </div>
+    </td>
+    <td style="padding:8px 9px;vertical-align:top;">
+      <table style="width:100%;border-collapse:collapse;margin:0;">
+        <thead><tr>
+          <th style="text-align:left;border:1px solid #273341;padding:6px 8px;">n</th>
+          <th style="text-align:left;border:1px solid #273341;padding:6px 8px;">math</th>
+        </tr></thead>
+        <tbody><tr>
+          <td style="border:1px solid #273341;padding:6px 8px;">1</td>
+          <td style="border:1px solid #273341;padding:6px 8px;">\\[ r_q=\\forall n\\,\\sqrt{\\frac{n}{n+1}} \\to \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\dots \\} \\tag{05:01} \\]</td>
+        </tr></tbody>
+      </table>
+    </td>
+  </tr></tbody>
+</table>`.trim() }
+  ];
+  ACTIVE_ID = SNIPS[0].id;
   save();
 }
 
-export function renderList(){
-  const list = $('#snipList'); if (!list) return;
-  list.innerHTML = '';
-  const mem = computeMembership();
+function typeColor(t){
+  return t==='Observation' ? '#2e7dbb'
+       : t==='Hypothesis'  ? '#6a9d28'
+       : t==='Evidence'    ? '#b07a0a'
+       : '#3a4556';
+}
 
-  STATE.snips.forEach((sn, i)=>{
-    const isDock = sn.type==='Dock';
-    const active = STATE.activeId===sn.id;
-    const div = document.createElement('div');
-    div.className = 'snip' + (active?' active':' collapsed') + (isDock?' dock':'');
-    div.dataset.id = sn.id;
-    div.dataset.idx = i;
-    div.draggable = true;
+// ---------------------------------
+// rendering
+// ---------------------------------
+function renderList() {
+  const root = $('#list');
+  root.innerHTML = '';
 
-    div.innerHTML = `
+  SNIPS.forEach(sn => {
+    const wrap = document.createElement('div');
+    wrap.className = 'snip collapsed' + (sn.id===ACTIVE_ID ? ' active' : '');
+    wrap.dataset.id = sn.id;
+    wrap.innerHTML = `
       <div class="bar" style="border-left:6px solid ${typeColor(sn.type)}">
         <div class="left">
           <span class="badge">${sn.type}</span>
           <span class="title">${escapeHtml(sn.title||'')}</span>
         </div>
         <div class="tools">
-          ${isDock?`
-            <button class="btn dock-toggle" data-act="dock-toggle">${STATE.groups[sn.id]?.collapsed?'Expand':'Collapse'}</button>
-            <button class="btn" data-act="edit" title="Edit">✏️</button>
-          `:`
-            <button class="btn" data-act="edit" title="Edit">✏️</button>
-          `}
+          <button class="btn" data-act="edit" title="Edit">✏️</button>
         </div>
       </div>
-      <div class="body">${mdToHtml(sn.body||'')}</div>
+      <div class="body">${mdToHtml(sn.body || '')}</div>
     `;
+    root.appendChild(wrap);
 
-    // dock membership hide
-    const grp = mem[i].dockId;
-    if (grp){
-      div.classList.add('group-member');
-      if (STATE.groups[grp]?.collapsed) div.classList.add('hidden');
+    // hover-to-expand
+    wrap.addEventListener('mouseenter', ()=>wrap.classList.remove('collapsed'));
+    wrap.addEventListener('mouseleave', ()=>{
+      if (sn.id!==ACTIVE_ID) wrap.classList.add('collapsed');
+    });
+  });
+
+  // typeset math in list
+  queueTypeset(root);
+}
+
+function renderPreview() {
+  const pv = $('#preview');
+  pv.innerHTML = '';
+
+  SNIPS.forEach(sn => {
+    const c = document.createElement('div');
+    c.className = 'pv-snip' + (sn.id===ACTIVE_ID ? ' active' : '');
+    c.innerHTML = `
+      <div class="head">
+        <span class="badge">${sn.type}</span><strong>${escapeHtml(sn.title||'')}</strong>
+      </div>
+      <div class="body">${mdToHtml(sn.body || '')}</div>
+    `;
+    pv.appendChild(c);
+  });
+
+  // typeset math in preview
+  queueTypeset(pv);
+}
+
+// ---------------------------------
+// interactions
+// ---------------------------------
+function wireToolbar() {
+  $('#btnAddObs').onclick = ()=>addSnip('Observation');
+  $('#btnAddHyp').onclick = ()=>addSnip('Hypothesis');
+  $('#btnAddEvi').onclick = ()=>addSnip('Evidence');
+  $('#btnExport').onclick = exportMemo;
+  $('#btnFocus').onclick = ()=>$('#preview')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function wireListClicks() {
+  $('#list').addEventListener('click', e=>{
+    const card = e.target.closest('.snip'); if(!card) return;
+    const id   = card.dataset.id;
+    const idx  = SNIPS.findIndex(x=>x.id===id);
+    if (idx<0) return;
+
+    const act = e.target.closest('[data-act]')?.dataset.act;
+    if (act === 'edit') {
+      openEditModal(SNIPS[idx], sn=>{
+        SNIPS[idx] = { ...SNIPS[idx], ...sn };
+        ACTIVE_ID = SNIPS[idx].id;
+        save(); renderList(); renderPreview();
+      });
+      return;
     }
 
-    // drag events
-    div.addEventListener('dragstart', e=>{
-      if (e.target.closest('.tools')) { e.preventDefault(); return; }
-      div.classList.add('drag-hint'); e.dataTransfer.setData('text/plain', sn.id);
-    });
-    div.addEventListener('dragend', ()=>div.classList.remove('drag-hint'));
-    div.addEventListener('dragover', e=> e.preventDefault());
-    div.addEventListener('drop', e=>{
-      e.preventDefault();
-      const src = e.dataTransfer.getData('text/plain');
-      if (!src || src===sn.id) return;
-      moveBefore(src, sn.id);
-    });
-
-    // click / hover
-    div.addEventListener('mouseenter', ()=>activate(sn.id));
-    div.addEventListener('click', e=>{
-      const act = e.target.closest('[data-act]')?.dataset.act;
-      if (act==='edit'){ openEditor(sn.id); return; }
-      if (act==='dock-toggle'){ toggleDock(sn.id); return; }
-      activate(sn.id);
-    });
-
-    list.appendChild(div);
+    // select
+    ACTIVE_ID = id;
+    renderList(); renderPreview();
   });
-
-  // typeset MathJax in list drawers
-  queueTypeset(list);
 }
 
-export function renderPreview(){
-  const prev = $('#snipPreview'); if (!prev) return;
-  prev.innerHTML = compileSnippets(STATE.snips, STATE.groups, STATE.activeId);
-  queueTypeset(prev);
-  // scroll active into view
-  const active = prev.querySelector('.pv-card.active');
-  if (active) active.scrollIntoView({block:'nearest'});
-}
+// ---------------------------------
+// small modal editor (inline)
+// ---------------------------------
+function openEditModal(sn, onSave){
+  const back = $('#modalBack');
+  const ipt  = $('#mTitle');
+  const ta   = $('#mBody');
+  const btnSave  = $('#modalSave');
+  const btnCancel= $('#modalCancel');
+  const btnClose = $('#modalClose');
+  const btnSplit = $('#modalSplit');
 
-function toggleDock(dockId){
-  STATE.groups[dockId] = STATE.groups[dockId] || {collapsed:false};
-  STATE.groups[dockId].collapsed = !STATE.groups[dockId].collapsed;
-  renderAll();
-}
+  ipt.value = sn.title || '';
+  ta.value  = sn.body  || '';
+  back.style.display = 'flex';
+  ipt.focus();
 
-function activate(id){
-  STATE.activeId = id;
-  // expand selected card
-  $$('#snipList .snip').forEach(el=>{
-    el.classList.toggle('active', el.dataset.id===id);
-    if (el.dataset.id===id) el.classList.remove('collapsed');
-  });
-  renderPreview();
-  save();
-}
-
-function moveBefore(srcId, dstId){
-  const si = idxById(srcId), di = idxById(dstId);
-  if (si<0||di<0) return;
-  const [it] = STATE.snips.splice(si,1);
-  const insertAt = (si<di) ? di-1 : di;
-  STATE.snips.splice(insertAt,0,it);
-  renderAll();
-}
-
-// ---------- Editor wiring ----------
-function openEditor(id){
-  const sn = byId(id);
-  if (!sn) return;
-  STATE.activeId = id;
-  renderList(); // set active style
-  openEditorFor(sn);
-}
-setEditorHandlers({
-  onSave(sn){
-    const i = idxById(sn.id); if (i<0) return;
-    STATE.snips[i] = sn;
-    renderAll();
-  },
-  onDuplicate(sn){
-    const i = idxById(sn.id); if (i<0) return;
-    const copy = structuredClone(sn);
-    copy.id = uid();
-    STATE.snips.splice(i+1,0,copy);
-    STATE.activeId = copy.id;
-    renderAll(); openEditor(copy.id);
-  },
-  onDelete(sn){
-    const i = idxById(sn.id); if (i<0) return;
-    STATE.snips.splice(i,1);
-    if (STATE.activeId===sn.id) STATE.activeId = null;
-    renderAll();
-  },
-  onMergePrev(sn){
-    const i = idxById(sn.id); if (i<=0) return;
-    const prev = STATE.snips[i-1];
-    if (prev.type!==sn.type) return;
-    prev.body = (prev.body||'') + '\n\n' + (sn.body||'');
-    STATE.snips.splice(i,1);
-    STATE.activeId = prev.id;
-    renderAll(); openEditor(prev.id);
-  },
-  onMergeNext(sn){
-    const i = idxById(sn.id); if (i<0 || i===STATE.snips.length-1) return;
-    const next = STATE.snips[i+1];
-    if (next.type!==sn.type) return;
-    sn.body = (sn.body||'') + '\n\n' + (next.body||'');
-    STATE.snips.splice(i+1,1);
-    renderAll(); openEditor(sn.id);
-  },
-  onInsertMM(label='sample label'){
-    const ta = $('#editorBody');
-    if (!ta) return;
-    const tok = `[mm|p54=60,129:104,169:"${label}"]`;
-    insertAtCaret(ta, tok);
-  }
-});
-
-// caret insert
-function insertAtCaret(ta, text){
-  const st = ta.selectionStart, en = ta.selectionEnd;
-  const val = ta.value;
-  ta.value = val.slice(0,st) + text + val.slice(en);
-  ta.selectionStart = ta.selectionEnd = st + text.length;
-  ta.dispatchEvent(new Event('input', {bubbles:true}));
-}
-
-// ---------- toolbar (add buttons) ----------
-function add(type){
-  const base = { id:uid(), type, title:'', body:'', dockId:null };
-  const sn = TPL.seed(type, base);
-  STATE.snips.push(sn);
-  STATE.activeId = sn.id;
-  renderAll(); openEditor(sn.id);
-}
-
-export function bootSnippets(){
-  // seed on first run
-  if (!load()){
-    STATE.snips = [
-      TPL.seed('Observation',{id:uid(),title:'LaTeX test',body:'\\[ \\zeta\\left(2\\right)=\\frac{\\pi^2}{6} \\]'}),
-      TPL.seed('Observation',{id:uid(),title:'Ladder up the wall',body:'We see a family of ratios that look like roots of fractions.'}),
-      TPL.seed('Hypothesis',{id:uid(),title:'√n/(n+1) relationship',body:'It appears that\n\n\\[ r_q=\\forall n\\,\\sqrt{\\frac{n}{n+1}} \\to \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\dots \\} \\tag{05:01} \\]'}),
-      TPL.seed('Evidence',{id:uid(),title:'Figure crop + table',body:TPL.figCropTable()}),
-      TPL.seed('Dock',{id:uid(),title:'This is the first Dock',body:''})
-    ];
+  function cleanup(){
+    back.style.display = 'none';
+    btnSave.onclick = btnCancel.onclick = btnClose.onclick = btnSplit.onclick = null;
   }
 
-  $('#btnAddObs')?.addEventListener('click', ()=>add('Observation'));
-  $('#btnAddHyp')?.addEventListener('click', ()=>add('Hypothesis'));
-  $('#btnAddEvi')?.addEventListener('click', ()=>add('Evidence'));
-  $('#btnAddDock')?.addEventListener('click', ()=>add('Dock'));
-  $('#btnInsertMM')?.addEventListener('click', ()=>{
-    if (!STATE.activeId) return;
-    openEditor(STATE.activeId);
-    // insert handled by modal toolbar "Insert MM"
-  });
+  btnSave.onclick = ()=>{
+    const body = ta.value.replace(/\[split\]/gi,'').trim();
+    const title= ipt.value.trim();
+    cleanup();
+    onSave({ title, body });
+  };
+  btnCancel.onclick = btnClose.onclick = ()=>cleanup();
 
-  renderAll();
+  btnSplit.onclick = ()=>{
+    if(!/\[split\]/i.test(ta.value)) { alert('Insert [split] in the body where you want to split.'); return; }
+    const [partA, partB] = ta.value.split(/\[split\]/i);
+    // overwrite current, insert sibling after
+    sn.title = ipt.value.trim();
+    sn.body  = (partA||'').trim();
+    const newSn = { ...sn, id: uid(), title: (sn.title||'') + ' (cont.)', body: (partB||'').trim() };
+    const i = SNIPS.findIndex(x=>x.id===sn.id);
+    SNIPS.splice(i+1, 0, newSn);
+    save();
+    cleanup();
+    ACTIVE_ID = newSn.id;
+    renderList(); renderPreview();
+  };
 }
 
-// expose for sandbox toggles if needed
-export function getState(){ return STATE; }
+// ---------------------------------
+// helpers
+// ---------------------------------
+function addSnip(type){
+  const sn = { id: uid(), type, title: type+' title', body: '' };
+  SNIPS.push(sn);
+  ACTIVE_ID = sn.id;
+  save(); renderList(); renderPreview();
+}
 
-// small util
-function escapeHtml(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function exportMemo(){
+  const text = SNIPS.map(s=>`[${s.type}] ${s.title}\n\n${s.body}\n`).join('\n\n---\n\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], {type:'text/plain'}));
+  a.download = 'memo.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
 
+// ---------------------------------
+// boot
+// ---------------------------------
+ensureSeed();
+wireToolbar();
+wireListClicks();
+renderList();
+renderPreview();
