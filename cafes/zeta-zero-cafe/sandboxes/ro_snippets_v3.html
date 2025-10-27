@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>RO Snippets v3 — Modules Sandbox</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/10-components/ro-snippets.css"/>
+
+  <!-- MathJax config (same as chapters) -->
+  <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
+  <!-- Use full bundle to include AMS and avoid timing warnings -->
+  <script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml-full.js"></script>
+
+  <style>
+    body{background:#0d1117; color:#c9d1d9; font:14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif; margin:0; padding:16px;}
+    h1{font-size:18px; margin:0 0 12px;}
+    .topbar{display:flex; gap:10px; align-items:center; margin-bottom:12px;}
+    .topbar .btn{border:1px solid #273341; border-radius:8px; padding:6px 9px; background:#0f141a; color:#c9d1d9; cursor:pointer;}
+  </style>
+</head>
+<body>
+  <h1>RO Snippets v3 — Structured Flow (modules)</h1>
+
+  <div class="topbar">
+    <button id="btnAddObs" class="btn">+ Observation</button>
+    <button id="btnAddHyp" class="btn">+ Hypothesis</button>
+    <button id="btnAddEvi" class="btn">+ Evidence</button>
+    <button id="btnAddDock" class="btn">+ Dock</button>
+    <button id="btnInsertMM" class="btn">Insert MM</button>
+  </div>
+
+  <div class="ro-wrap">
+    <div class="card">
+      <div class="head">
+        <div><strong>Snippets</strong> <span class="soft"> — collapsed • hover or select to open • drag ↑ to reorder</span></div>
+      </div>
+      <div id="snipList"></div>
+    </div>
+
+    <div class="card">
+      <div class="head">
+        <div><strong>Live Preview</strong> <span class="soft">(combined)</span></div>
+      </div>
+      <div id="snipPreview"></div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="snipModal">
+    <div class="box">
+      <div class="hd">
+        <div>✏️ Edit</div>
+        <button class="btn" onclick="document.getElementById('snipModal').classList.remove('show')">✕</button>
+      </div>
+      <div class="bd">
+        <div class="toolbar">
+          <button id="insLogic" class="btn">Logic skeleton</button>
+          <button id="insInline" class="btn">Inline math</button>
+          <button id="insBlock" class="btn">Block math</button>
+          <button id="insFigure" class="btn">Image/Table</button>
+          <button id="insMM" class="btn">Insert MM</button>
+          <button id="insHeader" class="btn">Header info</button>
+          <button id="insDiscord" class="btn">Discord stats</button>
+
+          <span style="flex:1"></span>
+
+          <button id="btnMergePrev" class="btn">Merge ◀</button>
+          <button id="btnMergeNext" class="btn">Merge ▶</button>
+          <button id="btnDup" class="btn">Duplicate</button>
+          <button id="btnDel" class="btn danger">Delete</button>
+        </div>
+
+        <input id="editorTitle" class="input" placeholder="Short label / claim"/>
+
+        <textarea id="editorBody" class="input ta" placeholder="Markdown + LaTeX. Use \\( ... \\) or \\[ ... \\]. Type [split] to split."></textarea>
+
+        <div class="row-end" style="justify-content:space-between">
+          <small>[split] markers: <span id="splitCount">0</span></small>
+          <div>
+            <button id="btnCancel" class="btn">Cancel</button>
+            <button id="btnSplit" class="btn">Split at [split]</button>
+            <button id="btnSave" class="btn">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modules -->
+  <script type="module" src="/js/ro/snippets-templates.js"></script>
+  <script type="module" src="/js/ro/snippets-modal.js"></script>
+  <script type="module" src="/js/ro/snippets-compile.js"></script>
+  <script type="module">
+    import { bootSnippets } from '/js/ro/snippets.js';
+    window.addEventListener('load', bootSnippets);
+  </script>
+</body>
+</html>

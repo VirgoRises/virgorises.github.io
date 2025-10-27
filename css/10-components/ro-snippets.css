@@ -1,0 +1,209 @@
+/* /css/10-components/ro-snippets.css  */
+
+:root {
+    --ro-bg: #0d1117;
+    --ro-card: #161b22;
+    --ro-line: #273341;
+    --ro-text: #c9d1d9;
+    --ro-soft: #8b949e;
+    --ro-blue: #2f81f7;
+    --ro-green: #238636;
+    --ro-gold: #f0b429;
+    --ro-slate: #6e7681;
+}
+
+.ro-wrap {
+    display: grid;
+    grid-template-columns: 48% 52%;
+    gap: 12px;
+}
+
+.card {
+    background: var(--ro-card);
+    border: 1px solid var(--ro-line);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.card .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.badge {
+    font-size: 12px;
+    padding: 2px 6px;
+    border: 1px solid var(--ro-line);
+    border-radius: 999px;
+    color: var(--ro-soft);
+}
+
+.title {
+    font-weight: 600;
+    margin-left: 8px;
+    color: var(--ro-text);
+}
+
+/* snippet list */
+#snipList .snip {
+    border: 1px solid var(--ro-line);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    background: #0f141a;
+}
+
+#snipList .snip.collapsed .body {
+    display: none;
+}
+
+#snipList .snip .bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    background: #0f141a;
+    cursor: grab;
+}
+
+#snipList .snip.active {
+    box-shadow: 0 0 0 2px var(--ro-blue) inset;
+}
+
+#snipList .snip.hidden {
+    display: none;
+}
+
+#snipList .snip .tools .btn {
+    margin-left: 6px;
+}
+
+#snipList .snip.dock .bar {
+    background: #0f141a;
+}
+
+#snipList .snip.drag-hint {
+    opacity: .6
+}
+
+/* preview cards */
+#snipPreview .pv-card {
+    background: var(--ro-card);
+    border: 1px solid var(--ro-line);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#snipPreview .pv-card.active {
+    box-shadow: 0 0 0 2px var(--ro-blue) inset;
+}
+
+#snipPreview .pv-card .pv-body {
+    color: var(--ro-text);
+}
+
+#snipPreview .pv-card .head .badge,
+#snipPreview .pv-card .head .title {
+    display: none;
+}
+
+/* hide labels in preview */
+
+/* modal */
+#snipModal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .5);
+    z-index: 9999;
+}
+
+#snipModal.show {
+    display: flex;
+}
+
+#snipModal .box {
+    width: min(1100px, 96vw);
+    background: var(--ro-card);
+    border: 1px solid var(--ro-line);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .6);
+}
+
+#snipModal .box .hd {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--ro-line);
+}
+
+#snipModal .box .bd {
+    padding: 12px;
+    display: grid;
+    gap: 10px;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.toolbar .btn {
+    border: 1px solid var(--ro-line);
+    border-radius: 8px;
+    padding: 6px 9px;
+    background: #0f141a;
+    color: var(--ro-text);
+    cursor: pointer;
+}
+
+.toolbar .btn:hover {
+    border-color: var(--ro-blue);
+}
+
+.input {
+    width: 100%;
+    border: 1px solid var(--ro-line);
+    border-radius: 8px;
+    padding: 8px;
+    background: #0f141a;
+    color: var(--ro-text);
+}
+
+.ta {
+    min-height: 280px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+.row-end {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn {
+    border: 1px solid var(--ro-line);
+    border-radius: 8px;
+    padding: 6px 9px;
+    background: #0f141a;
+    color: var(--ro-text);
+    cursor: pointer;
+}
+
+.btn.danger {
+    border-color: #b62324;
+    color: #ffd7d5;
+}
+
+.btn:disabled {
+    opacity: .6;
+    pointer-events: none;
+}
