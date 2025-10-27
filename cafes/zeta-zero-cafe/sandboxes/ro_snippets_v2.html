@@ -66,8 +66,20 @@ h2{margin:10px 0 6px;font-size:15px;color:#9fb3c8}
 .snip.collapsed .body{ display:none; }
 .snip.collapsed:hover .body{ display:block; }
 .snip.active .body{ display:block; }
-/* Optional: hide snippet type/title in preview cards */
-.preview .pv-snip header, .preview .pv-snip .pv-meta { display: none !important; }
+/* Hide type badge + title in Live Preview only */
+#preview .badge,
+#preview .title {
+  display: none !important;
+}
+
+/* Optional: tighten head spacing once labels are hidden */
+#preview .card .head {
+  min-height: 0;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+
 
 </style>
 </head>
