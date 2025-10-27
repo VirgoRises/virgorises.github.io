@@ -85,42 +85,37 @@ export function compileSnippets(snips, groups, activeId){
 let __mjRetryTimer = null;
 let __mjPendingRoots = new Set();
 
-/**
- * Typeset a root when MathJax is ready.
- * - Collects requests while MathJax is not yet loaded.
- * - On first detection of MathJax, flushes all pending roots.
- * - Debounces multiple calls into one typesetPromise.
- */
 export function queueTypeset(root){
   if (!root) return;
-
-  // Always track the latest root(s)
   __mjPendingRoots.add(root);
 
-  const tryTypeset = () => {
+  const flush = () => {
     const mj = window.MathJax;
-    if (!mj || !mj.typesetPromise) {
-      // Not ready yet: try again shortly
-      if (!__mjRetryTimer) {
-        __mjRetryTimer = setTimeout(() => {
-          __mjRetryTimer = null;
-          tryTypeset();
-        }, 80); // small retry delay
-      }
-      return;
-    }
+    if (!mj || !mj.typesetPromise) return retry(); // still not ready
 
-    // Ready: flush all unique roots at once (as an array)
     const batch = Array.from(__mjPendingRoots);
     __mjPendingRoots.clear();
-
-    // Let the DOM paint, then typeset
-    setTimeout(() => {
-      mj.typesetPromise(batch).catch(()=>{ /* ignore */ });
-    }, 0);
+    // Let layout settle
+    setTimeout(() => mj.typesetPromise(batch).catch(()=>{}), 0);
   };
 
-  tryTypeset();
+  const retry = () => {
+    if (__mjRetryTimer) return;
+    __mjRetryTimer = setTimeout(() => {
+      __mjRetryTimer = null;
+      queueTypeset(); // attempt again (will call flush or set timer again)
+    }, 100);
+  };
+
+  // If MathJax exposes a startup promise, hook it once and flush when ready
+  const mj = window.MathJax;
+  if (mj?.startup?.promise && !mj.__ro_snippets_readyHooked) {
+    mj.__ro_snippets_readyHooked = true;
+    mj.startup.promise.then(flush).catch(flush);
+  }
+
+  // Try immediate flush (works when MJ already loaded), else retry
+  flush();
 }
 
 

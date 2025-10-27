@@ -4,7 +4,7 @@
 
 import { TPL } from '/js/ro/snippets-templates.js';
 import { openEditorFor, closeEditor, isEditorOpen, setEditorHandlers, getEditorValue, setEditorValue } from '/js/ro/snippets-modal.js';
-import { compileSnippets, queueTypeset, mdToHtml } from '/js/ro/snippets-compile.js';
+import { compileSnippets, queueTypeset, mdToHtml } from '/js/ro/snippets-compile.js?v=7';
 
 const LS_KEY = 'ro.snips.v3';          // sandbox-only key
 const $ = (s, r=document)=>r.querySelector(s);

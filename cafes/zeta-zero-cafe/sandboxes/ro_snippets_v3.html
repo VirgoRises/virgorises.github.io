@@ -6,7 +6,7 @@
   <title>RO Snippets v3 — Modules Sandbox</title>
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/css/10-components/ro-snippets.css"/>
+  <link rel="stylesheet" href="/css/10-components/ro-snippets.css?v=7"/>
 
   <!-- MathJax config (same as chapters) -->
   <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
@@ -89,12 +89,22 @@
   </div>
 
   <!-- Modules -->
-  <script type="module" src="/js/ro/snippets-templates.js"></script>
-  <script type="module" src="/js/ro/snippets-modal.js"></script>
-  <script type="module" src="/js/ro/snippets-compile.js"></script>
+  <script type="module" src="/js/ro/snippets-templates.js?v=7"></script>
+  <script type="module" src="/js/ro/snippets-modal.js?v=7"></script>
+  <script type="module" src="/js/ro/snippets-compile.js?v=7"></script>
   <script type="module">
-    import { bootSnippets } from '/js/ro/snippets.js';
+    import { bootSnippets } from '/js/ro/snippets.js?v=7';
     window.addEventListener('load', bootSnippets);
   </script>
+  <script>
+  (function(){
+    const onReady = ()=>{
+      console.log('[snippets] MathJax ready', !!(window.MathJax && MathJax.typesetPromise));
+    };
+    if (window.MathJax?.startup?.promise) MathJax.startup.promise.then(onReady).catch(onReady);
+    else window.addEventListener('load', onReady);
+  })();
+</script>
+
 </body>
 </html>
