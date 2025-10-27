@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>RO Snippets v2 — Structured Flow Editor</title>
+
+<style>
+:root{color-scheme:dark}
+body{margin:0;font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:#0f141a;color:#e6edf3;}
+a{color:#8ab4f8;text-decoration:none}
+.container{max-width:1200px;margin:0 auto;padding:14px 10px 32px}
+.toolbar{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.btn{background:#0b1621;border:1px solid #273341;border-radius:8px;color:#e6edf3;padding:6px 10px}
+.btn:hover{background:#111d2a}
+.btn.danger{border-color:#b04444}
+.btn.primary{border-color:#1fa2d6}
+h2{margin:10px 0 6px;font-size:15px;color:#9fb3c8}
+.grid{display:grid;grid-template-columns:48% 52%;gap:14px;align-items:start}
+
+/* list / preview cards */
+.card{border:1px solid #273341;border-radius:10px;background:#0b1219;box-shadow:0 0 0 0 rgba(0,0,0,0);overflow:hidden}
+.card .head{display:flex;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid #122031}
+.card .head .title{font-weight:600}
+.card .body{padding:10px 12px}
+
+/* snippet cards */
+.snip{border:1px solid #273341;border-radius:10px;background:#0b1219;overflow:hidden;margin-bottom:10px}
+.snip .bar{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border-bottom:1px solid #122031;background:#0b1219}
+.snip .bar .left{display:flex;gap:8px;align-items:center}
+.snip .bar .tools{display:flex;gap:6px}
+.badge{font-size:12px;color:#9fb3c8;border:1px solid #3a4556;border-radius:999px;padding:2px 8px}
+.snip.active{outline:2px solid #1fa2d6;border-color:#1fa2d6}
+.snip.collapsed .body{display:none}
+
+/* drag affordance */
+#list .snip .bar{cursor:grab}
+#list .snip.drag-hint{opacity:.6}
+
+/* dock header */
+.snip.dock .bar{background:#0c1520;border-left:6px solid #788197}
+.snip.dock .title{font-weight:700;letter-spacing:.2px}
+.snip.dock.collapsed + .group-member{display:none}
+
+/* preview */
+.preview .pv-snip{border:1px solid #273341;border-radius:10px;margin:10px 0;overflow:hidden}
+.preview .pv-snip .head{display:flex;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid #122031}
+.preview .pv-snip.active{outline:2px solid #1fa2d6;border-color:#1fa2d6}
+
+/* modal */
+#modalMask{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;z-index:40}
+#modal{position:fixed;inset:8% 10%;background:#0b1219;border:1px solid #273341;border-radius:12px;display:none;z-index:41;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column}
+#modal .top{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #122031}
+#modal .toolbar{display:flex;gap:6px;flex-wrap:wrap;padding:8px 12px;border-bottom:1px solid #122031}
+#modal .content{padding:10px 12px;display:flex;flex-direction:column;gap:8px;min-height:280px}
+#modal input[type=text]{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #273341;background:#09111a;color:#e6edf3}
+#modal textarea{width:100%;min-height:220px;resize:vertical;border-radius:8px;border:1px solid #273341;background:#0a131d;color:#e6edf3;padding:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+#modal .bottom{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-top:1px solid #122031}
+.small{color:#9fb3c8;font-size:12px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+/* util */
+.hidden{ display:none !important; }
+
+/* collapsed snippets: keep drawer closed by default,
+   open on hover OR when active/selected */
+.snip.collapsed .body{ display:none; }
+.snip.collapsed:hover .body{ display:block; }
+.snip.active .body{ display:block; }
+/* Hide type badge + title in Live Preview only */
+#preview .badge,
+#preview .title {
+  display: none !important;
+}
+
+/* Optional: tighten head spacing once labels are hidden */
+#preview .card .head {
+  min-height: 0;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="toolbar">
+    <button class="btn" id="btnAddObs">+ Observation</button>
+    <button class="btn" id="btnAddHyp">+ Hypothesis</button>
+    <button class="btn" id="btnAddEv">+ Evidence</button>
+    <button class="btn" id="btnAddDock">+ Dock</button>
+    <button class="btn" id="btnInsertMM">Insert MM</button>
+    <button class="btn" id="btnExport">Export memo</button>
+    <span class="small mono" id="status">ready • autosave active</span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="head"><div class="title">Snippets</div><div class="small">collapsed • hover or select to open • drag ↑ to reorder</div></div>
+      <div class="body" id="list"></div>
+    </div>
+
+    <div class="card">
+      <div class="head">
+        <div class="title">Live Preview (combined)</div>
+        <button class="btn" id="btnPop" title="Pop-out preview">↗</button>
+      </div>
+      <div class="body preview" id="preview"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modalMask"></div>
+<div id="modal" role="dialog" aria-modal="true">
+  <div class="top">
+    <div class="title mono small" id="modalTitle">Edit —</div>
+    <button class="btn" id="btnClose">✕</button>
+  </div>
+
+  <div class="toolbar" id="modalTools">
+    <!-- smart inserts -->
+    <button class="btn" data-insert="logic">Logic skeleton</button>
+    <button class="btn" data-insert="inline">Inline math</button>
+    <button class="btn" data-insert="block">Block math</button>
+    <button class="btn" data-insert="figure">Image/Table</button>
+    <button class="btn" data-insert="mm">Insert MM</button>
+    <button class="btn" data-insert="header">Header info</button>
+    <button class="btn" data-insert="discord">Discord stats</button>
+
+
+    <span style="flex:1 1 auto"></span>
+
+    <!-- modal actions moved here -->
+    <button class="btn" data-modal-act="merge-prev" title="Merge into previous (same type)">Merge ◀</button>
+    <button class="btn" data-modal-act="merge-next" title="Merge next into this (same type)">Merge ▶</button>
+    <button class="btn" data-modal-act="dup" title="Duplicate">Duplicate</button>
+    <button class="btn danger" data-modal-act="del" title="Delete">Delete</button>
+  </div>
+
+  <div class="content">
+    <input id="Title" type="text" placeholder="Short label / claim"/>
+    <textarea id="Body" class="mono" placeholder="Markdown + LaTeX. Use \\( ... \\) or \\[ ... \\]. Type [split] to split."></textarea>
+  </div>
+
+  <div class="bottom">
+    <div class="small mono" id="splitInfo">[split] markers: 0</div>
+    <div>
+      <button class="btn" id="btnCancel">Cancel</button>
+      <button class="btn" id="btnSplit">Split at [split]</button>
+      <button class="btn primary" id="btnSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============== Utilities ============== */
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+const uid=()=>Math.random().toString(36).slice(2,9);
+
+const STORE_KEY='ro_snips_v2';
+let SNIPS = JSON.parse(localStorage.getItem(STORE_KEY)||'[]');
+let ACTIVE_ID = SNIPS[0]?.id || null;
+
+// dock collapsed state
+const GROUPS = JSON.parse(localStorage.getItem(STORE_KEY+'_groups')||'{}');
+const save = ()=>localStorage.setItem(STORE_KEY, JSON.stringify(SNIPS));
+const saveGroups = ()=>localStorage.setItem(STORE_KEY+'_groups', JSON.stringify(GROUPS));
+
+function typeColor(t){
+  return t==='Observation' ? '#2e7dbb'
+       : t==='Hypothesis'  ? '#6a9d28'
+       : t==='Evidence'    ? '#b07a0a'
+       : t==='Dock'        ? '#788197'
+       : '#3a4556';
+}
+
+function ensureSeed(){
+  if(SNIPS.length) return;
+  SNIPS = [
+    {id:uid(), type:'Observation', title:'LaTeX test', body:'\\\\[ \\zeta\\left(2\\right)=\\frac{\\pi^2}{6} \\\\]'},
+    {id:uid(), type:'Observation', title:'Ladder up the wall', body:'We see a family of ratios that look like roots of fractions.'},
+    {id:uid(), type:'Hypothesis',  title:'√n/(n+1) relationship', body:'It appears that \\\\[ r_q = \\forall n\\,\\sqrt{\\frac{n}{n+1}} \\to \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\dots \\} \\tag{05:01} \\\\]'},
+    {id:uid(), type:'Evidence', title:'Figure crop + table', body:`
+<table style="width:100%; table-layout:fixed; border-collapse:collapse;">
+  <colgroup><col style="width:120px;"><col></colgroup>
+  <tbody><tr>
+    <td style="padding:0; vertical-align:top;">
+      <div style="--x:.4; --y:0; width:100%; aspect-ratio:1/1; position:relative; overflow:hidden; border-radius:4px;">
+        <img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
+             alt="" style="position:absolute; display:block; width:280%; height:280%; left:calc(-1 * var(--x) * 10%); top:calc(-1 * var(--y) * 10%);"/>
+      </div>
+    </td>
+    <td style="padding:8px 9px; vertical-align:top;">
+      <table style="width:100%; border-collapse:collapse; margin:0;">
+        <thead><tr>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">n</th>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">math</th>
+        </tr></thead>
+        <tbody><tr>
+          <td style="border:1px solid #273341; padding:6px 8px;">1</td>
+          <td style="border:1px solid #273341; padding:6px 8px;">\\[ r_q=\\forall n\\,\\sqrt{\\frac{n}{n+1}} \\to \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\dots \\} \\tag{05:01} \\]</td>
+        </tr></tbody>
+      </table>
+    </td>
+  </tr></tbody>
+</table>
+`.trim()}
+  ];
+  ACTIVE_ID = SNIPS[0].id;
+  save();
+}
+
+/* ============== Rendering ============== */
+function idxOf(id){ return SNIPS.findIndex(s=>s.id===id); }
+
+function computeMembership(){
+  // scan for Dock membership by nearest Dock above.
+  // IMPORTANT: a Dock row is NOT a member of its own group.
+  let currentDockId = null;
+  return SNIPS.map((sn)=>{
+    if (sn.type === 'Dock') {
+      currentDockId = sn.id;          // start a new group
+      return { id: sn.id, type: sn.type, dockId: null }; // dock itself isn't a member
+    }
+    return { id: sn.id, type: sn.type, dockId: currentDockId };
+  });
+}
+
+
+function renderList(){
+  const list = $('#list'); list.innerHTML='';
+  const membership = computeMembership();
+
+  SNIPS.forEach((sn, idx)=>{
+    const isActive = sn.id===ACTIVE_ID;
+    const isDock   = sn.type==='Dock';
+
+    const div = document.createElement('div');
+    div.className = 'snip' + (isActive?' active':' collapsed') + (isDock?' dock':'');
+    div.dataset.id  = sn.id;
+    div.dataset.idx = idx;
+    div.draggable = true;
+
+    div.innerHTML = `
+      <div class="bar" style="border-left:6px solid ${typeColor(sn.type)}">
+        <div class="left">
+          <span class="badge">${sn.type}</span>
+          <span class="title">${escapeHtml(sn.title||'')}</span>
+        </div>
+        <div class="tools">
+          ${isDock ? `
+            <button class="btn dock-toggle" data-act="dock-toggle">
+              ${GROUPS[sn.id]?.collapsed ? 'Expand' : 'Collapse'}
+            </button>
+            <button class="btn" data-act="edit" title="Edit">✏️</button>
+          ` : `
+            <button class="btn" data-act="edit" title="Edit">✏️</button>
+          `}
+        </div>
+      </div>
+      <!-- NOTE: list drawer renders (not escaped) -->
+      <div class="body">${sn.body||''}</div>
+    `;
+
+    // prevent drag from starting via toolbar buttons
+    const tools = div.querySelector('.tools');
+    if (tools) tools.querySelectorAll('button').forEach(b=>{
+      b.setAttribute('draggable','false');
+      b.style.webkitUserDrag='none';
+    });
+
+    // apply dock grouping (hide members when dock collapsed)
+    const groupId = membership[idx].dockId;
+    if (groupId) {
+      div.classList.add('group-member');
+      if (GROUPS[groupId]?.collapsed) div.classList.add('hidden');
+    }
+
+    list.appendChild(div);
+  });
+
+  // typeset MathJax in the snippet list drawers too
+  queueTypeset(list);
+}
+
+function renderPreview(){
+  const pv = $('#preview'); pv.innerHTML = '';
+  const membership = computeMembership();
+  for (let i=0;i<SNIPS.length;i++){
+    const sn = SNIPS[i];
+    const wrap = document.createElement('div');
+    const isActive = sn.id===ACTIVE_ID;
+
+    wrap.className = 'pv-snip' + (isActive?' active':'');
+    wrap.innerHTML = `
+      <div class="head">
+        <span class="badge">${sn.type}</span>
+        <strong>${escapeHtml(sn.title||'')}</strong>
+      </div>
+      <div class="body">${sn.body||''}</div>
+    `;
+
+    // hide preview members if Dock collapsed
+    const dockId = membership[i].dockId;
+    if(dockId && GROUPS[dockId]?.collapsed){
+      wrap.classList.add('group-member','hidden');
+      wrap.style.display='none';
+    }
+    pv.appendChild(wrap);
+  }
+  // typeset MathJax in preview
+  queueTypeset(pv);
+}
+
+function escapeHtml(s){ return (s||'').replace(/[&<>"]/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c])); }
+
+/* ============== Drag & drop ============== */
+let dragIndex = -1;
+
+$('#list').addEventListener('dragstart', e=>{
+  if(e.target.closest('.tools')){ e.preventDefault(); return; }
+  const card = e.target.closest('.snip'); if(!card) return;
+  dragIndex = idxOf(card.dataset.id);
+  card.classList.add('drag-hint');
+  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setData('text/plain', card.dataset.id);
+});
+
+$('#list').addEventListener('dragend', e=>{
+  $$('.snip.drag-hint').forEach(x=>x.classList.remove('drag-hint'));
+  dragIndex=-1;
+});
+
+$('#list').addEventListener('dragover', e=>{
+  e.preventDefault();
+  const over = e.target.closest('.snip'); if(!over) return;
+  const overIdx = idxOf(over.dataset.id);
+  if(overIdx<0 || dragIndex<0 || overIdx===dragIndex) return;
+
+  const rect = over.getBoundingClientRect();
+  const before = (e.clientY - rect.top) < rect.height/2;
+
+  const moving = SNIPS.splice(dragIndex,1)[0];
+  let insertAt = overIdx + (before?0:1);
+  if(insertAt<0) insertAt=0;
+  SNIPS.splice(insertAt,0,moving);
+  dragIndex = insertAt;
+
+  save(); renderList(); renderPreview();
+});
+
+/* ============== List click (select + toolbar) ============== */
+$('#list').addEventListener('click', ev=>{
+  const card = ev.target.closest('.snip'); if(!card) return;
+  const btn = ev.target.closest('[data-act]');
+  const id  = card.dataset.id;
+  const i   = idxOf(id); if(i<0) return;
+  const sn  = SNIPS[i];
+
+  if(btn){
+    const act = btn.dataset.act;
+    if(act==='edit'){ openModal(sn); return; }
+    if(act==='dock-toggle' && sn.type==='Dock'){
+      (GROUPS[sn.id] ||= {collapsed:false}).collapsed = !GROUPS[sn.id].collapsed;
+      saveGroups(); renderList(); renderPreview(); return;
+    }
+    return;
+  }
+
+  // select
+  ACTIVE_ID = id;
+  renderList(); renderPreview(); save();
+});
+
+/* ============== Modal edit ============== */
+let EDITING = null;
+
+function openModal(sn){
+  EDITING = { id: sn.id };
+  $('#modalTitle').textContent = `Edit — ${sn.type.toLowerCase()}`;
+  $('#Title').value = sn.title || '';
+  $('#Body').value  = sn.body  || '';
+  updateSplitInfo();
+  updateModalMergeButtons();
+
+  $('#modalMask').style.display='block';
+  $('#modal').style.display='flex';
+  setTimeout(()=>$('#Body').focus(),0);
+}
+
+function closeModal(){
+  EDITING=null;
+  $('#modalMask').style.display='none';
+  $('#modal').style.display='none';
+}
+
+function updateSplitInfo(){
+  const b = $('#Body').value || '';
+  const n = (b.match(/\[split\]/g)||[]).length;
+  $('#splitInfo').textContent = `[split] markers: ${n}`;
+}
+
+function updateModalMergeButtons(){
+  const tb = $('#modalTools');
+  const i  = idxOf(EDITING?.id);
+  if(i<0){ tb.querySelectorAll('[data-modal-act^="merge"]').forEach(x=>x.disabled=true); return; }
+  const cur = SNIPS[i];
+  const p = SNIPS[i-1];
+  const n = SNIPS[i+1];
+  const canPrev = i>0 && p && p.type===cur.type && cur.type!=='Dock';
+  const canNext = i < SNIPS.length-1 && n && n.type===cur.type && cur.type!=='Dock';
+  tb.querySelector('[data-modal-act="merge-prev"]').disabled=!canPrev;
+  tb.querySelector('[data-modal-act="merge-next"]').disabled=!canNext;
+}
+
+$('#Body').addEventListener('input', updateSplitInfo);
+
+$('#btnSave').onclick = ()=>{
+  if(!EDITING) return;
+  const i = idxOf(EDITING.id); if(i<0) return;
+  SNIPS[i].title = $('#Title').value.trim();
+  SNIPS[i].body  = $('#Body').value;
+  save(); renderList(); renderPreview(); closeModal();
+};
+
+$('#btnSplit').onclick = ()=>{
+  if(!EDITING) return;
+  const i = idxOf(EDITING.id); if(i<0) return;
+  const t = $('#Title').value.trim();
+  const b = $('#Body').value;
+  const parts = b.split(/\[split\]/i);
+  if(parts.length<2){ alert('Insert [split] where you want to split.'); return; }
+  SNIPS[i].title = t || SNIPS[i].title;
+  SNIPS[i].body  = parts[0].trim();
+  const rest = parts.slice(1).join('').trim();
+  SNIPS.splice(i+1,0,{ id:uid(), type:SNIPS[i].type, title:t?`${t} (cont.)`:SNIPS[i].title, body:rest });
+  ACTIVE_ID = SNIPS[i].id;
+  save(); renderList(); renderPreview();
+  closeModal(); openModal(SNIPS[i]); // continue editing first half
+};
+
+$('#btnCancel').onclick = closeModal;
+$('#btnClose').onclick  = closeModal;
+$('#modalMask').onclick = closeModal;
+
+// Smart inserts
+$('#modalTools').addEventListener('click', e=>{
+  const btn=e.target.closest('[data-insert]'); if(!btn) return;
+  const kind=btn.dataset.insert;
+  const map={
+    header:  `meta: chapter:[notebook/] chapter-5-chords.html para: osf-1 primary: 51 author-id (Discord …)`,
+    discord: `discord: Rank r out of n (rfc) — [#dissent] ++ [#concur] — [Active|Dormant|Retracted]`,
+    logic:   `**Logic construct — syllogism** Premise 1: If it's raining, then it's cloudy.\nPremise 2: It's raining.\nConclusion: It's cloudy.`,
+    inline:  `\\\\( x^2 \\ge \\; x^2 \\\\)`,
+    block:   `\\\\[ x = e^{\\pi i} + 2 \\\\]`,
+    figure:  `<table style="width:100%; table-layout:fixed; border-collapse:collapse;">
+  <colgroup><col style="width:120px;"><col></colgroup>
+  <tbody><tr>
+    <td style="padding:0; vertical-align:top;">
+      <div style="--x:.4; --y:0; width:100%; aspect-ratio:1/1; position:relative; overflow:hidden; border-radius:4px;">
+        <img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
+             alt="" style="position:absolute; display:block; width:280%; height:280%; left:calc(-1 * var(--x) * 10%); top:calc(-1 * var(--y) * 10%);"/>
+      </div>
+    </td>
+    <td style="padding:8px 9px; vertical-align:top;">
+      <table style="width:100%; border-collapse:collapse; margin:0;">
+        <thead><tr>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">n</th>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">math</th>
+        </tr></thead>
+        <tbody><tr>
+          <td style="border:1px solid #273341; padding:6px 8px;">1</td>
+          <td style="border:1px solid #273341; padding:6px 8px;">\\\\[ r_q=\\\\forall n\\\\,\\\\sqrt{\\\\frac{n}{n+1}} \\to \\{ \\\\sqrt{\\\\tfrac{1}{2}}, \\\\sqrt{\\\\tfrac{2}{3}}, \\\\sqrt{\\\\tfrac{3}{4}}, \\\\dots \\} \\\\tag{05:01} \\\\]</td>
+        </tr></tbody>
+      </table>
+    </td>
+  </tr></tbody>
+</table>`,
+/* NEW: caret-safe MM scaffold (author can tweak page/coords/label) */
+  mm:      `[mm|p54=60,129:104,169:"sample label"]`
+  };
+  const val = map[kind]; if(!val) return;
+  const ta = $('#Body');
+  const start = ta.selectionStart||0, end=ta.selectionEnd||0;
+  const txt = ta.value;
+  ta.value = txt.slice(0,start) + val + txt.slice(end);
+  ta.focus(); ta.setSelectionRange(start+val.length,start+val.length);
+  updateSplitInfo();
+});
+
+// Modal-only actions (merge/dup/del)
+$('#modalTools').addEventListener('click', e=>{
+  const btn = e.target.closest('[data-modal-act]'); if(!btn) return;
+  const act = btn.dataset.modalAct;
+  const i = idxOf(EDITING?.id); if(i<0) return;
+  const cur = SNIPS[i];
+
+  if(act==='dup'){
+    const copy = { ...cur, id:uid() };
+    SNIPS.splice(i+1,0,copy);
+    save(); renderList(); renderPreview();
+    return;
+  }
+  if(act==='del'){
+  const cur = SNIPS[i];
+  // Require empty body to delete (prevents accidental loss)
+  if((cur.body||'').trim()!==''){
+    alert('Clear the snippet body first, then delete.');
+    return;
+  }
+  if(confirm('Delete this empty snippet?')){
+    SNIPS.splice(i,1);
+    ACTIVE_ID = SNIPS[i]?.id || SNIPS[i-1]?.id || null;
+    save(); renderList(); renderPreview(); closeModal();
+  }
+  return;
+}
+
+  if(act==='merge-prev'){
+    const prev = SNIPS[i-1];
+    if(i>0 && prev && prev.type===cur.type && cur.type!=='Dock'){
+      prev.body = (prev.body||'') + '\n\n' + ($('#Body').value||'');
+      prev.title = prev.title || cur.title;
+      SNIPS.splice(i,1);
+      ACTIVE_ID = prev.id;
+      save(); renderList(); renderPreview(); closeModal(); openModal(prev);
+    }
+    return;
+  }
+  if(act==='merge-next'){
+    const next = SNIPS[i+1];
+    if(next && next.type===cur.type && cur.type!=='Dock'){
+      cur.body = ($('#Body').value||'') + '\n\n' + (next.body||'');
+      SNIPS.splice(i+1,1);
+      ACTIVE_ID = cur.id;
+      save(); renderList(); renderPreview(); updateModalMergeButtons();
+    }
+    return;
+  }
+});
+
+/* ============== Top toolbar ============== */
+function add(type){
+  const s = { id:uid(), type, title:'', body:'' };
+  SNIPS.push(s); ACTIVE_ID = s.id;
+  save(); renderList(); renderPreview(); openModal(s);
+}
+$('#btnAddObs').onclick = ()=>add('Observation');
+$('#btnAddHyp').onclick = ()=>add('Hypothesis');
+$('#btnAddEv').onclick  = ()=>add('Evidence');
+$('#btnAddDock').onclick= ()=>{ const s={id:uid(),type:'Dock',title:'This is a Dock',body:''}; SNIPS.push(s); ACTIVE_ID=s.id; save(); renderList(); renderPreview(); };
+$('#btnInsertMM').onclick= ()=>{ alert('MM insertion is wired for the memo editor; for snippets it will be added later.'); };
+
+$('#btnExport').onclick = ()=>{
+  const blob = new Blob([ SNIPS.map(s=>`<!-- ${s.type}: ${s.title}\n-->\n${s.body}\n`).join('\n\n') ], {type:'text/plain'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='memo.txt'; a.click();
+};
+
+/* ============== Preview pop-out ============== */
+$('#btnPop').onclick = ()=>{
+  const w = window.open('about:blank', '_blank');
+  const html = `
+<!doctype html><meta charset="utf-8"/>
+<title>Live Preview</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<style>
+  body{margin:0;background:#0f141a;color:#e6edf3;font:15px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+  .wrap{max-width:900px;margin:0 auto;padding:18px}
+  .pv-snip{border:1px solid #273341;border-radius:10px;margin:12px 0;overflow:hidden}
+  .pv-snip .head{display:flex;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid #122031}
+  .badge{font-size:12px;color:#9fb3c8;border:1px solid #3a4556;border-radius:999px;padding:2px 8px}
+</style>
+<div class="wrap" id="root">${$('#preview').innerHTML}</div>
+<script src="../notebook/math/mathconfig.js"><\/script>
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"><\/script>
+<script>document.addEventListener('DOMContentLoaded',()=>{ setTimeout(()=>{ if(window.MathJax) MathJax.typesetPromise && MathJax.typesetPromise(); },0); });<\/script>`;
+  w.document.write(html);
+  w.document.close();
+}
+
+/* ============== MathJax hooks ============== */
+function queueTypeset(scope){
+  if(!window.MathJax || !MathJax.typesetPromise) return;
+  MathJax.typesetClear && MathJax.typesetClear([scope]);
+  MathJax.typesetPromise([scope]);
+}
+
+/* ============== Boot ============== */
+ensureSeed();
+closeModal();
+renderList();
+renderPreview();
+</script>
+
+<!-- MathJax config (same as chapters) -->
+<script src="../notebook/math/mathconfig.js"></script>
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
