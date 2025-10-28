@@ -1,0 +1,25 @@
+<style>
+  div.figuretextrow {display:flex; gap:12px; align-items:flex-start; width:100%;}
+  div.squarecrop {width:120px; flex:0 0 120px; padding:0;}
+  div.image {--x:.4; --y:0; width:100%; aspect-ratio:1/1; position:relative; overflow:hidden; border-radius:4px;}
+  div.textdrawer {flex:1 1 auto; min-width:0;}
+</style>
+
+<!-- Wrapper: two columns -->
+<div class="figuretextrow">
+  <!-- Left: square crop -->
+  <div class="squarecrop">
+    <div class="image">
+      <img
+        src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
+        alt=""
+        style="position:absolute; display:block; width:280%; height:280%;
+               left:calc(-1 * var(--x) * 10%); top:calc(-1 * var(--y) * 10%);" />
+    </div>
+  </div>  
+  <!-- Right: text drawer -->
+  <div class="textdrawer">
+    <h3>The figure shows ... </h3>
+    <p> This is a explanatory text</p>
+  </div>
+</div>
