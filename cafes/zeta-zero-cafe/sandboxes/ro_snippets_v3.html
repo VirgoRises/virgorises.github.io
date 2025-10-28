@@ -1,103 +1,103 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>RO Snippets v3 — Modular</title>
 
-  <!-- Your split CSS -->
-  <link rel="stylesheet" href="/css/10-components/ro-snippets.css" />
+  <!-- styles (split CSS) -->
+  <link rel="stylesheet" href="/css/10-components/ro-snippets.css"/>
 
-  <!-- MathJax: your single source of truth -->
+  <!-- MathJax config (single source of truth) -->
   <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
-  <!-- MathJax core (full build also includes [tex]/ams support) -->
+  <!-- MathJax core (full bundle includes [tex]/ams) -->
   <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-  <!-- markdown-it (HTML enabled) -->
-  <script defer src="https://cdn.jsdelivr.net/npm/markdown-it@13/dist/markdown-it.min.js"></script>
-
-  <style>
-    /* quick shell so it looks like v2 */
-    body{font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0f141a;color:#d6e0ef;}
-    .wrap{max-width:1200px;margin:0 auto;padding:18px;}
-    .top{display:flex;gap:8px;align-items:center;margin-bottom:12px;}
-    .btn{background:#122233;border:1px solid #203040;padding:6px 10px;border-radius:8px;color:#d6e0ef;}
-    .status{opacity:.7;margin-left:10px;}
-    .grid{display:grid;grid-template-columns: 44% 56%; gap:12px;}
-    .card{background:#0b1120;border:1px solid #273341;border-radius:10px;padding:10px;}
-    .head{display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:1px solid #273341;margin-bottom:10px;justify-content:space-between;}
-    .title{opacity:.7}
-    .snip.collapsed .body{display:none;}
-    .badge{display:inline-block;padding:2px 8px;border-radius:9999px;background:#223244;font-size:12px;margin-right:8px;}
-    .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
-    .bar .left{display:flex;align-items:center;gap:8px;min-width:0}
-    .bar .title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:42vw}
-    .tools .btn{padding:4px 8px}
-    .snip.active{box-shadow:0 0 0 2px #1e88e5 inset;border-radius:8px}
-    .pv-snip.active{box-shadow:0 0 0 2px #1e88e5 inset;border-radius:8px}
-
-    /* modal */
-    .modal-back{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:9999}
-    .modal{background:#0b1120;width:min(920px,92vw);max-height:86vh;border:1px solid #273341;border-radius:12px;display:flex;flex-direction:column}
-    .modal .mh{padding:10px;border-bottom:1px solid #273341;display:flex;gap:10px;align-items:center;justify-content:space-between}
-    .modal .mc{padding:12px;overflow:auto}
-    .modal .mf{padding:10px;border-top:1px solid #273341;display:flex;gap:10px;justify-content:flex-end}
-    .modal input{width:100%;background:#0f141a;color:#d6e0ef;border:1px solid #273341;border-radius:8px;padding:8px}
-    .modal textarea{width:100%;height:340px;background:#0f141a;color:#d6e0ef;border:1px solid #273341;border-radius:8px;padding:10px;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
-  </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="top">
-      <button class="btn" id="btnAddObs">+ Observation</button>
-      <button class="btn" id="btnAddHyp">+ Hypothesis</button>
-      <button class="btn" id="btnAddEvi">+ Evidence</button>
-      <button class="btn" id="btnExport">Export memo</button>
-      <span class="status">ready • autosave active</span>
+
+  <div id="wrap" class="wrap">
+    <div class="topbar">
+      <div class="left">
+        <button class="btn" id="btnAddObs">+ Observation</button>
+        <button class="btn" id="btnAddHyp">+ Hypothesis</button>
+        <button class="btn" id="btnAddEv">+ Evidence</button>
+        <button class="btn" id="btnAddDock">+ Dock</button>
+      </div>
+      <div class="right">
+        <button class="btn" id="btnInsertMM">Insert MM</button>
+        <button class="btn" id="btnExport">Export memo</button>
+        <span class="state">ready • autosave active</span>
+      </div>
     </div>
 
     <div class="grid">
-      <div class="card">
-        <div class="head">
-          <strong>Snippets</strong>
-          <span class="title">collapsed • hover or select to open • drag ↑ to reorder</span>
-        </div>
-        <div id="list"></div>
-      </div>
+      <section class="col">
+        <header class="section-head">
+          <h2>Snippets</h2>
+          <div class="hint">collapsed • hover or select to open • drag ↑ to reorder</div>
+        </header>
+        <div id="list" class="list"></div>
+      </section>
 
-      <div class="card">
-        <div class="head">
-          <strong>Live Preview (combined)</strong>
-          <button class="btn" id="btnFocus">⤢</button>
-        </div>
-        <div id="preview"></div>
-      </div>
+      <section class="col">
+        <header class="section-head">
+          <h2>Live Preview (combined)</h2>
+          <div class="tools">
+            <button class="icon" id="btnPop" title="Pop-out preview">⤢</button>
+          </div>
+        </header>
+        <div id="preview" class="preview"></div>
+      </section>
     </div>
   </div>
 
-  <!-- inline modal host -->
-  <div class="modal-back" id="modalBack" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mhTitle">
-      <div class="mh">
-        <strong id="mhTitle">Edit</strong>
-        <button class="btn" id="modalClose">✕</button>
+  <!-- modal -->
+  <div id="snipMask" class="modal-mask hidden"></div>
+  <div id="snipModal" class="modal hidden" aria-modal="true" role="dialog">
+    <div class="modal-head">
+      <strong id="modalTitle">Edit</strong>
+      <div class="modal-tools" id="modalTools">
+        <!-- smart inserts -->
+        <button class="btn mini" data-insert="header">Header info</button>
+        <button class="btn mini" data-insert="discord">Discord stats</button>
+        <button class="btn mini" data-insert="logic">Logic skeleton</button>
+        <button class="btn mini" data-insert="inline">Inline math</button>
+        <button class="btn mini" data-insert="block">Block math</button>
+        <button class="btn mini" data-insert="figure">Image/Table</button>
+        <button class="btn mini" data-insert="mm">Insert MM</button>
+
+        <!-- modal actions -->
+        <span class="sep"></span>
+        <button class="btn mini" data-modal-act="merge-prev">Merge ←</button>
+        <button class="btn mini" data-modal-act="merge-next">Merge →</button>
+        <button class="btn mini" data-modal-act="dup">Duplicate</button>
+        <button class="btn mini danger" data-modal-act="del">Delete</button>
+        <button class="icon" id="btnClose" title="Close">✕</button>
       </div>
-      <div class="mc">
-        <div style="display:grid;gap:8px">
-          <input id="mTitle" placeholder="Short label / claim" />
-          <textarea id="mBody" placeholder="Markdown + HTML + \\( … \\) or \\[ … \\]. Type [split] to split."></textarea>
+    </div>
+
+    <div class="modal-body">
+      <input id="Title" class="title" placeholder="Short label / claim" />
+      <textarea id="Body" class="body" spellcheck="false"
+        placeholder="Markdown + HTML. Use \\( ... \\) or \\[ ... \\]. Type [split] to split."></textarea>
+      <div class="meta">
+        <span id="splitInfo">[split] markers: 0</span>
+        <div class="actions">
+          <button class="btn" id="btnCancel">Cancel</button>
+          <button class="btn" id="btnSplit">Split at [split]</button>
+          <button class="btn primary" id="btnSave">Save</button>
         </div>
-      </div>
-      <div class="mf">
-        <button class="btn" id="modalCancel">Cancel</button>
-        <button class="btn" id="modalSplit">Split at [split]</button>
-        <button class="btn" id="modalSave">Save</button>
       </div>
     </div>
   </div>
 
   <!-- modules -->
-  <script type="module" src="/js/ro/snippets-compile.js"></script>
-  <script type="module" src="/js/ro/snippets.js"></script>
+  <script type="module">
+    import { initSnippetsApp } from '/js/ro/snippets.js';
+    // minimal “compiler” (pass-through to keep HTML + LaTeX intact)
+    import { mdToHtml } from '/js/ro/snippets-compile.js';
+    window.mdToHtml = mdToHtml; // expose for snippets.js
+    window.addEventListener('DOMContentLoaded', initSnippetsApp);
+  </script>
 </body>
 </html>

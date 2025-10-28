@@ -1,231 +1,421 @@
-// /js/ro/snippets.js
-// Core list/preview rendering + tiny modal editor.
-// Relies on: snippets-compile.js
+/* RO Snippets — core controller (modular, v3)
+   Restores v2 behaviour with modules:
+   - two-column grid, hover-to-open
+   - dock headers + collapse
+   - drag-reorder (list + preview stay in sync)
+   - modal editor with smart inserts + merge/dup/delete
+   - MathJax typeset in list and preview
+*/
 
-import { mdToHtml, queueTypeset } from '/js/ro/snippets-compile.js';
+const $  = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const uid = () => Math.random().toString(36).slice(2,9);
 
-// ---------------------------------
-// state + utils
-// ---------------------------------
-const STORE_KEY = 'ro_snips_v3';
-let SNIPS = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
-let ACTIVE_ID = SNIPS[0]?.id || null;
+const STORE = { KEY: 'ro_snips_v3', GROUPS: 'ro_snips_v3_groups' };
 
-const $  = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
-const uid = () => Math.random().toString(36).slice(2, 9);
-const save = () => localStorage.setItem(STORE_KEY, JSON.stringify(SNIPS));
-const escapeHtml = s => (s||'').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+let SNIPS=[], GROUPS={}, ACTIVE=null, EDITING=null;
 
-// seed so the page isn’t empty
-function ensureSeed() {
-  if (SNIPS.length) return;
-  SNIPS = [
-    { id: uid(), type: 'Observation', title: 'LaTeX test',
-      body: '\\[ \\zeta(2)=\\tfrac{\\pi^2}{6} \\]' },
+/* ---------------- persistence ---------------- */
+const saveSnips  = () => localStorage.setItem(STORE.KEY, JSON.stringify(SNIPS));
+const saveGroups = () => localStorage.setItem(STORE.GROUPS, JSON.stringify(GROUPS));
 
-    { id: uid(), type: 'Observation', title: 'Ladder up the wall',
-      body: 'We see a family of ratios that look like roots of fractions.' },
-
-    { id: uid(), type: 'Hypothesis', title: '√n/(n+1) relationship',
-      body: 'It appears that \\[ r_q = \\forall n\\,\\sqrt{\\frac{n}{n+1}} \\to \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\dots \\} \\tag{05:01} \\]' },
-
-    { id: uid(), type: 'Evidence', title: 'Figure crop + table', body: `
-<table style="width:100%; table-layout:fixed; border-collapse:collapse;">
-  <colgroup><col style="width:120px;"><col></colgroup>
-  <tbody><tr>
-    <td style="padding:0;vertical-align:top;">
-      <div style="--x:.4;--y:0;width:100%;aspect-ratio:1/1;position:relative;overflow:hidden;border-radius:4px;">
-        <img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
-             alt="" style="position:absolute;display:block;width:280%;height:280%;left:calc(-1*var(--x)*10%);top:calc(-1*var(--y)*10%);">
-      </div>
-    </td>
-    <td style="padding:8px 9px;vertical-align:top;">
-      <table style="width:100%;border-collapse:collapse;margin:0;">
-        <thead><tr>
-          <th style="text-align:left;border:1px solid #273341;padding:6px 8px;">n</th>
-          <th style="text-align:left;border:1px solid #273341;padding:6px 8px;">math</th>
-        </tr></thead>
-        <tbody><tr>
-          <td style="border:1px solid #273341;padding:6px 8px;">1</td>
-          <td style="border:1px solid #273341;padding:6px 8px;">\\[ r_q=\\forall n\\,\\sqrt{\\frac{n}{n+1}} \\to \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\dots \\} \\tag{05:01} \\]</td>
-        </tr></tbody>
-      </table>
-    </td>
-  </tr></tbody>
-</table>`.trim() }
-  ];
-  ACTIVE_ID = SNIPS[0].id;
-  save();
-}
-
+/* ---------------- util ---------------- */
 function typeColor(t){
   return t==='Observation' ? '#2e7dbb'
        : t==='Hypothesis'  ? '#6a9d28'
        : t==='Evidence'    ? '#b07a0a'
+       : t==='Dock'        ? '#788197'
        : '#3a4556';
 }
+function idxOf(id){ return SNIPS.findIndex(s=>s.id===id); }
 
-// ---------------------------------
-// rendering
-// ---------------------------------
-function renderList() {
-  const root = $('#list');
-  root.innerHTML = '';
+/* compute dock membership to drive show/hide */
+function computeMembership(){
+  let currentDockId=null;
+  return SNIPS.map(sn=>{
+    if(sn.type==='Dock'){ currentDockId=sn.id; return {id:sn.id,type:sn.type,dockId:null}; }
+    return {id:sn.id,type:sn.type,dockId:currentDockId};
+  });
+}
 
-  SNIPS.forEach(sn => {
-    const wrap = document.createElement('div');
-    wrap.className = 'snip collapsed' + (sn.id===ACTIVE_ID ? ' active' : '');
-    wrap.dataset.id = sn.id;
-    wrap.innerHTML = `
+/* ---------------- MathJax ---------------- */
+function queueTypeset(scope){
+  if(!window.MathJax || !MathJax.typesetPromise) return;
+  try{
+    MathJax.typesetClear && MathJax.typesetClear([scope]);
+    MathJax.typesetPromise([scope]);
+  }catch{}
+}
+
+/* ---------------- seed ---------------- */
+function ensureSeed(){
+  SNIPS   = JSON.parse(localStorage.getItem(STORE.KEY)    || '[]');
+  GROUPS  = JSON.parse(localStorage.getItem(STORE.GROUPS) || '{}');
+  if(SNIPS.length){ ACTIVE = SNIPS[0]?.id || null; return; }
+
+  SNIPS = [
+    {id:uid(), type:'Observation', title:'LaTeX test', body:'\\\\[ \\zeta\\left(2\\right)=\\frac{\\pi^2}{6} \\\\]'},
+    {id:uid(), type:'Observation', title:'Ladder up the wall', body:'We see a family of ratios that look like roots of fractions.'},
+    {id:uid(), type:'Hypothesis',  title:'√n/(n+1) relationship', body:'It appears that \\\\[ r_q = \\forall n\\,\\sqrt{\\frac{n}{n+1}} \\to \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\dots \\} \\tag{05:01} \\\\]'},
+    {id:uid(), type:'Evidence',    title:'Figure crop + table', body:`
+<table style="width:100%; table-layout:fixed; border-collapse:collapse;">
+  <colgroup><col style="width:120px;"><col></colgroup>
+  <tbody><tr>
+    <td style="padding:0; vertical-align:top;">
+      <div style="--x:.4; --y:0; width:100%; aspect-ratio:1/1; position:relative; overflow:hidden; border-radius:4px;">
+        <img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
+             alt="" style="position:absolute; display:block; width:280%; height:280%; left:calc(-1 * var(--x) * 10%); top:calc(-1 * var(--y) * 10%);"/>
+      </div>
+    </td>
+    <td style="padding:8px 9px; vertical-align:top;">
+      <table style="width:100%; border-collapse:collapse; margin:0;">
+        <thead><tr>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">n</th>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">math</th>
+        </tr></thead>
+        <tbody><tr>
+          <td style="border:1px solid #273341; padding:6px 8px;">1</td>
+          <td style="border:1px solid #273341; padding:6px 8px;">\\[ r_q=\\forall n\\,\\sqrt{\\frac{n}{n+1}} \\to \\{ \\sqrt{\\tfrac{1}{2}}, \\sqrt{\\tfrac{2}{3}}, \\sqrt{\\tfrac{3}{4}}, \\dots \\} \\tag{05:01} \\]</td>
+        </tr></tbody>
+      </table>
+    </td>
+  </tr></tbody>
+</table>`}
+  ];
+  ACTIVE = SNIPS[0].id;
+  saveSnips();
+}
+
+/* ---------------- render: list ---------------- */
+function renderList(){
+  const list = $('#list'); list.innerHTML='';
+  const membership = computeMembership();
+
+  SNIPS.forEach((sn, idx) => {
+    const isActive = sn.id===ACTIVE;
+    const isDock   = sn.type==='Dock';
+
+    const row = document.createElement('div');
+    row.className = 'snip' + (isActive ? ' active' : ' collapsed') + (isDock?' dock':'');
+    row.dataset.id  = sn.id;
+    row.dataset.idx = idx;
+    row.draggable = true;
+
+    row.innerHTML = `
       <div class="bar" style="border-left:6px solid ${typeColor(sn.type)}">
         <div class="left">
           <span class="badge">${sn.type}</span>
           <span class="title">${escapeHtml(sn.title||'')}</span>
         </div>
         <div class="tools">
+          ${isDock ? `<button class="btn" data-act="dock-toggle">${GROUPS[sn.id]?.collapsed?'Expand':'Collapse'}</button>`:''}
           <button class="btn" data-act="edit" title="Edit">✏️</button>
         </div>
       </div>
-      <div class="body">${mdToHtml(sn.body || '')}</div>
+      <div class="body">${sn.body || ''}</div>
     `;
-    root.appendChild(wrap);
 
-    // hover-to-expand
-    wrap.addEventListener('mouseenter', ()=>wrap.classList.remove('collapsed'));
-    wrap.addEventListener('mouseleave', ()=>{
-      if (sn.id!==ACTIVE_ID) wrap.classList.add('collapsed');
+    // stop drag starting from buttons/icons
+    row.querySelectorAll('.tools button').forEach(b=>{
+      b.setAttribute('draggable','false');
+      b.style.webkitUserDrag='none';
     });
+
+    // group-member visibility
+    const gid = membership[idx].dockId;
+    if(gid){
+      row.classList.add('group-member');
+      if(GROUPS[gid]?.collapsed) row.classList.add('hidden');
+    }
+
+    list.appendChild(row);
   });
 
-  // typeset math in list
-  queueTypeset(root);
+  queueTypeset(list);
 }
 
-function renderPreview() {
-  const pv = $('#preview');
-  pv.innerHTML = '';
+/* ---------------- render: preview ---------------- */
+function renderPreview(){
+  const pv = $('#preview'); pv.innerHTML='';
+  const membership = computeMembership();
 
-  SNIPS.forEach(sn => {
-    const c = document.createElement('div');
-    c.className = 'pv-snip' + (sn.id===ACTIVE_ID ? ' active' : '');
-    c.innerHTML = `
+  SNIPS.forEach((sn, idx) => {
+    const card = document.createElement('div');
+    card.className = 'pv-snip' + (sn.id===ACTIVE?' active':'');
+    card.innerHTML = `
       <div class="head">
-        <span class="badge">${sn.type}</span><strong>${escapeHtml(sn.title||'')}</strong>
+        <span class="badge">${sn.type}</span>
+        <strong class="title">${escapeHtml(sn.title||'')}</strong>
       </div>
-      <div class="body">${mdToHtml(sn.body || '')}</div>
+      <div class="body">${(window.mdToHtml?window.mdToHtml(sn.body):(sn.body||''))}</div>
     `;
-    pv.appendChild(c);
+
+    const gid = membership[idx].dockId;
+    if(gid && GROUPS[gid]?.collapsed){
+      card.classList.add('group-member','hidden');
+      card.style.display='none';
+    }
+    pv.appendChild(card);
   });
 
-  // typeset math in preview
   queueTypeset(pv);
 }
 
-// ---------------------------------
-// interactions
-// ---------------------------------
-function wireToolbar() {
-  $('#btnAddObs').onclick = ()=>addSnip('Observation');
-  $('#btnAddHyp').onclick = ()=>addSnip('Hypothesis');
-  $('#btnAddEvi').onclick = ()=>addSnip('Evidence');
-  $('#btnExport').onclick = exportMemo;
-  $('#btnFocus').onclick = ()=>$('#preview')?.scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-function wireListClicks() {
-  $('#list').addEventListener('click', e=>{
-    const card = e.target.closest('.snip'); if(!card) return;
+/* ---------------- events: list ---------------- */
+function wireListEvents(){
+  // click selection + tools
+  $('#list').addEventListener('click', (ev)=>{
+    const card = ev.target.closest('.snip'); if(!card) return;
     const id   = card.dataset.id;
-    const idx  = SNIPS.findIndex(x=>x.id===id);
-    if (idx<0) return;
+    const btn  = ev.target.closest('[data-act]');
+    const i    = idxOf(id); if(i<0) return;
+    const sn   = SNIPS[i];
 
-    const act = e.target.closest('[data-act]')?.dataset.act;
-    if (act === 'edit') {
-      openEditModal(SNIPS[idx], sn=>{
-        SNIPS[idx] = { ...SNIPS[idx], ...sn };
-        ACTIVE_ID = SNIPS[idx].id;
-        save(); renderList(); renderPreview();
-      });
+    if(btn){
+      const act = btn.dataset.act;
+      if(act==='edit'){ openModal(sn); return; }
+      if(act==='dock-toggle' && sn.type==='Dock'){
+        (GROUPS[sn.id] ||= {collapsed:false}).collapsed = !GROUPS[sn.id].collapsed;
+        saveGroups(); renderList(); renderPreview(); return;
+      }
       return;
     }
 
-    // select
-    ACTIVE_ID = id;
-    renderList(); renderPreview();
+    ACTIVE = id;
+    renderList(); renderPreview(); saveSnips();
+    card.scrollIntoView({block:'center', behavior:'smooth'});
+  });
+
+  // drag reorder
+  let dragIndex = -1;
+  $('#list').addEventListener('dragstart', (e)=>{
+    if(e.target.closest('.tools')){ e.preventDefault(); return; }
+    const card = e.target.closest('.snip'); if(!card) return;
+    dragIndex = idxOf(card.dataset.id);
+    card.classList.add('drag-hint');
+    e.dataTransfer.effectAllowed='move';
+    e.dataTransfer.setData('text/plain', card.dataset.id);
+  });
+  $('#list').addEventListener('dragend', ()=> $$('.snip.drag-hint').forEach(x=>x.classList.remove('drag-hint')) );
+
+  $('#list').addEventListener('dragover', (e)=>{
+    e.preventDefault();
+    const over = e.target.closest('.snip'); if(!over) return;
+    const overIdx = idxOf(over.dataset.id);
+    if(overIdx<0 || dragIndex<0 || overIdx===dragIndex) return;
+
+    const rect = over.getBoundingClientRect();
+    const before = (e.clientY - rect.top) < rect.height/2;
+
+    const moving = SNIPS.splice(dragIndex,1)[0];
+    let insertAt = overIdx + (before?0:1);
+    if(insertAt<0) insertAt=0;
+    SNIPS.splice(insertAt,0,moving);
+    dragIndex = insertAt;
+
+    saveSnips(); renderList(); renderPreview();
   });
 }
 
-// ---------------------------------
-// small modal editor (inline)
-// ---------------------------------
-function openEditModal(sn, onSave){
-  const back = $('#modalBack');
-  const ipt  = $('#mTitle');
-  const ta   = $('#mBody');
-  const btnSave  = $('#modalSave');
-  const btnCancel= $('#modalCancel');
-  const btnClose = $('#modalClose');
-  const btnSplit = $('#modalSplit');
+/* ---------------- modal ---------------- */
+function openModal(sn){
+  EDITING = {id:sn.id};
+  $('#modalTitle').textContent = `Edit — ${sn.type.toLowerCase()}`;
+  $('#Title').value = sn.title || '';
+  $('#Body').value  = sn.body  || '';
+  updateSplitInfo(); updateModalMergeButtons();
 
-  ipt.value = sn.title || '';
-  ta.value  = sn.body  || '';
-  back.style.display = 'flex';
-  ipt.focus();
+  $('#snipMask').classList.remove('hidden');
+  $('#snipModal').classList.remove('hidden');
+  setTimeout(()=>$('#Body').focus(),0);
+}
+function closeModal(){
+  EDITING=null;
+  $('#snipMask').classList.add('hidden');
+  $('#snipModal').classList.add('hidden');
+}
+function updateSplitInfo(){
+  const b = $('#Body').value||'';
+  const n = (b.match(/\[split\]/g)||[]).length;
+  $('#splitInfo').textContent = `[split] markers: ${n}`;
+}
+function updateModalMergeButtons(){
+  const bar = $('#modalTools');
+  const i   = idxOf(EDITING?.id);
+  if(i<0){ bar.querySelectorAll('[data-modal-act^="merge"]').forEach(x=>x.disabled=true); return; }
+  const cur = SNIPS[i];
+  const p = SNIPS[i-1], n = SNIPS[i+1];
+  const canPrev = i>0 && p && p.type===cur.type && cur.type!=='Dock';
+  const canNext = i<SNIPS.length-1 && n && n.type===cur.type && cur.type!=='Dock';
+  bar.querySelector('[data-modal-act="merge-prev"]').disabled=!canPrev;
+  bar.querySelector('[data-modal-act="merge-next"]').disabled=!canNext;
+}
 
-  function cleanup(){
-    back.style.display = 'none';
-    btnSave.onclick = btnCancel.onclick = btnClose.onclick = btnSplit.onclick = null;
-  }
+function wireModal(){
+  $('#btnClose').onclick = closeModal;
+  $('#btnCancel').onclick = closeModal;
+  $('#snipMask').onclick  = closeModal;
+  $('#Body').addEventListener('input', updateSplitInfo);
 
-  btnSave.onclick = ()=>{
-    const body = ta.value.replace(/\[split\]/gi,'').trim();
-    const title= ipt.value.trim();
-    cleanup();
-    onSave({ title, body });
+  $('#btnSave').onclick = ()=>{
+    if(!EDITING) return;
+    const i = idxOf(EDITING.id); if(i<0) return;
+    SNIPS[i].title = $('#Title').value.trim();
+    SNIPS[i].body  = $('#Body').value;
+    saveSnips(); renderList(); renderPreview(); closeModal();
   };
-  btnCancel.onclick = btnClose.onclick = ()=>cleanup();
 
-  btnSplit.onclick = ()=>{
-    if(!/\[split\]/i.test(ta.value)) { alert('Insert [split] in the body where you want to split.'); return; }
-    const [partA, partB] = ta.value.split(/\[split\]/i);
-    // overwrite current, insert sibling after
-    sn.title = ipt.value.trim();
-    sn.body  = (partA||'').trim();
-    const newSn = { ...sn, id: uid(), title: (sn.title||'') + ' (cont.)', body: (partB||'').trim() };
-    const i = SNIPS.findIndex(x=>x.id===sn.id);
-    SNIPS.splice(i+1, 0, newSn);
-    save();
-    cleanup();
-    ACTIVE_ID = newSn.id;
-    renderList(); renderPreview();
+  $('#btnSplit').onclick = ()=>{
+    if(!EDITING) return;
+    const i = idxOf(EDITING.id); if(i<0) return;
+    const t = $('#Title').value.trim();
+    const parts = ($('#Body').value||'').split(/\[split\]/i);
+    if(parts.length<2){ alert('Insert [split] where you want to split.'); return; }
+    SNIPS[i].title = t || SNIPS[i].title;
+    SNIPS[i].body  = parts[0].trim();
+    const rest = parts.slice(1).join('').trim();
+    SNIPS.splice(i+1,0,{ id:uid(), type:SNIPS[i].type, title:t?`${t} (cont.)`:SNIPS[i].title, body:rest });
+    ACTIVE = SNIPS[i].id;
+    saveSnips(); renderList(); renderPreview();
+    closeModal(); openModal(SNIPS[i]);
+  };
+
+  // smart inserts + modal actions (merge/dup/delete)
+  $('#modalTools').addEventListener('click', (e)=>{
+    const insertBtn = e.target.closest('[data-insert]');
+    if(insertBtn){
+      const map = {
+        header:  `meta: chapter:[notebook/] chapter-5-chords.html para: osf-1 primary: 51 author-id (Discord …)`,
+        discord: `discord: Rank r out of n (rfc) — [#dissent] ++ [#concur] — [Active|Dormant|Retracted]`,
+        logic:   `**Logic construct — syllogism** Premise 1: If it's raining, then it's cloudy.\nPremise 2: It's raining.\nConclusion: It's cloudy.`,
+        inline:  `\\\\( x^2 \\ge x^2 \\\\)`,
+        block:   `\\\\[ x = e^{\\pi i} + 2 \\\\]`,
+        figure:  `<table style="width:100%; table-layout:fixed; border-collapse:collapse;">
+  <colgroup><col style="width:120px;"><col></colgroup>
+  <tbody><tr>
+    <td style="padding:0; vertical-align:top;">
+      <div style="--x:.4; --y:0; width:100%; aspect-ratio:1/1; position:relative; overflow:hidden; border-radius:4px;">
+        <img src="https://virgorises.github.io/cafes/zeta-zero-cafe/notebook/figures/Figure_5.3_Triangular_numbers_-_chord_density.PNG"
+             alt="" style="position:absolute; display:block; width:280%; height:280%; left:calc(-1 * var(--x) * 10%); top:calc(-1 * var(--y) * 10%);"/>
+      </div>
+    </td>
+    <td style="padding:8px 9px; vertical-align:top;">
+      <table style="width:100%; border-collapse:collapse; margin:0;">
+        <thead><tr>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">n</th>
+          <th style="text-align:left; border:1px solid #273341; padding:6px 8px;">math</th>
+        </tr></thead>
+        <tbody><tr>
+          <td style="border:1px solid #273341; padding:6px 8px;">1</td>
+          <td style="border:1px solid #273341; padding:6px 8px;">\\\\[ r_q=\\\\forall n\\\\,\\\\sqrt{\\\\frac{n}{n+1}} \\to \\{ \\\\sqrt{\\\\tfrac{1}{2}}, \\\\sqrt{\\\\tfrac{2}{3}}, \\\\sqrt{\\\\tfrac{3}{4}}, \\\\dots \\} \\\\tag{05:01} \\\\]</td>
+        </tr></tbody>
+      </table>
+    </td>
+  </tr></tbody>
+</table>`,
+        mm:      `[mm|p54=60,129:104,169:"sample label"]`
+      };
+      const ta = $('#Body'); const val = map[insertBtn.dataset.insert]; if(!val) return;
+      const s = ta.selectionStart||0, e = ta.selectionEnd||0, t = ta.value;
+      ta.value = t.slice(0,s) + val + t.slice(e);
+      ta.focus(); ta.setSelectionRange(s+val.length, s+val.length);
+      updateSplitInfo();
+      return;
+    }
+
+    const actBtn = e.target.closest('[data-modal-act]'); if(!actBtn) return;
+    const act = actBtn.dataset.modalAct;
+    const i = idxOf(EDITING?.id); if(i<0) return;
+    const cur = SNIPS[i];
+
+    if(act==='dup'){
+      const copy = {...cur, id:uid()};
+      SNIPS.splice(i+1,0,copy);
+      saveSnips(); renderList(); renderPreview();
+      return;
+    }
+    if(act==='del'){
+      if((cur.body||'').trim()!==''){ alert('Clear the snippet body first, then delete.'); return; }
+      if(confirm('Delete this empty snippet?')){
+        SNIPS.splice(i,1);
+        ACTIVE = SNIPS[i]?.id || SNIPS[i-1]?.id || null;
+        saveSnips(); renderList(); renderPreview(); closeModal();
+      }
+      return;
+    }
+    if(act==='merge-prev'){
+      const prev = SNIPS[i-1];
+      if(i>0 && prev && prev.type===cur.type && cur.type!=='Dock'){
+        prev.body = (prev.body||'') + '\n\n' + ($('#Body').value||'');
+        prev.title = prev.title || cur.title;
+        SNIPS.splice(i,1);
+        ACTIVE = prev.id;
+        saveSnips(); renderList(); renderPreview(); closeModal(); openModal(prev);
+      }
+      return;
+    }
+    if(act==='merge-next'){
+      const next = SNIPS[i+1];
+      if(next && next.type===cur.type && cur.type!=='Dock'){
+        cur.body = ($('#Body').value||'') + '\n\n' + (next.body||'');
+        SNIPS.splice(i+1,1);
+        ACTIVE = cur.id;
+        saveSnips(); renderList(); renderPreview(); updateModalMergeButtons();
+      }
+      return;
+    }
+  });
+}
+
+/* ---------------- topbar ---------------- */
+function wireTopbar(){
+  const add = (type)=>{
+    const s={id:uid(),type,title:'',body:''};
+    SNIPS.push(s); ACTIVE=s.id;
+    saveSnips(); renderList(); renderPreview(); openModal(s);
+  };
+  $('#btnAddObs').onclick = ()=>add('Observation');
+  $('#btnAddHyp').onclick = ()=>add('Hypothesis');
+  $('#btnAddEv').onclick  = ()=>add('Evidence');
+  $('#btnAddDock').onclick= ()=>{ const s={id:uid(),type:'Dock',title:'New Dock',body:''}; SNIPS.push(s); ACTIVE=s.id; saveSnips(); renderList(); renderPreview(); };
+
+  $('#btnInsertMM').onclick = ()=>alert('MM insert lives in the modal now (Insert MM).');
+
+  $('#btnExport').onclick = ()=>{
+    const blob = new Blob([ SNIPS.map(s=>`<!-- ${s.type}: ${s.title}\n-->\n${s.body}\n`).join('\n\n') ], {type:'text/plain'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='memo.txt'; a.click();
+  };
+
+  $('#btnPop').onclick = ()=>{
+    const w = window.open('about:blank','_blank');
+    const html = `
+<!doctype html><meta charset="utf-8"/>
+<title>Live Preview</title>
+<style>
+  body{margin:0;background:#0f141a;color:#e6edf3;font:15px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+  .wrap{max-width:900px;margin:0 auto;padding:18px}
+  .pv-snip{border:1px solid #273341;border-radius:10px;margin:12px 0;overflow:hidden}
+  .pv-snip .head{display:flex;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid #122031}
+  .badge{font-size:12px;color:#9fb3c8;border:1px solid #3a4556;border-radius:999px;padding:2px 8px}
+</style>
+<div class="wrap" id="root">${$('#preview').innerHTML}</div>
+<script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"><\/script>
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"><\/script>
+<script>document.addEventListener('DOMContentLoaded',()=>{ setTimeout(()=>{ if(window.MathJax) MathJax.typesetPromise && MathJax.typesetPromise(); },0); });<\/script>`;
+    w.document.write(html);
+    w.document.close();
   };
 }
 
-// ---------------------------------
-// helpers
-// ---------------------------------
-function addSnip(type){
-  const sn = { id: uid(), type, title: type+' title', body: '' };
-  SNIPS.push(sn);
-  ACTIVE_ID = sn.id;
-  save(); renderList(); renderPreview();
-}
+/* ---------------- helpers + boot ---------------- */
+function escapeHtml(s){ return (s||'').replace(/[&<>"]/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c])); }
 
-function exportMemo(){
-  const text = SNIPS.map(s=>`[${s.type}] ${s.title}\n\n${s.body}\n`).join('\n\n---\n\n');
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([text], {type:'text/plain'}));
-  a.download = 'memo.txt';
-  a.click();
-  URL.revokeObjectURL(a.href);
+export function initSnippetsApp(){
+  ensureSeed();
+  renderList();
+  renderPreview();
+  wireListEvents();
+  wireModal();
+  wireTopbar();
+  // modal hidden by CSS .hidden; no stray modal at load
 }
-
-// ---------------------------------
-// boot
-// ---------------------------------
-ensureSeed();
-wireToolbar();
-wireListClicks();
-renderList();
-renderPreview();

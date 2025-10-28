@@ -1,209 +1,94 @@
-/* /css/10-components/ro-snippets.css  */
-
-:root {
-    --ro-bg: #0d1117;
-    --ro-card: #161b22;
-    --ro-line: #273341;
-    --ro-text: #c9d1d9;
-    --ro-soft: #8b949e;
-    --ro-blue: #2f81f7;
-    --ro-green: #238636;
-    --ro-gold: #f0b429;
-    --ro-slate: #6e7681;
+:root{
+  color-scheme: dark;
+  --bg:#0f141a; --panel:#0b1219; --muted:#122031; --ink:#e6edf3;
+  --ink-2:#9fb3c8; --line:#273341; --chip:#3a4556; --accent:#203040;
+  --btn:#101826; --btn-border:#2f66b3; --btn-danger:#b64141;
+  --green:#2d6a2d; --blue:#2e7dbb; --gold:#b07a0a; --dock:#788197;
 }
 
-.ro-wrap {
-    display: grid;
-    grid-template-columns: 48% 52%;
-    gap: 12px;
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
 }
 
-.card {
-    background: var(--ro-card);
-    border: 1px solid var(--ro-line);
-    border-radius: 8px;
-    padding: 10px;
-}
+.wrap{max-width:1200px; margin:0 auto; padding:18px}
 
-.card .head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
+.topbar{display:flex; align-items:center; justify-content:space-between;
+  padding:10px 12px; background:var(--panel); border:1px solid var(--line); border-radius:10px; margin-bottom:12px;}
+.topbar .btn{margin-right:8px}
+.topbar .state{opacity:.7; margin-left:10px}
 
-.badge {
-    font-size: 12px;
-    padding: 2px 6px;
-    border: 1px solid var(--ro-line);
-    border-radius: 999px;
-    color: var(--ro-soft);
-}
+.btn{background:var(--btn); color:var(--ink); border:1px solid var(--chip);
+  padding:6px 10px; border-radius:8px; cursor:pointer}
+.btn:hover{border-color:var(--btn-border)}
+.btn.primary{border-color:#1f8cff}
+.btn.danger, .btn.mini.danger{border-color:var(--btn-danger); color:#ffb1b1}
+.btn.mini{font-size:12px; padding:4px 8px}
 
-.title {
-    font-weight: 600;
-    margin-left: 8px;
-    color: var(--ro-text);
-}
+.icon{background:transparent; color:var(--ink); border:1px solid var(--chip);
+  padding:4px 8px; border-radius:8px; cursor:pointer}
 
-/* snippet list */
-#snipList .snip {
-    border: 1px solid var(--ro-line);
-    border-radius: 8px;
-    margin-bottom: 8px;
-    overflow: hidden;
-    background: #0f141a;
-}
+.grid{display:grid; grid-template-columns: 48% 52%; gap:12px}
+.col{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px}
 
-#snipList .snip.collapsed .body {
-    display: none;
-}
+.section-head{display:flex; align-items:center; justify-content:space-between;
+  padding-bottom:8px; margin-bottom:8px; border-bottom:1px solid var(--line)}
+.section-head h2{margin:0; font-size:16px}
+.section-head .hint{opacity:.7}
 
-#snipList .snip .bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 8px;
-    background: #0f141a;
-    cursor: grab;
-}
+.badge{display:inline-block; border:1px solid var(--chip); color:var(--ink-2);
+  border-radius:999px; padding:2px 10px; font-size:12px}
 
-#snipList .snip.active {
-    box-shadow: 0 0 0 2px var(--ro-blue) inset;
-}
+.list .snip{border:1px solid var(--line); border-radius:10px; margin:10px 0; overflow:hidden; background:#0e1722}
+.list .snip.dock{background:#0e151c}
+.list .snip.hidden{display:none}
 
-#snipList .snip.hidden {
-    display: none;
-}
+.list .snip .bar{display:flex; align-items:center; justify-content:space-between;
+  gap:8px; padding:8px 10px; border-bottom:1px solid var(--muted)}
+.list .snip .bar .left{display:flex; align-items:center; gap:8px}
+.list .snip .bar .title{font-weight:600; color:var(--ink)}
+.list .snip .tools .btn{margin-left:6px}
 
-#snipList .snip .tools .btn {
-    margin-left: 6px;
-}
+.list .snip .body{padding:10px; overflow:auto}
+.list .snip.collapsed .body{display:none}
+.list .snip.collapsed:hover .body{display:block}
 
-#snipList .snip.dock .bar {
-    background: #0f141a;
-}
+.list .snip.active{outline:2px solid #2e7dbb}
 
-#snipList .snip.drag-hint {
-    opacity: .6
-}
+.list .snip .bar{ cursor: grab; }
+.list .snip.drag-hint{ opacity:.6 }
 
-/* preview cards */
-#snipPreview .pv-card {
-    background: var(--ro-card);
-    border: 1px solid var(--ro-line);
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
-}
+/* Live preview cards */
+.preview .pv-snip{border:1px solid var(--line); border-radius:10px; margin:10px 0; overflow:hidden}
+.preview .pv-snip.active{outline:2px solid #2e7dbb}
+.preview .pv-snip .head{display:flex; align-items:center; gap:8px; padding:8px 10px; border-bottom:1px solid var(--muted)}
+.preview .pv-snip .title{font-weight:700}
+.preview .pv-snip .body{padding:10px}
 
-#snipPreview .pv-card.active {
-    box-shadow: 0 0 0 2px var(--ro-blue) inset;
-}
-
-#snipPreview .pv-card .pv-body {
-    color: var(--ro-text);
-}
-
-#snipPreview .pv-card .head .badge,
-#snipPreview .pv-card .head .title {
-    display: none;
-}
-
-/* hide labels in preview */
+/* hide type/title labels in preview when desired (toggle-able via CSS only) */
+.preview .pv-snip .head .badge{display:none}
+.preview .pv-snip .head .title{display:none}
 
 /* modal */
-#snipModal {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, .5);
-    z-index: 9999;
-}
+.modal-mask{position:fixed; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(3px); z-index:50}
+.modal{position:fixed; inset:auto 0 0 0; margin:auto; top:8vh; width:min(900px,calc(100% - 32px));
+  background:var(--panel); border:1px solid var(--line); border-radius:12px; z-index:60; display:flex; flex-direction:column; max-height:84vh}
+.modal.hidden, .modal-mask.hidden{display:none}
 
-#snipModal.show {
-    display: flex;
-}
+.modal-head{display:flex; align-items:center; justify-content:space-between;
+  gap:10px; padding:10px 12px; border-bottom:1px solid var(--muted)}
+.modal-head #modalTitle{font-size:16px}
+.modal-head .sep{display:inline-block; width:1px; height:18px; background:var(--muted); margin:0 6px}
 
-#snipModal .box {
-    width: min(1100px, 96vw);
-    background: var(--ro-card);
-    border: 1px solid var(--ro-line);
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .6);
-}
+.modal-body{padding:10px 12px; display:flex; flex-direction:column; gap:8px}
+.modal-body .title{width:100%; padding:8px 10px; background:#0b1219; color:var(--ink);
+  border:1px solid var(--line); border-radius:8px}
+.modal-body .body{width:100%; min-height:280px; padding:10px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  background:#0b1219; color:var(--ink); border:1px solid var(--line); border-radius:8px; resize:vertical}
+.modal-body .meta{display:flex; align-items:center; justify-content:space-between; gap:10px}
 
-#snipModal .box .hd {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--ro-line);
-}
-
-#snipModal .box .bd {
-    padding: 12px;
-    display: grid;
-    gap: 10px;
-}
-
-.toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 6px;
-}
-
-.toolbar .btn {
-    border: 1px solid var(--ro-line);
-    border-radius: 8px;
-    padding: 6px 9px;
-    background: #0f141a;
-    color: var(--ro-text);
-    cursor: pointer;
-}
-
-.toolbar .btn:hover {
-    border-color: var(--ro-blue);
-}
-
-.input {
-    width: 100%;
-    border: 1px solid var(--ro-line);
-    border-radius: 8px;
-    padding: 8px;
-    background: #0f141a;
-    color: var(--ro-text);
-}
-
-.ta {
-    min-height: 280px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-}
-
-.row-end {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-.btn {
-    border: 1px solid var(--ro-line);
-    border-radius: 8px;
-    padding: 6px 9px;
-    background: #0f141a;
-    color: var(--ro-text);
-    cursor: pointer;
-}
-
-.btn.danger {
-    border-color: #b62324;
-    color: #ffd7d5;
-}
-
-.btn:disabled {
-    opacity: .6;
-    pointer-events: none;
-}
+/* docks */
+.list .snip.dock .bar{border-left:6px solid var(--dock)!important}
+.list .snip.dock .tools .btn{border-color:var(--dock)}
