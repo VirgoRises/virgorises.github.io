@@ -2,7 +2,7 @@
 // Minimal Markdown + HTML + MathJax passthrough compiler, now with:
 // - horizontal rules: --- *** ___
 // - GFM-like pipe tables with alignment
-// - robust code fences (``` lang) that never get typeset by MathJax
+// - robust code fences (``` or ~~~) that never get typeset by MathJax
 
 /* =========================
    Utils
@@ -17,28 +17,30 @@ function escapeHtml(s) {
   ));
 }
 
-// Marks blocks to be ignored by MathJax v3; we also escape content.
-function fencedBlock(html, lang) {
-  const cls = lang ? ` class="language-${escapeHtml(lang)} tex2jax_ignore"` : ' class="tex2jax_ignore"';
-  return `<pre${cls} data-mathjax="ignore"><code${lang ? ` class="language-${escapeHtml(lang)}"` : ''}>${html}</code></pre>`;
+// escape a string so it can be used literally inside a RegExp
+function escapeForRegExp(s) {
+  return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
-// Simple inline markdown (em/strong/code) *without* touching LaTeX or HTML.
+/* =========================
+   Inline Markdown (light)
+   ========================= */
+
 function inlineMd(s) {
   // protect code spans first
-  const codeSpans = [];
+  const codes = [];
   s = s.replace(/`([^`]+)`/g, (_, m) => {
-    const i = codeSpans.length;
-    codeSpans.push(m);
+    const i = codes.length;
+    codes.push(m);
     return `\uE000CODE${i}\uE001`;
   });
 
-  // strong, em
+  // strong, em (very small subset)
   s = s.replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>');
   s = s.replace(/\*([^*]+?)\*/g, '<em>$1</em>');
 
-  // restore code spans (escaped)
-  s = s.replace(/\uE000CODE(\d+)\uE001/g, (_, i) => `<code>${escapeHtml(codeSpans[+i])}</code>`);
+  // restore codes (escaped)
+  s = s.replace(/\uE000CODE(\d+)\uE001/g, (_, i) => `<code>${escapeHtml(codes[+i])}</code>`);
 
   return s;
 }
@@ -53,14 +55,13 @@ function parseBlocks(src) {
   let i = 0;
 
   let para = [];
-  let inFence = false;
-  let fenceLang = '';
-  let fenceDelim = '```';
+  let listMode = null, listBuf = [];
 
   const flushPara = () => {
     if (!para.length) return;
     const text = para.join(' ').trim();
     if (!text) { para = []; return; }
+    // If it already looks like a block HTML tag, passthrough
     if (/^\s*<\/?(div|p|table|thead|tbody|tr|td|th|ul|ol|li|h[1-6]|figure|img|blockquote|pre|code|section|article)\b/i.test(text)) {
       out.push(text);
     } else {
@@ -69,42 +70,45 @@ function parseBlocks(src) {
     para = [];
   };
 
-  // List support (basic, same as before)
-  let listMode = null, listBuf = [];
   const flushList = () => {
     if (!listMode || !listBuf.length) return;
     out.push(`<${listMode}>${listBuf.join('')}</${listMode}>`);
     listMode = null; listBuf = [];
   };
-  const startList = (mode) => { if (listMode && listMode !== mode) flushList(); if (!listMode) listMode = mode; };
+
+  const startList = (mode) => {
+    if (listMode && listMode !== mode) flushList();
+    if (!listMode) listMode = mode;
+  };
 
   while (i < lines.length) {
     let line = lines[i];
 
     // CODE FENCE start: allow leading spaces and ``` or ~~~
-    let m = line.match(/^\s*(```|~~~)\s*([A-Za-z0-9_-]+)?\s*$/);
-    if (m) {
+    const fenceStart = line.match(/^\s*(```|~~~)\s*([A-Za-z0-9_-]+)?\s*$/);
+    if (fenceStart) {
       flushPara(); flushList();
-      inFence = true;
-      fenceDelim = m[1];
-      fenceLang = m[2] || '';
+
+      const fenceDelim = fenceStart[1];           // "```" or "~~~"
+      const fenceLang  = fenceStart[2] || '';
+      const closeRe    = new RegExp('^\\s*' + escapeForRegExp(fenceDelim) + '\\s*$');
+
       out.push(`<pre class="tex2jax_ignore" data-mathjax="ignore"><code${fenceLang ? ` class="language-${escapeHtml(fenceLang)}"` : ''}>`);
       i++;
-      while (i < lines.length && !new RegExp(`^\\s*${fenceDelim}\\s*$`).test(lines[i])) {
-        // Escape *everything* so MathJax cannot see $ or \(
+      while (i < lines.length && !closeRe.test(lines[i])) {
+        // Escape everything so MathJax never sees $, \(...\), etc.
         out.push(lines[i].replace(/&/g,'&amp;').replace(/</g,'&lt;'));
         i++;
       }
-      if (i < lines.length) out.push('</code></pre>'); // closing fence consumed below
-      inFence = false; fenceLang = '';
-      i++; // skip closing fence line
+      if (i < lines.length) {
+        // consume closing fence line
+        out.push('</code></pre>');
+        i++;
+      }
       continue;
     }
 
-    // If we were in a fence (shouldn’t happen due to loop above), just advance
-    if (inFence) { i++; continue; }
-
-    // Horizontal rule: --- *** ___ (3+), allow up to 3 leading spaces
+    // Horizontal rule: --- *** ___ (3+), up to 3 leading spaces
     if (/^\s{0,3}((-\s*){3,}|(\*\s*){3,}|(_\s*){3,})$/.test(line)) {
       flushPara(); flushList();
       out.push('<hr/>'); i++; continue;
@@ -123,7 +127,7 @@ function parseBlocks(src) {
     }
 
     // Headings: #..######
-    let h = line.match(/^\s*(#{1,6})\s+(.*)$/);
+    const h = line.match(/^\s*(#{1,6})\s+(.*)$/);
     if (h) {
       flushPara(); flushList();
       const lvl = h[1].length;
@@ -131,17 +135,17 @@ function parseBlocks(src) {
     }
 
     // TABLE: detect header + separator then collect rows
-    // Header line must contain pipes with at least two columns
-    const looksLikeHeader = /^\s*\|?(.+?\|.+?)\|?\s*$;
-    const looksLikeSep = /^\s*\|?\s*[:\-]+(\s*\|\s*[:\-]+)+\s*\|?\s*$/;
+    const hdrMatch = line.match(/^\s*\|?(.+?\|.+?)\|?\s*$/);
+    const sepLine  = lines[i + 1] || '';
+    const sepOk    = /^\s*\|?\s*[:\-]+(\s*\|\s*[:\-]+)+\s*\|?\s*$/.test(sepLine);
 
-    if (looksLikeHeader.test(line) && (i + 1) < lines.length && looksLikeSep.test(lines[i + 1])) {
+    if (hdrMatch && sepOk) {
       flushPara(); flushList();
 
-      // parse header
-      const headerCells = splitPipes(RegExp.$1).map(s => s.trim());
-      const sepLine = lines[i + 1].trim();
-      const aligns = splitPipes(sepLine.replace(/^\|?|\|?$/g,''))
+      // header cells
+      const headerCells = splitPipes(hdrMatch[1]).map(s => s.trim());
+      // alignment cells (strip outer pipes first)
+      const aligns = splitPipes(sepLine.replace(/^\s*\|?|\|?\s*$/g, ''))
         .map(seg => {
           const a = seg.trim();
           return (a.startsWith(':') && a.endsWith(':')) ? 'center'
@@ -149,15 +153,15 @@ function parseBlocks(src) {
                : 'left';
         });
 
+      // collect body rows
       const rows = [];
-      i += 2; // move past header+sep
+      i += 2; // move past header + separator
       while (i < lines.length && /^\s*\|?.*\|?\s*$/.test(lines[i]) && lines[i].includes('|')) {
-        const row = splitPipes(lines[i].replace(/^\|?|\|?$/g,'')).map(s => s.trim());
+        const row = splitPipes(lines[i].replace(/^\s*\|?|\|?\s*$/g, '')).map(s => s.trim());
         rows.push(row);
         i++;
       }
 
-      // build table html
       const ths = headerCells.map((h, idx) =>
         `<th style="text-align:${aligns[idx] || 'left'}">${inlineMd(h)}</th>`).join('');
       const tbody = rows.map(r => {
@@ -194,15 +198,21 @@ function parseBlocks(src) {
   return out.join('\n');
 }
 
-// Split a pipe row, honoring escaped pipes \| inside code spans/backticks
+// Split a pipe row, honoring escaped pipes \| and backtick code spans
 function splitPipes(row) {
-  // Very small splitter: ignore pipes inside backticks
   const parts = [];
-  let buf = '', inCode = false;
+  let buf = '', inCode = false, esc = false;
+
   for (let i = 0; i < row.length; i++) {
-    const ch = row[i], nxt = row[i + 1];
-    if (ch === '`') { inCode = !inCode; buf += ch; continue; }
-    if (!inCode && ch === '|' ) { parts.push(buf); buf = ''; continue; }
+    const ch = row[i];
+
+    if (ch === '`') { inCode = !inCode; buf += ch; esc = false; continue; }
+
+    if (!inCode && ch === '|' && !esc) { parts.push(buf); buf = ''; esc = false; continue; }
+
+    if (ch === '\\' && !esc) { esc = true; buf += ch; continue; }
+
+    esc = false;
     buf += ch;
   }
   parts.push(buf);
