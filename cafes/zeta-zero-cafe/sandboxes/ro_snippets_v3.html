@@ -92,12 +92,19 @@
   </div>
 
   <!-- modules -->
-  <script type="module">
-    import { initSnippetsApp } from '/js/ro/snippets.js';
-    // minimal “compiler” (pass-through to keep HTML + LaTeX intact)
-    import { mdToHtml } from '/js/ro/snippets-compile.js';
-    window.mdToHtml = mdToHtml; // expose for snippets.js
-    window.addEventListener('DOMContentLoaded', initSnippetsApp);
-  </script>
+<script type="module">
+  import { initSnippetsApp } from '/js/ro/snippets.js';
+  import { mdToHtml, compileToHTML, typesetInto } from '/js/ro/snippets-compile.js';
+
+  // expose for legacy
+  window.mdToHtml = mdToHtml;
+  window.compileToHTML = compileToHTML;
+  window.typesetInto = typesetInto;
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    await new Promise(r => setTimeout(r, 100));
+    initSnippetsApp();
+  });
+</script>
 </body>
 </html>
