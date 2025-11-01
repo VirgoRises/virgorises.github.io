@@ -251,20 +251,6 @@ function updateModalMergeButtons(){
   bar.querySelector('[data-modal-act="merge-next"]').disabled=!canNext;
 }
 
-/* ---------------- delete: helper (ONLY ADDITION) ---------------- */
-/* Treat boilerplate/invisible junk as empty so delete can proceed safely. */
-function isEffectivelyEmpty(text) {
-  return (text || '')
-    .replace(/[\u200B-\u200D\uFEFF]/g,'')       // zero-widths
-    .replace(/&nbsp;/g,' ')                     // nbsp
-    .replace(/\[split\]/gi,'')                  // our split marker
-    .replace(/^\s*([-*]){3,}\s*$/gm,'')         // pure HR lines
-    .replace(/\s+/g,' ')                        // collapse whitespace
-    .trim()
-    .length===0;
-}
-
-/* ---------------- modal smart inserts + actions ---------------- */
 function wireModal(){
   $('#btnClose').onclick = closeModal;
   $('#btnCancel').onclick = closeModal;
@@ -348,14 +334,8 @@ function wireModal(){
       saveSnips(); renderList(); renderPreview();
       return;
     }
-
     if(act==='del'){
-      // *** ONLY CHANGE: check LIVE textarea (placeholder-safe) ***
-      const live = ($('#Body').value || '');
-      if(!isEffectivelyEmpty(live)){
-        alert('Clear the snippet body first, then delete.');
-        return;
-      }
+      if((cur.body||'').trim()!==''){ alert('Clear the snippet body first, then delete.'); return; }
       if(confirm('Delete this empty snippet?')){
         SNIPS.splice(i,1);
         ACTIVE = SNIPS[i]?.id || SNIPS[i-1]?.id || null;
@@ -363,7 +343,6 @@ function wireModal(){
       }
       return;
     }
-
     if(act==='merge-prev'){
       const prev = SNIPS[i-1];
       if(i>0 && prev && prev.type===cur.type && cur.type!=='Dock'){
