@@ -7,7 +7,7 @@ This page verifies that **Markdown** and **LaTeX** cooperate:
 $$
 \begin{equation}
 P_{n}\#=\prod_{k=1}^{n}P_{k}=2\times3\times5\times7\times\dots\in\mathbb{N}
-\label{eq:03.01}\tag{03.01}
+\tag{03.01}
 \end{equation}
 $$
 

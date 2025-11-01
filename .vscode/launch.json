@@ -15,6 +15,12 @@
             "name": "http://127.0.0.1:3000/cafes/zeta-zero-cafe/sandboxes/ro_snippets_v3.html",
             "request": "launch",
             "url": "http://127.0.0.1:3000/cafes/zeta-zero-cafe/sandboxes/ro_snippets_v3.html"
+        },
+        {
+            "type": "chrome",
+            "name": "http://127.0.0.1:3000/cafes/zeta-zero-cafe/tests/markdown-latex.regression.html",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/cafes/zeta-zero-cafe/tests/markdown-latex.regression.html"
         }
     ]
 }
