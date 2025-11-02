@@ -3,19 +3,40 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>RO Snippets v3 — Modular</title>
+  <title>RO Snippets v4 — Modular sandbox</title>
 
-  <!-- styles (split CSS) -->
+  <!-- Component styles -->
   <link rel="stylesheet" href="/css/10-components/ro-snippets.css"/>
 
-  <!-- MathJax config (single source of truth) -->
+  <!-- MathJax config (single source of truth, same as chapters) -->
   <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
-  <!-- MathJax core (keep exactly as you had it) -->
+  <!-- MathJax core -->
   <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    /* Page chrome only; component CSS lives in ro-snippets.css */
+    body{margin:0;background:#0f141a;color:#e6edf3;font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+    .wrap{max-width:1200px;margin:0 auto;padding:16px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+    .topbar .btn{background:#1a2532;border:1px solid #273341;border-radius:8px;color:#e6edf3;padding:6px 10px;cursor:pointer}
+    .topbar .btn:hover{background:#172130}
+    .topbar .state{opacity:.75}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:1000px){ .grid{grid-template-columns:1fr} }
+    .section-head{display:flex;justify-content:space-between;align-items:center;border:1px solid #273341;border-radius:10px;padding:8px 10px;background:#0c1218}
+    .section-head h2{margin:0;font-size:16px}
+    .section-head .hint{font-size:12px;opacity:.7}
+    .section-head .tools{display:flex;gap:8px;align-items:center}
+    .section-head .tools .icon{border:1px solid #273341;border-radius:8px;background:#16202c;color:#e6edf3;padding:6px 8px;cursor:pointer}
+    /* Modal shell */
+    .modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:saturate(80%) blur(2px);z-index:30}
+    .modal{position:fixed;top:4%;left:50%;transform:translateX(-50%);width:min(900px,94vw);max-height:92vh;overflow:auto;background:#0c1218;border:1px solid #273341;border-radius:12px;z-index:31}
+    .hidden{display:none!important}
+  </style>
 </head>
 <body>
 
-  <div id="wrap" class="wrap">
+  <div class="wrap">
     <div class="topbar">
       <div class="left">
         <button class="btn" id="btnAddObs">+ Observation</button>
@@ -31,6 +52,7 @@
     </div>
 
     <div class="grid">
+      <!-- Left column: Snippets -->
       <section class="col">
         <header class="section-head">
           <h2>Snippets</h2>
@@ -39,6 +61,7 @@
         <div id="list" class="list"></div>
       </section>
 
+      <!-- Right column: Live Preview -->
       <section class="col">
         <header class="section-head">
           <h2>Live Preview (combined)</h2>
@@ -51,12 +74,12 @@
     </div>
   </div>
 
-  <!-- modal -->
+  <!-- Modal (single, reused) -->
   <div id="snipMask" class="modal-mask hidden"></div>
   <div id="snipModal" class="modal hidden" aria-modal="true" role="dialog">
-    <div class="modal-head">
-      <strong id="modalTitle">Edit</strong>
-      <div class="modal-tools" id="modalTools">
+    <div class="modal-head" style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #122031">
+      <strong id="modalTitle" style="font-size:15px">Edit</strong>
+      <div class="modal-tools" id="modalTools" style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
         <!-- smart inserts -->
         <button class="btn mini" data-insert="header">Header info</button>
         <button class="btn mini" data-insert="discord">Discord stats</button>
@@ -65,9 +88,8 @@
         <button class="btn mini" data-insert="block">Block math</button>
         <button class="btn mini" data-insert="figure">Image/Table</button>
         <button class="btn mini" data-insert="mm">Insert MM</button>
-
         <!-- modal actions -->
-        <span class="sep"></span>
+        <span class="sep" style="width:1px;height:18px;background:#273341;display:inline-block;margin:0 4px"></span>
         <button class="btn mini" data-modal-act="merge-prev">Merge ←</button>
         <button class="btn mini" data-modal-act="merge-next">Merge →</button>
         <button class="btn mini" data-modal-act="dup">Duplicate</button>
@@ -76,37 +98,38 @@
       </div>
     </div>
 
-    <div class="modal-body">
-      <input id="Title" class="title" placeholder="Short label / claim" />
+    <div class="modal-body" style="padding:12px;display:flex;flex-direction:column;gap:10px">
+      <input id="Title" class="title" placeholder="Short label / claim"
+             style="border:1px solid #273341;border-radius:8px;background:#0f141a;color:#e6edf3;padding:8px 10px"/>
       <textarea id="Body" class="body" spellcheck="false"
-        placeholder="Markdown + HTML. Use \\( ... \\) or \\[ ... \\]. Type [split] to split."></textarea>
-      <div class="meta">
+        placeholder="Markdown + HTML. Use \\( ... \\) or \\[ ... \\]. Type [split] to split."
+        style="min-height:240px;border:1px solid #273341;border-radius:8px;background:#0f141a;color:#e6edf3;padding:10px"></textarea>
+      <div class="meta" style="display:flex;gap:8px;align-items:center;justify-content:space-between">
         <span id="splitInfo">[split] markers: 0</span>
-        <div class="actions">
+        <div class="actions" style="display:flex;gap:8px">
           <button class="btn" id="btnCancel">Cancel</button>
           <button class="btn" id="btnSplit">Split at [split]</button>
-          <button class="btn primary" id="btnSave">Save</button>
+          <button class="btn" id="btnSave">Save</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- modules -->
+  <!-- App modules -->
   <script type="module">
-    import { initSnippetsApp } from '/js/ro/snippets.js';
+    import { initSnippetsApp }           from '/js/ro/snippets.js';
     import { compileToHTML, typesetInto } from '/js/ro/snippets-compile.js';
 
-    // expose (as your page already did for legacy)
+    // Make compiler available to this page script
     window.compileToHTML = compileToHTML;
     window.typesetInto   = typesetInto;
 
-    // Boot exactly as before
+    // Boot app
     window.addEventListener('DOMContentLoaded', async () => {
-      await new Promise(r => setTimeout(r, 100));
+      await new Promise(r => setTimeout(r, 60)); // give MathJax a tick
       initSnippetsApp();
 
-      // --- Minimal addition: render expanded snippets like Live Preview ---
-      // When a card first expands (hover/enter), compile + typeset its body once.
+      // 1) Compile-on-hover for expanded list cards (left column)
       const list = document.getElementById('list');
       list.addEventListener('mouseenter', (ev) => {
         const card = ev.target.closest('.snip');
@@ -116,9 +139,8 @@
         if (!bodyEl) return;
 
         try {
-          // Pull the canonical source from the same store the app uses
           const raw = JSON.parse(localStorage.getItem('ro_snips_v3') || '[]');
-          const sn  = raw.find(s => s.id === card.dataset.id);
+          const sn  = raw.find(s => s && s.id === card.dataset.id);
           if (sn) {
             bodyEl.innerHTML = compileToHTML(sn.body || '');
             if (typeof typesetInto === 'function') typesetInto(bodyEl);
@@ -126,7 +148,25 @@
           }
         } catch (_) { /* no-op */ }
       }, true);
-      // --- End minimal addition ---
+
+      // 2) NEW: compile the already-expanded ACTIVE snippet once after boot
+      //    (so an expanded card isn't left raw on reload)
+      setTimeout(() => {
+        const active = document.querySelector('#list .snip.active');
+        if (!active || active.dataset.rendered === '1') return;
+        const bodyEl = active.querySelector('.body');
+        if (!bodyEl) return;
+
+        try {
+          const raw = JSON.parse(localStorage.getItem('ro_snips_v3') || '[]');
+          const sn  = raw.find(s => s && s.id === active.dataset.id);
+          if (sn) {
+            bodyEl.innerHTML = compileToHTML(sn.body || '');
+            if (typeof typesetInto === 'function') typesetInto(bodyEl);
+            active.dataset.rendered = '1';
+          }
+        } catch (_) { /* swallow */ }
+      }, 120); // after initial render completes
     });
   </script>
 </body>
