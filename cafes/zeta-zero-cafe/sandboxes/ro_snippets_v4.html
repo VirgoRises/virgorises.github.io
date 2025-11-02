@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>RO Snippets v3 — Modular</title>
+
+  <!-- styles (split CSS) -->
+  <link rel="stylesheet" href="/css/10-components/ro-snippets.css"/>
+
+  <!-- MathJax config (single source of truth) -->
+  <script src="/cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
+  <!-- MathJax core (keep exactly as you had it) -->
+  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+  <div id="wrap" class="wrap">
+    <div class="topbar">
+      <div class="left">
+        <button class="btn" id="btnAddObs">+ Observation</button>
+        <button class="btn" id="btnAddHyp">+ Hypothesis</button>
+        <button class="btn" id="btnAddEv">+ Evidence</button>
+        <button class="btn" id="btnAddDock">+ Dock</button>
+      </div>
+      <div class="right">
+        <button class="btn" id="btnInsertMM">Insert MM</button>
+        <button class="btn" id="btnExport">Export memo</button>
+        <span class="state">ready • autosave active</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="col">
+        <header class="section-head">
+          <h2>Snippets</h2>
+          <div class="hint">collapsed • hover or select to open • drag ↑ to reorder</div>
+        </header>
+        <div id="list" class="list"></div>
+      </section>
+
+      <section class="col">
+        <header class="section-head">
+          <h2>Live Preview (combined)</h2>
+          <div class="tools">
+            <button class="icon" id="btnPop" title="Pop-out preview">⤢</button>
+          </div>
+        </header>
+        <div id="preview" class="preview"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- modal -->
+  <div id="snipMask" class="modal-mask hidden"></div>
+  <div id="snipModal" class="modal hidden" aria-modal="true" role="dialog">
+    <div class="modal-head">
+      <strong id="modalTitle">Edit</strong>
+      <div class="modal-tools" id="modalTools">
+        <!-- smart inserts -->
+        <button class="btn mini" data-insert="header">Header info</button>
+        <button class="btn mini" data-insert="discord">Discord stats</button>
+        <button class="btn mini" data-insert="logic">Logic skeleton</button>
+        <button class="btn mini" data-insert="inline">Inline math</button>
+        <button class="btn mini" data-insert="block">Block math</button>
+        <button class="btn mini" data-insert="figure">Image/Table</button>
+        <button class="btn mini" data-insert="mm">Insert MM</button>
+
+        <!-- modal actions -->
+        <span class="sep"></span>
+        <button class="btn mini" data-modal-act="merge-prev">Merge ←</button>
+        <button class="btn mini" data-modal-act="merge-next">Merge →</button>
+        <button class="btn mini" data-modal-act="dup">Duplicate</button>
+        <button class="btn mini danger" data-modal-act="del">Delete</button>
+        <button class="icon" id="btnClose" title="Close">✕</button>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <input id="Title" class="title" placeholder="Short label / claim" />
+      <textarea id="Body" class="body" spellcheck="false"
+        placeholder="Markdown + HTML. Use \\( ... \\) or \\[ ... \\]. Type [split] to split."></textarea>
+      <div class="meta">
+        <span id="splitInfo">[split] markers: 0</span>
+        <div class="actions">
+          <button class="btn" id="btnCancel">Cancel</button>
+          <button class="btn" id="btnSplit">Split at [split]</button>
+          <button class="btn primary" id="btnSave">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modules -->
+  <script type="module">
+    import { initSnippetsApp } from '/js/ro/snippets.js';
+    import { compileToHTML, typesetInto } from '/js/ro/snippets-compile.js';
+
+    // expose (as your page already did for legacy)
+    window.compileToHTML = compileToHTML;
+    window.typesetInto   = typesetInto;
+
+    // Boot exactly as before
+    window.addEventListener('DOMContentLoaded', async () => {
+      await new Promise(r => setTimeout(r, 100));
+      initSnippetsApp();
+
+      // --- Minimal addition: render expanded snippets like Live Preview ---
+      // When a card first expands (hover/enter), compile + typeset its body once.
+      const list = document.getElementById('list');
+      list.addEventListener('mouseenter', (ev) => {
+        const card = ev.target.closest('.snip');
+        if (!card || card.dataset.rendered === '1') return;
+
+        const bodyEl = card.querySelector('.body');
+        if (!bodyEl) return;
+
+        try {
+          // Pull the canonical source from the same store the app uses
+          const raw = JSON.parse(localStorage.getItem('ro_snips_v3') || '[]');
+          const sn  = raw.find(s => s.id === card.dataset.id);
+          if (sn) {
+            bodyEl.innerHTML = compileToHTML(sn.body || '');
+            if (typeof typesetInto === 'function') typesetInto(bodyEl);
+            card.dataset.rendered = '1';
+          }
+        } catch (_) { /* no-op */ }
+      }, true);
+      // --- End minimal addition ---
+    });
+  </script>
+</body>
+</html>
