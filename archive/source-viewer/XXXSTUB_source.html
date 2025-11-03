@@ -1,0 +1,16 @@
+<!doctype html><meta charset="utf-8">
+<title>Source viewer moved</title>
+<meta http-equiv="refresh" content="0; url=/cafes/zeta-zero-cafe/research_office.html?chapter=${location.searchParams?.get?.('chapter')}&para=${location.searchParams?.get?.('para')}&from=${location.searchParams?.get?.('from')}&to=${location.searchParams?.get?.('to')}&page=${location.searchParams?.get?.('page')||''}">
+<script>
+  // JS redirect with full param fidelity (works across all browsers)
+  (function(){
+    const u = new URL(location.href);
+    const qp = new URLSearchParams(u.search);
+    const target = new URL('/cafes/zeta-zero-cafe/research_office.html', location.origin);
+    ['chapter','para','from','to','page','pdf'].forEach(k=>{
+      if(qp.has(k)) target.searchParams.set(k, qp.get(k));
+    });
+    location.replace(target.toString());
+  })();
+</script>
+<p>Redirecting to Research Office…</p>

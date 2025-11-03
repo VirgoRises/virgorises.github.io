@@ -3,7 +3,7 @@
   "use strict";
 
   // ---------- tiny helpers ----------
-  const $  = (s, el = document) => el.querySelector(s);
+  const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
   const on = (el, type, fn) => el.addEventListener(type, fn, { passive: true });
   const esc = encodeURIComponent;
@@ -44,27 +44,27 @@
 
   // ---------- paths ----------
   const cafeRoot = () => location.pathname.split("/").slice(0, 3).join("/");
-  const osfSlug  = () => (location.pathname.match(/^\/cafes\/([^/]+)\//) || [,""])[1];
+  const osfSlug = () => (location.pathname.match(/^\/cafes\/([^/]+)\//) || [, ""])[1];
   const chapterRel = () => location.pathname.split("/").slice(3).join("/"); // "notebook/…html"
 
   // ---------- optional anchors preload (harmless if missing) ----------
   async function fetchAnchors() {
     const parts = location.pathname.split("/").filter(Boolean);
     const slug = parts[1] || "zeta-zero-cafe";
-    const base = (parts.slice(-1)[0] || "").replace(/\.html$/i,"");
-    const url  = `/data/cafes/${slug}/anchors/${base}.json`;
+    const base = (parts.slice(-1)[0] || "").replace(/\.html$/i, "");
+    const url = `/data/cafes/${slug}/anchors/${base}.json`;
     try {
-      const r = await fetch(url, { cache:"no-store" });
-      if (!r.ok) return { paragraphs:[] };
+      const r = await fetch(url, { cache: "no-store" });
+      if (!r.ok) return { paragraphs: [] };
       return await r.json();
-    } catch { return { paragraphs:[] }; }
+    } catch { return { paragraphs: [] }; }
   }
 
   // ---------- source map (flexible) ----------
   let __MAP = null;
-  const norm = s => (s||"").replace(/\\/g,"/").replace(/^\/+|\/+$/g,"").toLowerCase();
+  const norm = s => (s || "").replace(/\\/g, "/").replace(/^\/+|\/+$/g, "").toLowerCase();
   const onlyFile = s => norm(s).split("/").slice(-1)[0];
-  const dropNotebook = s => norm(s).replace(/^notebook\//,"");
+  const dropNotebook = s => norm(s).replace(/^notebook\//, "");
 
   async function loadMap(baseNameNoExt) {
     if (__MAP) return __MAP;
@@ -77,39 +77,39 @@
     ];
     for (const p of paths) {
       try {
-        const r = await fetch(p, { cache:"no-store" });
+        const r = await fetch(p, { cache: "no-store" });
         if (!r.ok) continue;
         __MAP = await r.json();
         return __MAP;
-      } catch {}
+      } catch { }
     }
-    __MAP = { pdf: (base + ".pdf"), chapters:{} };
+    __MAP = { pdf: (base + ".pdf"), chapters: {} };
     return __MAP;
   }
 
   function getPageFromEntry(entry) {
     if (!entry) return undefined;
     const cand = [entry.from, entry.pdf_from, entry.page, entry.start, entry.p];
-    for (const v of cand) { const n = parseInt(v,10); if (Number.isFinite(n) && n>0) return n; }
+    for (const v of cand) { const n = parseInt(v, 10); if (Number.isFinite(n) && n > 0) return n; }
     return undefined;
   }
 
   function findMapHit(map, chapRel, paraNum) {
     // chapter object candidates
-    const keys = [ norm(chapRel), dropNotebook(chapRel), onlyFile(chapRel) ];
-    const chObj = map?.chapters && ( map.chapters[keys[0]] || map.chapters[keys[1]] || map.chapters[keys[2]] );
+    const keys = [norm(chapRel), dropNotebook(chapRel), onlyFile(chapRel)];
+    const chObj = map?.chapters && (map.chapters[keys[0]] || map.chapters[keys[1]] || map.chapters[keys[2]]);
     if (!chObj) return null;
 
     // paragraph key candidates
-    const pKeys = [ String(paraNum), `osf-${paraNum}` ];
+    const pKeys = [String(paraNum), `osf-${paraNum}`];
     const entry = chObj[pKeys[0]] || chObj[pKeys[1]];
     if (!entry) return null;
 
     const from = getPageFromEntry(entry);
     const to = (() => {
       const v = entry.to ?? entry.pdf_to ?? entry.end;
-      const n = parseInt(v,10);
-      return Number.isFinite(n) && n>0 ? n : undefined;
+      const n = parseInt(v, 10);
+      return Number.isFinite(n) && n > 0 ? n : undefined;
     })();
 
     return (from ? { from, to } : null);
@@ -117,10 +117,10 @@
 
   async function openSourceForParagraph(paraNum) {
     const chap = chapterRel();
-    const map  = await loadMap(CFG.defaultSourcePdf || "Old_main");
-    const hit  = findMapHit(map, chap, paraNum);
+    const map = await loadMap(CFG.defaultSourcePdf || "Old_main");
+    const hit = findMapHit(map, chap, paraNum);
 
-    const pdfName = (map.pdf || (CFG.defaultSourcePdf + ".pdf") || "Old_main.pdf").replace(/\.pdf$/i,"");
+    const pdfName = (map.pdf || (CFG.defaultSourcePdf + ".pdf") || "Old_main.pdf").replace(/\.pdf$/i, "");
     const params = new URLSearchParams({
       pdf: pdfName,
       para: `osf-${paraNum}`,
@@ -128,7 +128,7 @@
       return: location.pathname + `#osf-${paraNum}`
     });
     if (hit?.from) params.set("from", String(hit.from));
-    if (hit?.to)   params.set("to",   String(hit.to));
+    if (hit?.to) params.set("to", String(hit.to));
 
     window.location.href = `${cafeRoot()}/source.html?${params.toString()}`;
   }
@@ -148,8 +148,8 @@
 
   // ---------- SVGs ----------
   const ICON_LINK = "🔗";
-  const ICON_PEN  = "✎";
-  const ICON_DOC  = `
+  const ICON_PEN = "✎";
+  const ICON_DOC = `
     <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
       <path fill="currentColor"
         d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2
@@ -184,7 +184,7 @@
     $('[data-osf="enter"]', pop).onclick = () => {
       const url = CFG.discordChannelUrl || CFG.squareUrl;
       const snippet = (CFG.snippetTemplate || DEFAULTS.snippetTemplate)(link, paraNum);
-      navigator.clipboard.writeText(snippet).catch(() => {});
+      navigator.clipboard.writeText(snippet).catch(() => { });
       window.open(url, "_blank");
     };
 
@@ -192,7 +192,7 @@
     if (!CFG.discordAppUrl) appBtn.style.display = "none";
     appBtn.onclick = () => {
       const snippet = (CFG.snippetTemplate || DEFAULTS.snippetTemplate)(link, paraNum);
-      navigator.clipboard.writeText(snippet).catch(() => {});
+      navigator.clipboard.writeText(snippet).catch(() => { });
       window.location.href = CFG.discordAppUrl;
     };
 
@@ -222,7 +222,7 @@
     const head = $(".osf-head", wrap);
     const rect = head.getBoundingClientRect();
     pop.style.left = `${Math.round(rect.left)}px`;
-    pop.style.top  = `${Math.round(rect.bottom + window.scrollY + 6)}px`;
+    pop.style.top = `${Math.round(rect.bottom + window.scrollY + 6)}px`;
 
     const closer = (ev) => {
       if (!pop.contains(ev.target)) {
@@ -259,13 +259,41 @@
     ensureStyles();
     await fetchAnchors();
 
+    // feature flag (off by default) — only for emergency use on legacy docs
+    const OSF_AUTO_IDS = false;
+
     const pres = $$("pre.osf");
+    const seen = new Set();
+
     pres.forEach((pre, i) => {
-      if (!pre.id) pre.id = `osf-${i + 1}`;
+      // 1) enforce hard-coded ids
+      if (!pre.id) {
+        if (OSF_AUTO_IDS) {
+          pre.id = `osf-${i + 1}`;  // temporary fallback if you flip the flag
+          console.warn(`[osf] auto-assigned id=${pre.id} (OSF_AUTO_IDS=true).`);
+        } else {
+          pre.classList.add("osf-missing-id");
+          console.error("[osf] Missing id on <pre.osf>. Hard-code an id like id=\"osf-7\".");
+          return; // do not attach any additional behavior to this node
+        }
+      }
+
+      // 2) basic duplicate check
+      if (seen.has(pre.id)) {
+        pre.classList.add("osf-duplicate-id");
+        console.error(`[osf] Duplicate id="${pre.id}" detected. IDs must be unique.`);
+        return;
+      }
+      seen.add(pre.id);
+
+      // 3) make sure data-source-anchor follows the id
+      if (!pre.hasAttribute("data-source-anchor")) {
+        pre.setAttribute("data-source-anchor", pre.id);
+      }
       const uuid = pre.id;
       const paraNum = i + 1;
 
-      const head  = document.createElement("div");
+      const head = document.createElement("div");
       head.className = "osf-head";
 
       const label = document.createElement("a");
@@ -312,8 +340,8 @@
         const url = `${location.origin}${location.pathname}#${uuid}`;
         navigator.clipboard.writeText(url).then(() => toast("Copied paragraph link"));
       };
-      srcBtn.onclick  = () => openSourceForParagraph(paraNum);
-      more.onclick    = () => buildPopover(wrap, uuid, paraNum);
+      srcBtn.onclick = () => openSourceForParagraph(paraNum);
+      more.onclick = () => buildPopover(wrap, uuid, paraNum);
     });
 
     focusFromHash();

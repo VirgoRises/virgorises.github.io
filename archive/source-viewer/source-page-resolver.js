@@ -24,8 +24,12 @@ export async function initSourcePageResolver({
   anchorAttr = "data-source-anchor",
   badgeClass = "src-badge",
   pageIndexOffset = 0,
+  // linkToSourceHtml = (docId_, chapterId_, anchorId_, from_, to_) =>
+  //   `/cafes/zeta-zero-cafe/source.html?pdf=${encodeURIComponent(docId_)}&para=${encodeURIComponent(anchorId_)}&chapter=${encodeURIComponent(chapterId_)}&from=${from_}&to=${to_}`,
+  //
+  // decomission source.html, redirect research_office.html
   linkToSourceHtml = (docId_, chapterId_, anchorId_, from_, to_) =>
-    `/cafes/zeta-zero-cafe/source.html?pdf=${encodeURIComponent(docId_)}&para=${encodeURIComponent(anchorId_)}&chapter=${encodeURIComponent(chapterId_)}&from=${from_}&to=${to_}`,
+    `/cafes/zeta-zero-cafe/research_office.html?chapter=${encodeURIComponent(chapterId_)}&para=${encodeURIComponent(anchorId_)}&from=${from_}&to=${to_}`,
 } = {}) {
   if (!chapterId) throw new Error("initSourcePageResolver: chapterId is required.");
 
@@ -80,28 +84,46 @@ export async function initSourcePageResolver({
   }
 
   // ---- badge rendering ------------------------------------------------------
+  const chapterAttr = "data-chapter-id";       // whatever you already use
+  // declared line 24 - const anchorAttr = "data-source-anchor";
+
   const nodes = document.querySelectorAll(`[${anchorAttr}]`);
   nodes.forEach((el) => {
-    const rawAnchor = (el.getAttribute(anchorAttr) || "").trim(); // e.g. "osf-11" or "fig-1-01"
-    const rec = getSourceRange(chapterId, rawAnchor);
+    const rawAnchor = (el.getAttribute(anchorAttr) || "").trim(); // e.g. "osf-7"
+    if (!rawAnchor) return;
 
-    const badge = document.createElement("a");
-    badge.className = badgeClass;
+    // 1) derive chapter id as you already do
+    const chapterId = el.closest(`[${chapterAttr}]`)?.getAttribute(chapterAttr) || "";
 
-    if (rec?.from != null && rec?.to != null) {
-      const from = rec.from + pageIndexOffset;
-      const to   = rec.to   + pageIndexOffset;
-
-      // Text: p.8 or p.8–9
-      badge.textContent = from === to ? `p.${from}` : `p.${from}–${to}`;
-      badge.href  = linkToSourceHtml(docId, chapterId, rawAnchor, from, to);
-      badge.title = from === to ? `Open source at page ${from}` : `Open source pages ${from}–${to}`;
-    } else {
-      badge.textContent = "—";
-      badge.href = "javascript:void(0)";
-      badge.title = "No mapping found";
-      badge.setAttribute("aria-disabled", "true");
+    // 2) prefer hard-coded data-page* on the element
+    //    data-page: single page; data-page-start/end: range
+    let from = null, to = null;
+    const dp = el.getAttribute("data-page");
+    const dps = el.getAttribute("data-page-start");
+    const dpe = el.getAttribute("data-page-end");
+    if (dps || dpe) {
+      from = Number(dps || dpe);
+      to = Number(dpe || dps);
+    } else if (dp) {
+      from = Number(dp);
+      to = from;
     }
+
+    // 3) fallback to your existing map only if no data-page* present
+    if (from == null || isNaN(from)) {
+      const rec = getSourceRange(chapterId, rawAnchor); // your existing function
+      if (!rec) return;
+      from = rec.from;
+      to = rec.to ?? rec.from;
+    }
+
+    // 4) build badge
+    const badge = document.createElement("a");
+    badge.className = "osf-source-badge";
+    badge.textContent = (from === to) ? `p.${from}` : `p.${from}–${to}`;
+    badge.href = linkToSourceHtml(chapterId, rawAnchor, from, to);  // you already have this
+    badge.target = "_blank";
+    badge.rel = "noopener";
 
     el.insertAdjacentElement("beforeend", badge);
   });
