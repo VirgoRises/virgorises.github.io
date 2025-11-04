@@ -27,29 +27,29 @@
   </header>
   <main class="wrap">
     <div class="card">
-      
+
       <pre class="osf" data-page="23" data-source-anchor="osf-1"
         id="osf-1">The primorial function is similar to the factorial function for the natural numbers but involves the product over the primes.</pre>
 
       <pre class="osf" data-page="23" data-source-anchor="osf-2"
         id="osf-2">\begin{equation}P_{n}\#=\prod_{k=1}^{n}P_{k}=2\times3\times5\times7\times\dots\in\mathbb{N}\label{eq:03.01}\tag{03.01}\end{equation}</pre>
-        
+
       <h3>Table 3.01 Primorial root 2 approach</h3>
 
       <pre class="osf" data-page="23" data-source-anchor="osf-3"
         id="osf-3">Table 3.1 lists:
         <ol><li>$P_{n}$ , the consecutive primes</li><li>$P_{n}\#$ , the primorials</li><li>$\left(P_{n}\#\right)^{-1}$ , the inverse primorials</li><li>$P_{s}$ , the partial sum of $\left(P_{n}\#\right)^{-1}$ up til $P_{n}$</li><li>$\Delta P_{s}$ , the difference $\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}$</li><li>$\uparrow\downarrow$ , upper and lower bound alternating odd/even n</li></ol></pre>
 
-             <pre class="osf" data-page="23" data-source-anchor="osf-4"
+      <pre class="osf" data-page="23" data-source-anchor="osf-4"
         id="osf-4">The partial sum of the inverse primorials $P_{s}$ approaches the inverse square root of 2, $\left(\sqrt{2}\right)^{-1}\simeq0.7071067812$, but falls short by some factor.</pre>
-        
+
       <pre class="osf" data-page="23" data-source-anchor="osf-5"
         id="osf-5">The primorial delta $\Delta P_{s}$ is the discrepancy between $\left(\sqrt{2}\right)^{-1}$ and the limit of $P_{s}$ which has a closed form $\sqrt{\frac{2\pi}{2.5^{2}}}$ :</pre>
 
       <pre class="osf" data-page="23" data-source-anchor="osf-6"
         id="osf-6">\begin{equation}\begin{split}\underset{n\rightarrow\infty}{lim}&amp;\\,\Delta P_{s}=\frac{\left(\sqrt{2}\right)^{-1}}{P_{s}}=\sqrt{\frac{2\pi}{2.5^{2}}}\simeq1.00265131\dots\in\mathbb{R}\end{split}\label{eq:03.02}\tag{03.02}\end{equation}</pre>
-        
-        <!--  PAGE 24 -->
+
+      <!--  PAGE 24 -->
 
       <pre class="osf" data-page="24" data-source-anchor="osf-7" id="osf-7">        <figure class="card" data-page="23" data-source-anchor="fig-table-31-primorial-root-2-approach" id="fig-table-31-primorial-root-2-approach"><figcaption><strong>Table 3.1 — Primorial root 2 approach</strong></figcaption>
         <table id="tbl-3-1-2">
@@ -169,7 +169,7 @@
       </figure>
       </pre>
 
- 
+
       <h3>Prime grouping</h3>
 
       <pre class="osf" data-page="24" data-source-anchor="osf-8"
@@ -185,15 +185,15 @@
 
       <pre class="osf" data-page="24" data-source-anchor="osf-11"
         id="osf-11">Table 3.2 lists the partial sum increment for each row in table 3.1 in the column $P_{s}\\:increment$.</pre>
-      
+
       <pre class="osf" data-page="24" data-source-anchor="osf-12"
-        id="osf-12"><ol><li>$P_{n}$, the consecutive primes</li><li>$\uparrow\downarrow$, upper and lower bound alternating odd / even n</li><li>$P_{s}\\:increment$, the step wise increment in $P_{s}$ from previous to current row</li><li>$\frac{lb}{ub}$, the ratio between the $P_{s}\:increment$ for grouped rows $\frac{\left(2n\right)}{\left(2n\right)-1}$</li><li>$\Delta\frac{lb}{ub}$, the ratio between the first row and current row $\frac{\left(2n\right)}{\left(n=1\right)}$</li></ol></pre>  
-        
+        id="osf-12"><ol><li>$P_{n}$, the consecutive primes</li><li>$\uparrow\downarrow$, upper and lower bound alternating odd / even n</li><li>$P_{s}\\:increment$, the step wise increment in $P_{s}$ from previous to current row</li><li>$\frac{lb}{ub}$, the ratio between the $P_{s}\:increment$ for grouped rows $\frac{\left(2n\right)}{\left(2n\right)-1}$</li><li>$\Delta\frac{lb}{ub}$, the ratio between the first row and current row $\frac{\left(2n\right)}{\left(n=1\right)}$</li></ol></pre>
+
       <!--  PAGE 25 -->
 
       <pre class="osf" data-page="25" data-source-anchor="osf-13" id="osf-13">  <figure class="card" data-page="25" data-source-anchor="fig-table-32-primorial-lb-ub-oscillation" id="fig-table-32-primorial-lb-ub-oscillation">
         <figcaption><strong>Table 3.2 — Primorial lb–ub oscillation</strong></figcaption>
-        <table id="tbl-3-2-2">
+        <table id="tbl-3-2-2">          
           <thead>
             <tr>
               <th>n</th>
@@ -201,7 +201,7 @@
               <th>\(\uparrow\downarrow\)</th>
               <th>\(P_s \; increment\)</th>
               <th>\(\tfrac{lb}{ub}\)</th>
-              <th>\(P_{\Delta}=\tfrac{lb_{\infty}}{lb_{n=1}}\)</th>
+              <th>\(\Delta\tfrac{lb_{\infty}}{lb_{n=1}}=3\frac{lb}{ub}\)</th>
             </tr>
           </thead>
           <tbody>
@@ -291,7 +291,7 @@
               <td></td>
               <td>\(\sim (\sqrt{2})^{-1}\)</td>
               <td>\(0.32 = \tfrac{1}{3.125}\)</td>
-              <td>\(P_{\Delta}=\tfrac{24}{25}=0.96\)</td>
+              <td>\(\tfrac{24}{25}=0.96\)</td>
             </tr>
           </tbody>
         </table>
@@ -306,7 +306,7 @@
 
       <pre class="osf" data-page="25" data-source-anchor="osf-16"
         id="osf-16">The column $\frac{lb}{ub}$ contains the ratio between lower and upper bound for each group. Column $\Delta\frac{lb_{n\rightarrow\infty}}{lb_{n=1}}=3\frac{lb}{ub}$ contains the progressive ratio between the current $\frac{lb}{ub}$ row pair with respect to the ratio of the first $\frac{lb}{ub}$ row pair, $\left(\frac{lb}{ub}\right)_{n=1}=\frac{1}{3}$.</pre>
-        
+
       <h2>The quadrature constant</h2>
 
       <pre class="osf" data-page="25" data-source-anchor="osf-17"
@@ -318,13 +318,14 @@
       <pre class="osf" data-page="25" data-source-anchor="osf-19"
         id="osf-19">The partial sum increment, $P_{s}\:increment$, table 3.2, shows a peculiar alternating progression. The current partial sum $P_{s}\rightarrow n$ minus the increment so far, oscillates between a lower and a upper bound of approximately $ub=\frac{1}{2}$ and $lb=\frac{1}{6}$.</pre>
 
-      <pre class="osf" data-page="25" data-source-anchor="osf-20" id="osf-20">The upper and lower bounds alternate row by row and group the primes like $\left\{ 2,3\right\} ,$$\left\{ 5,7\right\} ,$$\left\{ 11,13\right\} ,$$\left\{ 17,19\right\}$, etc. in some periodic fashion.</pre>
+      <pre class="osf" data-page="25" data-source-anchor="osf-20"
+        id="osf-20">The upper and lower bounds alternate row by row and group the primes like $\left\{ 2,3\right\} ,$$\left\{ 5,7\right\} ,$$\left\{ 11,13\right\} ,$$\left\{ 17,19\right\}$, etc. in some periodic fashion.</pre>
 
       <pre class="osf" data-page="25" data-source-anchor="osf-21"
         id="osf-21">For the first two terms $\left\{ 2,3\right\}$  the ratio is exact, $\frac{lb}{ub}=\frac{1}{3}$, the last two terms in the table $\left\{ 23,29\right\}$  approach $\frac{lb}{ub}\simeq0.3212292821\sim\frac{1}{\pi}$. The primorials, and thus the inverse and sum thereof, are rational values. </pre>
-      
-      <!-- PAGE 26 -->  
-       
+
+      <!-- PAGE 26 -->
+
       <pre class="osf" data-page="26" data-source-anchor="osf-22"
         id="osf-22">The ratio lb/ub will, by the topological property of the real numbers, approach $\sim\frac{1}{\pi}$, but must be a rational approximation. </pre>
 
@@ -341,19 +342,20 @@
 
       <pre class="osf" data-page="26" data-source-anchor="osf-27"
         id="osf-27">The set of rational numbers $\mathbb{Q}$ is countable infinite and can be paired with the natural numbers  $\mathbb{N}$, which implies that if the hypothesis is correct, the real numbers $\mathbb{R}$ are also countable infinite.</pre>
-        
+
       <pre class="osf" data-page="26" data-source-anchor="osf-28" id="osf-28"><figure data-page="23" data-source-anchor="fig-f301-quadrature-constant-leap" id="fig-f301-quadrature-constant-leap">
         <img alt="F3.01 Quadrature constant - leap" loading="lazy" src="figures/Figure_3.1_Quadrature_constant_-_leap.GIF"/>
         <figcaption class="small">F3.01 Quadrature constant - leap</figcaption></figure></pre>
 
       <pre class="osf" data-page="26" data-source-anchor="osf-29"
         id="osf-29">Pairing, not by in the limit approaching arbitrarily close to a partner, but rather leap frogging over an infinity of real and rational numbers (see fig. 3.1) to a distinct value.</pre>
-        
+
       <h2>Mapping the continuum</h2>
 
       <h3>Figure 3.02 Quadrature continuum</h3>
-      
-      <pre class="osf" data-page="26" data-source-anchor="osf-30" id="osf-30"><figure data-page="23" data-source-anchor="fig-f302-quadrature-continuum" id="fig-f302-quadrature-continuum"><img alt="F3.02 Quadrature continuum" loading="lazy" src="figures/Figure_3.2_Quadrature_continuum.GIF"/><figcaption class="small">F3.02 Quadrature continuum</figcaption></figure></pre>
+
+      <pre class="osf" data-page="26" data-source-anchor="osf-30"
+        id="osf-30"><figure data-page="23" data-source-anchor="fig-f302-quadrature-continuum" id="fig-f302-quadrature-continuum"><img alt="F3.02 Quadrature continuum" loading="lazy" src="figures/Figure_3.2_Quadrature_continuum.GIF"/><figcaption class="small">F3.02 Quadrature continuum</figcaption></figure></pre>
 
       <pre class="osf" data-page="26" data-source-anchor="osf-31"
         id="osf-31">Apparently the 'width of a coordinate', on a circumference encodes some property other than 'gradient in spread of arc'.</pre>
@@ -372,9 +374,9 @@
 
       <pre class="osf" data-page="26" data-source-anchor="osf-36"
         id="osf-36">Because radii intersect concentric circles at $\frac{1}{\mathbb{R}}\in\mathbb{R}$, a dimensionless point, this leads to a intimate and unique connection between the sets $\mathbb{Q}$ and $\mathbb{R}$.</pre>
-      
-      <!-- PAGE 27 -->  
-       
+
+      <!-- PAGE 27 -->
+
       <pre class="osf" data-page="27" data-source-anchor="osf-37"
         id="osf-37">The circle is the continuum $\mathbb{R}$, and measures $\frac{2\pi}{\mathbb{R}} = 1$. </pre>
 
@@ -398,10 +400,11 @@
 
       <pre class="osf" data-page="27" data-source-anchor="osf-44"
         id="osf-44">Apparently distinct rational inputs map to distinct irrational outputs because intrinsically $\mathbb{Q}\equiv\mathbb{R}$. This is a bold statement that brings the validity of the continuum hypothesys into question, therefor needs to be justified.</pre>
-        
+
       <h2>Quadrature reference frame</h2>
 
-      <pre class="osf" data-page="27" data-source-anchor="osf-45" id="osf-45"><figure data-page="23" data-source-anchor="fig-3-03" id="fig-3-03"><img alt="Figure 3.03  Quadrature reference frame" loading="lazy" src="figures/Figure_3.3_Quadrature_reference_frame.GIF"/><figcaption class="small">Figure 3.03 Quadrature reference frame</figcaption></figure></pre>
+      <pre class="osf" data-page="28" data-source-anchor="osf-45"
+        id="osf-45"><figure data-page="28" data-source-anchor="fig-3-03" id="fig-3-03"><img alt="Figure 3.03  Quadrature reference frame" loading="lazy" src="figures/Figure_3.3_Quadrature_reference_frame.GIF"/><figcaption class="small">Figure 3.03 Quadrature reference frame</figcaption></figure></pre>
 
       <pre class="osf" data-page="27" data-source-anchor="osf-46"
         id="osf-46">Figure 3.3 is a Cartesian construction with compass and (unmarked) straightedge. The construction simply begins with straight line 'A', a random point 'B', and a circle centered on 'B' of as yet undetermined radius.</pre>
@@ -411,9 +414,9 @@
 
       <pre class="osf" data-page="27" data-source-anchor="osf-48"
         id="osf-48">Proceed by constructing the square. This results in a square and circle of approximately the same area. </pre>
-      
-      <!-- PAGE 28 -->  
-       
+
+      <!-- PAGE 28 -->
+
       <pre class="osf" data-page="28" data-source-anchor="osf-49"
         id="osf-49">Transcendental numbers are not constructible with a set of compasses and (unmarked) straight edge (Wikipedia: Constructible number), but in this reference frame we are able to construct an exact solution for $A_{\square}=A_{ \circ}$.</pre>
 
@@ -425,7 +428,7 @@
 
       <pre class="osf" data-page="28" data-source-anchor="osf-52"
         id="osf-52">\begin{equation}\mathbb{Q}\looparrowright=\mathbb{R}\leftrightarrow\frac{\mathbb{R}}{\looparrowright}=\mathbb{Q}\label{eq:03.08}\tag{03.08}\end{equation}</pre>
-      
+
       <h2>Primorial 24 parts in 25 and hexagons</h2>
 
       <pre class="osf" data-page="28" data-source-anchor="osf-53"
@@ -433,9 +436,9 @@
 
       <pre class="osf" data-page="28" data-source-anchor="osf-54"
         id="osf-54">The outline of that model starts with defining the geometry in which to place the quadrature constant $\looparrowright$. The placement is almost derived in figure Quadrature reference frame, point $F=2.5^2$. In fact $F\looparrowright=2\pi$, which is in fact the horizon, or observational limit at radius $2\pi$.</pre>
-      
-      <!-- PAGE 29 -->  
-       
+
+      <!-- PAGE 29 -->
+
       <pre class="osf" data-page="29" data-source-anchor="osf-55"
         id="osf-55">Point 'F' functions as a pole at radius $x=2.5^2$ and is the reference point from which all $x\in\mathbb{Q}$ are calculated. The primorial delta $P\Delta=0.96$ (see table 3.2) defines the x-coordinate $P\Delta\times2.5^2=6$ in figure 3.4 Primorial hexagon.</pre>
 
@@ -453,18 +456,20 @@
 
       <pre class="osf" data-page="29" data-source-anchor="osf-60"
         id="osf-60">Lastly, observe that the inverse of the primorial delta, multiplied by the quadrature constant, gives an angle of $60^{\circ}=\frac{\pi}{3}$. The hexagonal chord and the associated equilateral triangle will be a further crucial key element in this hypothesis.</pre>
-        
-        <pre class="osf" data-page="29" data-source-anchor="osf-61"
+
+      <pre class="osf" data-page="29" data-source-anchor="osf-61"
         id="osf-61">\begin{equation}P_{\ast}=\left(P\triangle\right)^{-1}\looparrowright\thinspace\rightarrow\frac{\pi}{3}=60^{\circ}\label{eq:03.11} \tag{03.11} \end{equation}</pre>
 
       <pre class="osf" data-page="29" data-source-anchor="osf-62"
         id="osf-62">The pole at x=25/25 can therefore be unambiguously constructed starting from any inscribed hexagon which, enforced by the primorial delta, projects at x=25/25 within this geometric framework.</pre>
-      
-      <pre class="osf" data-page="29" data-source-anchor="osf-63" id="osf-63"><figure data-page="23" data-source-anchor="fig-f304-primorial-hexagon" id="fig-f304-primorial-hexagon"><img alt="F3.04 Primorial hexagon" loading="lazy" src="figures/Figure_3.4_Primorial_hexagon.GIF"/><figcaption class="small">F3.04 Primorial hexagon</figcaption></figure></pre>
-      
-      <!-- PAGE 30 empty -->  
-    
-    </div><nav class="pager"><a href="chapter-2-the-spatial-aspect-of-zet.html">← Prev</a><a
+
+      <pre class="osf" data-page="29" data-source-anchor="osf-63"
+        id="osf-63"><figure data-page="23" data-source-anchor="fig-f304-primorial-hexagon" id="fig-f304-primorial-hexagon"><img alt="F3.04 Primorial hexagon" loading="lazy" src="figures/Figure_3.4_Primorial_hexagon.GIF"/><figcaption class="small">F3.04 Primorial hexagon</figcaption></figure></pre>
+
+      <!-- PAGE 30 empty -->
+
+    </div>
+    <nav class="pager"><a href="chapter-2-the-spatial-aspect-of-zet.html">← Prev</a><a
         href="chapter-4-the-triangular-numbers.html">Next →</a></nav>
   </main>
   <footer class="wrap">© <span id="y"></span> Virgorises</footer>
