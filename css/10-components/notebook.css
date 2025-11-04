@@ -1,0 +1,397 @@
+
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 22px;
+}
+
+
+
+
+pre.osf {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  background: #0f1216;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+
+/* Figures */
+figure {
+  margin: 1rem 0;
+}
+
+figure img {
+  display: block;
+  width: 70%;
+  height: auto;
+  max-width: 860px;
+  /* cap actual pixel width on large screens */
+  margin-inline: auto;
+  /* center when smaller than card width */
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+
+figcaption.small {
+  margin-top: .5rem;
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+
+/* Math on small screens */
+@media (max-width: 700px) {
+  mjx-container[display="true"] {
+    overflow-x: auto;
+  }
+
+  /* let wide equations scroll */
+  mjx-container {
+    font-size: 95%;
+  }
+
+  /* slight shrink helps readability */
+}
+
+@media (max-width: 700px) {
+  mjx-container[display="true"] {
+    overflow-x: auto
+  }
+
+  mjx-container {
+    font-size: 95%
+  }
+}
+
+/* — deep links with auto-scroll + highlight will make discussion way snappier. */
+/* Layout wrapper for each numbered paragraph */
+.osf-block {
+  margin: 1em 0;
+}
+
+/* § label (deep link) — match body text color */
+a.osf-label,
+a.osf-label:link,
+a.osf-label:visited,
+a.osf-label:active,
+a.osf-label:hover {
+  color: inherit !important;
+}
+
+a.osf-label {
+  text-decoration: none;
+  font: 600 0.95rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  display: inline-block;
+  margin: 0 0 0.5em 0;
+}
+
+a.osf-label:hover {
+  text-decoration: underline;
+}
+
+/* Copy-link icon: hidden by default, shows on hover/focus */
+.osf-copy {
+  margin-left: .4rem;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 0.95rem;
+  /* size of 🔗 */
+  line-height: 1;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .15s ease;
+}
+
+.osf-block:hover .osf-copy,
+.osf-copy:focus-visible {
+  opacity: .85;
+  visibility: visible;
+}
+
+.osf-copy:hover {
+  opacity: 1;
+}
+
+/* Highlight effect (unchanged) */
+.osf-highlight {
+  outline: 3px solid rgba(255, 193, 7, 0.9);
+  outline-offset: 2px;
+  animation: osfPulse 1.2s ease-in-out 0s 3;
+  background-image: linear-gradient(to right, rgba(255, 235, 150, 0.6), rgba(255, 235, 150, 0.1));
+}
+
+@keyframes osfPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 193, 7, 0.2);
+  }
+}
+
+/* Smooth scrolling (nice-to-have) */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Toast for copy feedback */
+.osf-toast {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(60, 60, 60, 0.95);
+  color: #fff;
+  font: 500 0.85rem/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .18s ease, transform .18s ease;
+  z-index: 9999;
+}
+
+.osf-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* put § label above the paragraph, left-aligned */
+.osf-block{
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: .35rem !important;   /* space between label line and the pre block */
+}
+
+/* keep label + tiny copy icon on one line */
+.osf-label{ display: inline-block !important; margin: 0 !important; }
+.osf-copy{ margin-left: .4rem !important; }
+
+/* keep label + icons on one row */
+.osf-head{
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .45rem !important;
+}
+
+/* hide both icons by default, reveal on hover or keyboard focus */
+.osf-head .osf-copy,
+.osf-head .osf-more{
+  opacity: 0;
+  transition: opacity .12s;
+}
+
+.osf-head:hover .osf-copy,
+.osf-head:hover .osf-more,
+.osf-head .osf-copy:focus-visible,
+.osf-head .osf-more:focus-visible{
+  opacity: 1;
+}
+/* icons use the same color as text */
+.osf-head .osf-copy,
+.osf-head .osf-more{
+  color: inherit !important;
+}
+/* keep icons hidden by default */
+.osf-head .osf-copy,
+.osf-head .osf-more{
+  opacity: 0;
+  transition: opacity .12s;
+  color: inherit;           /* make emoji/SVG match text color */
+}
+
+/* show icons when hovering the ENTIRE block or when focused via keyboard */
+.osf-block:hover .osf-copy,
+.osf-block:hover .osf-more,
+.osf-block:focus-within .osf-copy,
+.osf-block:focus-within .osf-more{
+  opacity: 1;               /* add !important if earlier rules win */
+}
+
+/* -------- Cards that contain tables -------- */
+figure.card {
+  background: rgba(20, 22, 28, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: .75rem 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+  /* horizontal scroll on narrow screens */
+}
+
+/* Highlight if linked via #anchor */
+figure.card:target {
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, .35) inset;
+}
+
+/* Caption */
+figure.card>figcaption {
+  margin: .25rem 0 .5rem 0;
+  color: #cfd6df;
+  /* readable on dark bg */
+  font: 600 .95rem/1.25 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* -------- Table itself -------- */
+figure.card table {
+  width: 100%;
+  border-collapse: collapse;
+  /* enables zebra rows */
+  min-width: 420px;
+  /* keeps columns from crushing */
+  font-size: .95rem;
+}
+
+/* Header cells */
+figure.card thead th {
+  text-align: left;
+  font-weight: 700;
+  padding: .6rem .75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(15, 17, 22, 0.95);
+  /* subtle contrast vs body rows */
+  position: sticky;
+  top: 0;
+  /* sticky header inside the figure */
+  z-index: 1;
+}
+
+/* Body cells */
+figure.card tbody td {
+  padding: .55rem .75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  vertical-align: top;
+}
+
+/* Zebra striping for readability */
+figure.card tbody tr:nth-child(odd) td {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* Last row border cleanup */
+figure.card tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Optional: right-align numeric columns */
+figure.card th.num,
+figure.card td.num {
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* Optional: de-emphasize placeholder text like “no value” */
+figure.card td.em {
+  color: #9aa4b2;
+  font-style: italic;
+}
+
+/*
+:xroot {
+  --bg: #0b0c10;
+  --ink: #e5e7eb;
+  --muted: #a7b0be;
+  --line: #1a1d24;
+  --card: #111418;
+  --accent: #7dd3fc;
+}
+
+xhtml,
+xbody {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.65 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+xheader {
+  border-bottom: 1px solid var(--line);
+  padding: 12px 0 16px;
+}
+
+xh1 {
+  margin: .3em 0;
+  font-size: clamp(26px, 4vw, 40px);
+}
+
+.xcard {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+xnav a {
+  color: var(--accent);
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+xfigure {
+  margin: 14px 0;
+}
+
+xfigure img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+
+xfigcaption {
+  margin-top: 6px;
+  font-size: .92rem;
+  color: var(--muted);
+}
+.xpager {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+xfooter {
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+  padding: 14px 0;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+/ * Tables (images or HTML tables) * /
+.xtable-wrap {
+  overflow-x: auto;
+}
+
+.xtable-wrap>table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.xtable-wrap th,
+.xtable-wrap td {
+  border: 1px solid var(--line);
+  padding: .5rem;
+  vertical-align: middle;
+}
+
+.xtable-wrap thead th {
+  background: #0f1216;
+  font-weight: 600;
+}
+
+*/

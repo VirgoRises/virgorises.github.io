@@ -12,7 +12,7 @@ h1{ font-size:22px; margin:0 0 16px; }
 .muted{ opacity:.75; }
 
 /* 35% / 65% layout */
-.row{ display:grid; grid-template-columns:35% 65%; gap:16px; }
+.row{ display:grid; grid-template-columns:25% 75%; gap:16px; }
 .right-col{ display:flex; flex-direction:column; gap:16px; }
 
 /* Cards & basics */

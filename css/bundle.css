@@ -110,6 +110,276 @@ h3 {
 
 /*# source: 10-components/memo.css */
 
+/*# source: 10-components/notebook.css */
+.wrap {
+ max-width: 980px;
+ margin: 0 auto;
+ padding: 22px;
+}
+
+pre.osf {
+ white-space: pre-wrap;
+ word-wrap: break-word;
+ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+ background: #0f1216;
+ border: 1px solid var(--line);
+ border-radius: 10px;
+ padding: 12px;
+}
+
+figure {
+ margin: 1rem 0;
+}
+
+figure img {
+ display: block;
+ width: 70%;
+ height: auto;
+ max-width: 860px;
+
+ margin-inline: auto;
+
+ border-radius: 6px;
+ border: 1px solid var(--line);
+}
+
+figcaption.small {
+ margin-top: .5rem;
+ color: var(--muted);
+ font-size: .92rem;
+}
+
+@media (max-width: 700px) {
+ mjx-container[display="true"] {
+ overflow-x: auto;
+ }
+
+
+ mjx-container {
+ font-size: 95%;
+ }
+
+
+}
+
+@media (max-width: 700px) {
+ mjx-container[display="true"] {
+ overflow-x: auto
+ }
+
+ mjx-container {
+ font-size: 95%
+ }
+}
+
+.osf-block {
+ margin: 1em 0;
+}
+
+a.osf-label,
+a.osf-label:link,
+a.osf-label:visited,
+a.osf-label:active,
+a.osf-label:hover {
+ color: inherit !important;
+}
+
+a.osf-label {
+ text-decoration: none;
+ font: 600 0.95rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+ display: inline-block;
+ margin: 0 0 0.5em 0;
+}
+
+a.osf-label:hover {
+ text-decoration: underline;
+}
+
+.osf-copy {
+ margin-left: .4rem;
+ padding: 0;
+ border: none;
+ background: none;
+ font-size: 0.95rem;
+
+ line-height: 1;
+ cursor: pointer;
+ color: inherit;
+ opacity: 0;
+ visibility: hidden;
+ transition: opacity .15s ease;
+}
+
+.osf-block:hover .osf-copy,
+.osf-copy:focus-visible {
+ opacity: .85;
+ visibility: visible;
+}
+
+.osf-copy:hover {
+ opacity: 1;
+}
+
+.osf-highlight {
+ outline: 3px solid rgba(255, 193, 7, 0.9);
+ outline-offset: 2px;
+ animation: osfPulse 1.2s ease-in-out 0s 3;
+ background-image: linear-gradient(to right, rgba(255, 235, 150, 0.6), rgba(255, 235, 150, 0.1));
+}
+
+@keyframes osfPulse {
+
+ 0%,
+ 100% {
+ box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.5);
+ }
+
+ 50% {
+ box-shadow: 0 0 0 6px rgba(255, 193, 7, 0.2);
+ }
+}
+
+html {
+ scroll-behavior: smooth;
+}
+
+.osf-toast {
+ position: fixed;
+ right: 1rem;
+ bottom: 1rem;
+ padding: 0.5rem 0.75rem;
+ border-radius: 0.5rem;
+ background: rgba(60, 60, 60, 0.95);
+ color: #fff;
+ font: 500 0.85rem/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+ opacity: 0;
+ transform: translateY(6px);
+ transition: opacity .18s ease, transform .18s ease;
+ z-index: 9999;
+}
+
+.osf-toast.show {
+ opacity: 1;
+ transform: translateY(0);
+}
+
+.osf-block{
+ display: flex !important;
+ flex-direction: column !important;
+ align-items: flex-start !important;
+ gap: .35rem !important;
+}
+
+.osf-label{ display: inline-block !important; margin: 0 !important; }
+.osf-copy{ margin-left: .4rem !important; }
+
+.osf-head{
+ display: inline-flex !important;
+ align-items: center !important;
+ gap: .45rem !important;
+}
+
+.osf-head .osf-copy,
+.osf-head .osf-more{
+ opacity: 0;
+ transition: opacity .12s;
+}
+
+.osf-head:hover .osf-copy,
+.osf-head:hover .osf-more,
+.osf-head .osf-copy:focus-visible,
+.osf-head .osf-more:focus-visible{
+ opacity: 1;
+}
+
+.osf-head .osf-copy,
+.osf-head .osf-more{
+ color: inherit !important;
+}
+
+.osf-head .osf-copy,
+.osf-head .osf-more{
+ opacity: 0;
+ transition: opacity .12s;
+ color: inherit;
+}
+
+.osf-block:hover .osf-copy,
+.osf-block:hover .osf-more,
+.osf-block:focus-within .osf-copy,
+.osf-block:focus-within .osf-more{
+ opacity: 1;
+}
+
+figure.card {
+ background: rgba(20, 22, 28, 0.9);
+ border: 1px solid rgba(255, 255, 255, 0.08);
+ border-radius: 12px;
+ padding: .75rem 1rem;
+ margin: 1rem 0;
+ overflow-x: auto;
+
+}
+
+figure.card:target {
+ box-shadow: 0 0 0 3px rgba(255, 193, 7, .35) inset;
+}
+
+figure.card>figcaption {
+ margin: .25rem 0 .5rem 0;
+ color: #cfd6df;
+
+ font: 600 .95rem/1.25 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+figure.card table {
+ width: 100%;
+ border-collapse: collapse;
+
+ min-width: 420px;
+
+ font-size: .95rem;
+}
+
+figure.card thead th {
+ text-align: left;
+ font-weight: 700;
+ padding: .6rem .75rem;
+ border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+ background: rgba(15, 17, 22, 0.95);
+
+ position: sticky;
+ top: 0;
+
+ z-index: 1;
+}
+
+figure.card tbody td {
+ padding: .55rem .75rem;
+ border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+ vertical-align: top;
+}
+
+figure.card tbody tr:nth-child(odd) td {
+ background: rgba(255, 255, 255, 0.025);
+}
+
+figure.card tbody tr:last-child td {
+ border-bottom: 0;
+}
+
+figure.card th.num,
+figure.card td.num {
+ text-align: right;
+ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+figure.card td.em {
+ color: #9aa4b2;
+ font-style: italic;
+}
+
 /*# source: 10-components/osf.css */
 
 .osf-block {
@@ -728,7 +998,7 @@ body{
 h1{ font-size:22px; margin:0 0 16px; }
 .muted{ opacity:.75; }
 
-.row{ display:grid; grid-template-columns:35% 65%; gap:16px; }
+.row{ display:grid; grid-template-columns:25% 75%; gap:16px; }
 .right-col{ display:flex; flex-direction:column; gap:16px; }
 
 .card{
