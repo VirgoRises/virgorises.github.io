@@ -167,19 +167,21 @@
         <button class="btn w-100 mb-2" data-osf="memo">Draft RFC memo</button>
         <button class="btn w-100 mb-2" data-osf="enter">Enter The Square (free)</button>
         <button class="btn w-100 mb-2" data-osf="open-app">Open in Discord app</button>
-        <button class="btn w-100 mb-2" data-osf="copy">Copy paragraph link</button>
-        <button class="btn w-100 mb-2" data-osf="source">Open source (PDF)</button>
         <button class="btn w-100 mb-2" data-osf="support">Support on Patreon (optional)</button>
         <button class="btn w-100" data-osf="member">I’m a member</button>
         <div class="text-muted mt-2" style="font-size:.85rem">Open chat for everyone — no payment required.</div>
       </div>
     `;
-
+    // Removed popover buttons 
+    // <button class="btn w-100 mb-2" data-osf="copy">Copy paragraph link</button>
+    // <button class="btn w-100 mb-2" data-osf="source">Open source (PDF)</button>
+        
     const link = `${location.origin}${location.pathname}#${uuid}`;
 
-    $('[data-osf="copy"]', pop).onclick = () => {
+    /* 
+      $('[data-osf="copy"]', pop).onclick = () => {
       navigator.clipboard.writeText(link).then(() => toast("Copied paragraph link"));
-    };
+    }; */
 
     $('[data-osf="enter"]', pop).onclick = () => {
       const url = CFG.discordChannelUrl || CFG.squareUrl;
@@ -215,7 +217,7 @@
       window.location.href = url;
     };
 
-    $('[data-osf="source"]', pop).onclick = () => openSourceForParagraph(paraNum);
+    //$('[data-osf="source"]', pop).onclick = () => openSourceForParagraph(paraNum);
 
     // position
     document.body.appendChild(pop);
@@ -307,6 +309,7 @@
       copy.title = "Copy link";
       copy.textContent = "🔗";
 
+      /*
       const srcBtn = document.createElement("button");
       srcBtn.type = "button";
       srcBtn.className = "osf-ico osf-src";
@@ -318,7 +321,7 @@
                2 0 0 0 2-2V8l-6-6zm0 2.5L17.5 8H14V4.5zM8 11h8v2H8v-2zm0
                4h8v2H8v-2z"/>
         </svg>`;
-
+      */
       const more = document.createElement("button");
       more.type = "button";
       more.className = "osf-ico osf-more";
@@ -327,7 +330,8 @@
 
       head.appendChild(label);
       head.appendChild(copy);
-      head.appendChild(srcBtn);
+      // disabled load full pdf 
+      // head.appendChild(srcBtn);
       head.appendChild(more);
 
       const wrap = document.createElement("div");
@@ -340,7 +344,8 @@
         const url = `${location.origin}${location.pathname}#${uuid}`;
         navigator.clipboard.writeText(url).then(() => toast("Copied paragraph link"));
       };
-      srcBtn.onclick = () => openSourceForParagraph(paraNum);
+      // disabled load full pdf  
+      // srcBtn.onclick = () => openSourceForParagraph(paraNum);
       more.onclick = () => buildPopover(wrap, uuid, paraNum);
     });
 
