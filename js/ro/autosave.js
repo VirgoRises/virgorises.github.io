@@ -2,114 +2,196 @@
 import { STATE } from './state.js';
 
 const now = () => Date.now();
-const fmt = ts => new Date(ts).toLocaleTimeString();
+const fmtTime = ts => new Date(ts).toLocaleTimeString();
+const fmtFull = ts => new Date(ts).toLocaleString();
+const HISTORY_LENGTH = 10;
 
-let AS_KEY = '';
-let AH_KEY = '';
-let AC_KEY = '';
+let AS_KEY = ''; // latest snapshot (per chapter|para)
+let AH_KEY = ''; // ring buffer (history)
+let AC_KEY = ''; // caret position
 
-export function bootAutosave(){
+export function bootAutosave() {
+  // keys are namespaced per chapter|para
   AS_KEY = `ro:autosave:${STATE.params.chapter}|${STATE.params.paraId}`;
   AH_KEY = `${AS_KEY}:history`;
   AC_KEY = `${AS_KEY}:caret`;
 
-  let tSave=null, undoTimer=null;
+  let saveTimer = null;
 
-  function ensureBar(){
-    let c = document.getElementById('memoStatus');
-    if (!c) {
-      c = document.createElement('div');
-      c.id='memoStatus'; c.className='mono muted';
-      c.style.cssText='display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:6px;font-size:12px;opacity:.9';
-      STATE.dom.memoTa.parentElement.insertBefore(c, STATE.dom.memoTa);
-    }
-    if (!c.querySelector('#histBtn')) {
-      const b=document.createElement('button'); b.id='histBtn'; b.className='btn btn-sm'; b.textContent='History'; b.style.marginLeft='8px';
-      b.addEventListener('click', renderHistoryUI);
-      c.appendChild(b);
-    }
-    return c;
-  }
-  function setStatus(txt){
-    const dot = navigator.onLine ? '🟢' : '⚪';
-    ensureBar().innerHTML = `<span>${dot}</span><span>${txt}</span><button id="histBtn" class="btn btn-sm" style="margin-left:8px">History</button>`;
-    document.getElementById('histBtn')?.addEventListener('click', renderHistoryUI, { once:true });
-  }
-
-  function saveNow(force=false){
-    try{
-      const payload = { ts: now(), chapter:STATE.params.chapter, paraId:STATE.params.paraId, body: STATE.dom.memoTa.value };
-      const last = JSON.parse(localStorage.getItem(AS_KEY) || 'null');
-      const changed = force || !last || last.body !== payload.body;
-      if (changed){
-        localStorage.setItem(AS_KEY, JSON.stringify(payload));
-        sessionStorage.setItem(AS_KEY, JSON.stringify(payload));
-        const arr = JSON.parse(localStorage.getItem(AH_KEY) || '[]'); arr.unshift({ts:payload.ts, body:payload.body});
-        localStorage.setItem(AH_KEY, JSON.stringify(arr.slice(0, 20)));
-        setStatus(`Saved ✓ ${fmt(payload.ts)}`);
-      } else { setStatus(`Saved ✓ ${fmt(last.ts)}`); }
-      try{
-        const pos = { start: STATE.dom.memoTa.selectionStart||0, end: STATE.dom.memoTa.selectionEnd||0, ts: now() };
-        localStorage.setItem(AC_KEY, JSON.stringify(pos));
-      }catch(_){}
-    }catch{ setStatus('Save error'); }
-  }
-
-  function schedule(){ clearTimeout(tSave); tSave=setTimeout(()=>saveNow(false), 400); }
-  function markDirty(){ setStatus('Saving…'); }
-
-  // restore on boot (non-destructive)
-  try{
+  // restore-on-boot (non-destructive)
+  try {
     const raw = localStorage.getItem(AS_KEY) || sessionStorage.getItem(AS_KEY);
-    if (raw){
+    if (raw) {
       const saved = JSON.parse(raw);
-      if ((STATE.dom.memoTa.value.trim()==='') && (saved.body?.trim())){
+      if ((STATE.dom.memoTa.value.trim() === '') && (saved.body?.trim())) {
         STATE.dom.memoTa.value = saved.body;
-        setStatus(`Restored ✓ ${new Date(saved.ts).toLocaleTimeString()}`);
-        try{
+        setStatus(`Restored ✓ ${fmtTime(saved.ts)}`);
+        try {
           const c = JSON.parse(localStorage.getItem(AC_KEY) || 'null');
-          if (c){ const len=STATE.dom.memoTa.value.length; const s=Math.min(c.start||0,len), e=Math.min(c.end||s,len); STATE.dom.memoTa.setSelectionRange(s,e); }
-        }catch(_){}
-      } else setStatus('Ready');
-    } else setStatus('Ready');
-  }catch{ setStatus('Autosave unavailable'); }
+          if (c) {
+            const len = STATE.dom.memoTa.value.length;
+            const s = Math.min(c.start || 0, len);
+            const e = Math.min(c.end || s, len);
+            STATE.dom.memoTa.setSelectionRange(s, e);
+          }
+        } catch {}
+      } else {
+        setStatus('Ready');
+      }
+    } else {
+      setStatus('Ready');
+    }
+  } catch {
+    setStatus('Autosave unavailable');
+  }
 
+  // wire memo change → schedule save
+  STATE.dom.memoTa.addEventListener('input', () => {
+    setStatus('Saving…');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => saveNow(false), 400);
+  });
+
+  // caret tracking
+  STATE.dom.memoTa.addEventListener('keyup', saveCaret, { passive: true });
+  STATE.dom.memoTa.addEventListener('click', saveCaret, { passive: true });
+
+  // lifecycle & connectivity
   window.addEventListener('beforeunload', () => saveNow(true));
   window.addEventListener('online',  () => setStatus('Online'));
   window.addEventListener('offline', () => setStatus('Offline (local saves only)'));
 
-  STATE.autosave = { schedule, markDirty };
+  // initial paint of history in the History tab
+  renderHistoryUI();
 }
 
-export function setStatus(txt){
-  const bar=document.getElementById('memoStatus');
-  if (bar) bar.innerHTML = `<span>${navigator.onLine?'🟢':'⚪'}</span><span>${txt}</span>`;
+function saveCaret() {
+  try {
+    const pos = {
+      start: STATE.dom.memoTa.selectionStart || 0,
+      end:   STATE.dom.memoTa.selectionEnd   || 0,
+      ts:    now()
+    };
+    localStorage.setItem(AC_KEY, JSON.stringify(pos));
+  } catch {}
 }
 
-// Expose: autosave history for current chapter/para
-export function getHistory(){
-  try { return JSON.parse(localStorage.getItem(`${`ro:autosave:${STATE.params.chapter}|${STATE.params.paraId}`}:history`) || '[]'); }
-  catch { return []; }
-}
+function saveNow(force = false) {
+  try {
+    const payload = {
+      ts: now(),
+      chapter: STATE.params.chapter,
+      paraId:  STATE.params.paraId,
+      body:    STATE.dom.memoTa.value
+    };
 
-// Render history list inline (unchanged behavior)
-export function renderHistoryUI(){
-  const AH = `${`ro:autosave:${STATE.params.chapter}|${STATE.params.paraId}`}:history`;
-  let pane = document.getElementById('historyList');
-  if (!pane) {
-    const wrap=document.createElement('div'); wrap.id='histWrap'; wrap.style.cssText='display:block; margin-top:6px;';
-    const list=document.createElement('div'); list.id='historyList'; list.className='list'; list.style.cssText='max-height:180px; overflow:auto;';
-    wrap.appendChild(list); STATE.dom.memoTa.parentElement.appendChild(wrap);
+    const last = JSON.parse(localStorage.getItem(AS_KEY) || 'null');
+    const changed = force || !last || last.body !== payload.body;
+
+    if (changed) {
+      // latest snapshot
+      localStorage.setItem(AS_KEY, JSON.stringify(payload));
+      sessionStorage.setItem(AS_KEY, JSON.stringify(payload));
+
+      // ring buffer (10)
+      const arr = JSON.parse(localStorage.getItem(AH_KEY) || '[]');
+      arr.unshift({ ts: payload.ts, body: payload.body });
+      localStorage.setItem(AH_KEY, JSON.stringify(arr.slice(0, HISTORY_LENGTH)));
+
+      setStatus(`Saved ✓ ${fmtTime(payload.ts)}`);
+      renderHistoryUI(); // refresh History tab
+    } else {
+      setStatus(`Saved ✓ ${last ? fmtTime(last.ts) : fmtTime(payload.ts)}`);
+    }
+
+    // persist caret as well
+    saveCaret();
+  } catch {
+    setStatus('Save error');
   }
-  pane = document.getElementById('historyList');
-  const arr = JSON.parse(localStorage.getItem(AH) || '[]');
-  pane.innerHTML = '';
-  if (!arr.length){ pane.innerHTML='<div class="muted">No snapshots yet.</div>'; return; }
-  arr.forEach(s=>{
-    const row=document.createElement('div'); row.className='item'; row.style.alignItems='center';
-    row.innerHTML=`<div class="mono muted">${new Date(s.ts).toLocaleString()}</div>`;
-    const btn=document.createElement('button'); btn.className='btn btn-sm'; btn.textContent='Restore';
-    btn.addEventListener('click', ()=>{ STATE.dom.memoTa.value=s.body; window.dispatchEvent(new CustomEvent('ro:memoChanged')); setStatus(`Restored · ${new Date(s.ts).toLocaleTimeString()}`); });
-    row.appendChild(btn); pane.appendChild(row);
+}
+
+export function setStatus(txt) {
+  const bar = document.getElementById('memoStatus'); // now lives in the History tab
+  if (bar) {
+    bar.innerHTML = `<span>${navigator.onLine ? '🟢' : '⚪'}</span><span>${txt}</span>`;
+  }
+}
+
+// expose current history array (last 10)
+export function getHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(AH_KEY) || '[]');
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Render the ring buffer into the History tab.
+ * Expects:
+ *   <div id="history" ...>
+ *     <div id="memoStatus" ...></div>
+ *     <details id="histToggle" open>
+ *       <div id="histList" class="history-list"></div>
+ *     </details>
+ *   </div>
+ */
+export function renderHistoryUI() {
+  const list = document.getElementById('histList');
+  if (!list) return; // History tab not visible/available yet
+
+  const arr = getHistory();
+  list.innerHTML = '';
+
+  if (!arr.length) {
+    list.innerHTML = '<div class="muted">No snapshots yet.</div>';
+    return;
+  }
+
+  arr.forEach(snap => {
+    const row = document.createElement('div');
+    row.className = 'item';
+    row.style.cssText = 'display:flex;align-items:center;gap:8px;justify-content:space-between;padding:4px 0';
+
+    const when = document.createElement('div');
+    when.className = 'mono muted';
+    when.textContent = fmtFull(snap.ts);
+
+    const actions = document.createElement('div');
+    actions.style.display = 'flex';
+    actions.style.gap = '6px';
+
+    const btnPreview = document.createElement('button');
+    btnPreview.className = 'btn btn-sm';
+    btnPreview.textContent = 'Preview';
+    btnPreview.addEventListener('click', () => {
+      // lightweight preview in a modal-like window
+      const w = window.open('', '_blank', 'width=720,height=600');
+      if (w) {
+        const safe = (snap.body || '').replace(/</g, '&lt;');
+        w.document.write(`<pre style="white-space:pre-wrap;word-break:break-word;padding:12px;margin:0;background:#0f141a;color:#e6edf3">${safe}</pre>`);
+        w.document.close();
+      }
+    });
+
+    const btnRestore = document.createElement('button');
+    btnRestore.className = 'btn btn-sm';
+    btnRestore.textContent = 'Restore';
+    btnRestore.addEventListener('click', () => {
+      STATE.dom.memoTa.value = snap.body || '';
+      // let the rest of the app know the memo changed
+      window.dispatchEvent(new CustomEvent('ro:memoChanged'));
+      setStatus(`Restored · ${fmtTime(snap.ts)}`);
+      // take an immediate snapshot so caret/status/hist are coherent
+      saveNow(true);
+    });
+
+    actions.appendChild(btnPreview);
+    actions.appendChild(btnRestore);
+
+    row.appendChild(when);
+    row.appendChild(actions);
+    list.appendChild(row);
   });
 }
