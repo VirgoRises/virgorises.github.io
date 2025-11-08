@@ -1,24 +1,19 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <title>Research Office</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <base id="ro-base" href="/">
+  <base id="ro-base" href="/" />
 
+  <!-- Styles -->
   <link rel="stylesheet" href="/css/10-components/research-office.css" />
   <link rel="stylesheet" href="/css/10-components/ro-snippets.css" />
 
-  <!-- single source of MathJax config (relative to research_office.html) -->
-  <!-- /home/vradmin/virgorises.github.io/cafes/zeta-zero-cafe/notebook/math -->
+  <!-- Single source of MathJax config (relative to this file) -->
   <script src="cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
-
-  <!-- MathJax core -->
-  <!--  <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml-full.js"></script>
--->
+  <!-- MathJax core (keep a single include) -->
   <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
 </head>
 
 <body>
@@ -30,34 +25,33 @@
       </h2>
       <a id="backLink" class="btn" href="javascript:history.back()">← Back</a>
     </div>
+
     <div id="roStatus" class="status mono"></div>
 
-    <!-- GRID: 35% (left) / 65% (right) -->
+    <!-- GRID -->
     <div class="row">
-      <!-- LEFT: Page tools + Viewer -->
+      <!-- LEFT: Viewer -->
       <div class="card">
-
         <div id="viewer" class="viewer">
-
           <div id="stage" class="stage">
             <img id="pageImg" alt="Active page preview" />
             <canvas id="overlay" class="overlay" aria-hidden="true"></canvas>
           </div>
         </div>
-        <!-- Tools -->
       </div>
 
-      <!-- RIGHT: status + thumbs + preview + memo + refs -->
+      <!-- RIGHT: Tools + Tabs -->
       <div class="right-col">
 
-        <!-- Tab links -->
-        <div class="tab">
-          <button class="tablinks" onclick="openTab(event, 'prevparagraph')">Preview Paragraph</button>
-          <button class="tablinks" onclick="openTab(event, 'refpages')">Ref. pages</button>
-          <button class="tablinks" onclick="openTab(event, 'drafts')">Drafts</button>
-          <button class="tablinks" onclick="openTab(event, 'history')">History</button>
-          <button class="tablinks" onclick="openTab(event, 'm2zdrawer')">Memo to Self</button>
+        <!-- Tabs bar: no inline onclick; use data-tab and tabs.js -->
+        <div class="tab" data-default-tab="prevparagraph">
+          <button class="tablinks" data-tab="prevparagraph">Preview Paragraph</button>
+          <button class="tablinks" data-tab="refpages">Ref. pages</button>
+          <button class="tablinks" data-tab="drafts">Drafts</button>
+          <button class="tablinks" data-tab="history">History</button>
+          <button class="tablinks" data-tab="m2zdrawer">Memo to Self</button>
         </div>
+
         <!-- Paragraph preview -->
         <div id="prevparagraph" class="card tabcontent">
           <div class="head">
@@ -67,31 +61,33 @@
           <pre id="paraPreview" class="card preview"></pre>
         </div>
 
+        <!-- Referenced pages -->
         <div id="refpages" class="tabcontent">
           <div class="head" style="margin-top:8px">
             <strong>Pages referenced in memo</strong>
             <span class="muted">(primary in orange)</span>
           </div>
-          <!-- <div class="head"><strong>Resolver & Page Viewer</strong></div> -->
-          <!-- Viewer stage -->
-          <div class="viewer-tools">  
-          <div class="tool-group">
-            <button id="copyLink" class="btn">Copy link</button>
-            <button id="pagePrev" class="btn btn-sm" title="Previous page">«</button>
-            <button id="pagePrimary" class="btn btn-sm" title="Go to primary page">Primary</button>
-            <button id="pageNext" class="btn btn-sm" title="Next page">»</button>
-            <button id="pageAddRef" class="btn btn-sm" title="Insert page reference token into memo">[Add page]</button>
+
+          <div class="viewer-tools">
+            <div class="tool-group">
+              <button id="copyLink" class="btn">Copy link</button>
+              <button id="pagePrev" class="btn btn-sm" title="Previous page">«</button>
+              <button id="pagePrimary" class="btn btn-sm" title="Go to primary page">Primary</button>
+              <button id="pageNext" class="btn btn-sm" title="Next page">»</button>
+              <button id="pageAddRef" class="btn btn-sm" title="Insert page reference token into memo">[Add page]</button>
+            </div>
           </div>
-        </div>
+
           <div id="pageChips" class="thumbs"></div>
-          
-          <div class="viewer-tools">  
-          <div class="tool-group" style="padding-top:3pt">
-            <button id="toolPan" class="btn btn-sm" data-tool="pan">Pan</button>
-            <button id="toolPoint" class="btn btn-sm" data-tool="point">Point</button>
-            <button id="toolBox" class="btn btn-sm" data-tool="box">Box</button>
+
+          <div class="viewer-tools">
+            <div class="tool-group" style="padding-top:3pt">
+              <button id="toolPan" class="btn btn-sm" data-tool="pan">Pan</button>
+              <button id="toolPoint" class="btn btn-sm" data-tool="point">Point</button>
+              <button id="toolBox" class="btn btn-sm" data-tool="box">Box</button>
+            </div>
           </div>
-          </div>
+
           <div class="tool-group" style="padding-top:3pt">
             <label class="mono muted">Zoom
               <!-- –4 … 4 slider @ step .01; mapped to 0.25× … 4.00× -->
@@ -101,24 +97,23 @@
             <button id="zoomFit" class="btn btn-sm">Fit</button>
             <button id="zoom100" class="btn btn-sm">100%</button>
           </div>
-          
         </div>
 
-        <div id="drafts" class="card tabcontent" style="margin-top:16px">
+        <!-- Drafts -->
+        <div id="drafts" class="card tabcontent" style="margin-top:16px"></div>
 
-        </div>
+        <!-- History -->
         <div id="history" class="card tabcontent" style="margin-top:16px">
           <div class="head"><strong>Recent drafts (this browser)</strong></div>
           <div id="memoList" class="list"></div>
-          <!-- History (ring buffer) -->
           <details id="histToggle" class="history" open>
             <summary>History (last 10 autosaves)</summary>
             <div id="histList" class="history-list"></div>
           </details>
         </div>
-        <!-- Message to self -->
+
+        <!-- Memo to self -->
         <div id="m2zdrawer" class="card tabcontent" style="margin-top:16px">
-          <!-- Insertion point -->
           <div class="bar">
             <button id="saveDraft" class="btn">Save draft (browser)</button>
             <button id="exportJson" class="btn">Export JSON</button>
@@ -127,17 +122,14 @@
           <div class="muted" style="margin-top:8px">
             RFCs are processes, not chats. Draft → step away → revise → then submit.
           </div>
-
-
-          <!-- Inline autosave status (calm, timestamped) -->
           <div id="memoStatus" class="memo-status mono muted">No edits yet</div>
           <textarea id="memoBody"
             placeholder="Use tokens like [mm|p12=10,15] or [mm|p12=10,15:40,35:&quot;label&quot;]."></textarea>
-          <!-- End insertion point -->
         </div>
       </div>
     </div>
 
+    <!-- SNIPPETS (sandbox) -->
     <h1>BEGIN SNIPPET CODE</h1>
     <div class="wrap">
       <div class="topbar">
@@ -155,7 +147,6 @@
       </div>
 
       <div class="grid">
-        <!-- Left column: Snippets -->
         <section class="col">
           <header class="section-head">
             <h2>Snippets</h2>
@@ -164,27 +155,21 @@
           <div id="list" class="list"></div>
         </section>
 
-        <!-- Right column: Live Preview -->
-        <!--
-              <section class="col">
-                <header class="section-head">
-                  <h2>Live Preview (combined)</h2>
-                  <div class="tools">
-                    <button class="icon" id="btnPop" title="Pop-out preview">⤢</button>
-                  </div>
-                </header>
-                <div id="preview" class="preview"></div>
-              </section>
-            -->
+        <!-- Combined preview (optional / currently omitted in layout) -->
+        <!-- <section class="col">
+          <header class="section-head">
+            <h2>Live Preview (combined)</h2>
+            <div class="tools"><button class="icon" id="btnPop" title="Pop-out preview">⤢</button></div>
+          </header>
+          <div id="preview" class="preview"></div>
+        </section> -->
       </div>
-
     </div>
 
     <!-- Modal (single, reused) -->
     <div id="snipMask" class="modal-mask hidden"></div>
     <div id="snipModal" class="modal hidden" aria-modal="true" role="dialog">
-      <div class="modal-head"
-        style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #122031">
+      <div class="modal-head" style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #122031">
         <strong id="modalTitle" style="font-size:15px">Edit</strong>
         <div class="modal-tools" id="modalTools" style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
           <!-- smart inserts -->
@@ -195,7 +180,6 @@
           <button class="btn mini" data-insert="block">Block math</button>
           <button class="btn mini" data-insert="figure">Image/Table</button>
           <button class="btn mini" data-insert="mm">Insert MM</button>
-          <!-- modal actions -->
           <span class="sep" style="width:1px;height:18px;background:#273341;display:inline-block;margin:0 4px"></span>
           <button class="btn mini" data-modal-act="merge-prev">Merge ←</button>
           <button class="btn mini" data-modal-act="merge-next">Merge →</button>
@@ -221,122 +205,18 @@
         </div>
       </div>
     </div>
-
     <h1>EINDE SNIPPET CODE</h1>
 
-    <!-- </div>
-      </div> 
-    </div>-->
     <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
     <div id="memoPreview" class="preview-md"></div>
 
-
-    <!-- script defer src="/js/research.office.js?v=2025-10-23-smoothflow"></script -->
+    <!-- Core RO controller (already modular in your repo) -->
     <script type="module" src="/js/research.office.js"></script>
 
-    <!-- Marked (Markdown) with local fallback -->
-    <script>
-      (function loadMarked() {
-        const s = document.createElement('script');
-        s.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
-        s.defer = true;
-        s.onerror = function () {
-          window.marked = {
-            parse: (t) => String(t)
-              .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-              .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-              .replace(/\n/g, '<br>')
-          };
-        };
-        document.head.appendChild(s);
-      })();
-    </script>
-    <script>
-      function openTab(evt, tabName) {
-        // Declare all variables
-        var i, tabcontent, tablinks;
-
-        // Get all elements with class="tabcontent" and hide them
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-          tabcontent[i].style.display = "none";
-        }
-
-        // Get all elements with class="tablinks" and remove the class "active"
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-          tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-
-        // Show the current tab, and add an "active" class to the button that opened the tab
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
-      }
-      // Auto-open a default tab on load (set your preferred tab ID here)
-      const DEFAULT_TAB = 'prevparagraph'; // e.g. 'history', 'memo', 'figures', ...
-      document.addEventListener('DOMContentLoaded', () => {
-        // find the tab button that opens DEFAULT_TAB
-        const btn = Array.from(document.querySelectorAll('.tab .tablinks'))
-          .find(b => (b.getAttribute('onclick') || '').includes(`'${DEFAULT_TAB}'`));
-
-        // simulate a real click → openTab(event, 'history') runs and will add .active itself
-        if (btn) btn.click();
-      });
-    </script>
-    <!-- App modules -->
-    <script type="module">
-      import { initSnippetsApp } from '/js/ro/snippets.js';
-      import { compileToHTML, typesetInto } from '/js/ro/snippets-compile.js';
-
-      // Make compiler available to this page script
-      window.compileToHTML = compileToHTML;
-      window.typesetInto = typesetInto;
-
-      // Boot app
-      window.addEventListener('DOMContentLoaded', async () => {
-        await new Promise(r => setTimeout(r, 60)); // give MathJax a tick
-        initSnippetsApp();
-
-        // 1) Compile-on-hover for expanded list cards (left column)
-        const list = document.getElementById('list');
-        list.addEventListener('mouseenter', (ev) => {
-          const card = ev.target.closest('.snip');
-          if (!card || card.dataset.rendered === '1') return;
-
-          const bodyEl = card.querySelector('.body');
-          if (!bodyEl) return;
-
-          try {
-            const raw = JSON.parse(localStorage.getItem('ro_snips_v3') || '[]');
-            const sn = raw.find(s => s && s.id === card.dataset.id);
-            if (sn) {
-              bodyEl.innerHTML = compileToHTML(sn.body || '');
-              if (typeof typesetInto === 'function') typesetInto(bodyEl);
-              card.dataset.rendered = '1';
-            }
-          } catch (_) { /* no-op */ }
-        }, true);
-
-        // 2) NEW: compile the already-expanded ACTIVE snippet once after boot
-        //    (so an expanded card isn't left raw on reload)
-        setTimeout(() => {
-          const active = document.querySelector('#list .snip.active');
-          if (!active || active.dataset.rendered === '1') return;
-          const bodyEl = active.querySelector('.body');
-          if (!bodyEl) return;
-
-          try {
-            const raw = JSON.parse(localStorage.getItem('ro_snips_v3') || '[]');
-            const sn = raw.find(s => s && s.id === active.dataset.id);
-            if (sn) {
-              bodyEl.innerHTML = compileToHTML(sn.body || '');
-              if (typeof typesetInto === 'function') typesetInto(bodyEl);
-              active.dataset.rendered = '1';
-            }
-          } catch (_) { /* swallow */ }
-        }, 120); // after initial render completes
-      });
-    </script>
+    <!-- Page glue (modularized) -->
+    <script type="module" src="/js/ro/tabs.js"></script>
+    <script type="module" src="/js/ro/marked-loader.js"></script>
+    <script type="module" src="/js/ro/ro-snippets-boot.js"></script>
+  </div>
 </body>
-
 </html>
