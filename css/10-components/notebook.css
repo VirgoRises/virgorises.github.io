@@ -26,7 +26,7 @@ figure {
 
 figure img {
   display: block;
-  width: 70%;
+  width: 50%;
   height: auto;
   max-width: 860px;
   /* cap actual pixel width on large screens */
@@ -295,103 +295,3 @@ figure.card td.em {
   color: #9aa4b2;
   font-style: italic;
 }
-
-/*
-:xroot {
-  --bg: #0b0c10;
-  --ink: #e5e7eb;
-  --muted: #a7b0be;
-  --line: #1a1d24;
-  --card: #111418;
-  --accent: #7dd3fc;
-}
-
-xhtml,
-xbody {
-  margin: 0;
-  padding: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font: 16px/1.65 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-}
-
-xheader {
-  border-bottom: 1px solid var(--line);
-  padding: 12px 0 16px;
-}
-
-xh1 {
-  margin: .3em 0;
-  font-size: clamp(26px, 4vw, 40px);
-}
-
-.xcard {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 16px;
-  margin: 16px 0;
-}
-
-xnav a {
-  color: var(--accent);
-  text-decoration: none;
-  margin-right: 10px;
-}
-
-xfigure {
-  margin: 14px 0;
-}
-
-xfigure img {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  border-radius: 6px;
-  border: 1px solid var(--line);
-}
-
-xfigcaption {
-  margin-top: 6px;
-  font-size: .92rem;
-  color: var(--muted);
-}
-.xpager {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-xfooter {
-  border-top: 1px solid var(--line);
-  margin-top: 24px;
-  padding: 14px 0;
-  color: var(--muted);
-  font-size: .9rem;
-}
-
-/ * Tables (images or HTML tables) * /
-.xtable-wrap {
-  overflow-x: auto;
-}
-
-.xtable-wrap>table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.xtable-wrap th,
-.xtable-wrap td {
-  border: 1px solid var(--line);
-  padding: .5rem;
-  vertical-align: middle;
-}
-
-.xtable-wrap thead th {
-  background: #0f1216;
-  font-weight: 600;
-}
-
-*/

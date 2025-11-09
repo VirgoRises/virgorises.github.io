@@ -1,94 +1,62 @@
 // /js/ro/snippets-bridge.js
-// Glue between the Snippets editor (“Memo to order”) and the canonical
-// “Memo to Self” drawer. No black boxes; uses the same compile pipeline.
-
 import { compileToHTML, typesetInto } from '/js/ro/snippets-compile.js';
 
-// ---- utilities ----
+// ---- Utilities ----
 function getSnippets() {
   try { return JSON.parse(localStorage.getItem('ro_snips_v3') || '[]'); }
   catch { return []; }
 }
 
-// Compose a single RFC body from current snippets (Markdown/HTML mix).
-// We add lightweight separators so the resulting memo is readable/editable.
+function ensureSeed() {
+  let snips = getSnippets();
+  if (!snips.length) {
+    snips = [{
+      id: Math.random().toString(36).slice(2, 9),
+      type: 'Observation',
+      title: 'New Observation',
+      body: 'Start your first observation here.'
+    }];
+    localStorage.setItem('ro_snips_v3', JSON.stringify(snips));
+  }
+  return snips;
+}
+
+// Convert snippet list into a single combined Markdown text
 function composeMemoText() {
-  const snips = getSnippets() || [];
-  // Example structure: comment header + body, separated by a horizontal rule
+  const snips = ensureSeed();
   return snips
-    .filter(Boolean)
-    .map(s => {
-      const head = `<!-- ${s.type || 'Block'}: ${s.title || ''} -->`;
-      const body = (s.body || '').trim();
-      return body ? `${head}\n${body}` : head;
-    })
+    .map(s => `<!-- ${s.type}: ${s.title} -->\n${s.body || ''}`)
     .join('\n\n---\n\n');
 }
 
-// Update the page-level “Preview” beneath the tabs to mirror Memo to Self.
-function refreshMemoPreview() {
+// Push composed text into Memo to Self drawer + render live preview
+function updateMemoToSelf() {
+  const memoTa = document.getElementById('memoBody');
   const preview = document.getElementById('memoPreview');
-  const memoTa  = document.getElementById('memoBody');
-  if (!preview || !memoTa) return;
+  if (!memoTa || !preview) return;
 
-  const html = compileToHTML(memoTa.value || '');
+  const md = composeMemoText();
+  memoTa.value = md;
+
+  const html = compileToHTML(md);
   preview.innerHTML = html;
   if (typeof typesetInto === 'function') typesetInto(preview);
 }
 
-// Toggle the right column “combined” preview for snippets (optional)
-function toggleSnipPreview(show) {
-  const col = document.getElementById('snipPreviewCol');
-  const out = document.getElementById('preview');
-  if (!col || !out) return;
-  col.style.display = show ? 'block' : 'none';
-
-  if (show) {
-    try {
-      const md = composeMemoText();
-      out.innerHTML = compileToHTML(md);
-      if (typeof typesetInto === 'function') typesetInto(out);
-    } catch (e) {
-      out.innerHTML = `<div class="warn">Preview error: ${String(e)}</div>`;
-    }
-  } else {
-    out.innerHTML = '';
-  }
-}
-
 function bootBridge() {
-  const btnToMemo = document.getElementById('btnToMemo');
-  const btnPrev   = document.getElementById('btnPreviewCombined');
-  const memoTa    = document.getElementById('memoBody');
+  // Render immediately on load
+  updateMemoToSelf();
 
-  if (btnToMemo) {
-    btnToMemo.addEventListener('click', () => {
-      const md = composeMemoText();   // snippets → markdown-ish text
-      if (memoTa) memoTa.value = md;
+  // Watch for snippet changes (localStorage events across modules)
+  window.addEventListener('storage', (ev) => {
+    if (ev.key === 'ro_snips_v3') updateMemoToSelf();
+  });
 
-      // Let the rest of the app react (autosave/status/preview listeners)
-      window.dispatchEvent(new CustomEvent('ro:memoChanged'));
+  // Also hook into custom app events
+  window.addEventListener('ro:snipsChanged', updateMemoToSelf);
 
-      refreshMemoPreview();
-    });
-  }
-
-  if (btnPrev) {
-    let shown = false;
-    btnPrev.addEventListener('click', () => {
-      shown = !shown;
-      toggleSnipPreview(shown);
-      btnPrev.textContent = shown ? 'Hide combined' : 'Preview combined';
-    });
-  }
-
-  if (memoTa) {
-    memoTa.addEventListener('input', refreshMemoPreview);
-  }
-  window.addEventListener('ro:memoChanged', refreshMemoPreview);
-
-  // Initial paint (handles restored memo text on load)
-  refreshMemoPreview();
+  // Initial render done
+  console.log('[RO] Memo bridge active (read-only Memo to Self)');
 }
 
 document.addEventListener('DOMContentLoaded', bootBridge);
