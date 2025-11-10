@@ -1,17 +1,18 @@
-// Load Marked with a safe fallback (same behavior you had inline).
-(function loadMarked() {
-  if (window.marked) return;
+// marked-loader.js
+// Purpose: load "marked" once and expose it as window.marked (no exports needed).
+(() => {
+  const have = !!(window.marked && typeof window.marked.parse === 'function');
+  if (have) return;
+
   const s = document.createElement('script');
-  s.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
-  s.defer = true;
-  s.onerror = function () {
-    // super-minimal fallback
-    window.marked = {
-      parse: (t) => String(t)
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\n/g, '<br>')
-    };
+  s.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+  s.async = true;
+  s.onload = () => {
+    // Optional: minimal config
+    if (window.marked?.use) {
+      window.marked.use({ breaks: true, gfm: true });
+    }
+    console.log('[RO] marked ready');
   };
   document.head.appendChild(s);
 })();

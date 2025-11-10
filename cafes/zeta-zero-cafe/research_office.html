@@ -209,11 +209,21 @@
     <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
     <div id="memoPreview" class="preview-md"></div>
 
-    <!-- Controllers -->
+    <!-- Controllers (order matters for clean boot) -->
+    <!-- 1) Core RO controllers -->
     <script type="module" src="/js/research.office.js"></script>
     <script type="module" src="/js/ro/tabs.js"></script>
+
+    <!-- 2) Markdown loader FIRST so window.marked is ready -->
     <script type="module" src="/js/ro/marked-loader.js"></script>
+
+    <!-- 3) Snippets system (explicit; no hidden imports) -->
+    <script type="module" src="/js/ro/snippets-compile.js"></script>
+    <script type="module" src="/js/ro/snippets-modal.js"></script>
+    <script type="module" src="/js/ro/snippets.js"></script>
     <script type="module" src="/js/ro/ro-snippets-boot.js"></script>
+
+    <!-- 4) Bridge builds “Memo to Self” + Preview from snippets -->
     <script type="module" src="/js/ro/snippets-bridge.js"></script>
   </div>
 </body>

@@ -1,62 +1,44 @@
-// /js/ro/snippets-bridge.js
+// snippets-bridge.js
+// Compose Memo-to-Self (read-only) from snippets, update preview.
+
 import { compileToHTML, typesetInto } from '/js/ro/snippets-compile.js';
+import { getSnippets } from '/js/ro/snippets.js';
 
-// ---- Utilities ----
-function getSnippets() {
-  try { return JSON.parse(localStorage.getItem('ro_snips_v3') || '[]'); }
-  catch { return []; }
+function ensureSeed(arr) {
+  if (arr && arr.length) return arr;
+  return [{
+    id: Math.random().toString(36).slice(2, 9),
+    type: 'Observation',
+    title: 'New Observation',
+    body: 'Start your first observation here.'
+  }];
 }
 
-function ensureSeed() {
-  let snips = getSnippets();
-  if (!snips.length) {
-    snips = [{
-      id: Math.random().toString(36).slice(2, 9),
-      type: 'Observation',
-      title: 'New Observation',
-      body: 'Start your first observation here.'
-    }];
-    localStorage.setItem('ro_snips_v3', JSON.stringify(snips));
-  }
-  return snips;
-}
-
-// Convert snippet list into a single combined Markdown text
-function composeMemoText() {
-  const snips = ensureSeed();
-  return snips
-    .map(s => `<!-- ${s.type}: ${s.title} -->\n${s.body || ''}`)
+function composeMemoText(snips) {
+  return (snips||[])
+    .map(s => `<!-- ${s.type||'Block'}: ${s.title||''} -->\n${(s.body||'').trim()}`)
     .join('\n\n---\n\n');
 }
 
-// Push composed text into Memo to Self drawer + render live preview
-function updateMemoToSelf() {
+function renderMemo() {
   const memoTa = document.getElementById('memoBody');
   const preview = document.getElementById('memoPreview');
   if (!memoTa || !preview) return;
 
-  const md = composeMemoText();
+  const snips = ensureSeed(getSnippets());
+  const md = composeMemoText(snips);
+
   memoTa.value = md;
-
-  const html = compileToHTML(md);
-  preview.innerHTML = html;
-  if (typeof typesetInto === 'function') typesetInto(preview);
+  preview.innerHTML = compileToHTML(md);
+  typesetInto(preview);
 }
 
-function bootBridge() {
-  // Render immediately on load
-  updateMemoToSelf();
-
-  // Watch for snippet changes (localStorage events across modules)
+function boot() {
+  renderMemo();
+  window.addEventListener('ro:snipsChanged', renderMemo);
   window.addEventListener('storage', (ev) => {
-    if (ev.key === 'ro_snips_v3') updateMemoToSelf();
+    if (ev.key === 'ro_snips_v3') renderMemo();
   });
-
-  // Also hook into custom app events
-  window.addEventListener('ro:snipsChanged', updateMemoToSelf);
-
-  // Initial render done
-  console.log('[RO] Memo bridge active (read-only Memo to Self)');
+  console.log('[RO] Memo bridge active');
 }
-
-document.addEventListener('DOMContentLoaded', bootBridge);
+document.addEventListener('DOMContentLoaded', boot);
