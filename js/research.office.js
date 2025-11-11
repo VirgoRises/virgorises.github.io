@@ -8,6 +8,25 @@ import { bootAutosave, renderHistoryUI, setStatus } from '/js/ro/autosave.js';
 import { bootDrafts, renderDraftList, persistDraftDraftlist } from '/js/ro/drafts.js';
 import { ensurePopPreviewButton } from '/js/ro/preview-popout.js';
 
+function findDraftsHead(){
+  return document.querySelector('#drafts .head')
+      || document.querySelector('[data-panel="drafts"] .head')
+      || document.querySelector('.tabcontent#drafts .head')
+      || null;
+}
+function findHistoryHead(){
+  return document.querySelector('#history .head')
+      || document.querySelector('[data-panel="history"] .head')
+      || document.querySelector('.tabcontent#history .head')
+      || null;
+}
+function findActivePanelHead(){
+  // generic helper used on tab switches
+  const active = document.querySelector('.tabcontent.active');
+  if (!active) return null;
+  return active.querySelector('.head');
+}
+
 async function init() {
   initParams();
   initDom();
@@ -26,9 +45,11 @@ async function init() {
     setStatus(res);
 
     await previewParagraph(doc);
+
+    // NOTE: keep this harmless call (no target → no button in Preview)
     ensurePopPreviewButton();
 
-    // Index tokens from current memo and build UI
+    // Build initial token index and page state
     indexTokens(STATE.dom.memoTa.value);
     renderThumbs();
     setActivePage(STATE.primaryPage, 'resolver');
@@ -39,27 +60,36 @@ async function init() {
     // Initial preview render (so both previews show immediately)
     onMemoChange();
 
+    // Drafts
     renderDraftList();
+    // Inject Pop-out button into the Drafts tab header
+    ensurePopPreviewButton(findDraftsHead());
+
     $('#saveDraft')?.addEventListener('click', () => {
       persistDraftDraftlist();
       const b = $('#saveDraft'); b?.classList.add('ok'); setTimeout(()=>b?.classList.remove('ok'), 800);
+      // Drafts list may re-render; re-attach button
+      ensurePopPreviewButton(findDraftsHead());
     });
-    $('#exportJson')?.addEventListener('click', () => {
-      const blob = new Blob([JSON.stringify({
-        chapter: STATE.params.chapter,
-        paraId: STATE.params.paraId,
-        body: STATE.dom.memoTa.value,
-        pages: Array.from(STATE.referencedPages),
-        primary: STATE.primaryPage
-      }, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `memo_${STATE.chapterSlug}_${STATE.params.paraId}.json`;
-      a.click(); URL.revokeObjectURL(a.href);
-    });
-    $('#submitDiscord')?.addEventListener('click', () => alert('Discord submission wiring is stubbed here.'));
 
+    // History
     renderHistoryUI();
+    // Inject Pop-out button into the History tab header
+    ensurePopPreviewButton(findHistoryHead());
+
+    // Re-attach on tab switches (DOM may change)
+    document.querySelectorAll('.tab .tablinks')?.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Give the panel a tick to render, then try current active header;
+        // also explicitly hit drafts/history heads in case they just became active.
+        setTimeout(() => {
+          const head = findActivePanelHead();
+          if (head) ensurePopPreviewButton(head);
+          ensurePopPreviewButton(findDraftsHead());
+          ensurePopPreviewButton(findHistoryHead());
+        }, 0);
+      });
+    });
 
   } catch (err) {
     console.error('[RO] init failed:', err);

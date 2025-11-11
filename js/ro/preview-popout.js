@@ -218,29 +218,19 @@ function buildHTMLDialog() {
 }
 
 /* ---------- Public button wiring ---------- */
+export function ensurePopPreviewButton(targetHeadEl){
+  // New behavior: do nothing unless a target header is explicitly provided
+  if (!targetHeadEl || !(targetHeadEl instanceof HTMLElement)) return;
 
-export function ensurePopPreviewButton(){
-  const head = STATE.dom.memoPrev?.previousElementSibling?.classList.contains('head')
-    ? STATE.dom.memoPrev.previousElementSibling
-    : STATE.dom.memoPrev?.parentElement?.previousElementSibling?.classList.contains('head')
-      ? STATE.dom.memoPrev.parentElement.previousElementSibling
-      : null;
-
-  const addBtn = (target) => {
-    if (target.querySelector('#popPreviewBtn')) return;
-    const btn=document.createElement('button'); btn.id='popPreviewBtn'; btn.className='btn btn-sm'; btn.textContent='Pop-out Preview';
-    btn.style.marginLeft='8px'; btn.title='Click: window · Shift+Click: in-page modal';
-    btn.addEventListener('click', openPreview);
-    target.appendChild(btn);
-  };
-  if (head) addBtn(head);
-  else if (!document.getElementById('popPreviewBtn')) {
-    const btn=document.createElement('button'); btn.id='popPreviewBtn'; btn.className='btn btn-sm'; btn.textContent='Pop-out Preview';
-    btn.style.cssText='position:sticky; left:100%; transform:translateX(-100%); margin:-8px 0 8px 0;';
-    btn.title='Click: window · Shift+Click: modal';
-    btn.addEventListener('click', openPreview);
-    STATE.dom.memoPrev?.parentElement?.insertBefore(btn, STATE.dom.memoPrev);
-  }
+  if (targetHeadEl.querySelector('#popPreviewBtn')) return;
+  const btn = document.createElement('button');
+  btn.id = 'popPreviewBtn';
+  btn.className = 'btn btn-sm';
+  btn.textContent = 'Pop-out Preview';
+  btn.style.marginLeft = '8px';
+  btn.title = 'Click: window · Shift+Click: in-page modal';
+  btn.addEventListener('click', openPreview);
+  targetHeadEl.appendChild(btn);
 }
 
 /* ---------- Openers & push ---------- */
