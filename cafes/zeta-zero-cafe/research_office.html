@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>Research Office</title>
@@ -69,7 +70,8 @@
               <button id="pagePrev" class="btn btn-sm" title="Previous page">«</button>
               <button id="pagePrimary" class="btn btn-sm" title="Go to primary page">Primary</button>
               <button id="pageNext" class="btn btn-sm" title="Next page">»</button>
-              <button id="pageAddRef" class="btn btn-sm" title="Insert page reference token into memo">[Add page]</button>
+              <button id="pageAddRef" class="btn btn-sm" title="Insert page reference token into memo">[Add
+                page]</button>
             </div>
           </div>
           <!-- Thumbnails referenced pages in RFC -->
@@ -143,7 +145,8 @@
           <!-- Modal -->
           <div id="snipMask" class="modal-mask hidden"></div>
           <div id="snipModal" class="modal hidden" aria-modal="true" role="dialog">
-            <div class="modal-head" style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #122031">
+            <div class="modal-head"
+              style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #122031">
               <strong id="modalTitle" style="font-size:15px">Edit</strong>
               <div class="modal-tools" id="modalTools" style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
                 <button class="btn mini" data-insert="header">Header info</button>
@@ -153,7 +156,8 @@
                 <button class="btn mini" data-insert="block">Block math</button>
                 <button class="btn mini" data-insert="figure">Image/Table</button>
                 <button class="btn mini" data-insert="mm">Insert MM</button>
-                <span class="sep" style="width:1px;height:18px;background:#273341;display:inline-block;margin:0 4px"></span>
+                <span class="sep"
+                  style="width:1px;height:18px;background:#273341;display:inline-block;margin:0 4px"></span>
                 <button class="btn mini" data-modal-act="merge-prev">Merge ←</button>
                 <button class="btn mini" data-modal-act="merge-next">Merge →</button>
                 <button class="btn mini" data-modal-act="dup">Duplicate</button>
@@ -194,8 +198,7 @@
           <div class="muted" style="margin-top:8px">
             This memo is <strong>derived from “Memo to order”</strong> and cannot be edited here.
           </div>
-          <textarea id="memoBody" readonly
-            style="background:#141a21;opacity:0.85;cursor:not-allowed"
+          <textarea id="memoBody" readonly style="background:#141a21;opacity:0.85;cursor:not-allowed"
             placeholder="Auto-composed from your structured snippets. Edit via 'Memo to order'."></textarea>
         </div>
 
@@ -222,4 +225,5 @@
     <script type="module" src="/js/ro/snippets-bridge.js"></script>
   </div>
 </body>
+
 </html>
