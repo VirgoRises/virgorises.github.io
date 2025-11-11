@@ -10,9 +10,8 @@
   <link rel="stylesheet" href="/css/10-components/research-office.css" />
   <link rel="stylesheet" href="/css/10-components/ro-snippets.css" />
 
-  <!-- Single source of MathJax config (relative to this file) -->
+  <!-- MathJax: single source of config + core -->
   <script src="cafes/zeta-zero-cafe/notebook/math/mathconfig.js"></script>
-  <!-- MathJax core (keep a single include) -->
   <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
@@ -25,12 +24,10 @@
       </h2>
       <a id="backLink" class="btn" href="javascript:history.back()">← Back</a>
     </div>
-
+    <!-- Moved to Preview paragraph tab
     <div id="roStatus" class="status mono"></div>
-
-    <!-- GRID -->
+     -->
     <div class="row">
-      <!-- LEFT: Viewer -->
       <div class="card">
         <div id="viewer" class="viewer">
           <div id="stage" class="stage">
@@ -40,30 +37,26 @@
         </div>
       </div>
 
-      <!-- RIGHT: Tools + Tabs -->
       <div class="right-col">
-
-        <!-- Tabs bar (no inline onclick; tabs.js reads data-tab) -->
         <div class="tab" data-default-tab="prevparagraph">
           <button class="tablinks" data-tab="prevparagraph">Paragraph</button>
           <button class="tablinks" data-tab="refpages">Pages</button>
           <button class="tablinks" data-tab="m2orderdrawer">Memo to order</button>
+          <button class="tablinks" data-tab="m2orderpreview">Preview</button>
           <button class="tablinks" data-tab="m2zdrawer">Memo to Self</button>
           <button class="tablinks" data-tab="drafts">Drafts</button>
           <button class="tablinks" data-tab="history">History</button>
         </div>
 
-        <!-- Paragraph preview -->
         <div id="prevparagraph" class="card tabcontent">
+          <div id="roStatus" class="status mono"></div>
           <div class="head">
             <strong>Paragraph preview</strong>
             <span id="paraNum" class="tag">#</span>
           </div>
-          <!-- wrap text + cap height via research-office.css (#paraPreview rules) -->
           <pre id="paraPreview" class="card preview"></pre>
         </div>
 
-        <!-- Referenced pages -->
         <div id="refpages" class="tabcontent">
           <div class="head" style="margin-top:8px">
             <strong>Pages referenced in memo</strong>
@@ -79,7 +72,7 @@
               <button id="pageAddRef" class="btn btn-sm" title="Insert page reference token into memo">[Add page]</button>
             </div>
           </div>
-
+          <!-- Thumbnails referenced pages in RFC -->
           <div id="pageChips" class="thumbs"></div>
 
           <div class="viewer-tools">
@@ -100,13 +93,11 @@
           </div>
         </div>
 
-        <!-- Drafts (manual saves) -->
         <div id="drafts" class="card tabcontent" style="margin-top:16px">
           <div class="head"><strong>Recent drafts (this browser)</strong></div>
           <div id="memoList" class="list"></div>
         </div>
 
-        <!-- History (autosave ring buffer, last 10) -->
         <div id="history" class="card tabcontent" style="margin-top:16px">
           <div class="head"><strong>Autosave history</strong></div>
           <div id="memoStatus" class="memo-status mono muted">No edits yet</div>
@@ -116,7 +107,6 @@
           </details>
         </div>
 
-        <!-- Memo to order (Snippets) -->
         <div id="m2orderdrawer" class="card tabcontent" style="margin-top:16px">
           <div class="bar" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px">
             <button class="btn" id="btnAddObs">+ Observation</button>
@@ -124,13 +114,13 @@
             <button class="btn" id="btnAddEv">+ Evidence</button>
             <button class="btn" id="btnAddDock">+ Dock</button>
             <span class="sep" style="width:1px;height:22px;background:#273341;display:inline-block"></span>
-            <!-- bridge actions -->
-            <button class="btn" id="btnToMemo">Compose → Memo to Self</button>
+            <!-- no more 'Preview combined' button
             <button class="btn btn-sm" id="btnPreviewCombined">Preview combined</button>
+          -->
           </div>
 
           <div class="wrap" style="padding:0">
-            <div class="grid">
+            <div class="XX-one-columnXXgrid">
               <section class="col">
                 <header class="section-head">
                   <h2>Snippets</h2>
@@ -139,17 +129,18 @@
                 <div id="list" class="list"></div>
               </section>
 
-              <!-- Optional right column live preview (combined) -->
+              <!-- no more 'Preview combined'
               <section class="col" id="snipPreviewCol" style="display:none">
                 <header class="section-head">
                   <h2>Live Preview (combined)</h2>
                 </header>
                 <div id="preview" class="preview"></div>
               </section>
+            -->
             </div>
           </div>
 
-          <!-- Modal (single, reused by snippets) -->
+          <!-- Modal -->
           <div id="snipMask" class="modal-mask hidden"></div>
           <div id="snipModal" class="modal hidden" aria-modal="true" role="dialog">
             <div class="modal-head" style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #122031">
@@ -188,8 +179,12 @@
             </div>
           </div>
         </div>
-
-        <!-- Memo to Self (single canonical text) -->
+        <!-- Preview under tab-->
+        <div id="m2orderpreview" class="card tabcontent" style="margin-top:16px">
+          <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
+          <div id="memoPreview" class="preview-md"></div>
+        </div>
+        <!-- Memo to Self (READ-ONLY, derived from snippets) -->
         <div id="m2zdrawer" class="card tabcontent" style="margin-top:16px">
           <div class="bar" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px">
             <button id="saveDraft" class="btn">Save draft (browser)</button>
@@ -197,33 +192,33 @@
             <button id="submitDiscord" class="btn">Submit via Discord</button>
           </div>
           <div class="muted" style="margin-top:8px">
-            Use direct freeform notes here — or generate this from “Memo to order”.
+            This memo is <strong>derived from “Memo to order”</strong> and cannot be edited here.
           </div>
-          <textarea id="memoBody"
-            placeholder="Use tokens like [mm|p12=10,15] or [mm|p12=10,15:40,35:&quot;label&quot;]."></textarea>
+          <textarea id="memoBody" readonly
+            style="background:#141a21;opacity:0.85;cursor:not-allowed"
+            placeholder="Auto-composed from your structured snippets. Edit via 'Memo to order'."></textarea>
         </div>
 
-      </div><!-- /right-col -->
-    </div><!-- /row -->
-
+      </div>
+    </div>
+    <!--No more bottom dwelling automatic preview section --x>
     <div class="head" style="margin-top:8px"><strong>Preview</strong></div>
     <div id="memoPreview" class="preview-md"></div>
-
-    <!-- Controllers (order matters for clean boot) -->
-    <!-- 1) Core RO controllers -->
+    <!x-- -->
+    <!-- Controllers (order matters) -->
     <script type="module" src="/js/research.office.js"></script>
     <script type="module" src="/js/ro/tabs.js"></script>
 
-    <!-- 2) Markdown loader FIRST so window.marked is ready -->
+    <!-- Markdown first -->
     <script type="module" src="/js/ro/marked-loader.js"></script>
 
-    <!-- 3) Snippets system (explicit; no hidden imports) -->
+    <!-- Snippets system -->
     <script type="module" src="/js/ro/snippets-compile.js"></script>
     <script type="module" src="/js/ro/snippets-modal.js"></script>
     <script type="module" src="/js/ro/snippets.js"></script>
     <script type="module" src="/js/ro/ro-snippets-boot.js"></script>
 
-    <!-- 4) Bridge builds “Memo to Self” + Preview from snippets -->
+    <!-- Bridge: Memo-to-Self composition -->
     <script type="module" src="/js/ro/snippets-bridge.js"></script>
   </div>
 </body>

@@ -1,6 +1,4 @@
 // snippets-modal.js
-// Reusable modal for a single snippet. Exported API is stable.
-
 let refs = null;
 function q(id){ return document.getElementById(id); }
 
@@ -37,7 +35,6 @@ export function openSnippetModal({ snippet, onSave, onSplit, onMergePrev, onMerg
   refs.body.value  = snippet.body  || '';
   refs.info.textContent = `[split] markers: ${(refs.body.value.match(/\[split\]/g)||[]).length}`;
 
-  // smart inserts & actions live on the tools row
   refs.tools.onclick = (ev) => {
     const b = ev.target.closest('button'); if (!b) return;
     const ins = b.dataset.insert;
@@ -65,7 +62,7 @@ export function openSnippetModal({ snippet, onSave, onSplit, onMergePrev, onMerg
       if (act === 'merge-prev' && onMergePrev) onMergePrev();
       if (act === 'merge-next' && onMergeNext) onMergeNext();
       if (act === 'dup'        && onDuplicate) onDuplicate();
-      if (act === 'del'        && onDelete)    onDelete();
+      if (act === 'del'        && onDelete)    onDelete(refs.body.value); /* pass current text */
     }
   };
 

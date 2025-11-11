@@ -7,29 +7,18 @@
 }
 
 *{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0; background:var(--bg); color:var(--ink);
-  font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-}
-
 .wrap{max-width:1200px; margin:0 auto; padding:18px}
-
-.topbar{display:flex; align-items:center; justify-content:space-between;
-  padding:10px 12px; background:var(--panel); border:1px solid var(--line); border-radius:10px; margin-bottom:12px;}
-.topbar .btn{margin-right:8px}
-.topbar .state{opacity:.7; margin-left:10px}
 
 .btn{background:var(--btn); color:var(--ink); border:1px solid var(--chip);
   padding:6px 10px; border-radius:8px; cursor:pointer}
 .btn:hover{border-color:var(--btn-border)}
-.btn.primary{border-color:#1f8cff}
-.btn.danger, .btn.mini.danger{border-color:var(--btn-danger); color:#ffb1b1}
 .btn.mini{font-size:12px; padding:4px 8px}
+.btn.mini.danger{border-color:var(--btn-danger); color:#ffb1b1}
 
 .icon{background:transparent; color:var(--ink); border:1px solid var(--chip);
   padding:4px 8px; border-radius:8px; cursor:pointer}
 
+/* layout inside Memo to order */
 .grid{display:grid; grid-template-columns: 48% 52%; gap:12px}
 .col{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px}
 
@@ -38,16 +27,21 @@ body{
 .section-head h2{margin:0; font-size:16px}
 .section-head .hint{opacity:.7}
 
-.badge{display:inline-block; border:1px solid var(--chip); color:var(--ink-2);
-  border-radius:999px; padding:2px 10px; font-size:12px}
-
-.list .snip{border:1px solid var(--line); border-radius:10px; margin:10px 0; overflow:hidden; background:#0e1722}
-.list .snip.dock{background:#0e151c}
+/* list + snippets */
+.list .snip{
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:10px 0;
+  overflow:hidden;
+  background:#0e1722;
+}
 .list .snip.hidden{display:none}
 
-.list .snip .bar{display:flex; align-items:center; justify-content:space-between;
-  gap:8px; padding:8px 10px; border-bottom:1px solid var(--muted)}
-.list .snip .bar .left{display:flex; align-items:center; gap:8px}
+.list .snip .bar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:8px; padding:8px 10px; border-bottom:1px solid var(--muted);
+  cursor: grab;
+}
 .list .snip .bar .title{font-weight:600; color:var(--ink)}
 .list .snip .tools .btn{margin-left:6px}
 
@@ -56,9 +50,16 @@ body{
 .list .snip.collapsed:hover .body{display:block}
 
 .list .snip.active{outline:2px solid #2e7dbb}
+.list .snip.drag-hint{opacity:.6}
 
-.list .snip .bar{ cursor: grab; }
-.list .snip.drag-hint{ opacity:.6 }
+/* --- TYPE COLORS (scoped properly) --- */
+.list .snip.type-observation > .bar{border-left:6px solid var(--green)}
+.list .snip.type-hypothesis  > .bar{border-left:6px solid var(--blue)}
+.list .snip.type-evidence    > .bar{border-left:6px solid var(--gold)}
+.list .snip.type-dock        > .bar{border-left:6px solid var(--dock)}
+
+/* docks */
+.dock-children{padding:6px 6px 4px}
 
 /* Live preview cards */
 .preview .pv-snip{border:1px solid var(--line); border-radius:10px; margin:10px 0; overflow:hidden}
@@ -67,7 +68,7 @@ body{
 .preview .pv-snip .title{font-weight:700}
 .preview .pv-snip .body{padding:10px}
 
-/* hide type/title labels in preview when desired (toggle-able via CSS only) */
+/* hide type/title labels in preview (kept off by default) */
 .preview .pv-snip .head .badge{display:none}
 .preview .pv-snip .head .title{display:none}
 
@@ -88,121 +89,3 @@ body{
 .modal-body .body{width:100%; min-height:280px; padding:10px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   background:#0b1219; color:var(--ink); border:1px solid var(--line); border-radius:8px; resize:vertical}
 .modal-body .meta{display:flex; align-items:center; justify-content:space-between; gap:10px}
-
-/* docks */
-.list .snip.dock .bar{border-left:6px solid var(--dock)!important}
-.list .snip.dock .tools .btn{border-color:var(--dock)}
-
-/* ADDED FROM */
-/* Page chrome only; component CSS lives in ro-snippets.css */
-            body {
-              margin: 0;
-              background: #0f141a;
-              color: #e6edf3;
-              font: 15px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif
-            }
-
-            .wrap {
-              max-width: 1200px;
-              margin: 0 auto;
-              padding: 16px
-            }
-
-            .topbar {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              gap: 12px;
-              margin-bottom: 12px
-            }
-
-            .topbar .btn {
-              background: #1a2532;
-              border: 1px solid #273341;
-              border-radius: 8px;
-              color: #e6edf3;
-              padding: 6px 10px;
-              cursor: pointer
-            }
-
-            .topbar .btn:hover {
-              background: #172130
-            }
-
-            .topbar .state {
-              opacity: .75
-            }
-
-            .grid {
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-              gap: 16px
-            }
-
-            @media (max-width:1000px) {
-              .grid {
-                grid-template-columns: 1fr
-              }
-            }
-
-            .section-head {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              border: 1px solid #273341;
-              border-radius: 10px;
-              padding: 8px 10px;
-              background: #0c1218
-            }
-
-            .section-head h2 {
-              margin: 0;
-              font-size: 16px
-            }
-
-            .section-head .hint {
-              font-size: 12px;
-              opacity: .7
-            }
-
-            .section-head .tools {
-              display: flex;
-              gap: 8px;
-              align-items: center
-            }
-
-            .section-head .tools .icon {
-              border: 1px solid #273341;
-              border-radius: 8px;
-              background: #16202c;
-              color: #e6edf3;
-              padding: 6px 8px;
-              cursor: pointer
-            }
-
-            /* Modal shell */
-            .modal-mask {
-              position: fixed;
-              inset: 0;
-              background: rgba(0, 0, 0, .5);
-              backdrop-filter: saturate(80%) blur(2px);
-              z-index: 30
-            }
-
-            .modal {
-              position: fixed;
-              top: 4%;
-              left: 50%;
-              transform: translateX(-50%);
-              width: min(900px, 94vw);
-              max-height: 92vh;
-              overflow: auto;
-              background: #0c1218;
-              border: 1px solid #273341;
-              border-radius: 12px;
-              z-index: 31
-            }
-
-            .hidden {
-              display: none !important
-            }
